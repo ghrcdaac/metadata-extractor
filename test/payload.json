@@ -1,0 +1,98 @@
+{
+    "input": [
+      "./fixtures/GOESR_CRS_L1B_20170507_v0.nc"
+    ],
+    "config": {
+      "files_config": [
+        {
+          "regex": "*.nc",
+          "sampleFileName": "GOESR_CRS_L1B_20170411_v0.nc",
+          "bucket": "protected"
+        },
+        {
+          "regex": "^(GOESR).*\\.cmr\\.xml$",
+          "sampleFileName": "GOESR_CRS_L1B_20170411_v0.nc.cmr.xml",
+          "bucket": "public"
+        },
+        {
+          "regex": "^(\\d+).*\\.wrld.*$",
+          "sampleFileName": "20190410_0000.wrld-ir4km-mrest",
+          "bucket": "private"
+        }
+      ],
+      "buckets": {
+        "shared": {
+          "type": "shared",
+          "name": "cumulus-data-shared"
+        },
+        "protected": {
+          "type": "protected",
+          "name": "stack_name-protected"
+        },
+        "internal": {
+          "type": "internal",
+          "name": "stack_name-internal"
+        },
+        "private": {
+          "type": "private",
+          "name": "stack_name-private"
+        },
+        "public": {
+          "type": "public",
+          "name": "stack_name-public"
+        }
+      },
+      "collection": {
+        "name": "goesrpltcrs",
+        "version": "1.0",
+        "dataType": "goesrpltcrs",
+        "process": "metadataextractor",
+        "provider_path": "/goesr/",
+        "duplicateHandling": "replace",
+        "granuleId": "^GOESR_CRS.*\\.(nc)$",
+        "granuleIdExtraction": "^(GOESR_CRS.*\\.nc)",
+        "sampleFileName": "GOESR_CRS_L1B_20170411_v0.nc",
+        "files": [
+            {
+                "bucket": "public",
+                "regex": "^(GOESR_CRS).*\\.(nc)\\.cmr.xml$",
+                "sampleFileName": "GOESR_CRS_L1B_20170411_v0.nc.cmr.xml"
+            },
+            {
+                "bucket": "protected",
+                "regex": "^(GOESR_CRS).*\\.(nc)$",
+                "sampleFileName": "GOESR_CRS_L1B_20170411_v0.nc"
+            }
+        ],
+        "meta": {
+            "metadata_extractor": [
+                {
+                    "lon_var_key": "lon",
+                    "regex": "^(GOES).*\\.nc$",
+                    "time_units": "units",
+                    "module": "netcdf",
+                    "time_var_key": "time",
+                    "lat_var_key": "lat"
+                }
+            ]
+        }
+    },
+      "fileStagingDir": "globalir__1",
+      "granuleIdExtraction": "^((\\d+|globir).*\\.(wrld.*|\\d+))",
+      "distribution_endpoint": "https://6qfzpjgu6d.execute-api.us-east-1.amazonaws.com/dev/"
+    },
+    "messageConfig": {
+      "input": "{[$.payload.granules[*].files[*].filename]}",
+      "outputs": [
+        {
+          "source": "{{$}}",
+          "destination": "{{$.payload}}"
+        }
+      ]
+    },
+    "cumulus_config": {
+      "state_machine": "arn:aws:states:us-east-1:307493436926:stateMachine:abdelhakAppIngestGranuleStateMachine-WCcGidqP6O8x",
+      "execution_name": "20af0ecb-acf1-4564-8bbd-5ea49a845bb0"
+    }
+  }
+  

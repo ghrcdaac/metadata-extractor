@@ -1,0 +1,1555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.0">
+<Document>
+<Style id="main">
+<LineStyle>
+<colorMode>random</colorMode>
+<width>3</width>
+</LineStyle>
+<IconStyle>
+<scale>0.35</scale>
+<Icon>
+<href>http://maps.google.com/mapfiles/kml/pal2/icon26.png</href>
+</Icon>
+</IconStyle>
+<LabelStyle>
+<scale>0.75</scale>
+</LabelStyle>
+</Style>
+<Folder>
+<name>AQUA</name>
+<Folder>
+<name>Pass 1</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-85.9800,43.9200,0
+-86.1900,43.3200,0
+-86.3900,42.7200,0
+-86.5900,42.1300,0
+-86.7900,41.5300,0
+-86.9900,40.9400,0
+-87.1800,40.3400,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>AQUA 07:52:18 Z</name>
+<description>AQUA 07:52:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-85.9800,43.9200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 07:52:28 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.1900,43.3200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 07:52:38 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.3900,42.7200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 07:52:48 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.5900,42.1300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 07:52:58 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.7900,41.5300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 07:53:08 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.9900,40.9400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 07:53:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.1800,40.3400</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+<Folder>
+<name>Pass 2</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-87.4900,40.0000,0
+-87.6900,40.6000,0
+-87.8800,41.2000,0
+-88.0800,41.7900,0
+-88.2800,42.3900,0
+-88.4800,42.9900,0
+-88.6800,43.5800,0
+-88.8900,44.1800,0
+-89.1100,44.7700,0
+-89.3200,45.3700,0
+-89.5400,45.9600,0
+-89.7700,46.5600,0
+-89.9900,47.1500,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>AQUA 18:58:27 Z</name>
+<description>AQUA 18:58:27 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.4900,40.0000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:58:37 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.6900,40.6000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:58:47 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.8800,41.2000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:58:57 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.0800,41.7900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:59:07 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.2800,42.3900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:59:17 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.4800,42.9900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:59:27 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.6800,43.5800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:59:37 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.8900,44.1800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:59:47 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.1100,44.7700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 18:59:57 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.3200,45.3700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 19:00:07 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.5400,45.9600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 19:00:17 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.7700,46.5600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>AQUA 19:00:27 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.9900,47.1500</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>TERRA</name>
+<Folder>
+<name>Pass 3</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-92.4000,47.3800,0
+-92.6200,46.7800,0
+-92.8500,46.1900,0
+-93.0700,45.5900,0
+-93.2900,45.0000,0
+-93.5000,44.4000,0
+-93.7100,43.8100,0
+-93.9200,43.2100,0
+-94.1200,42.6200,0
+-94.3200,42.0200,0
+-94.5200,41.4200,0
+-94.7100,40.8300,0
+-94.9100,40.2300,0
+-95.1000,39.6300,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>TERRA 17:16:08 Z</name>
+<description>TERRA 17:16:08 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.4000,47.3800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:16:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.6200,46.7800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:16:28 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.8500,46.1900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:16:38 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.0700,45.5900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:16:48 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.2900,45.0000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:16:58 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.5000,44.4000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:17:08 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.7100,43.8100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:17:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.9200,43.2100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:17:28 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.1200,42.6200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:17:38 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.3200,42.0200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:17:48 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.5200,41.4200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:17:58 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.7100,40.8300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:18:08 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.9100,40.2300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>TERRA 17:18:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-95.1000,39.6300</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>NOAA 16</name>
+<Folder>
+<name>Pass 4</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-92.9500,47.3300,0
+-93.1900,46.7500,0
+-93.4300,46.1800,0
+-93.6600,45.6100,0
+-93.8900,45.0300,0
+-94.1200,44.4600,0
+-94.3400,43.8900,0
+-94.5600,43.3100,0
+-94.7700,42.7400,0
+-94.9800,42.1600,0
+-95.1900,41.5900,0
+-95.4000,41.0100,0
+-95.6000,40.4400,0
+-95.8000,39.8600,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>NOAA 16 15:45:53 Z</name>
+<description>NOAA 16 15:45:53 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.9500,47.3300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:46:03 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.1900,46.7500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:46:13 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.4300,46.1800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:46:23 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.6600,45.6100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:46:33 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.8900,45.0300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:46:43 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.1200,44.4600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:46:53 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.3400,43.8900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:47:03 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.5600,43.3100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:47:13 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.7700,42.7400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:47:23 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.9800,42.1600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:47:33 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-95.1900,41.5900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:47:43 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-95.4000,41.0100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:47:53 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-95.6000,40.4400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 16 15:48:03 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-95.8000,39.8600</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>NOAA 17</name>
+<Folder>
+<name>Pass 5</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-92.2400,38.4300,0
+-92.4200,39.0200,0
+-92.6100,39.6000,0
+-92.8000,40.1900,0
+-92.9900,40.7700,0
+-93.1800,41.3600,0
+-93.3800,41.9400,0
+-93.5700,42.5200,0
+-93.7800,43.1100,0
+-93.9800,43.6900,0
+-94.1900,44.2700,0
+-94.4000,44.8600,0
+-94.6200,45.4400,0
+-94.8300,46.0200,0
+-95.0600,46.6100,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>NOAA 17 00:21:15 Z</name>
+<description>NOAA 17 00:21:15 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.2400,38.4300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:21:25 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.4200,39.0200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:21:35 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.6100,39.6000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:21:45 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.8000,40.1900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:21:55 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.9900,40.7700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:22:05 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.1800,41.3600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:22:15 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.3800,41.9400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:22:25 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.5700,42.5200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:22:35 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.7800,43.1100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:22:45 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.9800,43.6900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:22:55 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.1900,44.2700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:23:05 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.4000,44.8600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:23:15 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.6200,45.4400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:23:25 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-94.8300,46.0200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 00:23:35 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-95.0600,46.6100</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+<Folder>
+<name>Pass 6</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-86.9500,40.5200,0
+-87.1400,41.1100,0
+-87.3300,41.6900,0
+-87.5300,42.2800,0
+-87.7300,42.8600,0
+-87.9400,43.4400,0
+-88.1400,44.0300,0
+-88.3500,44.6100,0
+-88.5700,45.1900,0
+-88.7800,45.7800,0
+-89.0000,46.3600,0
+-89.2300,46.9400,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>NOAA 17 23:57:50 Z</name>
+<description>NOAA 17 23:57:50 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.9500,40.5200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:58:00 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.1400,41.1100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:58:10 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.3300,41.6900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:58:20 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.5300,42.2800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:58:30 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.7300,42.8600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:58:40 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.9400,43.4400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:58:50 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.1400,44.0300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:59:00 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.3500,44.6100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:59:10 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.5700,45.1900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:59:20 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.7800,45.7800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:59:30 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.0000,46.3600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 17 23:59:40 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.2300,46.9400</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>NOAA 18</name>
+<Folder>
+<name>Pass 7</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-88.7500,46.7600,0
+-88.9900,46.1800,0
+-89.2200,45.6100,0
+-89.4500,45.0300,0
+-89.6800,44.4600,0
+-89.9000,43.8800,0
+-90.1200,43.3100,0
+-90.3400,42.7300,0
+-90.5500,42.1600,0
+-90.7600,41.5800,0
+-90.9700,41.0000,0
+-91.1700,40.4300,0
+-91.3700,39.8500,0
+-91.5700,39.2700,0
+-91.7700,38.7000,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>NOAA 18 09:49:08 Z</name>
+<description>NOAA 18 09:49:08 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.7500,46.7600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:49:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-88.9900,46.1800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:49:28 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.2200,45.6100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:49:38 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.4500,45.0300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:49:48 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.6800,44.4600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:49:58 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-89.9000,43.8800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:50:08 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.1200,43.3100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:50:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.3400,42.7300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:50:28 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.5500,42.1600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:50:38 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.7600,41.5800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:50:48 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.9700,41.0000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:50:58 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.1700,40.4300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:51:08 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.3700,39.8500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:51:18 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.5700,39.2700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>NOAA 18 09:51:28 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.7700,38.7000</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>SUOMI NPP</name>
+<Folder>
+<name>Pass 8</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-90.5900,47.2500,0
+-90.8200,46.6700,0
+-91.0500,46.1000,0
+-91.2800,45.5200,0
+-91.5000,44.9400,0
+-91.7200,44.3600,0
+-91.9400,43.7800,0
+-92.1500,43.2100,0
+-92.3600,42.6300,0
+-92.5700,42.0500,0
+-92.7700,41.4700,0
+-92.9700,40.8900,0
+-93.1700,40.3100,0
+-93.3700,39.7300,0
+-93.5600,39.1500,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>SUOMI NPP 08:04:46 Z</name>
+<description>SUOMI NPP 08:04:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.5900,47.2500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:04:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.8200,46.6700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:05:06 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.0500,46.1000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:05:16 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.2800,45.5200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:05:26 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.5000,44.9400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:05:36 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.7200,44.3600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:05:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.9400,43.7800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:05:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.1500,43.2100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:06:06 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.3600,42.6300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:06:16 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.5700,42.0500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:06:26 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.7700,41.4700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:06:36 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.9700,40.8900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:06:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.1700,40.3100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:06:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.3700,39.7300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>SUOMI NPP 08:07:06 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.5600,39.1500</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>METOP-A</name>
+<Folder>
+<name>Pass 9</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-90.6700,47.2700,0
+-90.9000,46.7000,0
+-91.1300,46.1200,0
+-91.3600,45.5400,0
+-91.5800,44.9600,0
+-91.8000,44.3800,0
+-92.0200,43.8000,0
+-92.2300,43.2200,0
+-92.4400,42.6400,0
+-92.6500,42.0600,0
+-92.8500,41.4800,0
+-93.0500,40.9000,0
+-93.2500,40.3200,0
+-93.4400,39.7400,0
+-93.6400,39.1600,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>METOP-A 16:09:46 Z</name>
+<description>METOP-A 16:09:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.6700,47.2700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:09:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-90.9000,46.7000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:10:06 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.1300,46.1200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:10:16 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.3600,45.5400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:10:26 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.5800,44.9600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:10:36 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.8000,44.3800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:10:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.0200,43.8000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:10:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.2300,43.2200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:11:06 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.4400,42.6400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:11:16 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.6500,42.0600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:11:26 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.8500,41.4800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:11:36 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.0500,40.9000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:11:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.2500,40.3200</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:11:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.4400,39.7400</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-A 16:12:06 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.6400,39.1600</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>METOP-B</name>
+<Folder>
+<name>Pass 10</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-91.0300,38.5000,0
+-91.2200,39.0900,0
+-91.4100,39.6700,0
+-91.6100,40.2500,0
+-91.8000,40.8300,0
+-92.0000,41.4100,0
+-92.2100,41.9900,0
+-92.4100,42.5700,0
+-92.6200,43.1500,0
+-92.8300,43.7300,0
+-93.0500,44.3100,0
+-93.2700,44.8900,0
+-93.4900,45.4700,0
+-93.7200,46.0500,0
+-93.9500,46.6300,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>METOP-B 03:08:00 Z</name>
+<description>METOP-B 03:08:00 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.0300,38.5000</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:08:10 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.2200,39.0900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:08:20 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.4100,39.6700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:08:30 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.6100,40.2500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:08:40 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-91.8000,40.8300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:08:50 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.0000,41.4100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:09:00 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.2100,41.9900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:09:10 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.4100,42.5700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:09:20 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.6200,43.1500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:09:30 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-92.8300,43.7300</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:09:40 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.0500,44.3100</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:09:50 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.2700,44.8900</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:10:00 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.4900,45.4700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:10:10 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.7200,46.0500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>METOP-B 03:10:20 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-93.9500,46.6300</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+<Folder>
+<name>CLOUDSAT</name>
+<Folder>
+<name>Pass 11</name>
+<Placemark>
+<name>ground track</name>
+<styleUrl>#main</styleUrl>
+<visibility>1</visibility>
+<open>0</open>
+<LineString>
+<extrude>0</extrude>
+<tessellate>1</tessellate>
+<altitudeMode>clampedToGround</altitudeMode>
+<coordinates>
+-86.0800,41.8800,0
+-86.2800,42.4800,0
+-86.4800,43.0700,0
+-86.6900,43.6700,0
+-86.9000,44.2600,0
+-87.1100,44.8600,0
+-87.3300,45.4500,0
+-87.5500,46.0500,0
+</coordinates>
+</LineString>
+</Placemark>
+<Folder>
+<name>timestamps</name>
+<Placemark>
+<visibility>1</visibility>
+<name>CLOUDSAT 19:01:46 Z</name>
+<description>CLOUDSAT 19:01:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.0800,41.8800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>CLOUDSAT 19:01:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.2800,42.4800</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>CLOUDSAT 19:02:06 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.4800,43.0700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>CLOUDSAT 19:02:16 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.6900,43.6700</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>CLOUDSAT 19:02:26 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-86.9000,44.2600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>CLOUDSAT 19:02:36 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.1100,44.8600</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>CLOUDSAT 19:02:46 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.3300,45.4500</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<visibility>1</visibility>
+<description>CLOUDSAT 19:02:56 Z</description>
+<styleUrl>#main</styleUrl>
+<Point>
+<coordinates>-87.5500,46.0500</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Folder>
+</Folder>
+</Document>
+</kml>
+

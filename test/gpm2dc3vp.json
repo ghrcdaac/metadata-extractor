@@ -1,0 +1,89 @@
+{
+  "input": [
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/gpm2dc3vp__1/c3vp_2dvd_sn16_V06336_flakes_noRA.txt"
+  ],
+  "config": {
+    "files_config": [
+      {
+        "regex": "^(.*).*\\.cmr.xml$",
+        "sampleFileName": "c3vp_2dvd_sn16_V06336_flakes_noRA.txt.cmr.xml",
+        "bucket": "public"
+      },
+      {
+        "regex": "^(.*).*(\\.txt)$",
+        "sampleFileName": "c3vp_2dvd_sn16_V06336_flakes_noRA.txt",
+        "bucket": "protected"
+      }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "ghrcsbxw-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "ghrcsbxw-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "ghrcsbxw-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "ghrcsbxw-public"
+      }
+    },
+    "collection":{
+        "name": "gpm2dc3vp",
+	"version": "1",
+	"dataType": "gpm2dc3vp",
+	"process": "metadataextractor",
+	"provider_path": "gpm2dc3vp/fieldCampaigns/gpmValidation/relatedProjects/c3vp/2dvd/data/",
+        "url_path": "gpm2dc3vp__1",
+	"duplicateHandling": "replace",
+	"granuleId": "^c3vp_2dvd_sn16_.*\.(txt)$",
+	"granuleIdExtraction": "^((c3vp_2dvd_sn16_).*)",
+	"sampleFileName": "c3vp_2dvd_sn16_V06336_flakes_noRA.txt",
+	"files": [
+		{
+			"bucket": "public",
+			"regex": "^c3vp_2dvd_sn16_(.*).*\\.cmr.xml$",
+			"sampleFileName": "c3vp_2dvd_sn16_V06336_flakes_noRA.txt.cmr.xml"
+		},
+		{
+			"bucket": "protected",
+			"regex": "^c3vp_2dvd_sn16_(.*).*(txt)$",
+			"sampleFileName": "c3vp_2dvd_sn16_V06336_flakes_noRA.txt"
+		}
+    ],
+    "meta": {
+      "metadata_extractor": [
+          {
+            "regex": "^c3vp_2dvd_sn16_.*\.(txt)$",
+            "module": "ascii"
+          }
+        ]
+    },
+    "updatedAt": "1573589725859",
+    "createdAt": "1573588611401",
+  },
+  "distribution_endpoint": "https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/",
+  "messageConfig": {
+    "input": "{[$.payload.granules[*].files[*].filename]}",
+    "outputs": [
+      {
+        "source": "{{$}}",
+        "destination": "{{$.payload}}"
+      }
+    ]
+  },
+  "cumulus_config": {
+    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+    "cumulus_context": {
+      "reingestGranule": "True",
+      "forceDuplicateOverwrite": "True"
+    }
+  }
+}
+}

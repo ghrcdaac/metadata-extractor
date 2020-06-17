@@ -1,0 +1,92 @@
+{
+    "input": [
+      "s3://ghrc-test-private/er2edop/fieldCampaigns/camex3_er2edop_1998.220_daily.tar"
+    ],
+    "config": {
+      "files_config": [
+        {
+			"bucket": "public",
+			"regex": "^(.*).*\\.cmr.xml$",
+			"sampleFileName": "camex3_er2edop_1998.270_daily.tar.cmr.xml"
+		},
+		{
+			"bucket": "protected",
+			"regex": "^(.*).*\\.(tar)$",
+			"sampleFileName": "camex3_er2edop_1998.270_daily.tar"
+		}
+      ],
+      "buckets": {
+        "protected": {
+          "type": "protected",
+          "name": "ghrc-test-protected"
+        },
+        "protected-1": {
+          "type": "protected",
+          "name": "ghrc-test-restore-protected"
+        },
+        "internal": {
+          "type": "internal",
+          "name": "ghrc-test-internal"
+        },
+        "private": {
+          "type": "private",
+          "name": "ghrc-test-private"
+        },
+        "public": {
+          "type": "public",
+          "name": "ghrc-test-public"
+        }
+      },
+      "collection": {
+        "name": "er2edop",
+        "version": "1",
+        "dataType": "er2edop",
+        "process": "metadataextractor",
+        "provider_path": "/er2edop/fieldCampaigns/camex3/er2edop/browse/",
+        "duplicateHandling": "replace",
+        "granuleId": "^.*$",
+        "granuleIdExtraction": "^((.*).(tar))",
+        "sampleFileName": "camex3_er2edop_1998.270_daily.tar",
+        "files": [
+            {
+                "bucket": "public",
+                "regex": "^(.*).*\\.cmr.xml$",
+                "sampleFileName": "camex3_er2edop_1998.270_daily.tar.cmr.xml"
+            },
+            {
+                "bucket": "protected",
+                "regex": "^(.*).*\\.(tar)$",
+                "sampleFileName": "camex3_er2edop_1998.270_daily.tar"
+            }
+        ],
+        "updatedAt": 1574883975438,
+        "meta": {
+            "metadata_extractor": [
+                {
+                    "regex": "^(.*).*\\.(tar)$",
+                    "module": "browse"
+                }
+            ]
+        }
+    },
+      "granuleIdExtraction": "^(.*).*\\.(tar)$",
+      "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/"
+    },
+    "messageConfig": {
+      "input": "{[$.payload.granules[*].files[*].filename]}",
+      "outputs": [
+        {
+          "source": "{{$}}",
+          "destination": "{{$.payload}}"
+        }
+      ]
+    },
+    "cumulus_config": {
+      "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+      "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+      "cumulus_context": {
+        "reingestGranule": True,
+        "forceDuplicateOverwrite": True
+      }
+    }
+  }

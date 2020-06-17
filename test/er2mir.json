@@ -1,0 +1,93 @@
+{
+  "input": [
+    "s3://navaneeth-app-private/gpm/er2mir_1998_251.gif"
+  ],
+  "config": {
+    "files_config": [
+      {
+        "regex": "^(.*).*\\.cmr.xml$",
+        "sampleFileName": "er2mir_1998_220.gif",
+        "bucket": "public"
+      },
+      {
+        "regex": "^(.*).*\\.(gif)$",
+        "sampleFileName": "er2mir_1998_220.gif",
+        "bucket": "protected"
+      }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "navaneeth-app-protected"
+      },
+      "protected-1": {
+        "type": "protected",
+        "name": "navaneeth-app-restore-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "navaneeth-app-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "navaneeth-app-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "navaneeth-app-public"
+      }
+    },
+    "collection": {
+	"name": "er2mir",
+	"version": "1",
+	"dataType": "er2mir",
+	"process": "metadataextractor",
+	"provider_path": "/er2mir/fieldCampaigns/camex3/er2mir/browse/",
+	"duplicateHandling": "replace",
+	"granuleId": "^(er2mir_).*\\.gif$",
+	"granuleIdExtraction": "^((er2mir_).*)",
+	"sampleFileName": "er2mir_1998_220.gif",
+	"files": [
+		{
+			"bucket": "public",
+			"regex": "^er2mir_(.*).*\\.cmr.xml$",
+			"sampleFileName": "er2mir_1998_220.gif.cmr.xml"
+		},
+		{
+			"bucket": "protected",
+			"regex": "^er2mir_(.*).*\\.(gif)$",
+			"sampleFileName": "er2mir_1998_220.gif"
+		}
+	],
+    "meta": {
+      "metadata_extractor": [
+          {
+            "regex": "^(.*).*\\.(gif)$",
+            "module": "browse"
+          }
+        ]
+    },
+    "updatedAt": "1573589725859",
+    "createdAt": "1573588611401",
+    "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/"
+  },
+  "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/",
+  "messageConfig": {
+    "input": "{[$.payload.granules[*].files[*].filename]}",
+    "outputs": [
+      {
+        "source": "{{$}}",
+        "destination": "{{$.payload}}"
+      }
+    ]
+  },
+  "cumulus_config": {
+    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+    "cumulus_context": {
+      "reingestGranule": "True",
+      "forceDuplicateOverwrite": "True"
+    }
+  }
+}
+}

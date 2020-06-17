@@ -1,0 +1,92 @@
+    {
+  "input": [
+    "s3://navaneeth-app-private/gpm/lpvex_MDL_WRFSBM_wrfout_d02_20101019_140000.gz"
+  ],
+  "config": {
+    "files_config": [
+      {
+        "regex": "^(.*).*\\.cmr.xml$",
+        "sampleFileName": "lpvex_MDL_WRFGCE_wrfout_d02_20100920_120000.gz.cmr.xml",
+        "bucket": "public"
+      },
+      {
+        "regex": "^lpvex_MDL_(.*).*\\.(.gz)$",
+        "sampleFileName": "lpvex_MDL_WRFGCE_wrfout_d02_20100920_120000.gz",
+        "bucket": "protected"
+      }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "navaneeth-app-protected"
+      },
+      "protected-1": {
+        "type": "protected",
+        "name": "navaneeth-app-restore-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "navaneeth-app-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "navaneeth-app-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "navaneeth-app-public"
+      }
+    },
+    "collection": {
+	"name": "gpmwrflpvex",
+	"version": "1",
+	"dataType": "gpmwrflpvex",
+	"process": "metadataextractor",
+	"provider_path": "/gpmwrflpvex/fieldCampaigns/gpmValidation/lpvex/WRF/data/",
+	"duplicateHandling": "replace",
+	"granuleId": "^(lpvex_MDL_).*\\.gz$",
+	"granuleIdExtraction": "^((lpvex_MDL_).*)",
+	"sampleFileName": "lpvex_MDL_WRFGCE_wrfout_d02_20100920_120000.gz",
+	"files": [
+		{
+			"bucket": "public",
+			"regex": "^lpvex_MDL_(.*).*\\.cmr.xml$",
+			"sampleFileName": "lpvex_MDL_WRFGCE_wrfout_d02_20100920_120000.gz.cmr.xml"
+		},
+		{
+			"bucket": "protected",
+			"regex": "^lpvex_MDL_(.*).*\\.(gz)$",
+			"sampleFileName": "lpvex_MDL_WRFGCE_wrfout_d02_20100920_120000.gz"
+		}
+	],
+    "meta": {
+    		"metadata_extractor": [
+    			{
+                  "regex": "^(.*).*\\.(gz)$",
+                  "module": "netcdf"
+    			}
+    		]
+    	},
+      "updatedAt": 1581369263097,
+      "createdAt": 1566590168145
+    },
+  "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/",
+  "messageConfig": {
+    "input": "{[$.payload.granules[*].files[*].filename]}",
+    "outputs": [
+      {
+        "source": "{{$}}",
+        "destination": "{{$.payload}}"
+      }
+    ]
+  },
+  "cumulus_config": {
+    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+    "cumulus_context": {
+      "reingestGranule": "True",
+      "forceDuplicateOverwrite": "True"
+    }
+  }
+}
+}

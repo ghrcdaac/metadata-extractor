@@ -1,0 +1,88 @@
+{
+  "input": [
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/gpmikalpvex__1/lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz"
+  ],
+  "config": {
+    "files_config": [
+      {
+        "regex": "^(.*).*\\.cmr.xml$",
+        "sampleFileName": "lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz.cmr.xml",
+        "bucket": "public"
+      },
+      {
+        "regex": "^(.*).*(\\.gz)$",
+        "sampleFileName": "lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz",
+        "bucket": "protected"
+      }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "ghrcsbxw-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "ghrcsbxw-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "ghrcsbxw-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "ghrcsbxw-public"
+      }
+    },
+    "collection":{
+	"name": "gpmikalpvex",
+	"version": "1",
+	"dataType": "gpmikalpvex",
+	"process": "metadataextractor",
+	"provider_path": "gpmikalpvex/fieldCampaigns/gpmValidation/lpvex/C-band_radar/IKA/data/",
+	"duplicateHandling": "replace",
+	"granuleId": "^lpvex_RADAR_.*\.(gz)$",
+	"granuleIdExtraction": "^((lpvex_RADAR_).*)",
+	"sampleFileName": "lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz",
+	"files": [
+		{
+			"bucket": "public",
+			"regex": "^lpvex_RADAR_(.*).*\\.cmr.xml$",
+			"sampleFileName": "lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz.cmr.xml"
+		},
+		{
+			"bucket": "protected",
+			"regex": "^lpvex_RADAR_(.*).*(gz)$",
+			"sampleFileName": "lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz"
+		}
+    ],
+    "meta": {
+      "metadata_extractor": [
+          {
+            "regex": "^lpvex_RADAR_.*\.(gz)$",
+            "module": "ascii"
+          }
+        ]
+    },
+    "updatedAt": "1573589725859",
+    "createdAt": "1573588611401",
+  },
+  "distribution_endpoint": "https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/",
+  "messageConfig": {
+    "input": "{[$.payload.granules[*].files[*].filename]}",
+    "outputs": [
+      {
+        "source": "{{$}}",
+        "destination": "{{$.payload}}"
+      }
+    ]
+  },
+  "cumulus_config": {
+    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+    "cumulus_context": {
+      "reingestGranule": "True",
+      "forceDuplicateOverwrite": "True"
+    }
+  }
+}
+}

@@ -1,0 +1,93 @@
+{
+  "input": [
+    "s3://navaneeth-app-private/gpm/aces1am_2002_191.tar"
+  ],
+  "config": {
+    "files_config": [
+      {
+        "regex": "^(.*).*\\.cmr.xml$",
+        "sampleFileName": "aces1am_2002_191.tar.cmr.xml",
+        "bucket": "public"
+      },
+      {
+        "regex": "^(.*).*\\.(tar)$",
+        "sampleFileName": "aces1am_2002_191.tar",
+        "bucket": "protected"
+      }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "navaneeth-app-protected"
+      },
+      "protected-1": {
+        "type": "protected",
+        "name": "navaneeth-app-restore-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "navaneeth-app-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "navaneeth-app-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "navaneeth-app-public"
+      }
+    },
+    "collection": {
+	"name": "aces1am",
+	"version": "1",
+	"dataType": "aces1am",
+	"process": "metadataextractor",
+	"provider_path": "/aces1am/fieldCampaigns/aces/aircraft/data/",
+	"duplicateHandling": "replace",
+	"granuleId": "^(aces1am).*\\.tar$",
+	"granuleIdExtraction": "^((aces1am).*)",
+	"sampleFileName": "aces1am_2002.192.tar",
+	"files": [
+		{
+			"bucket": "public",
+			"regex": "^aces1am_(.*).*\\.cmr.xml$",
+			"sampleFileName": "aces1am_2002.192.tar.cmr.xml"
+		},
+		{
+			"bucket": "protected",
+			"regex": "^aces1am_(.*).*\\.(tar)$",
+			"sampleFileName": "aces1am_2002.192.tar"
+		}
+	],
+    "meta": {
+      "metadata_extractor": [
+          {
+            "regex": "^(.*).*\\.(tar)$",
+            "module": "browse"
+          }
+        ]
+    },
+    "updatedAt": "1573589725859",
+    "createdAt": "1573588611401",
+    "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/"
+  },
+  "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/",
+  "messageConfig": {
+    "input": "{[$.payload.granules[*].files[*].filename]}",
+    "outputs": [
+      {
+        "source": "{{$}}",
+        "destination": "{{$.payload}}"
+      }
+    ]
+  },
+  "cumulus_config": {
+    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+    "cumulus_context": {
+      "reingestGranule": "True",
+      "forceDuplicateOverwrite": "True"
+    }
+  }
+}
+}
