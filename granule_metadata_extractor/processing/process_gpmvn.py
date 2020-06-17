@@ -32,6 +32,30 @@ class ExtractGpmvnMetadata(ExtractNetCDFMetadata):
                         self.get_variables_min_max(dataset, file_path)
         dataset.close()
         os.unlink(tmp.name)
+        # for the 9 files without valid bounding box, just check SLat == -888.0  
+        # will find one of the 9 files
+        #if self.SLat == -888.0:
+        if self.SLat < -90.0:
+            [self.SLat, self.NLat, self.WLon, self.ELon] = \
+                        self.get_variables_min_max_lookup(file_path) 
+
+    def get_variables_min_max_lookup(self, file_path):
+        # there are 9 files that do not have valid lat and lon and therefore no valid
+        # bounding box. Leigh and I have decided to use site-specific collection
+        # metadata for these files. This stats are calculated offline
+        lut = {'KAPX_MS': [43.97828, 45.83322, -86.03121, -83.3946], \
+               'KBRO_HS': [24.97985, 26.84472, -98.44991, -96.36781], \
+               'KFWS_HS': [31.63203, 33.51094, -98.44468, -96.17033], \
+               'KILN_MS': [38.50105, 40.33742, -85.03599, -82.61572], \
+               'KINX_HS': [35.24335, 37.12228, -96.76854, -94.38538], \
+               'KMQT_HS': [45.58255, 47.49397, -88.94563, -86.16524], \
+               'KMQT_MS': [45.61153, 47.44971, -88.91314, -86.18689], \
+               'KTBW_MS': [26.78414, 28.62319, -83.45336, -81.33512], \
+               'PAIH_HS': [58.43881, 61.54339, -149.3945, -143.3543]}
+        tkn = file_path.split('/')[-1].split('.')
+        key = f"{tkn[1]}_{tkn[6]}"
+        
+        return lut[key]
 
     def get_variables_min_max(self, nc, file_path):
         """
@@ -116,7 +140,7 @@ class ExtractGpmvnMetadata(ExtractNetCDFMetadata):
 
 if __name__ == '__main__':
     print('Extracting Gpmvn Metadata')
-    path_to_file = "../../test/fixtures/GRtoDPR.DARW.140428.925.V06A.DPR.HS.1_21.nc.gz"
+    path_to_file = "../../test/fixtures/GRtoDPR.KMQT.150804.8127.V06A.DPR.MS.1_21.nc.gz"
     exnet = ExtractGpmvnMetadata(path_to_file)
     metada = exnet.get_metadata("test")
     print(metada)
