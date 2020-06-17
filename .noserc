@@ -1,0 +1,7 @@
+[nosetests]
+with-xcoverage = 1
+xcoverage-file = test_results/coverage.xml
+cover-erase = 1
+with-xunit = 1
+xunit-file = test_results/nosetests.xml
+verbosity = 2
