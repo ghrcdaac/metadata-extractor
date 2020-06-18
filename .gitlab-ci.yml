@@ -11,7 +11,7 @@ IntegrationTest:
   stage: Test
   script:
     - pip install twine
-    - pip install -r requirements.txt
+    - pip install numpy==1.16.0
     - python setup.py install
     - pip install -r requirements-dev.txt
     - python setup.py sdist
