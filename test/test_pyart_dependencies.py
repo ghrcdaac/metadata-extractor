@@ -6,7 +6,7 @@ import pyart
 class TestProcessGeoER(TestCase):
     granule_name = "IMPACTS_nexrad_20200101_235815_kcle.nc"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
-    expected_list = [45.543, 37.284, -76.350, -87.370]
+    expected_list = ['45.543', '37.284', '-76.350', '-87.370']
 
     def get_nsew(self):
         """"
