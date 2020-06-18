@@ -14,8 +14,8 @@ from distutils.core import setup
 from configparser import ConfigParser
 from setuptools import find_packages
 import os
-SETUP_CFG_PATH = 'setup.cfg'
 
+SETUP_CFG_PATH = 'setup.cfg'
 # Instantiate a parser for reading setup.cfg metadata
 parser = ConfigParser()
 parser.read(SETUP_CFG_PATH)
