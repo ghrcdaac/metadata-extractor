@@ -33,3 +33,7 @@ from .process_uiucsndimpacts import ExtractUiucsndimpactsMetadata
 from .process_gpmvn import ExtractGpmvnMetadata
 from .process_noaasndimpacts import ExtractNoaasndimpactsMetadata
 from .process_kakqimpacts import ExtractKakqimpactsMetadata
+from .process_kccximpacts import ExtractKccximpactsMetadata
+from .process_kbgmimpacts import ExtractKbgmimpactsMetadata
+from .process_kboximpacts import ExtractKboximpactsMetadata
+from .process_kbufimpacts import ExtractKbufimpactsMetadata

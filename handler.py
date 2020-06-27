@@ -31,7 +31,11 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "uiucsndimpacts": mdx.ExtractUiucsndimpactsMetadata,
         "gpmvn": mdx.ExtractGpmvnMetadata,
         "noaasndimpacts": mdx.ExtractNoaasndimpactsMetadata,
-        "kakqimpacts": mdx.ExtractKakqimpactsMetadata
+        "kakqimpacts": mdx.ExtractKakqimpactsMetadata,
+        "kccximpacts": mdx.ExtractKccximpactsMetadata,
+        "kbgmimpacts": mdx.ExtractKbgmimpactsMetadata,
+        "kboximpacts": mdx.ExtractKboximpactsMetadata,
+        "kbufimpacts": mdx.ExtractKbufimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -300,7 +304,7 @@ def exclude_fetch():
     :return:
     """
     return ["tcspecmwf", "gpmwrflpvex", "relampagolma", "goesrpltavirisng", "gpmvanlpvex", "gpmikalpvex", "gpmkorlpvex", "gpmkerlpvex", "gpmkumlpvex",
-            "gpmseafluxicepop","kakqimpacts"]
+            "gpmseafluxicepop","kakqimpacts","kccximpacts","kbgmimpacts","kboximpacts","kbufimpacts"]
 
 
 def mutate_input(output_folder, input_file):
@@ -400,18 +404,18 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
   "input": [
-    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/kakqimpacts__1/IMPACTS_nexrad_20200221_200750_kakq.nc"
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/kbufimpacts__1/IMPACTS_nexrad_20200110_005704_kbuf.nc"
   ],
   "config": {
     "files_config": [
         {
             "regex": "^(.*).*\\.cmr.xml$",
-            "sampleFileName": "IMPACTS_nexrad_20200221_200750_kakq.nc.cmr.xml",
+            "sampleFileName": "IMPACTS_nexrad_20200110_005704_kbuf.nc.cmr.xml",
             "bucket": "public"
         },
         {
             "regex": "^IMPACTS_nexrad_.*(\\.nc)$",
-            "sampleFileName": "IMPACTS_nexrad_20200221_200750_kakq.nc",
+            "sampleFileName": "IMPACTS_nexrad_20200110_005704_kbuf.nc",
             "bucket": "protected"
         }
     ],
@@ -434,27 +438,27 @@ if __name__ == '__main__':
       }
     },
     "collection":{
-        "name":"kakqimpacts",
+        "name":"kbufimpacts",
         "version":"1",
-        "dataType":"kakqimpacts",
+        "dataType":"kbufimpacts",
         "process":"metadataextractor",
-        "provider_path":"kakqimpacts/fieldCampaigns/impacts/NEXRAD/KAKQ/data/",
-        "url_path":"kakqimpacts__1",
+        "provider_path":"kbufimpacts/fieldCampaigns/impacts/NEXRAD/KBUF/data/",
+        "url_path":"kbufimpacts__1",
         "duplicateHandling":"replace",
         "granuleId":"^IMPACTS_nexrad_.*\\.(nc)$",
         "granuleIdExtraction":"^((IMPACTS_nexrad_).*)",
         "reportToEms":True,
-        "sampleFileName":"IMPACTS_nexrad_20200221_200750_kakq.nc",
+        "sampleFileName":"IMPACTS_nexrad_20200110_005704_kbuf.nc",
         "files": [
                 {
                  "bucket":"public",
                  "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
-                 "sampleFileName":"IMPACTS_nexrad_20200221_200750_kakq.nc.cmr.xml"
+                 "sampleFileName":"IMPACTS_nexrad_20200110_005704_kbuf.nc.cmr.xml"
                 },
                 {
                  "bucket":"protected",
                  "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
-                 "sampleFileName":"IMPACTS_nexrad_20200221_200750_kakq.nc"
+                 "sampleFileName":"IMPACTS_nexrad_20200110_005704_kbuf.nc"
                 }
     ],
     "meta": {
