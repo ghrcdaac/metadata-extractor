@@ -108,7 +108,8 @@ def extract_ascii_metadata(ds_short_name, version, access_url, ascii_file, ascii
         "gpmkerlpvex": mdx.ExtractGpmkerlpvexMetadata,
         "gpmkumlpvex": mdx.ExtractGpmkumlpvexMetadata,
         "gpm2dc3vp": mdx.ExtractGpm2dc3vpMetadata,
-        "gpmlipiphx": mdx.ExtractGpmlipiphxASCIIMetadata
+        "gpmlipiphx": mdx.ExtractGpmlipiphxASCIIMetadata,
+        "misrepimpacts": mdx.ExtractMisrepimpactsMetadata
     }
 
     regex = ascii_vars.get('regex', '.*')
@@ -398,96 +399,77 @@ def handler(event, context):
 
 if __name__ == '__main__':
     event = {
-  "input": [
-    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/noaasndimpacts__1/IMPACTS_sounding_20200101_000000_ALB.nc"
-  ],
-  "config": {
-    "files_config": [
-        {
-            "regex": "^(.*).*\\.cmr.xml$",
-            "sampleFileName": "IMPACTS_sounding_20200101_000000_ALB.nc.cmr.xml",
-            "bucket": "public"
-        },
-        {
-            "regex": "^IMPACTS_sounding_.*(\\.nc)$",
-            "sampleFileName": "IMPACTS_sounding_20200101_000000_ALB.nc",
-            "bucket": "protected"
-        }
-    ],
-    "buckets": {
-      "protected": {
-        "type": "protected",
-        "name": "ghrcsbxw-protected"
+   "input":[
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/misrepimpacts__1/IMPACTS_sciencePlan_20200127.pdf"
+   ],
+   "config":{
+      "files_config":[
+         {
+            "bucket":"public",
+            "regex":"^IMPACTS_(.*)\\.cmr.xml$",
+            "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf.cmr.xml"
+         },
+         {
+            "bucket":"protected",
+            "regex":"^IMPACTS_(.*)\\.(pdf)$",
+            "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf"
+         }
+      ],
+      "buckets":{
+         "protected":{
+            "type":"protected",
+            "name":"ghrcsbxw-protected"
+         },
+         "internal":{
+            "type":"internal",
+            "name":"ghrcsbxw-internal"
+         },
+         "private":{
+            "type":"private",
+            "name":"ghrcsbxw-private"
+         },
+         "public":{
+            "type":"public",
+            "name":"ghrcsbxw-public"
+         }
       },
-      "internal": {
-        "type": "internal",
-        "name": "ghrcsbxw-internal"
+      "collection":{
+         "name":"misrepimpacts",
+         "version":"1",
+         "dataType":"misrepimpacts",
+         "process":"metadataextractor",
+         "provider_path":"misrepimpacts/fieldCampaigns/impacts/Mission_Reports/data/",
+         "url_path":"misrepimpacts__1",
+         "duplicateHandling":"replace",
+         "granuleId":"^IMPACTS_.*\\.(pdf)$",
+         "granuleIdExtraction":"^((IMPACTS_).*)",
+         "reportToEms":True,
+         "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf",
+         "files":[
+            {
+               "bucket":"public",
+               "regex":"^IMPACTS_(.*)\\.cmr.xml$",
+               "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf.cmr.xml"
+            },
+            {
+               "bucket":"protected",
+               "regex":"^IMPACTS_(.*)\\.(pdf)$",
+               "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf"
+            }
+         ],
+         "meta":{
+            "hyrax_processing":"false",
+            "metadata_extractor":[
+               {
+                  "regex":"^IMPACTS_(.*)\\.(pdf)$",
+                  "module":"ascii"
+               }
+            ]
+         }
       },
-      "private": {
-        "type": "private",
-        "name": "ghrcsbxw-private"
-      },
-      "public": {
-        "type": "public",
-        "name": "ghrcsbxw-public"
-      }
-    },
-    "collection":{
-        "name":"noaasndimpacts",
-        "version":"1",
-        "dataType":"noaasndimpacts",
-        "process":"metadataextractor",
-        "provider_path":"noaasndimpacts/fieldCampaigns/impacts/NOAA_soundings/data/",
-        "url_path":"noaasndimpacts__1",
-        "duplicateHandling":"replace",
-        "granuleId":"^IMPACTS_sounding_.*\\.(nc)$",
-        "granuleIdExtraction":"^((IMPACTS_sounding_).*)",
-        "reportToEms":True,
-        "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc",
-        "files": [
-                {
-                 "bucket":"public",
-                 "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
-                 "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc.cmr.xml"
-                },
-                {
-                 "bucket":"protected",
-                 "regex":"^IMPACTS_sounding_(.*).*(nc)$",
-                 "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc"
-                }
-    ],
-    "meta": {
-      "hyrax_processing": "false",
-      "metadata_extractor": [
-          {
-              "regex": "^IMPACTS_sounding_.*\\.(nc)$",
-              "module": "netcdf"
-          }
-        ]
-    },
-    "updatedAt": "1573589725859",
-    "createdAt": "1573588611401",
-  },
-  "distribution_endpoint": "https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/",
-  "messageConfig": {
-    "input": "{[$.payload.granules[*].files[*].filename]}",
-    "outputs": [
-      {
-        "source": "{{$}}",
-        "destination": "{{$.payload}}"
-      }
-    ]
-  },
-  "cumulus_config": {
-    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
-    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
-    "cumulus_context": {
-      "reingestGranule": "True",
-      "forceDuplicateOverwrite": "True"
-    }
-  }
-}
+      "distribution_endpoint":"https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/"
+   }
 }
 
     context = []
-    #task(event, context)
+    task(event, context)

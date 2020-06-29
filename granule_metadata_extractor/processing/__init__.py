@@ -32,3 +32,4 @@ from .process_gpmlipiphx_png import ExtractGpmlipiphxPNGMetadata
 from .process_uiucsndimpacts import ExtractUiucsndimpactsMetadata
 from .process_gpmvn import ExtractGpmvnMetadata
 from .process_noaasndimpacts import ExtractNoaasndimpactsMetadata
+from .process_misrepimpacts import ExtractMisrepimpactsMetadata
