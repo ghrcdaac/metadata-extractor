@@ -30,7 +30,13 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "gpmseafluxicepop": mdx.ExtractGpmseafluxicepopMetadata,
         "uiucsndimpacts": mdx.ExtractUiucsndimpactsMetadata,
         "gpmvn": mdx.ExtractGpmvnMetadata,
-        "noaasndimpacts": mdx.ExtractNoaasndimpactsMetadata
+        "noaasndimpacts": mdx.ExtractNoaasndimpactsMetadata,
+        "kakqimpacts": mdx.ExtractKakqimpactsMetadata,
+        "kccximpacts": mdx.ExtractKccximpactsMetadata,
+        "kbgmimpacts": mdx.ExtractKbgmimpactsMetadata,
+        "kboximpacts": mdx.ExtractKboximpactsMetadata,
+        "kbufimpacts": mdx.ExtractKbufimpactsMetadata,
+        "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -399,18 +405,18 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
   "input": [
-    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/noaasndimpacts__1/IMPACTS_sounding_20200101_000000_ALB.nc"
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/sbusndimpacts__1/IMPACTS_sounding_20200119_004158_SBU_Mobile.nc"
   ],
   "config": {
     "files_config": [
         {
             "regex": "^(.*).*\\.cmr.xml$",
-            "sampleFileName": "IMPACTS_sounding_20200101_000000_ALB.nc.cmr.xml",
+            "sampleFileName": "IMPACTS_sounding_20200119_004158_SBU_Mobile.nc.cmr.xml",
             "bucket": "public"
         },
         {
             "regex": "^IMPACTS_sounding_.*(\\.nc)$",
-            "sampleFileName": "IMPACTS_sounding_20200101_000000_ALB.nc",
+            "sampleFileName": "IMPACTS_sounding_20200119_004158_SBU_Mobile.nc",
             "bucket": "protected"
         }
     ],
@@ -433,27 +439,27 @@ if __name__ == '__main__':
       }
     },
     "collection":{
-        "name":"noaasndimpacts",
+        "name":"sbusndimpacts",
         "version":"1",
-        "dataType":"noaasndimpacts",
+        "dataType":"sbusndimpacts",
         "process":"metadataextractor",
-        "provider_path":"noaasndimpacts/fieldCampaigns/impacts/NOAA_soundings/data/",
-        "url_path":"noaasndimpacts__1",
+        "provider_path":"sbusndimpacts/fieldCampaigns/impacts/SBU_Mobile_Soundings/data/",
+        "url_path":"sbusndimpacts__1",
         "duplicateHandling":"replace",
         "granuleId":"^IMPACTS_sounding_.*\\.(nc)$",
         "granuleIdExtraction":"^((IMPACTS_sounding_).*)",
         "reportToEms":True,
-        "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc",
+        "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc",
         "files": [
                 {
                  "bucket":"public",
                  "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
-                 "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc.cmr.xml"
+                 "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc.cmr.xml"
                 },
                 {
                  "bucket":"protected",
                  "regex":"^IMPACTS_sounding_(.*).*(nc)$",
-                 "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc"
+                 "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc"
                 }
     ],
     "meta": {
@@ -490,4 +496,4 @@ if __name__ == '__main__':
 }
 
     context = []
-    #task(event, context)
+    task(event, context)
