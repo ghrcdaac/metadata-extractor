@@ -27,14 +27,13 @@ class ExtractMisrepimpactsMetadata(ExtractASCIIMetadata):
         :return:
         """
 
-        self.start_time = datetime.strptime(re.search('^IMPACTS_.*_(.*).pdf$', self.file_name)[1],
-                                            '%Y%m%d')
-        self.end_time = self.start_time + timedelta(days=1) - timedelta(seconds=1)
+        self.start_time = datetime(2020, 1, 17)
+        self.end_time = datetime(2020, 3, 1)
 
-        self.north = 49.0
-        self.south = 36.58
-        self.east = -66.88
-        self.west = -97.21
+        self.north = 45.
+        self.south = 35.
+        self.east = -81.
+        self.west = -66.
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
