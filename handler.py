@@ -30,7 +30,8 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "gpmseafluxicepop": mdx.ExtractGpmseafluxicepopMetadata,
         "uiucsndimpacts": mdx.ExtractUiucsndimpactsMetadata,
         "gpmvn": mdx.ExtractGpmvnMetadata,
-        "noaasndimpacts": mdx.ExtractNoaasndimpactsMetadata
+        "noaasndimpacts": mdx.ExtractNoaasndimpactsMetadata,
+        "kakqimpacts": mdx.ExtractKakqimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -299,7 +300,7 @@ def exclude_fetch():
     :return:
     """
     return ["tcspecmwf", "gpmwrflpvex", "relampagolma", "goesrpltavirisng", "gpmvanlpvex", "gpmikalpvex", "gpmkorlpvex", "gpmkerlpvex", "gpmkumlpvex",
-            "gpmseafluxicepop"]
+            "gpmseafluxicepop","kakqimpacts"]
 
 
 def mutate_input(output_folder, input_file):
@@ -399,18 +400,18 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
   "input": [
-    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/noaasndimpacts__1/IMPACTS_sounding_20200101_000000_ALB.nc"
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/kakqimpacts__1/IMPACTS_nexrad_20200221_200750_kakq.nc"
   ],
   "config": {
     "files_config": [
         {
             "regex": "^(.*).*\\.cmr.xml$",
-            "sampleFileName": "IMPACTS_sounding_20200101_000000_ALB.nc.cmr.xml",
+            "sampleFileName": "IMPACTS_nexrad_20200221_200750_kakq.nc.cmr.xml",
             "bucket": "public"
         },
         {
-            "regex": "^IMPACTS_sounding_.*(\\.nc)$",
-            "sampleFileName": "IMPACTS_sounding_20200101_000000_ALB.nc",
+            "regex": "^IMPACTS_nexrad_.*(\\.nc)$",
+            "sampleFileName": "IMPACTS_nexrad_20200221_200750_kakq.nc",
             "bucket": "protected"
         }
     ],
@@ -433,34 +434,34 @@ if __name__ == '__main__':
       }
     },
     "collection":{
-        "name":"noaasndimpacts",
+        "name":"kakqimpacts",
         "version":"1",
-        "dataType":"noaasndimpacts",
+        "dataType":"kakqimpacts",
         "process":"metadataextractor",
-        "provider_path":"noaasndimpacts/fieldCampaigns/impacts/NOAA_soundings/data/",
-        "url_path":"noaasndimpacts__1",
+        "provider_path":"kakqimpacts/fieldCampaigns/impacts/NEXRAD/KAKQ/data/",
+        "url_path":"kakqimpacts__1",
         "duplicateHandling":"replace",
-        "granuleId":"^IMPACTS_sounding_.*\\.(nc)$",
-        "granuleIdExtraction":"^((IMPACTS_sounding_).*)",
+        "granuleId":"^IMPACTS_nexrad_.*\\.(nc)$",
+        "granuleIdExtraction":"^((IMPACTS_nexrad_).*)",
         "reportToEms":True,
-        "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc",
+        "sampleFileName":"IMPACTS_nexrad_20200221_200750_kakq.nc",
         "files": [
                 {
                  "bucket":"public",
-                 "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
-                 "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc.cmr.xml"
+                 "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
+                 "sampleFileName":"IMPACTS_nexrad_20200221_200750_kakq.nc.cmr.xml"
                 },
                 {
                  "bucket":"protected",
-                 "regex":"^IMPACTS_sounding_(.*).*(nc)$",
-                 "sampleFileName":"IMPACTS_sounding_20200101_000000_ALB.nc"
+                 "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
+                 "sampleFileName":"IMPACTS_nexrad_20200221_200750_kakq.nc"
                 }
     ],
     "meta": {
       "hyrax_processing": "false",
       "metadata_extractor": [
           {
-              "regex": "^IMPACTS_sounding_.*\\.(nc)$",
+              "regex": "^IMPACTS_nexrad_.*\\.(nc)$",
               "module": "netcdf"
           }
         ]
@@ -490,4 +491,4 @@ if __name__ == '__main__':
 }
 
     context = []
-    #task(event, context)
+    task(event, context)

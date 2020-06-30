@@ -16,3 +16,4 @@ include granule_metadata_extractor/src/helpers/gpmkumlpvexRefData.json
 include granule_metadata_extractor/src/helpers/gpmseafluxicepopRefData.json
 include granule_metadata_extractor/src/helpers/gpmlipiphxRefData.json
 include granule_metadata_extractor/src/helpers/noaasndimpactsRefData.json
+include granule_metadata_extractor/src/helpers/kakqimpactsRefData.json
