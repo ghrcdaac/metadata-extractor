@@ -32,4 +32,13 @@ from .process_gpmlipiphx_png import ExtractGpmlipiphxPNGMetadata
 from .process_uiucsndimpacts import ExtractUiucsndimpactsMetadata
 from .process_gpmvn import ExtractGpmvnMetadata
 from .process_noaasndimpacts import ExtractNoaasndimpactsMetadata
+<<<<<<< HEAD
 from .process_misrepimpacts import ExtractMisrepimpactsMetadata
+=======
+from .process_kakqimpacts import ExtractKakqimpactsMetadata
+from .process_kccximpacts import ExtractKccximpactsMetadata
+from .process_kbgmimpacts import ExtractKbgmimpactsMetadata
+from .process_kboximpacts import ExtractKboximpactsMetadata
+from .process_kbufimpacts import ExtractKbufimpactsMetadata
+from .process_sbusndimpacts import ExtractSbusndimpactsMetadata
+>>>>>>> b1021f67c2892ec18af71a6d4054cf167af81dd6
