@@ -37,3 +37,4 @@ from .process_kccximpacts import ExtractKccximpactsMetadata
 from .process_kbgmimpacts import ExtractKbgmimpactsMetadata
 from .process_kboximpacts import ExtractKboximpactsMetadata
 from .process_kbufimpacts import ExtractKbufimpactsMetadata
+from .process_sbusndimpacts import ExtractSbusndimpactsMetadata

@@ -35,7 +35,8 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "kccximpacts": mdx.ExtractKccximpactsMetadata,
         "kbgmimpacts": mdx.ExtractKbgmimpactsMetadata,
         "kboximpacts": mdx.ExtractKboximpactsMetadata,
-        "kbufimpacts": mdx.ExtractKbufimpactsMetadata
+        "kbufimpacts": mdx.ExtractKbufimpactsMetadata,
+        "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -404,18 +405,18 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
   "input": [
-    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/kbufimpacts__1/IMPACTS_nexrad_20200110_005704_kbuf.nc"
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/sbusndimpacts__1/IMPACTS_sounding_20200119_004158_SBU_Mobile.nc"
   ],
   "config": {
     "files_config": [
         {
             "regex": "^(.*).*\\.cmr.xml$",
-            "sampleFileName": "IMPACTS_nexrad_20200110_005704_kbuf.nc.cmr.xml",
+            "sampleFileName": "IMPACTS_sounding_20200119_004158_SBU_Mobile.nc.cmr.xml",
             "bucket": "public"
         },
         {
-            "regex": "^IMPACTS_nexrad_.*(\\.nc)$",
-            "sampleFileName": "IMPACTS_nexrad_20200110_005704_kbuf.nc",
+            "regex": "^IMPACTS_sounding_.*(\\.nc)$",
+            "sampleFileName": "IMPACTS_sounding_20200119_004158_SBU_Mobile.nc",
             "bucket": "protected"
         }
     ],
@@ -438,34 +439,34 @@ if __name__ == '__main__':
       }
     },
     "collection":{
-        "name":"kbufimpacts",
+        "name":"sbusndimpacts",
         "version":"1",
-        "dataType":"kbufimpacts",
+        "dataType":"sbusndimpacts",
         "process":"metadataextractor",
-        "provider_path":"kbufimpacts/fieldCampaigns/impacts/NEXRAD/KBUF/data/",
-        "url_path":"kbufimpacts__1",
+        "provider_path":"sbusndimpacts/fieldCampaigns/impacts/SBU_Mobile_Soundings/data/",
+        "url_path":"sbusndimpacts__1",
         "duplicateHandling":"replace",
-        "granuleId":"^IMPACTS_nexrad_.*\\.(nc)$",
-        "granuleIdExtraction":"^((IMPACTS_nexrad_).*)",
+        "granuleId":"^IMPACTS_sounding_.*\\.(nc)$",
+        "granuleIdExtraction":"^((IMPACTS_sounding_).*)",
         "reportToEms":True,
-        "sampleFileName":"IMPACTS_nexrad_20200110_005704_kbuf.nc",
+        "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc",
         "files": [
                 {
                  "bucket":"public",
-                 "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
-                 "sampleFileName":"IMPACTS_nexrad_20200110_005704_kbuf.nc.cmr.xml"
+                 "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
+                 "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc.cmr.xml"
                 },
                 {
                  "bucket":"protected",
-                 "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
-                 "sampleFileName":"IMPACTS_nexrad_20200110_005704_kbuf.nc"
+                 "regex":"^IMPACTS_sounding_(.*).*(nc)$",
+                 "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc"
                 }
     ],
     "meta": {
       "hyrax_processing": "false",
       "metadata_extractor": [
           {
-              "regex": "^IMPACTS_nexrad_.*\\.(nc)$",
+              "regex": "^IMPACTS_sounding_.*\\.(nc)$",
               "module": "netcdf"
           }
         ]
