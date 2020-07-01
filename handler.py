@@ -305,7 +305,7 @@ def exclude_fetch():
     :return:
     """
     return ["tcspecmwf", "gpmwrflpvex", "relampagolma", "goesrpltavirisng", "gpmvanlpvex", "gpmikalpvex", "gpmkorlpvex", "gpmkerlpvex", "gpmkumlpvex",
-            "gpmseafluxicepop"]
+            "gpmseafluxicepop","kakqimpacts","kccximpacts","kbgmimpacts","kboximpacts","kbufimpacts"]
 
 
 def mutate_input(output_folder, input_file):
