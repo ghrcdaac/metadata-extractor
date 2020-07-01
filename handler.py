@@ -405,7 +405,6 @@ def handler(event, context):
 
 if __name__ == '__main__':
     event = {
-<<<<<<< HEAD
    "input":[
       "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/misrepimpacts__1/IMPACTS_sciencePlan_20200127.pdf"
    ],
@@ -439,32 +438,6 @@ if __name__ == '__main__':
             "type":"public",
             "name":"ghrcsbxw-public"
          }
-=======
-  "input": [
-    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/sbusndimpacts__1/IMPACTS_sounding_20200119_004158_SBU_Mobile.nc"
-  ],
-  "config": {
-    "files_config": [
-        {
-            "regex": "^(.*).*\\.cmr.xml$",
-            "sampleFileName": "IMPACTS_sounding_20200119_004158_SBU_Mobile.nc.cmr.xml",
-            "bucket": "public"
-        },
-        {
-            "regex": "^IMPACTS_sounding_.*(\\.nc)$",
-            "sampleFileName": "IMPACTS_sounding_20200119_004158_SBU_Mobile.nc",
-            "bucket": "protected"
-        }
-    ],
-    "buckets": {
-      "protected": {
-        "type": "protected",
-        "name": "ghrcsbxw-protected"
-      },
-      "internal": {
-        "type": "internal",
-        "name": "ghrcsbxw-internal"
->>>>>>> b1021f67c2892ec18af71a6d4054cf167af81dd6
       },
       "collection":{
          "name":"misrepimpacts",
@@ -500,71 +473,8 @@ if __name__ == '__main__':
             ]
          }
       },
-<<<<<<< HEAD
       "distribution_endpoint":"https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/"
    }
-=======
-      "public": {
-        "type": "public",
-        "name": "ghrcsbxw-public"
-      }
-    },
-    "collection":{
-        "name":"sbusndimpacts",
-        "version":"1",
-        "dataType":"sbusndimpacts",
-        "process":"metadataextractor",
-        "provider_path":"sbusndimpacts/fieldCampaigns/impacts/SBU_Mobile_Soundings/data/",
-        "url_path":"sbusndimpacts__1",
-        "duplicateHandling":"replace",
-        "granuleId":"^IMPACTS_sounding_.*\\.(nc)$",
-        "granuleIdExtraction":"^((IMPACTS_sounding_).*)",
-        "reportToEms":True,
-        "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc",
-        "files": [
-                {
-                 "bucket":"public",
-                 "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
-                 "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc.cmr.xml"
-                },
-                {
-                 "bucket":"protected",
-                 "regex":"^IMPACTS_sounding_(.*).*(nc)$",
-                 "sampleFileName":"IMPACTS_sounding_20200119_004158_SBU_Mobile.nc"
-                }
-    ],
-    "meta": {
-      "hyrax_processing": "false",
-      "metadata_extractor": [
-          {
-              "regex": "^IMPACTS_sounding_.*\\.(nc)$",
-              "module": "netcdf"
-          }
-        ]
-    },
-    "updatedAt": "1573589725859",
-    "createdAt": "1573588611401",
-  },
-  "distribution_endpoint": "https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/",
-  "messageConfig": {
-    "input": "{[$.payload.granules[*].files[*].filename]}",
-    "outputs": [
-      {
-        "source": "{{$}}",
-        "destination": "{{$.payload}}"
-      }
-    ]
-  },
-  "cumulus_config": {
-    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
-    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
-    "cumulus_context": {
-      "reingestGranule": "True",
-      "forceDuplicateOverwrite": "True"
-    }
-  }
-}
->>>>>>> b1021f67c2892ec18af71a6d4054cf167af81dd6
 }
 
     context = []
