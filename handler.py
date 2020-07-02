@@ -36,7 +36,9 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "kbgmimpacts": mdx.ExtractKbgmimpactsMetadata,
         "kboximpacts": mdx.ExtractKboximpactsMetadata,
         "kbufimpacts": mdx.ExtractKbufimpactsMetadata,
-        "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata
+        "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata,
+        "nexeastimpacts": mdx.ExtractNexeastimpactsMetadata,
+        "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -406,19 +408,19 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/misrepimpacts__1/IMPACTS_sciencePlan_20200127.pdf"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/nexmidwstimpacts__1/IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^IMPACTS_(.*)\\.cmr.xml$",
-            "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf.cmr.xml"
+            "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
+            "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^IMPACTS_(.*)\\.(pdf)$",
-            "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf"
+            "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
+            "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc"
          }
       ],
       "buckets":{
@@ -440,35 +442,35 @@ if __name__ == '__main__':
          }
       },
       "collection":{
-         "name":"misrepimpacts",
+         "name":"nexmidwstimpacts",
          "version":"1",
-         "dataType":"misrepimpacts",
+         "dataType":"nexmidwstimpacts",
          "process":"metadataextractor",
-         "provider_path":"misrepimpacts/fieldCampaigns/impacts/Mission_Reports/data/",
-         "url_path":"misrepimpacts__1",
-         "duplicateHandling":"replace",
-         "granuleId":"^IMPACTS_.*\\.(pdf)$",
-         "granuleIdExtraction":"^((IMPACTS_).*)",
+         "url_path":"nexmidwstimpacts__1",
+         "duplicateHandling":"skip",
+         "granuleId":"^IMPACTS_nexrad_.*.(nc)$",
+         "granuleIdExtraction":"^((IMPACTS_nexrad_).*)",
          "reportToEms":True,
-         "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf",
+         "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc",
          "files":[
             {
                "bucket":"public",
-               "regex":"^IMPACTS_(.*)\\.cmr.xml$",
-               "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf.cmr.xml"
+               "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
+               "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc.cmr.xml"
             },
             {
                "bucket":"protected",
-               "regex":"^IMPACTS_(.*)\\.(pdf)$",
-               "sampleFileName":"IMPACTS_scienceSummary_20200201.pdf"
+               "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
+               "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc"
             }
          ],
          "meta":{
+            "provider_path":"nexmidwstimpacts/fieldCampaigns/impacts/NEXRAD/Mosaic_Midwest/data/",
             "hyrax_processing":"false",
             "metadata_extractor":[
                {
-                  "regex":"^IMPACTS_(.*)\\.(pdf)$",
-                  "module":"ascii"
+                  "regex":"^IMPACTS_nexrad_(.*)\\.(nc)$",
+                  "module":"netcdf"
                }
             ]
          }

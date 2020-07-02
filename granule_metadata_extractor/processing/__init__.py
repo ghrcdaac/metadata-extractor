@@ -39,3 +39,5 @@ from .process_kboximpacts import ExtractKboximpactsMetadata
 from .process_kbufimpacts import ExtractKbufimpactsMetadata
 from .process_sbusndimpacts import ExtractSbusndimpactsMetadata
 from .process_misrepimpacts import ExtractMisrepimpactsMetadata
+from .process_nexeastimpacts import ExtractNexeastimpactsMetadata
+from .process_nexmidwstimpacts import ExtractNexmidwstimpactsMetadata
