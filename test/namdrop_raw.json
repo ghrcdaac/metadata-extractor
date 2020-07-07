@@ -56,7 +56,7 @@
             }
          ],
          "meta":{
-            "provider_path":"/namdrop_raw/fieldCampaigns/namma/Dropsonde_Raw/data/",
+            "provider_path":"namdrop_raw/fieldCampaigns/namma/Dropsonde_Raw/data/",
             "hyrax_processing":"false",
             "metadata_extractor":[
                {
