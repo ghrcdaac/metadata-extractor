@@ -41,3 +41,4 @@ from .process_sbusndimpacts import ExtractSbusndimpactsMetadata
 from .process_misrepimpacts import ExtractMisrepimpactsMetadata
 from .process_nexeastimpacts import ExtractNexeastimpactsMetadata
 from .process_nexmidwstimpacts import ExtractNexmidwstimpactsMetadata
+from .process_2dimpacts import Extract2dimpactsMetadata
