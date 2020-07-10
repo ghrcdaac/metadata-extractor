@@ -117,7 +117,8 @@ def extract_ascii_metadata(ds_short_name, version, access_url, ascii_file, ascii
         "gpmkumlpvex": mdx.ExtractGpmkumlpvexMetadata,
         "gpm2dc3vp": mdx.ExtractGpm2dc3vpMetadata,
         "gpmlipiphx": mdx.ExtractGpmlipiphxASCIIMetadata,
-        "misrepimpacts": mdx.ExtractMisrepimpactsMetadata
+        "misrepimpacts": mdx.ExtractMisrepimpactsMetadata,
+        "2dimpacts": mdx.Extract2dimpactsMetadata
     }
 
     regex = ascii_vars.get('regex', '.*')
@@ -408,19 +409,19 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/nexmidwstimpacts__1/IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/2dimpacts__1/impacts_2dvd_sn25_raintotalhour.txt"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
-            "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc.cmr.xml"
+            "regex":"^impacts_2dvd_(.*).*\\.cmr.xml$",
+            "sampleFileName":"impacts_2dvd_sn37_raindsd.txt.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
-            "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc"
+            "regex":"^impacts_2dvd_(.*).*(txt)$",
+            "sampleFileName":"impacts_2dvd_sn37_raindsd.txt"
          }
       ],
       "buckets":{
@@ -442,40 +443,40 @@ if __name__ == '__main__':
          }
       },
       "collection":{
-         "name":"nexmidwstimpacts",
+         "name":"2dimpacts",
          "version":"1",
-         "dataType":"nexmidwstimpacts",
+         "dataType":"2dimpacts",
          "process":"metadataextractor",
-         "url_path":"nexmidwstimpacts__1",
-         "duplicateHandling":"skip",
-         "granuleId":"^IMPACTS_nexrad_.*.(nc)$",
-         "granuleIdExtraction":"^((IMPACTS_nexrad_).*)",
-         "reportToEms":True,
-         "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc",
-         "files":[
-            {
-               "bucket":"public",
-               "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
-               "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc.cmr.xml"
-            },
-            {
-               "bucket":"protected",
-               "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
-               "sampleFileName":"IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc"
-            }
-         ],
+         "url_path":"2dimpacts__1",
+         "duplicateHandling":"replace",
+         "granuleId":"^impacts_2dvd_.*\\.(txt)$",
+         "granuleIdExtraction":"^((impacts_2dvd_).*)",
+         "reportToEms": True,
+         "sampleFileName":"impacts_2dvd_sn37_raindsd.txt",
          "meta":{
-            "provider_path":"nexmidwstimpacts/fieldCampaigns/impacts/NEXRAD/Mosaic_Midwest/data/",
+            "provider_path":"2dimpacts/fieldCampaigns/impacts/2DVD/data/",
             "hyrax_processing":"false",
             "metadata_extractor":[
                {
-                  "regex":"^IMPACTS_nexrad_(.*)\\.(nc)$",
-                  "module":"netcdf"
+                  "regex":"^(.*).*\\.(txt)$",
+                  "module":"ascii"
                }
             ]
-         }
+         },
+         "files":[
+            {
+               "bucket":"public",
+               "regex":"^impacts_2dvd_(.*).*\\.cmr.xml$",
+               "sampleFileName":"impacts_2dvd_sn37_raindsd.txt.cmr.xml"
+            },
+            {
+               "bucket":"protected",
+               "regex":"^impacts_2dvd_(.*).*(txt)$",
+               "sampleFileName":"impacts_2dvd_sn37_raindsd.txt"
+            }
+         ]
       },
-      "distribution_endpoint":"https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/"
+   "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
    }
 }
 

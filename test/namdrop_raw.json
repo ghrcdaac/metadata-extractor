@@ -41,7 +41,7 @@
          "duplicateHandling":"replace",
          "granuleId":"^.*$",
          "granuleIdExtraction":"NAMMA_DROP_(.*).*\\.(dat)$",
-         "reportToEms":True,
+         "reportToEms":true,
          "sampleFileName":"NAMMA_DROP_20060807_193132_P.dat",
          "files":[
             {
