@@ -94,6 +94,10 @@ class Extract2dimpactsMetadata(ExtractASCIIMetadata):
                                                             self.loc[stn_id][1] + 0.01,
                                                             self.loc[stn_id][1] - 0.01]
 
+        if self.start_time == datetime(2100, 1, 1) or self.end_time == datetime(1900, 1, 1):
+            self.start_time = datetime.strptime('2020-01-15T01:37:06Z', '%Y-%m-%dT%H:%M:%SZ')
+            self.end_time = datetime.strptime('2020-02-28T20:41:44Z', '%Y-%m-%dT%H:%M:%SZ')
+
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
         Extract the geometry from a netCDF file
