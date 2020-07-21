@@ -118,7 +118,8 @@ def extract_ascii_metadata(ds_short_name, version, access_url, ascii_file, ascii
         "gpm2dc3vp": mdx.ExtractGpm2dc3vpMetadata,
         "gpmlipiphx": mdx.ExtractGpmlipiphxASCIIMetadata,
         "misrepimpacts": mdx.ExtractMisrepimpactsMetadata,
-        "2dimpacts": mdx.Extract2dimpactsMetadata
+        "2dimpacts": mdx.Extract2dimpactsMetadata,
+        "apuimpacts": mdx.ExtractApuimpactsMetadata
     }
 
     regex = ascii_vars.get('regex', '.*')
@@ -409,19 +410,19 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/2dimpacts__1/impacts_2dvd_sn25_raintotalhour.txt"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/apuimpacts__1/impacts_apu01_rainparameter_min.txt"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^impacts_2dvd_(.*).*\\.cmr.xml$",
-            "sampleFileName":"impacts_2dvd_sn37_raindsd.txt.cmr.xml"
+            "regex":"^impacts_apu(.*).*\\.cmr.xml$",
+            "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^impacts_2dvd_(.*).*(txt)$",
-            "sampleFileName":"impacts_2dvd_sn37_raindsd.txt"
+            "regex":"^^impacts_apu(.*).*(txt)$",
+            "sampleFileName":"impacts_apu01_rainparameter_min.txt"
          }
       ],
       "buckets":{
@@ -443,18 +444,18 @@ if __name__ == '__main__':
          }
       },
       "collection":{
-         "name":"2dimpacts",
+         "name":"apuimpacts",
          "version":"1",
-         "dataType":"2dimpacts",
+         "dataType":"apuimpacts",
          "process":"metadataextractor",
-         "url_path":"2dimpacts__1",
+         "url_path":"apuimpacts__1",
          "duplicateHandling":"replace",
-         "granuleId":"^impacts_2dvd_.*\\.(txt)$",
-         "granuleIdExtraction":"^((impacts_2dvd_).*)",
+         "granuleId":"^impacts_apu.*\\.(txt)$",
+         "granuleIdExtraction":"^((impacts_apu).*)",
          "reportToEms": True,
-         "sampleFileName":"impacts_2dvd_sn37_raindsd.txt",
+         "sampleFileName":"impacts_apu01_rainparameter_min.txt",
          "meta":{
-            "provider_path":"2dimpacts/fieldCampaigns/impacts/2DVD/data/",
+            "provider_path":"apuimpacts/fieldCampaigns/impacts/APU/data/",
             "hyrax_processing":"false",
             "metadata_extractor":[
                {
@@ -466,13 +467,13 @@ if __name__ == '__main__':
          "files":[
             {
                "bucket":"public",
-               "regex":"^impacts_2dvd_(.*).*\\.cmr.xml$",
-               "sampleFileName":"impacts_2dvd_sn37_raindsd.txt.cmr.xml"
+               "regex":"^impacts_apu(.*).*\\.cmr.xml$",
+               "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
             },
             {
                "bucket":"protected",
-               "regex":"^impacts_2dvd_(.*).*(txt)$",
-               "sampleFileName":"impacts_2dvd_sn37_raindsd.txt"
+               "regex":"^impacts_apu(.*).*(txt)$",
+               "sampleFileName":"impacts_apu01_rainparameter_min.txt"
             }
          ]
       },
