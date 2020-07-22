@@ -1,11 +1,11 @@
-FROM centos:8
+FROM    centos:8
 
-RUN mkdir -p /usr/local/bin
-RUN export PATH=$PATH:/usr/local/bin
+RUN     mkdir -p /usr/local/bin
+RUN     export PATH=$PATH:/usr/local/bin
 
 WORKDIR /build
 
-ENV BUILD=/build
+ENV     BUILD=/build
 
 COPY    __init__.py                     $BUILD/
 COPY    requirements.txt                $BUILD/
