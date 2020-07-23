@@ -101,8 +101,12 @@ class ExtractApuimpactsMetadata(ExtractASCIIMetadata):
         """
         for line in self.file_lines:
             tkn = line.split()
-            st_dtstr = f"{tkn[0].decode('utf-8')}0101T{tkn[2].decode('utf-8')}"
-            end_dtstr = f"{tkn[0].decode('utf-8')}0101T{tkn[4].decode('utf-8')}"
+            if type(tkn[0]) is bytes:
+                st_dtstr = f"{tkn[0].decode('utf-8')}0101T{tkn[2].decode('utf-8')}"
+                end_dtstr = f"{tkn[0].decode('utf-8')}0101T{tkn[4].decode('utf-8')}"
+            else:
+                st_dtstr = f"{tkn[0]}0101T{tkn[2]}"
+                end_dtstr = f"{tkn[0]}0101T{tkn[4]}"
             st_dt = datetime.strptime(st_dtstr, '%Y%m%dT%H:%M') + \
                  timedelta(days=int(tkn[1])-1)
             end_dt = datetime.strptime(end_dtstr, '%Y%m%dT%H:%M') + \
