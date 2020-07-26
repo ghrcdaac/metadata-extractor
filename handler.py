@@ -38,7 +38,8 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "kbufimpacts": mdx.ExtractKbufimpactsMetadata,
         "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata,
         "nexeastimpacts": mdx.ExtractNexeastimpactsMetadata,
-        "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata
+        "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata,
+        "amsua15sp": mdx.ExtractAMSUAMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -339,7 +340,8 @@ def task(event, context, temp_path=None):
     config['fileStagingDir'] = config.get('fileStagingDir', f"{collection_name}__{collection['version']}").strip('/')
     key = 'input_key'
     buckets = config['buckets']
-    config['input_keys'] = {key: r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx)$'}
+    config['input_keys'] = {key: r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx'
+                                 r'|eos)$'}
     process = Process(input=input, config=config, path=temp_path)
     # Replace the upload_file function
     process.upload_file = types.MethodType(upload_file, process)
@@ -410,19 +412,19 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/apuimpacts__1/impacts_apu01_rainparameter_min.txt"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/amsua15sp__1/amsua15_2020.205_15437_1048_1231_WI.nc"
    ],
    "config":{
       "files_config":[
          {
-            "bucket":"public",
-            "regex":"^impacts_apu(.*).*\\.cmr.xml$",
-            "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
+            "regex":"^(.*).*\\.cmr.xml$",
+            "sampleFileName":"amsua15_2020.205_15437_1048_1231_WI.nc.cmr.xml",
+            "bucket":"public"
          },
          {
-            "bucket":"protected",
-            "regex":"^^impacts_apu(.*).*(txt)$",
-            "sampleFileName":"impacts_apu01_rainparameter_min.txt"
+            "regex":"^(.*).*\\.(nc|eos)$",
+            "sampleFileName":"amsua15_2020.205_15437_1048_1231_WI.nc",
+            "bucket":"protected"
          }
       ],
       "buckets":{
@@ -444,40 +446,44 @@ if __name__ == '__main__':
          }
       },
       "collection":{
-         "name":"apuimpacts",
+         "name":"amsua15sp",
          "version":"1",
-         "dataType":"apuimpacts",
-         "process":"metadataextractor",
-         "url_path":"apuimpacts__1",
+         "dataType":"amsua15sp",
+         "process":"amsu",
+         "url_path":"amsua15sp__1",
          "duplicateHandling":"replace",
-         "granuleId":"^impacts_apu.*\\.(txt)$",
-         "granuleIdExtraction":"^((impacts_apu).*)",
-         "reportToEms": True,
-         "sampleFileName":"impacts_apu01_rainparameter_min.txt",
+         "granuleId":"^(NK|amsu).*\\.(lc|nc|eos)$",
+         "granuleIdExtraction":"^((NK|amsu).*\\.(lc|nc|eos))",
+         "sampleFileName":"NK.D17290.S1624.E1727.B0104747.GC.lc",
+         "files":[
+            {
+               "bucket":"protected",
+               "regex":"^(amsu).*\\.(nc|eos)$",
+               "sampleFileName":"amsua15_2017.291_01057_0919_1109_WI.nc"
+            },
+            {
+               "bucket":"public",
+               "regex":"^(amsu).*(\\.eos\\.cmr|\\.nc\\.cmr)\\.xml$",
+               "sampleFileName":"amsua16_2009.211_45643_1417_1611_GC.eos.cmr.xml"
+            },
+            {
+               "bucket":"private",
+               "regex":"^(NK).*\\.lc$",
+               "sampleFileName":"NK.D17290.S1624.E1727.B0104747.GC.lc"
+            }
+         ],
          "meta":{
-            "provider_path":"apuimpacts/fieldCampaigns/impacts/APU/data/",
+            "provider_path":"/data/",
             "hyrax_processing":"false",
             "metadata_extractor":[
                {
-                  "regex":"^(.*).*\\.(txt)$",
-                  "module":"ascii"
+                  "regex":"^(.*)\\.(nc|eos)$",
+                  "module":"netcdf"
                }
             ]
-         },
-         "files":[
-            {
-               "bucket":"public",
-               "regex":"^impacts_apu(.*).*\\.cmr.xml$",
-               "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
-            },
-            {
-               "bucket":"protected",
-               "regex":"^impacts_apu(.*).*(txt)$",
-               "sampleFileName":"impacts_apu01_rainparameter_min.txt"
-            }
-         ]
+         }
       },
-   "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
+      "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
    }
 }
 
