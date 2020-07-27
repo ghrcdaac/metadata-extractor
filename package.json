@@ -7,9 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "install-package": "python3 setup.py install --user --prefix=",
-    "test": "npm run install-package && pytest --junitxml=../../../../test_reports/test_granule_metadata_extractor.xml test",
-    "build": "bash ../../build_python_tasks.sh"
+    "test": "echo tests needs to be updated",
+    "create-ecr": "aws ecr create-repository --repository-name mdx --profile $AWS_PROFILE --region ${AWS_REGION}",
+    "build-docker": "docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mdx .",
+    "login-ecr": "LOGIN=$(aws ecr get-login --no-include-email --region ${AWS_REGION} --profile $AWS_PROFILE); $LOGIN",
+    "push-docker": "npm run create-ecr; npm run login-ecr; docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mdx",
+    "build-push-docker": "npm run build-docker && npm run push-docker"
   },
   "repository": {
     "type": "git",
