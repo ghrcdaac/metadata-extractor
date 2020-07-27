@@ -38,7 +38,8 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "kbufimpacts": mdx.ExtractKbufimpactsMetadata,
         "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata,
         "nexeastimpacts": mdx.ExtractNexeastimpactsMetadata,
-        "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata
+        "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata,
+        "ncsusndimpacts": mdx.ExtractNcsusndimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -410,19 +411,19 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/apuimpacts__1/impacts_apu01_rainparameter_min.txt"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/ncsusndimpacts__1/IMPACTS_sounding_20200220_1649_NCSU.nc"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^impacts_apu(.*).*\\.cmr.xml$",
-            "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
+            "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
+            "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^^impacts_apu(.*).*(txt)$",
-            "sampleFileName":"impacts_apu01_rainparameter_min.txt"
+            "regex":"^IMPACTS_sounding_(.*).*(nc)$",
+            "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc"
          }
       ],
       "buckets":{
@@ -444,40 +445,40 @@ if __name__ == '__main__':
          }
       },
       "collection":{
-         "name":"apuimpacts",
-         "version":"1",
-         "dataType":"apuimpacts",
-         "process":"metadataextractor",
-         "url_path":"apuimpacts__1",
-         "duplicateHandling":"replace",
-         "granuleId":"^impacts_apu.*\\.(txt)$",
-         "granuleIdExtraction":"^((impacts_apu).*)",
-         "reportToEms": True,
-         "sampleFileName":"impacts_apu01_rainparameter_min.txt",
-         "meta":{
-            "provider_path":"apuimpacts/fieldCampaigns/impacts/APU/data/",
-            "hyrax_processing":"false",
-            "metadata_extractor":[
+       "name":"ncsusndimpacts",
+       "version":"1",
+       "dataType":"ncsusndimpacts",
+       "process":"metadataextractor",
+       "url_path":"ncsusndimpacts__1",
+       "duplicateHandling":"replace",
+       "granuleId":"^IMPACTS_sounding_.*\\.(nc)$",
+       "granuleIdExtraction":"^((IMPACTS_sounding_).*)",
+       "reportToEms":True,
+       "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc",
+       "meta":{ 
+          "provider_path":"ncsusndimpacts/fieldCampaigns/impacts/NCSU_soundings/data/",
+           "hyrax_processing":"false",
+           "metadata_extractor":[
                {
-                  "regex":"^(.*).*\\.(txt)$",
-                  "module":"ascii"
+                  "regex":"^IMPACTS_sounding_.*\\.(nc)$",
+                  "module":"netcdf"
                }
             ]
          },
-         "files":[
-            {
-               "bucket":"public",
-               "regex":"^impacts_apu(.*).*\\.cmr.xml$",
-               "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
-            },
-            {
-               "bucket":"protected",
-               "regex":"^impacts_apu(.*).*(txt)$",
-               "sampleFileName":"impacts_apu01_rainparameter_min.txt"
-            }
-         ]
-      },
-   "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
+       "files":[
+          {
+             "bucket":"public",
+             "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
+             "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc.cmr.xml"
+          },
+          {
+             "bucket":"protected",
+             "regex":"^IMPACTS_sounding_(.*).*(nc)$",
+             "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc"
+          }
+       ]
+     },
+    "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
    }
 }
 
