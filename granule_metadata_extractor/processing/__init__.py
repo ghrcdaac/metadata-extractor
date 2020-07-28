@@ -43,4 +43,5 @@ from .process_nexeastimpacts import ExtractNexeastimpactsMetadata
 from .process_nexmidwstimpacts import ExtractNexmidwstimpactsMetadata
 from .process_2dimpacts import Extract2dimpactsMetadata
 from .process_apuimpacts import ExtractApuimpactsMetadata
+from .process_ncsusndimpacts import ExtractNcsusndimpactsMetadata
 from .process_goesimpacts import ExtractGoesimpactsMetadata

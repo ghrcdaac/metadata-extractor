@@ -39,6 +39,7 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata,
         "nexeastimpacts": mdx.ExtractNexeastimpactsMetadata,
         "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata,
+        "ncsusndimpacts": mdx.ExtractNcsusndimpactsMetadata,
         "goesimpacts": mdx.ExtractGoesimpactsMetadata
     }
 
