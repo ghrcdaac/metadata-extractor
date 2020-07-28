@@ -39,7 +39,8 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata,
         "nexeastimpacts": mdx.ExtractNexeastimpactsMetadata,
         "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata,
-        "ncsusndimpacts": mdx.ExtractNcsusndimpactsMetadata
+        "ncsusndimpacts": mdx.ExtractNcsusndimpactsMetadata,
+        "goesimpacts": mdx.ExtractGoesimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -411,19 +412,19 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/ncsusndimpacts__1/IMPACTS_sounding_20200220_1649_NCSU.nc"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/goesimpacts__1/IMPACTS_goes16_conus_20200102_002856_ch08.nc"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
-            "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc.cmr.xml"
+            "regex":"^IMPACTS_goes16_(.*).*\\.cmr.xml$",
+            "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^IMPACTS_sounding_(.*).*(nc)$",
-            "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc"
+            "regex":"^IMPACTS_goes16_(.*).*(nc)$",
+            "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc"
          }
       ],
       "buckets":{
@@ -445,40 +446,40 @@ if __name__ == '__main__':
          }
       },
       "collection":{
-       "name":"ncsusndimpacts",
-       "version":"1",
-       "dataType":"ncsusndimpacts",
-       "process":"metadataextractor",
-       "url_path":"ncsusndimpacts__1",
-       "duplicateHandling":"replace",
-       "granuleId":"^IMPACTS_sounding_.*\\.(nc)$",
-       "granuleIdExtraction":"^((IMPACTS_sounding_).*)",
-       "reportToEms":True,
-       "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc",
-       "meta":{ 
-          "provider_path":"ncsusndimpacts/fieldCampaigns/impacts/NCSU_soundings/data/",
-           "hyrax_processing":"false",
-           "metadata_extractor":[
+         "name":"goesimpacts",
+         "version":"1",
+         "dataType":"goesimpacts",
+         "process":"metadataextractor",
+         "url_path":"goesimpacts__1",
+         "duplicateHandling":"replace",
+         "granuleId":"^IMPACTS_goes16_.*\\.(nc)$",
+         "granuleIdExtraction":"^((IMPACTS_goes16_).*)",
+         "reportToEms": True,
+         "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc",
+         "meta":{
+            "provider_path":"goesimpacts/fieldCampaigns/impacts/GOES/data/",
+            "hyrax_processing":"false",
+            "metadata_extractor":[
                {
-                  "regex":"^IMPACTS_sounding_.*\\.(nc)$",
+                  "regex":"^IMPACTS_goes16_.*\\.(nc)$",
                   "module":"netcdf"
                }
             ]
          },
-       "files":[
-          {
-             "bucket":"public",
-             "regex":"^IMPACTS_sounding_(.*).*\\.cmr.xml$",
-             "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc.cmr.xml"
-          },
-          {
-             "bucket":"protected",
-             "regex":"^IMPACTS_sounding_(.*).*(nc)$",
-             "sampleFileName":"IMPACTS_sounding_20200220_1649_NCSU.nc"
-          }
-       ]
-     },
-    "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
+         "files":[
+            {
+               "bucket":"public",
+               "regex":"^IMPACTS_goes16_(.*).*\\.cmr.xml$",
+               "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc.cmr.xml"
+            },
+            {
+               "bucket":"protected",
+               "regex":"^IMPACTS_goes16_(.*).*(nc)$",
+               "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc"
+            }
+         ]
+      },
+   "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
    }
 }
 
