@@ -38,7 +38,8 @@ def extract_netcdf_metadata(ds_short_name, version, access_url, netcdf_file, net
         "kbufimpacts": mdx.ExtractKbufimpactsMetadata,
         "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata,
         "nexeastimpacts": mdx.ExtractNexeastimpactsMetadata,
-        "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata
+        "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata,
+        "goesimpacts": mdx.ExtractGoesimpactsMetadata
     }
 
     time_variable_key = netcdf_vars.get('time_var_key')
@@ -410,19 +411,19 @@ def handler(event, context):
 if __name__ == '__main__':
     event = {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/apuimpacts__1/impacts_apu01_rainparameter_min.txt"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/goesimpacts__1/IMPACTS_goes16_conus_20200102_002856_ch08.nc"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^impacts_apu(.*).*\\.cmr.xml$",
-            "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
+            "regex":"^IMPACTS_goes16_(.*).*\\.cmr.xml$",
+            "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^^impacts_apu(.*).*(txt)$",
-            "sampleFileName":"impacts_apu01_rainparameter_min.txt"
+            "regex":"^IMPACTS_goes16_(.*).*(nc)$",
+            "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc"
          }
       ],
       "buckets":{
@@ -444,36 +445,36 @@ if __name__ == '__main__':
          }
       },
       "collection":{
-         "name":"apuimpacts",
+         "name":"goesimpacts",
          "version":"1",
-         "dataType":"apuimpacts",
+         "dataType":"goesimpacts",
          "process":"metadataextractor",
-         "url_path":"apuimpacts__1",
+         "url_path":"goesimpacts__1",
          "duplicateHandling":"replace",
-         "granuleId":"^impacts_apu.*\\.(txt)$",
-         "granuleIdExtraction":"^((impacts_apu).*)",
+         "granuleId":"^IMPACTS_goes16_.*\\.(nc)$",
+         "granuleIdExtraction":"^((IMPACTS_goes16_).*)",
          "reportToEms": True,
-         "sampleFileName":"impacts_apu01_rainparameter_min.txt",
+         "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc",
          "meta":{
-            "provider_path":"apuimpacts/fieldCampaigns/impacts/APU/data/",
+            "provider_path":"goesimpacts/fieldCampaigns/impacts/GOES/data/",
             "hyrax_processing":"false",
             "metadata_extractor":[
                {
-                  "regex":"^(.*).*\\.(txt)$",
-                  "module":"ascii"
+                  "regex":"^IMPACTS_goes16_.*\\.(nc)$",
+                  "module":"netcdf"
                }
             ]
          },
          "files":[
             {
                "bucket":"public",
-               "regex":"^impacts_apu(.*).*\\.cmr.xml$",
-               "sampleFileName":"impacts_apu01_rainparameter_min.txt.cmr.xml"
+               "regex":"^IMPACTS_goes16_(.*).*\\.cmr.xml$",
+               "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc.cmr.xml"
             },
             {
                "bucket":"protected",
-               "regex":"^impacts_apu(.*).*(txt)$",
-               "sampleFileName":"impacts_apu01_rainparameter_min.txt"
+               "regex":"^IMPACTS_goes16_(.*).*(nc)$",
+               "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc"
             }
          ]
       },
