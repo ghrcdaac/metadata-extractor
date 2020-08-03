@@ -353,6 +353,8 @@ class MDX(Process):
         collection_name = collection.get('name')
         collection_version = collection.get('version')
         buckets = self.config.get('buckets')
+        self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
+            self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
         url_path = collection.get('url_path', self.config['fileStagingDir'])
