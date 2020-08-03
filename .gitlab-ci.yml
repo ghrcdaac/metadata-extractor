@@ -10,7 +10,7 @@ stages:
 IntegrationTest:
   stage: Test
   script:
-    - conda env list
+    - conda update conda
     - conda init bash
     - source /root/.bashrc
     - conda activate base
