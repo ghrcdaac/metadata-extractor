@@ -11,7 +11,7 @@ IntegrationTest:
   stage: Test
   script:
     - conda env list
-    - conda init base
+    - conda init bash
     - source /root/.bashrc
     - conda activate base
     - conda env update --file=environment.yaml
