@@ -3,10 +3,9 @@ import json
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_goesrpltcrs import ExtractGeosrpltcrsMetadata
 import sys
-sys.path.insert(0, path.join(path.dirname(__file__), '..'))
-import handler
-from cumulus_process import Process
 
+sys.path.insert(0, path.join(path.dirname(__file__), '..'))
+from process_mdx.main import MDX
 
 
 class TestProcessGeoER(TestCase):
@@ -23,6 +22,7 @@ class TestProcessGeoER(TestCase):
         payload = json.loads(f.read())
     config = payload['config']
     collection = config['collection']
+    process = MDX(input=payload.get('input'), config=payload.get('config'))
 
     def test_1_get_bucket(self):
         """
@@ -30,11 +30,11 @@ class TestProcessGeoER(TestCase):
         :return:
         """
         files = self.collection['files']
-        file_name=self.input_files[0].split('/')[-1]
+        file_name = self.input_files[0].split('/')[-1]
         buckets = self.config.get('buckets')
-        bucket = handler.get_bucket(file_name, files, buckets)
+        bucket = self.process.get_bucket(file_name, files, buckets)
         bucket_destination = bucket.get('name')
-        self.assertTrue(bucket_destination == "stack_name-protected")
+        self.assertTrue(bucket_destination == "ghrcsbxw-protected")
 
     def test_2_get_file_staging_directory(self):
         """
@@ -42,9 +42,8 @@ class TestProcessGeoER(TestCase):
         :return:
         """
 
-        file_staging_directory = handler.get_file_staging_directory(self.config)
-        #print(file_staging_directory)
-        self.assertTrue(file_staging_directory == "Tobe implemented" )
+        file_staging_directory = self.process.get_file_staging_directory(self.config)
+        self.assertTrue(file_staging_directory == "Tobe implemented")
 
     def test_3_start_stop_date_goesrpltcrs(self):
         """
@@ -54,10 +53,10 @@ class TestProcessGeoER(TestCase):
         file_path = self.input_files[0]
         exnet = ExtractGeosrpltcrsMetadata(file_path)
         units_variable = 'units'
-        start, stop = exnet.get_temporal(units_variable=units_variable) #get_temporal(units_variable=units_variable)
+        start, stop = exnet.get_temporal(
+            units_variable=units_variable)  # get_temporal(units_variable=units_variable)
         self.assertEqual(start, "2017-05-07T16:08:45Z")
         self.assertEqual(stop, "2017-05-07T16:08:45Z")
-
 
     def test_4_geometry_goesrpltcrs(self):
         """
@@ -66,5 +65,5 @@ class TestProcessGeoER(TestCase):
         """
         file_path = self.input_files[0]
         exnet = ExtractGeosrpltcrsMetadata(file_path)
-        wnes = exnet.get_wnes_geometry() 
+        wnes = exnet.get_wnes_geometry()
         self.assertListEqual(wnes, [-84.014, 30.039, -84.014, 30.039])
