@@ -10,7 +10,7 @@ stages:
 IntegrationTest:
   stage: Test
   script:
-    - conda env update -n base --file environment.yaml
+    - conda env update -n=base --file=environment.yaml
     - pip install twine
     - python setup.py install
     - pip install -r requirements-dev.txt
