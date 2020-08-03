@@ -1,4 +1,4 @@
-image: "continuumio/miniconda3:4.8.2"
+image: "conda/miniconda3"
 
 before_script:
   - apt-get update
@@ -11,6 +11,8 @@ IntegrationTest:
   stage: Test
   script:
     - conda env list
+    - conda init base
+    - source /root/.bashrc
     - conda activate base
     - conda env update --file=environment.yaml
     - pip install twine
