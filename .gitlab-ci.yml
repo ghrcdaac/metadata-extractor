@@ -10,7 +10,7 @@ stages:
 IntegrationTest:
   stage: Test
   script:
-    - conda env ls
+    - conda env list
     - conda activate base
     - conda env update --file=environment.yaml
     - pip install twine
