@@ -12,8 +12,8 @@ IntegrationTest:
   script:
     - conda init bash
     - source /root/.bashrc
+    - conda env create -f environment.yaml
     - conda activate mdx
-    - conda env update -n mdx--file=environment.yaml
     - pip install twine
     - python setup.py install
     - pip install -r requirements-dev.txt
