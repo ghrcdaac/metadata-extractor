@@ -1,4 +1,4 @@
-name: base
+name: mdx
 channels:
   - conda-forge
   - defaults
