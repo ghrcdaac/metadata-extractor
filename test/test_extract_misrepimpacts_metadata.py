@@ -76,7 +76,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-66.0')
+        self.assertEqual(west, '-81.0')
 
     def test_6_get_south(self):
         """
@@ -94,7 +94,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-81.0')
+        self.assertEqual(east, '-66.0')
 
     def test_8_get_checksum(self):
         """
