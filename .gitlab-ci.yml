@@ -10,10 +10,7 @@ stages:
 IntegrationTest:
   stage: Test
   script:
-    - conda init bash
-    - source /root/.bashrc
-    - conda env create -f environment.yaml
-    - conda activate mdx
+    - bash conda-requirements.sh
     - pip install twine
     - python setup.py install
     - pip install -r requirements-dev.txt
