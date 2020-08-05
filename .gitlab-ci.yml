@@ -1,4 +1,4 @@
-image: "python:3.7"
+image: "conda/miniconda3"
 
 before_script:
   - apt-get update
@@ -10,6 +10,7 @@ stages:
 IntegrationTest:
   stage: Test
   script:
+    - bash conda-requirements.sh
     - pip install twine
     - python setup.py install
     - pip install -r requirements-dev.txt

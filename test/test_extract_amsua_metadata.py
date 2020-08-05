@@ -1,25 +1,25 @@
 from os import path
 from unittest import TestCase
-import granule_metadata_extractor.processing as mdx
+from granule_metadata_extractor.processing.process_amsua import ExtractAMSUAMetadata
 from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 
-class TestProcessMisrepimpacts(TestCase):
+class TestProcessAMSUA(TestCase):
     """
-    Test processing misrepimpacts.
-    This will test if misrepimpacts metadata will be extracted correctly
+    Test processing AMSUA.
+    This will test if amsua metadata will be extracted correctly
     """
-    granule_name = 'IMPACTS_sciencePlan_20200127.pdf'
+    granule_name = "amsua15_2020.205_15437_1048_1231_WI.nc"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
     lat_var_key = 'lat'
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
-    process_misrepimpacts = mdx.ExtractMisrepimpactsMetadata(input_file)
-    expected_metadata = {'ShortName': 'misrepimpacts',
+    process_amsua = ExtractAMSUAMetadata(input_file)
+    expected_metadata = {'ShortName': 'amsua15sp',
                          'GranuleUR': granule_name,
-                         'VersionId': '1', 'DataFormat': 'PDF',
+                         'VersionId': '1', 'DataFormat': 'netCDF-4',
                          }
 
     def test_1_get_start_date(self):
@@ -27,36 +27,36 @@ class TestProcessMisrepimpacts(TestCase):
         Testing get correct start date
         :return:
         """
-        start_date = self.process_misrepimpacts.get_temporal(units_variable=self.time_units)[0]
+        start_date = self.process_amsua.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-01-17T00:00:00Z")
+        self.assertEqual(start_date, "2020-07-23T10:49:02Z")
 
     def test_2_get_stop_date(self):
         """
         Testing get correct start date
         :return:
         """
-        stop_date = self.process_misrepimpacts.get_temporal(units_variable=self.time_units)[1]
+        stop_date = self.process_amsua.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-03-01T00:00:00Z")
+        self.assertEqual(stop_date, "2020-07-23T10:49:02Z")
 
     def test_3_get_file_size(self):
         """
-        Test geting the correct file size
+        Test getting the correct file size
         :return:
         """
-        file_size = round(self.process_misrepimpacts.get_file_size_megabytes(), 2)
+        file_size = round(self.process_amsua.get_file_size_megabytes(), 2)
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 0.00)
+        self.assertEqual(file_size, 0.0)
 
     def get_wnes(self, index):
         """
         A function helper to ger North, West, Souh, East
         :return: wnes[index] where index: west = 0 - north = 1 - east = 2 - south = 3
         """
-        process_geos = self.process_misrepimpacts
+        process_geos = self.process_amsua
         wnes = process_geos.get_wnes_geometry()
         return str(round(wnes[index], 3))
 
@@ -67,7 +67,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '45.0')
+        self.assertEqual(north, '-89.413')
 
     def test_5_get_west(self):
         """29.864
@@ -76,7 +76,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-81.0')
+        self.assertEqual(west, '-179.808')
 
     def test_6_get_south(self):
         """
@@ -85,7 +85,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '35.0')
+        self.assertEqual(south, '-89.413')
 
     def test_7_get_east(self):
         """
@@ -94,26 +94,27 @@ class TestProcessMisrepimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-66.0')
+        self.assertEqual(east, '-179.808')
 
     def test_8_get_checksum(self):
         """
-        Test geting the chucksom of the input file
+        Test getting the checksum of the input file
         :return: the MD5 string
         """
 
-        checksum = self.process_misrepimpacts.get_checksum()
+        checksum = self.process_amsua.get_checksum()
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '8cf8463b34caa8ac871a52d5dd7ad1ef')
+        self.assertEqual(checksum, '867abcb7b12cdd142dee7b41dc62b5a2')
 
     def test_9_generate_metadata(self):
         """
-        Test generating metadata of misrepimpacts
+        Test generating metadata of amsua
         :return: metadata object 
         """
 
-        metadata = self.process_misrepimpacts.get_metadata(ds_short_name='misrepimpacts',
-                                                     format='PDF', version='1')
+        metadata = self.process_amsua.get_metadata(ds_short_name='amsua15sp',
+                                                   format='netCDF-4', version='1')
+        # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 

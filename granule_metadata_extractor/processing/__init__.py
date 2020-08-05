@@ -45,3 +45,4 @@ from .process_2dimpacts import Extract2dimpactsMetadata
 from .process_apuimpacts import ExtractApuimpactsMetadata
 from .process_ncsusndimpacts import ExtractNcsusndimpactsMetadata
 from .process_goesimpacts import ExtractGoesimpactsMetadata
+from .process_amsua import ExtractAMSUAMetadata

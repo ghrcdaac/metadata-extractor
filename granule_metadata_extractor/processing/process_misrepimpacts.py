@@ -32,8 +32,8 @@ class ExtractMisrepimpactsMetadata(ExtractASCIIMetadata):
 
         self.north = 45.
         self.south = 35.
-        self.east = -81.
-        self.west = -66.
+        self.west = -81.
+        self.east = -66.
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
