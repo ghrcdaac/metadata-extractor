@@ -46,3 +46,4 @@ from .process_apuimpacts import ExtractApuimpactsMetadata
 from .process_ncsusndimpacts import ExtractNcsusndimpactsMetadata
 from .process_goesimpacts import ExtractGoesimpactsMetadata
 from .process_amsua import ExtractAMSUAMetadata
+from .process_npolimpacts import ExtractNpolimpactsMetadata
