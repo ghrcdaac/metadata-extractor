@@ -1,93 +1,71 @@
 {
-  "input": [
-    "./test/fixtures/lpvex_SHP_Aranda_ODM_u100915_00.txt"
-  ],
-  "config": {
-    "files_config": [
-      {
-        "regex": "^(.*).*\\.cmr.xml$",
-        "sampleFileName": "lpvex_SHP_Aranda_ODM_u100916_00.txt.cmr.xml",
-        "bucket": "public"
-      },
-      {
-        "regex": "^(.*).*\\.(txt)$",
-        "sampleFileName": "lpvex_SHP_Aranda_ODM_u100916_00.txt",
-        "bucket": "protected"
-      }
-    ],
-    "buckets": {
-      "protected": {
-        "type": "protected",
-        "name": "ghrc-test-protected"
-      },
-      "protected-1": {
-        "type": "protected",
-        "name": "ghrc-test-restore-protected"
-      },
-      "internal": {
-        "type": "internal",
-        "name": "ghrc-test-internal"
-      },
-      "private": {
-        "type": "private",
-        "name": "ghrc-test-private"
-      },
-      "public": {
-        "type": "public",
-        "name": "ghrc-test-public"
-      }
-    },
-    "collection": {
-      "files": [
-        {
-          "regex": "^(.*).*\\.cmr.xml$",
-          "sampleFileName": "lpvex_SHP_Aranda_ODM_u100916_00.txt.cmr.xml",
-          "bucket": "public"
-        },
-        {
-          "regex": "^(.*).*\\.(txt)$",
-          "sampleFileName": "lpvex_SHP_Aranda_ODM_u100916_00.txt",
-          "bucket": "protected"
-        }
+   "input":[
+      "./test/fixtures/lpvex_SHP_Aranda_ODM_u100915_00.txt"
+   ],
+   "config":{
+      "files_config":[
+         {
+            "regex":"^(.*).*\\.cmr.xml$",
+            "sampleFileName":"lpvex_SHP_Aranda_ODM_u100916_00.txt.cmr.xml",
+            "bucket":"public"
+         },
+         {
+            "regex":"^(.*).*\\.(txt)$",
+            "sampleFileName":"lpvex_SHP_Aranda_ODM_u100916_00.txt",
+            "bucket":"protected"
+         }
       ],
-      "name": "gpmodmlpvex",
-      "granuleIdExtraction": "^(.*).*\\.(txt)$",
-      "granuleId": "^.*$",
-      "dataType": "gpmodmlpvex",
-      "process": "metadataextractor",
-      "provider_path": "/gpmodmlpvex/fieldCampaigns/gpmValidation/lpvex/odm/data/",
-      "version": "1",
-      "meta": {
-        "metadata_extractor": [
-          {
-            "regex": "^(.*).*\\.(txt)$",
-            "module": "ascii"
-          }
-        ]
+      "buckets":{
+         "protected":{
+            "type":"protected",
+            "name":"ghrcsbxw-protected"
+         },
+         "internal":{
+            "type":"internal",
+            "name":"ghrcsbxw-internal"
+         },
+         "private":{
+            "type":"private",
+            "name":"ghrcsbxw-private"
+         },
+         "public":{
+            "type":"public",
+            "name":"ghrcsbxw-public"
+         }
       },
-      "updatedAt": "1573589725859",
-      "duplicateHandling": "replace",
-      "sampleFileName": "lpvex_SHP_Aranda_ODM_u100916_00.txt",
-      "createdAt": "1573588611401"
-    },
-    "granuleIdExtraction": "^(.*).*\\.(txt)$",
-    "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/"
-  },
-  "messageConfig": {
-    "input": "{[$.payload.granules[*].files[*].filename]}",
-    "outputs": [
-      {
-        "source": "{{$}}",
-        "destination": "{{$.payload}}"
-      }
-    ]
-  },
-  "cumulus_config": {
-    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
-    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
-    "cumulus_context": {
-      "reingestGranule": "True",
-      "forceDuplicateOverwrite": "True"
-    }
-  }
+      "collection":{
+         "name":"gpmodmlpvex",
+         "version":"1",
+         "dataType":"gpmodmlpvex",
+         "process":"metadataextractor",
+         "duplicateHandling":"replace",
+         "granuleId":"^.*$",
+         "granuleIdExtraction":"^(.*).*\\.(txt)$",
+         "reportToEms":true,
+         "sampleFileName":"lpvex_SHP_Aranda_ODM_u100916_00.txt",
+         "files":[
+            {
+               "regex":"^(.*).*\\.cmr.xml$",
+               "sampleFileName":"lpvex_SHP_Aranda_ODM_u100916_00.txt.cmr.xml",
+               "bucket":"public"
+            },
+            {
+               "regex":"^(.*).*\\.(txt)$",
+               "sampleFileName":"lpvex_SHP_Aranda_ODM_u100916_00.txt",
+               "bucket":"protected"
+            }
+         ],
+         "meta":{
+            "provider_path":"gpmodmlpvex/fieldCampaigns/gpmValidation/lpvex/odm/data/",
+            "hyrax_processing":"false",
+            "metadata_extractor":[
+               {
+                  "regex":"^(.*).*\\.(txt)$",
+                  "module":"ascii"
+               }
+            ]
+         }
+      },
+      "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
+   }
 }

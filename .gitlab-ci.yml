@@ -2,7 +2,7 @@ image: "python:3.7"
 
 before_script:
   - apt-get update
-  - apt-get install -y libxml2-utils 
+  - apt-get install -y libxml2-utils
 
 stages:
   - Test
@@ -10,6 +10,14 @@ stages:
 IntegrationTest:
   stage: Test
   script:
+    - wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.2-Linux-x86_64.sh
+    - bash Miniconda3-py37_4.8.2-Linux-x86_64.sh -b -p
+    - export PATH=$PATH:/root/miniconda3/bin
+    - conda init bash
+    - source /root/.bashrc
+    - conda activate base
+    - bash conda-requirements.sh
+    - conda install pip
     - pip install twine
     - python setup.py install
     - pip install -r requirements-dev.txt

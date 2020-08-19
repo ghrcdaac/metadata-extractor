@@ -45,4 +45,8 @@ setup(
     packages=[
         m for m in find_packages() if 'tests' not in m
     ],
+    entry_points={
+        'console_scripts': ['process-mdx=process_mdx.main:MDX.cli']
+    }
+
 )
