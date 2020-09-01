@@ -8,7 +8,7 @@
   },
   "scripts": {
     "install-package": "bash conda-requirements.sh &&  python3 setup.py install --user --prefix=",
-    "test": "npm run install-package && python -m pytest --junitxml=../../../../test_reports/test_metadata_extractor.xml test",
+    "test_package": "npm run install-package && python -m pytest --junitxml=../../../../test_reports/test_metadata_extractor.xml test",
     "create-ecr": "aws ecr create-repository --repository-name mdx --profile $AWS_PROFILE --region ${AWS_REGION}",
     "build-docker": "docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mdx .",
     "login-ecr": "LOGIN=$(aws ecr get-login --no-include-email --region ${AWS_REGION} --profile $AWS_PROFILE); $LOGIN",
