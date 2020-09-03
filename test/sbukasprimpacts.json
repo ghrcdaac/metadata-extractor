@@ -40,7 +40,7 @@
          "process":"metadataextractor",
          "url_path":"sbukasprimpacts_1",
          "duplicateHandling":"replace",
-         "granuleId":"IMPACTS_SBU_kaspr..(nc)$",
+         "granuleId":"IMPACTS_SBU_kaspr_.*\\.(nc)$",
          "granuleIdExtraction":"((IMPACTS_SBU_kaspr_).)",
          "reportToEms":true,
          "sampleFileName":"IMPACTS_SBU_kaspr_20200224_192348_vpt.nc",

@@ -48,4 +48,5 @@ from .process_goesimpacts import ExtractGoesimpactsMetadata
 from .process_amsua import ExtractAMSUAMetadata
 from .process_npolimpacts import ExtractNpolimpactsMetadata
 from .process_sbuceilimpacts import ExtractSbuceilimpactsMetadata
+from .process_sbulidarimpacts import ExtractSbulidarimpactsMetadata
 from .process_sbukasprimpacts import ExtractSbukasprimpactsMetadata

@@ -46,6 +46,7 @@ class MDX(Process):
             "amsua15sp": mdx.ExtractAMSUAMetadata,
             "npolimpacts": mdx.ExtractNpolimpactsMetadata,
             "sbuceilimpacts": mdx.ExtractSbuceilimpactsMetadata,
+            "sbulidarimpacts": mdx.ExtractSbulidarimpactsMetadata,
             "sbukasprimpacts": mdx.ExtractSbukasprimpactsMetadata
         }
 
