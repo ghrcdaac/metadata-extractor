@@ -20,7 +20,8 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         #super().__init__(file_path)
         self.file_path = file_path
         #these are needed to metadata extractor
-        self.gps_path = '../../test/fixtures/GPS.nc'
+        #self.gps_path = '../../test/fixtures/GPS.nc'
+        self.gps_path = '../src/helpers/GPS.nc'
         self.gloc = {'SBU':[-73.127,40.897], 'Smith Point':[-72.862,40.733], 
                     'Cedar Beach':[-73.030,40.965]}
         self.tperiod = [[datetime(2019,12,13,16,53), datetime(2019,12,13,19,53)],
