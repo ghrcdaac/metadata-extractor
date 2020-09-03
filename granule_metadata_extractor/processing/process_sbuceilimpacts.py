@@ -56,10 +56,10 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
                                                             datetime(1900, 1, 1),
                                                             -90.0, 90.0, -180.0, 180.0]
         #load GPS.nc file for lat and lon info
-        gpsnc = Dataset(self.gps_path)
-        ctime = np.array(nc.variables['time'][:])
-        lat = np.array(nc.variables['lat'][:])
-        lon = np.array(nc.variables['lon'][:])
+        gpsnc = Dataset(path.join(path.dirname(__file__),self.gps_path))
+        ctime = np.array(gpsnc.variables['time'][:])
+        lat = np.array(gpsnc.variables['lat'][:])
+        lon = np.array(gpsnc.variables['lon'][:])
         gpsnc.close()
         #the resolution of time is several tiem step in an hour, so look-up-table
         #is only at hour
