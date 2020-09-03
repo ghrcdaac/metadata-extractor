@@ -20,7 +20,8 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         #super().__init__(file_path)
         self.file_path = file_path
         #these are needed to metadata extractor
-        self.gps_path = '../../test/fixtures/GPS.nc'
+        #self.gps_path = '../../test/fixtures/GPS.nc'
+        self.gps_path = '../src/helpers/GPS.nc'
         self.gloc = {'SBU':[-73.127,40.897], 'Smith Point':[-72.862,40.733], 
                     'Cedar Beach':[-73.030,40.965]}
         self.tperiod = [[datetime(2019,12,13,16,53), datetime(2019,12,13,19,53)],
@@ -55,10 +56,10 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
                                                             datetime(1900, 1, 1),
                                                             -90.0, 90.0, -180.0, 180.0]
         #load GPS.nc file for lat and lon info
-        gpsnc = Dataset(self.gps_path)
-        ctime = np.array(nc.variables['time'][:])
-        lat = np.array(nc.variables['lat'][:])
-        lon = np.array(nc.variables['lon'][:])
+        gpsnc = Dataset(path.join(path.dirname(__file__),self.gps_path))
+        ctime = np.array(gpsnc.variables['time'][:])
+        lat = np.array(gpsnc.variables['lat'][:])
+        lon = np.array(gpsnc.variables['lon'][:])
         gpsnc.close()
         #the resolution of time is several tiem step in an hour, so look-up-table
         #is only at hour

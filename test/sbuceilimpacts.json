@@ -38,6 +38,7 @@
          "version":"1",
          "dataType":"sbuceilimpacts",
          "process":"metadataextractor",
+         "url_path":"sbuceilimpacts__1",
          "duplicateHandling":"replace",
          "granuleId":"^IMPACTS_SBU_ceilo_.*\\.(nc)$",
          "granuleIdExtraction":"^((IMPACTS_SBU_ceilo_).*)",
