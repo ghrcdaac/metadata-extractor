@@ -5,6 +5,7 @@ from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=sbulidarimpacts,inv=inventory,file=IMPACTS_SBU_dopplerlidar_20200103_vel_az_BNL.nc,path=vel/IMPACTS_SBU_dopplerlidar_20200103_vel_az_BNL.nc,size=6845318,start=2020-01-03T00:00:40Z,end=2020-01-03T23:59:52Z,browse=N,checksum=a4c0a7976fa3271c3611ec7b9f6884caa0183da6,NLat=40.88887962900752,SLat=40.86112037099248,WLon=-72.89087962900751,ELon=-72.86312037099248,format=netCDF-4
+
 class TestProcessSbulidarimpacts(TestCase):
     """
     Test processing.
