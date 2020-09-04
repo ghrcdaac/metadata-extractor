@@ -46,8 +46,8 @@ class ExtractSbulidarimpactsMetadata(ExtractNetCDFMetadata):
         end_time = dt0 + timedelta(hours=max(nc.variables['TIME'][:].flatten()).item())
 
         max_range = max(nc.variables['RANGE'][:].flatten())/1000. #km
-        max_elevation = max(nc.variables['ELEVATION'][:].flatten()) #degrees from ground: 0 -- parallel to ground, 90 -- vertical
-        sbu_range = max_range*math.cos(math.radians(max_elevation))/111.325
+        min_elevation = min(nc.variables['ELEVATION'][:].flatten()) #degrees from ground: 0 -- parallel to ground, 90 -- vertical
+        sbu_range = max_range*math.cos(math.radians(min_elevation))/111.325
 
         minTime, maxTime = [start_time, end_time]
         maxlat,minlat,maxlon,minlon = [BNL_lat+sbu_range, BNL_lat-sbu_range, BNL_lon+sbu_range, BNL_lon-sbu_range]
