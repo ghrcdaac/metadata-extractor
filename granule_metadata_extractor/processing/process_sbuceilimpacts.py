@@ -45,7 +45,7 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         if '_RT.nc' in file_path:
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_RT_metadata(nc)
         elif '_BNL.nc' in file_path:
-            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_BNL_metadata(nc) 
+            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_BNL_metadata(nc)
         elif '_MAN.nc' in file_path:
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_metadata(nc)      
 
@@ -56,7 +56,7 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
                                                             datetime(1900, 1, 1),
                                                             -90.0, 90.0, -180.0, 180.0]
         #load GPS.nc file for lat and lon info
-        gpsnc = Dataset(path.join(path.dirname(__file__),self.gps_path))
+        gpsnc = Dataset(os.path.join(os.path.dirname(__file__),self.gps_path))
         ctime = np.array(gpsnc.variables['time'][:])
         lat = np.array(gpsnc.variables['lat'][:])
         lon = np.array(gpsnc.variables['lon'][:])

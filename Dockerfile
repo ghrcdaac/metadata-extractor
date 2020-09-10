@@ -13,9 +13,7 @@ WORKDIR /build
 
 ENV     BUILD=/build PATH="/root/miniconda3/bin:${PATH}"
 
-COPY    __init__.py requirements*.txt setup.py setup.cfg conda-requirements.sh   $BUILD/
-COPY    ./granule_metadata_extractor    $BUILD/granule_metadata_extractor
-COPY    ./process_mdx  $BUILD/process_mdx
+COPY    . $BUILD/
 
 RUN     bash conda-requirements.sh && \
         python setup.py install
