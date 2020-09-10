@@ -21,3 +21,4 @@ include granule_metadata_extractor/src/helpers/kccximpactsRefData.json
 include granule_metadata_extractor/src/helpers/kbgmimpactsRefData.json
 include granule_metadata_extractor/src/helpers/kboximpactsRefData.json
 include granule_metadata_extractor/src/helpers/kbufimpactsRefData.json
+include granule_metadata_extractor/src/helpers/GPS.nc
