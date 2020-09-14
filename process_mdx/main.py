@@ -47,7 +47,8 @@ class MDX(Process):
             "npolimpacts": mdx.ExtractNpolimpactsMetadata,
             "sbuceilimpacts": mdx.ExtractSbuceilimpactsMetadata,
             "sbulidarimpacts": mdx.ExtractSbulidarimpactsMetadata,
-            "sbukasprimpacts": mdx.ExtractSbukasprimpactsMetadata
+            "sbukasprimpacts": mdx.ExtractSbukasprimpactsMetadata,
+            "sbumrr2impacts": mdx.ExtractSbumrr2impactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
