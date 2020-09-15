@@ -50,3 +50,4 @@ from .process_npolimpacts import ExtractNpolimpactsMetadata
 from .process_sbuceilimpacts import ExtractSbuceilimpactsMetadata
 from .process_sbulidarimpacts import ExtractSbulidarimpactsMetadata
 from .process_sbukasprimpacts import ExtractSbukasprimpactsMetadata
+from .process_sbumrr2impacts import ExtractSbumrr2impactsMetadata
