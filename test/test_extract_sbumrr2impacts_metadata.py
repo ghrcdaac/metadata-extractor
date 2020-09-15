@@ -4,14 +4,16 @@ from granule_metadata_extractor.processing.process_sbumrr2impacts import Extract
 from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 #host=thor,env=ops,project=IMPACTS,ds=sbumrr2impacts,inv=inventory,file=IMPACTS_SBU_mrr2_20200106_BNL.nc,path=MRR2_BNL/IMPACTS_SBU_mrr2_20200106_BNL.nc,size=95724732,start=2020-01-06T00:01:00Z,end=2020-01-07T00:00:00Z,browse=N,checksum=1bc64c52844639f44a31206238c057d1ed90b2df,NLat=40.888999999999996,SLat=40.869,WLon=-72.884,ELon=-72.86399999999999,format=netCDF-3
-
+# this file IMPACTS_SBU_mrr2_20200106_BNL.nc size is too large to check in
+# to git, so I created a fake to this file, only take time field in the 
+# original file. As a result, checksum and file size will change
 class TestProcessSbumrr2impacts(TestCase):
     """
     Test processing sbumrr2impacts.
     This will test if sbumrr2impacts metadata will be extracted correctly
     """
-    #granule_name = "IMPACTS_SBU_ceilo_20200104_ct25k_BNL.nc"
-    granule_name = "IMPACTS_SBU_mrr2_20200106_BNL.nc"
+    #granule_name = "IMPACTS_SBU_mrr2_20200106_BNL.nc"
+    granule_name = "fake_IMPACTS_SBU_mrr2_20200106_BNL.nc"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -57,7 +59,8 @@ class TestProcessSbumrr2impacts(TestCase):
         # file_size = round(self.process_goesrpltavirisng.get_file_size_megabytes(), 2)
         file_size = float(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 95.72)
+        #self.assertEqual(file_size, 95.72)
+        self.assertEqual(file_size, 0.01)
 
     def get_wnes(self, index):
         """
@@ -114,7 +117,9 @@ class TestProcessSbumrr2impacts(TestCase):
         # checksum = self.process_goesrpltavirisng.get_checksum()
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '2a17ed1639d46a900cc0235c45828b95')
+        #self.assertEqual(checksum, '2a17ed1639d46a900cc0235c45828b95')
+        #this is for fake file
+        self.assertEqual(checksum, '2393431f8671a6409d3739f80d3bcd9c')
 
     def test_9_generate_metadata(self):
         """
