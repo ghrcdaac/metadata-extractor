@@ -71,7 +71,7 @@ class ExtractSbumrr2impactsMetadata(ExtractNetCDFMetadata):
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
-    def get_RT_lat_lon(t0,t1):
+    def get_RT_lat_lon(self,t0,t1):
         flag = 0
         for period in self.RT_period:
             if t0 >= period[list(period.keys())[0]][0] and t1 <= period[list(period.keys())[0]][1]:
