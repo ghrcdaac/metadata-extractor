@@ -1,14 +1,8 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
-import json
 import os
-import pathlib
-import gzip
 import numpy as np
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
-import shutil
-import tempfile
-
 
 
 class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
@@ -17,23 +11,22 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
     """
 
     def __init__(self, file_path):
-        #super().__init__(file_path)
+        # super().__init__(file_path)
         self.file_path = file_path
-        #these are needed to metadata extractor
-        #self.gps_path = '../../test/fixtures/GPS.nc'
+        # these are needed to metadata extractor
         self.gps_path = '../src/helpers/GPS.nc'
-        self.gloc = {'SBU':[-73.127,40.897], 'Smith Point':[-72.862,40.733], 
-                    'Cedar Beach':[-73.030,40.965]}
-        self.tperiod = [[datetime(2019,12,13,16,53), datetime(2019,12,13,19,53)],
-                        [datetime(2020,1,18,16,8), datetime(2020,1,19,1,23)],
-                        [datetime(2020,2,13,2,38), datetime(2020,2,13,11,8)]]
+        self.gloc = {'SBU': [-73.127, 40.897], 'Smith Point': [-72.862, 40.733],
+                     'Cedar Beach': [-73.030, 40.965]}
+        self.tperiod = [[datetime(2019, 12, 13, 16, 53), datetime(2019, 12, 13, 19, 53)],
+                        [datetime(2020, 1, 18, 16, 8), datetime(2020, 1, 19, 1, 23)],
+                        [datetime(2020, 2, 13, 2, 38), datetime(2020, 2, 13, 11, 8)]]
         self.site_loc = ['Smith Point', 'Cedar Beach', 'Cedar Beach']
         self.fileformat = 'netCDF-3'
 
         # extracting time and space metadata from nc.gz file
         dataset = Dataset(file_path)
         [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
-                        self.get_variables_min_max(dataset, file_path)
+            self.get_variables_min_max(dataset, file_path)
         dataset.close()
 
     def get_variables_min_max(self, nc, file_path):
@@ -47,22 +40,22 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         elif '_BNL.nc' in file_path:
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_BNL_metadata(nc)
         elif '_MAN.nc' in file_path:
-            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_metadata(nc)      
+            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_metadata(nc)
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
     def get_RT_metadata(self, nc):
         minTime, maxTime, minlat, maxlat, minlon, maxlon = [datetime(2100, 1, 1),
                                                             datetime(1900, 1, 1),
-                                                            -90.0, 90.0, -180.0, 180.0]
-        #load GPS.nc file for lat and lon info
-        gpsnc = Dataset(os.path.join(os.path.dirname(__file__),self.gps_path))
+                                                            90.0, -90.0, 180.0, -180.0]
+        # load GPS.nc file for lat and lon info
+        gpsnc = Dataset(os.path.join(os.path.dirname(__file__), self.gps_path))
         ctime = np.array(gpsnc.variables['time'][:])
         lat = np.array(gpsnc.variables['lat'][:])
         lon = np.array(gpsnc.variables['lon'][:])
         gpsnc.close()
-        #the resolution of time is several tiem step in an hour, so look-up-table
-        #is only at hour
+        # the resolution of time is several tiem step in an hour, so look-up-table
+        # is only at hour
         loc = {}
         for i in range(ctime.shape[0]):
             ltime = datetime(1970, 1, 1) + timedelta(seconds=int(ctime[i]))
@@ -70,39 +63,39 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
             llon = float(lon[i])
             ltime_str = ltime.strftime('%Y-%m-%d-%H-%M')
             if ltime_str in loc:
-                loc[ltime_str][1] = llat if llat > loc[ltime_str][1] else loc[ltime_str][1]
                 loc[ltime_str][0] = llat if llat < loc[ltime_str][0] else loc[ltime_str][0]
-                loc[ltime_str][3] = llon if llon > loc[ltime_str][3] else loc[ltime_str][3]
+                loc[ltime_str][1] = llat if llat > loc[ltime_str][1] else loc[ltime_str][1]
                 loc[ltime_str][2] = llon if llon < loc[ltime_str][2] else loc[ltime_str][2]
+                loc[ltime_str][3] = llon if llon > loc[ltime_str][3] else loc[ltime_str][3]
             else:
                 loc[ltime_str] = [llat, llat, llon, llon]
 
-        #load data file
+        # load data file
         timefield = np.array(nc.variables['time'][:])
 
         for i in range(timefield.shape[0]):
             ltime = datetime(1904, 1, 1) + timedelta(seconds=int(timefield[i]))
             ltime_str = ltime.strftime('%Y-%m-%d-%H-%M')
             if ltime_str in loc:
-                [minlat, maxlat, minlon, maxlon] = [loc[ltime_str][0],loc[ltime_str][1],
-                                                    loc[ltime_str][2],loc[ltime_str][3]]
+                [mnlat, mxlat, mnlon, mxlon] = [loc[ltime_str][0], loc[ltime_str][1],
+                                                loc[ltime_str][2], loc[ltime_str][3]]
             else:
                 site = 'SBU'
                 for i in range(3):
                     if ltime >= self.tperiod[i][0] and ltime <= self.tperiod[i][1]:
                         site = self.site_loc[i]
                         break
-                [mnlat, mxlat, mnlon, mxlon] = [self.gloc[site][1]-(0.03/111.325),
-                                                self.gloc[site][1]+(0.03/111.325),
-                                                self.gloc[site][0]-(0.03/111.325),
-                                                self.gloc[site][0]+(0.03/111.325)]
+                [mnlat, mxlat, mnlon, mxlon] = [self.gloc[site][1] - (0.03 / 111.325),
+                                                self.gloc[site][1] + (0.03 / 111.325),
+                                                self.gloc[site][0] - (0.03 / 111.325),
+                                                self.gloc[site][0] + (0.03 / 111.325)]
 
-                maxlat = mxlat if mxlat > maxlat else maxlat
-                minlat = mnlat if mnlat < minlat else minlat
-                maxlon = mxlon if mxlon > maxlon else maxlon
-                minlon = mnlon if mnlon < maxlon else maxlon
-                minTime = ltime if ltime < minTime else minTime
-                maxTime = ltime if ltime > maxTime else maxTime
+            maxlat = mxlat if mxlat > maxlat else maxlat
+            minlat = mnlat if mnlat < minlat else minlat
+            maxlon = mxlon if mxlon > maxlon else maxlon
+            minlon = mnlon if mnlon < maxlon else maxlon
+            minTime = ltime if ltime < minTime else minTime
+            maxTime = ltime if ltime > maxTime else maxTime
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
@@ -120,9 +113,9 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         lat = float(nc.variables['latitude'][:])
         lon = float(nc.variables['longitude'][:])
 
-        maxlat, minlat, maxlon, minlon  = [lat+(0.03/111.325), lat-(0.03/111.325),
-                                           lon+(0.03/111.325), lon-(0.03/111.325)]
-        
+        maxlat, minlat, maxlon, minlon = [lat + (0.03 / 111.325), lat - (0.03 / 111.325),
+                                          lon + (0.03 / 111.325), lon - (0.03 / 111.325)]
+
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
     def get_MAN_metadata(self, nc):
@@ -137,10 +130,10 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         lat = nc.variables['Location_latitude'][:]
         lon = nc.variables['Location_longitude'][:]
 
-        maxlat, minlat, maxlon, minlon = [float(max(lat))+(0.03/111.325),
-                                          float(max(lat))-(0.03/111.325),
-                                          float(max(lon))+(0.03/111.325),
-                                          float(max(lon))-(0.03/111.325)]
+        maxlat, minlat, maxlon, minlon = [float(max(lat)) + (0.03 / 111.325),
+                                          float(max(lat)) - (0.03 / 111.325),
+                                          float(max(lon)) + (0.03 / 111.325),
+                                          float(max(lon)) - (0.03 / 111.325)]
         self.fileformat = 'netCDF-4'
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
