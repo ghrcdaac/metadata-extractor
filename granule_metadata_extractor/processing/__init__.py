@@ -51,3 +51,5 @@ from .process_sbuceilimpacts import ExtractSbuceilimpactsMetadata
 from .process_sbulidarimpacts import ExtractSbulidarimpactsMetadata
 from .process_sbukasprimpacts import ExtractSbukasprimpactsMetadata
 from .process_sbumrr2impacts import ExtractSbumrr2impactsMetadata
+from .process_sbumetimpacts_netcdf import ExtractSbumetimpactsNetCDFMetadata
+from .process_sbumetimpacts_ascii import ExtractSbumetimpactsASCIIMetadata

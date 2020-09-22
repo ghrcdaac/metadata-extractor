@@ -48,7 +48,8 @@ class MDX(Process):
             "sbuceilimpacts": mdx.ExtractSbuceilimpactsMetadata,
             "sbulidarimpacts": mdx.ExtractSbulidarimpactsMetadata,
             "sbukasprimpacts": mdx.ExtractSbukasprimpactsMetadata,
-            "sbumrr2impacts": mdx.ExtractSbumrr2impactsMetadata
+            "sbumrr2impacts": mdx.ExtractSbumrr2impactsMetadata,
+            "sbumetimpacts": mdx.ExtractSbumetimpactsNetCDFMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -133,7 +134,8 @@ class MDX(Process):
             "gpmlipiphx": mdx.ExtractGpmlipiphxASCIIMetadata,
             "misrepimpacts": mdx.ExtractMisrepimpactsMetadata,
             "2dimpacts": mdx.Extract2dimpactsMetadata,
-            "apuimpacts": mdx.ExtractApuimpactsMetadata
+            "apuimpacts": mdx.ExtractApuimpactsMetadata,
+            "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
