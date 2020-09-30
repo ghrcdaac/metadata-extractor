@@ -349,6 +349,14 @@ class MDX(Process):
         return {
             'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos)$'
         }
+    def get_output_files(self,output_file_path, excluded):
+        """
+        """
+        output_files = [] if excluded else [output_file_path]
+        if os.path.isfile(output_file_path + ".cmr.xml"):
+            output_files += [output_file_path + ".cmr.xml"]
+        return output_files
+
 
     def process(self):
         """
@@ -384,8 +392,7 @@ class MDX(Process):
         for output_file_path in output.get(key):
             self.extract_metadata(file_path=output_file_path, config=self.config,
                                   output_folder=self.path)
-            generated_files = [output_file_path + ".cmr.xml"] if excluded \
-                else [output_file_path, output_file_path + ".cmr.xml"]
+            generated_files = self.get_output_files(output_file_path, excluded)
             for generated_file in generated_files:
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
             self.output += generated_files
