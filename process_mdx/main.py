@@ -349,7 +349,7 @@ class MDX(Process):
     @property
     def input_keys(self):
         return {
-            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos)$'
+            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv)$'
         }
 
     def process(self):
