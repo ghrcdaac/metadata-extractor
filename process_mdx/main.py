@@ -49,7 +49,9 @@ class MDX(Process):
             "sbulidarimpacts": mdx.ExtractSbulidarimpactsMetadata,
             "sbukasprimpacts": mdx.ExtractSbukasprimpactsMetadata,
             "sbumrr2impacts": mdx.ExtractSbumrr2impactsMetadata,
-            "sbumetimpacts": mdx.ExtractSbumetimpactsNetCDFMetadata
+            "sbumetimpacts": mdx.ExtractSbumetimpactsNetCDFMetadata,
+            "rss1tpwnv7r01": mdx.ExtractRssClimatologyMetadata,
+            "rss1windnv7r01": mdx.ExtractRssClimatologyMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -59,7 +61,7 @@ class MDX(Process):
 
         if match(regex, os.path.basename(netcdf_file)):
             metadata = switcher.get(ds_short_name, src.ExtractNetCDFMetadata)(netcdf_file)
-            format = 'netCDF-3' if '.nc' in netcdf_file else format
+            format = 'netCDF-3' if '.nc4' not in netcdf_file else format
             data = metadata.get_metadata(ds_short_name=ds_short_name,
                                          time_variable_key=time_variable_key,
                                          lon_variable_key=lon_variable_key,
@@ -357,7 +359,6 @@ class MDX(Process):
             output_files += [output_file_path + ".cmr.xml"]
         return output_files
 
-
     def process(self):
         """
         Override the processing wrapper
@@ -388,6 +389,8 @@ class MDX(Process):
                         f"{url_path}/{re.search('(.*)/(.*)$', input[0])[2]}")
         else:
             output = self.fetch_all()
+        # Assert we have inputs to process
+        assert output[key], "fetched files list should not be empty"
         files_sizes = {}
         for output_file_path in output.get(key):
             self.extract_metadata(file_path=output_file_path, config=self.config,
@@ -414,10 +417,13 @@ class MDX(Process):
                     "fileName": filename,  # Cumulus changed the key name to be camelCase
                     "filename": uploaded_file,  # We still need to provide some custom steps with
                     # this key holding the object URI
-                    "size": files_sizes[filename]
+                    "size": files_sizes.get(filename, 0)
                 }
             )
         final_output = list(granule_data.values())
+        # Clean up
+        for generated_file in self.output:
+            os.remove(generated_file)
 
         return {"granules": final_output, "input": uploaded_files}
 

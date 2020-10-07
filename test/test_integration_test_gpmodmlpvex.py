@@ -19,6 +19,7 @@ def test_task(mock_fetch, mock_upload, mock_size):
         event = json.loads(f.read())
     process = MDX(input=event.get('input'), config=event.get('config'))
     x = process.process()
+    print(x)
     expected_result = {'granules': [{'granuleId': 'lpvex_SHP_Aranda_ODM_u100915_00.txt',
                                      'files': [
                                          {'path': 'gpmodmlpvex__1', 'url_path': 'gpmodmlpvex__1',
@@ -30,7 +31,8 @@ def test_task(mock_fetch, mock_upload, mock_size):
                                           'bucket': 'ghrcsbxw-public',
                                           'fileName': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
                                           'filename': 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
-                                          'size': 2225}]}],
+                                          'size': 0}
+                                     ]}],
                        'input': ['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
                                  's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml']}
     assert (x == expected_result)

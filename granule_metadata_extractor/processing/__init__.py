@@ -53,3 +53,4 @@ from .process_sbukasprimpacts import ExtractSbukasprimpactsMetadata
 from .process_sbumrr2impacts import ExtractSbumrr2impactsMetadata
 from .process_sbumetimpacts_netcdf import ExtractSbumetimpactsNetCDFMetadata
 from .process_sbumetimpacts_ascii import ExtractSbumetimpactsASCIIMetadata
+from .process_rssclimatology import ExtractRssClimatologyMetadata
