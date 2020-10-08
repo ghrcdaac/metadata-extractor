@@ -12,8 +12,9 @@ granule_name = "lpvex_SHP_Aranda_ODM_u100915_00.txt"
 @patch('cumulus_process.Process.upload_output_files',
        return_value=['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
                      's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml'])
+@patch('os.remove', return_value=granule_name)
 @patch('os.path.getsize', return_value=2225)
-def test_task(mock_fetch, mock_upload, mock_size):
+def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
     payload = path.join(path.dirname(__file__), 'gpmodmlpvex.json')
     with open(payload) as f:
         event = json.loads(f.read())
