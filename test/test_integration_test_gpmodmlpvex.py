@@ -6,14 +6,15 @@ from process_mdx.main import MDX
 
 sys.path.insert(0, path.join(path.dirname(__file__), '..'))
 
-
+granule_name = "lpvex_SHP_Aranda_ODM_u100915_00.txt"
 @patch('cumulus_process.Process.fetch_all',
-       return_value={'input_key': ["./test/fixtures/lpvex_SHP_Aranda_ODM_u100915_00.txt"]})
+       return_value={'input_key': [path.join(path.dirname(__file__), f"fixtures/{granule_name}")]})
 @patch('cumulus_process.Process.upload_output_files',
        return_value=['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
                      's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml'])
+@patch('os.remove', return_value=granule_name)
 @patch('os.path.getsize', return_value=2225)
-def test_task(mock_fetch, mock_upload, mock_size):
+def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
     payload = path.join(path.dirname(__file__), 'gpmodmlpvex.json')
     with open(payload) as f:
         event = json.loads(f.read())
@@ -30,7 +31,8 @@ def test_task(mock_fetch, mock_upload, mock_size):
                                           'bucket': 'ghrcsbxw-public',
                                           'fileName': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
                                           'filename': 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
-                                          'size': 2225}]}],
+                                          'size': 0}
+                                     ]}],
                        'input': ['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
                                  's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml']}
     assert (x == expected_result)

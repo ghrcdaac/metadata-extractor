@@ -60,4 +60,4 @@ env/
 # Navaneeth's Scracth File
 granule_metadata_extractor/src/scratch1.py
 granule_metadata_extractor/src/scratch.py
-the_filename.txtenv.sh
+env.sh

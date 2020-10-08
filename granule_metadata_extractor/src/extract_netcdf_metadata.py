@@ -101,10 +101,10 @@ class ExtractNetCDFMetadata(MetadataExtractor):
                                                                               units_variable=time_units,
                                                                               date_format='%Y-%m-%dT%H:%M:%SZ')
 
-        gemetry_list =self.get_wnes_geometry(lon_variable_key, lat_variable_key)
+        geometry_list =self.get_wnes_geometry(lon_variable_key, lat_variable_key)
 
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
-        data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(str(x) for x in gemetry_list)
+        data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(str(x) for x in geometry_list)
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
         data['DataFormat'] = format
