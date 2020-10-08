@@ -22,8 +22,9 @@ IntegrationTest:
     - python setup.py install
     - pip install -r requirements-dev.txt
     - python setup.py sdist
+    - ls -al /builds/ghrc-cloud/metadata-extractor/test/fixtures/pvex_SHP_Aranda_ODM_u100915_00.txt
     - nosetests -sx
-    - ls -al /builds/ghrc-cloud/metadata-extractor/test/fixtures/
+    - ls -al /builds/ghrc-cloud/metadata-extractor/test/fixtures/pvex_SHP_Aranda_ODM_u100915_00.txt
     - pytest --junitxml=test_metadata_extractor.xml test
     - nosetests -c .noserc -q --cover-html-dir=build --cover-html
     - coverage report -m
