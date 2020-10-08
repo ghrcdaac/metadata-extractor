@@ -17,3 +17,8 @@ COPY    . $BUILD/
 
 RUN     bash conda-requirements.sh && \
         python setup.py install
+
+# Development
+RUN     pip install -r requirements-dev.txt && \
+        pytest test && \
+        rm -rf test
