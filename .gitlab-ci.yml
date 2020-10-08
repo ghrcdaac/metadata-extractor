@@ -23,6 +23,7 @@ IntegrationTest:
     - pip install -r requirements-dev.txt
     - python setup.py sdist
     - nosetests -sx
+    - pwd
     - pytest --junitxml=test_metadata_extractor.xml test
     - nosetests -c .noserc -q --cover-html-dir=build --cover-html
     - coverage report -m
