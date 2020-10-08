@@ -51,7 +51,8 @@ class MDX(Process):
             "sbumrr2impacts": mdx.ExtractSbumrr2impactsMetadata,
             "sbumetimpacts": mdx.ExtractSbumetimpactsNetCDFMetadata,
             "rss1tpwnv7r01": mdx.ExtractRssClimatologyMetadata,
-            "rss1windnv7r01": mdx.ExtractRssClimatologyMetadata
+            "rss1windnv7r01": mdx.ExtractRssClimatologyMetadata,
+            "sbuparsimpacts": mdx.ExtractSbuparsimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -137,7 +138,8 @@ class MDX(Process):
             "misrepimpacts": mdx.ExtractMisrepimpactsMetadata,
             "2dimpacts": mdx.Extract2dimpactsMetadata,
             "apuimpacts": mdx.ExtractApuimpactsMetadata,
-            "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata
+            "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata,
+            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
@@ -349,7 +351,7 @@ class MDX(Process):
     @property
     def input_keys(self):
         return {
-            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos)$'
+            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv)$'
         }
     def get_output_files(self,output_file_path, excluded):
         """

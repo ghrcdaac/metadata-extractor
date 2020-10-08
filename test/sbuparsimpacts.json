@@ -1,18 +1,18 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/sbumetimpacts__1/IMPACTS_SBU_airmarweather_20200119_RT.nc",
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/sbumetimpacts__1/IMPACTS_SBU_weatherdhs_20200216_MAN.csv"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/sbuparsimpacts__1/IMPACTS_SBU_parsivel_20200112_RT.nc",
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/sbuparsimpacts__1/IMPACTS_SBU_parsivel_20200224_SB.nc"
    ],
    "config":{
       "files_config":[
          {
             "regex":"^(.*).*\\.cmr.xml$",
-            "sampleFileName":"IMPACTS_SBU_airmarweather_20200106_RT.nc.cmr.xml",
+            "sampleFileName":"IMPACTS_SBU_parsivel_20200224_SB.nc.cmr.xml",
             "bucket":"public"
          },
          {
-            "regex":"^(.*).*\\.(nc|csv)$",
-            "sampleFileName":"IMPACTS_SBU_airmarweather_20200106_RT.nc",
+            "regex":"^(.*).*\\.(nc)$",
+            "sampleFileName":"IMPACTS_SBU_parsivel_20200224_SB.nc",
             "bucket":"protected"
          }
       ],
@@ -35,39 +35,35 @@
          }
       },
       "collection":{
-         "name":"sbumetimpacts",
+         "name":"sbuparsimpacts",
          "version":"1",
-         "dataType":"sbumetimpacts",
+         "dataType":"sbuparsimpacts",
          "process":"metadataextractor",
-         "url_path":"sbumetimpacts__1",
+         "url_path":"sbuparsimpacts__1",
          "duplicateHandling":"replace",
-         "granuleId":"^IMPACTS_SBU_.*$",
-         "granuleIdExtraction":"^((IMPACTS_SBU_).*)",
+         "granuleId":"^IMPACTS_SBU_parsivel_.*\\.(nc)$",
+         "granuleIdExtraction":"^((IMPACTS_SBU_parsivel_).*)",
          "reportToEms":true,
-         "sampleFileName":"IMPACTS_SBU_airmarweather_20200106_RT.nc",
+         "sampleFileName":"IMPACTS_SBU_parsivel_20200103_MAN.nc",
          "files":[
             {
                "bucket":"public",
-               "regex":"^IMPACTS_SBU_(.*).*\\.cmr.xml$",
-               "sampleFileName":"IMPACTS_SBU_airmarweather_20200106_RT.nc.cmr.xml"
+               "regex":"^IMPACTS_SBU_parsivel(.*).*\\.cmr.xml$",
+               "sampleFileName":"IMPACTS_SBU_parsivel_20200103_MAN.nc.cmr.xml"
             },
             {
                "bucket":"protected",
-               "regex":"^IMPACTS_SBU_(.*).*(nc|csv)$",
-               "sampleFileName":"IMPACTS_SBU_airmarweather_20200106_RT.nc"
+               "regex":"^IMPACTS_SBU_parsivel_(.*).*(nc)$",
+               "sampleFileName":"IMPACTS_SBU_parsivel_20200103_MAN.nc"
             }
          ],
          "meta":{
-            "provider_path":"sbumetimpacts/fieldCampaigns/impacts/SBU_MetStation/data/",
+            "provider_path":"sbuparsimpacts/fieldCampaigns/impacts/SBU_Parsivel/data/",
             "hyrax_processing":"false",
             "metadata_extractor":[
                {
                   "regex":"^IMPACTS_SBU_(.*).*(nc)$",
                   "module":"netcdf"
-               },
-               {
-                  "regex":"^IMPACTS_SBU_(.*).*(csv)$",
-                  "module":"ascii"
                }
             ]
          }
