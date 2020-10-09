@@ -1,12 +1,12 @@
 [![pipeline status](https://gitlab.com/ghrc-cloud/metadata-extractor/badges/master/pipeline.svg)](https://gitlab.com/ghrc-cloud/metadata-extractor/-/jobs) [![pipeline status](https://gitlab.com/ghrc-cloud/metadata-extractor/badges/master/coverage.svg)](https://gitlab.com/ghrc-cloud/metadata-extractor)
-`
+<pre>
  __  __ ______  __
 |  \/  |  _ \ \/ /
 | |\/| | | | \  /
 | |  | | |_| /  \
 |_|  |_|____/_/\_\
 
-`
+</pre>
 
 
 # A python tool to extract granule metadata
