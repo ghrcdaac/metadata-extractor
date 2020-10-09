@@ -1,6 +1,6 @@
 FROM    continuumio/miniconda3:4.8.2
 
-LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu"
+LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu>"
 RUN     apt-get update && \
         apt-get install -y libxml2-utils
 
