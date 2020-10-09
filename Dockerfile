@@ -1,17 +1,12 @@
-FROM    centos:8
+FROM    continuumio/miniconda3:4.8.2
 
-RUN     mkdir -p /usr/local/bin
-RUN     export PATH=$PATH:/usr/local/bin
-
-RUN     dnf update -y && \
-        dnf install wget -y && \
-        wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.8.2-Linux-x86_64.sh && \
-        bash Miniconda3-py38_4.8.2-Linux-x86_64.sh -b && \
-        rm Miniconda3-py38_4.8.2-Linux-x86_64.sh
+LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu>"
+RUN     apt-get update && \
+        apt-get install -y libxml2-utils
 
 WORKDIR /build
 
-ENV     BUILD=/build PATH="/root/miniconda3/bin:${PATH}"
+ENV     BUILD=/build
 
 COPY    . $BUILD/
 
