@@ -52,7 +52,8 @@ class MDX(Process):
             "sbumetimpacts": mdx.ExtractSbumetimpactsNetCDFMetadata,
             "rss1tpwnv7r01": mdx.ExtractRssClimatologyMetadata,
             "rss1windnv7r01": mdx.ExtractRssClimatologyMetadata,
-            "sbuparsimpacts": mdx.ExtractSbuparsimpactsMetadata
+            "sbuparsimpacts": mdx.ExtractSbuparsimpactsMetadata,
+            "cosmirimpacts": mdx.ExtractCosmirimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -139,8 +140,7 @@ class MDX(Process):
             "2dimpacts": mdx.Extract2dimpactsMetadata,
             "apuimpacts": mdx.ExtractApuimpactsMetadata,
             "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata,
-            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata,
-            "cosmirimpacts": mdx.ExtractCosmirimpactsMetadata
+            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
