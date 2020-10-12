@@ -139,7 +139,8 @@ class MDX(Process):
             "2dimpacts": mdx.Extract2dimpactsMetadata,
             "apuimpacts": mdx.ExtractApuimpactsMetadata,
             "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata,
-            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata
+            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata,
+            "cosmirimpacts": mdx.ExtractCosmirimpactsMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
