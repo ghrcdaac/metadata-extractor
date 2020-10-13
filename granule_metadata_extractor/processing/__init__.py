@@ -56,4 +56,4 @@ from .process_sbumetimpacts_ascii import ExtractSbumetimpactsASCIIMetadata
 from .process_rssclimatology import ExtractRssClimatologyMetadata
 from .process_sbuparsimpacts import ExtractSbuparsimpactsMetadata
 from .process_sbuplimpacts import ExtractSbuplimpactsMetadata
-
+from .process_cosmirimpacts import ExtractCosmirimpactsMetadata

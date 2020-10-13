@@ -52,7 +52,8 @@ class MDX(Process):
             "sbumetimpacts": mdx.ExtractSbumetimpactsNetCDFMetadata,
             "rss1tpwnv7r01": mdx.ExtractRssClimatologyMetadata,
             "rss1windnv7r01": mdx.ExtractRssClimatologyMetadata,
-            "sbuparsimpacts": mdx.ExtractSbuparsimpactsMetadata
+            "sbuparsimpacts": mdx.ExtractSbuparsimpactsMetadata,
+            "cosmirimpacts": mdx.ExtractCosmirimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
