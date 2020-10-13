@@ -1,13 +1,8 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
-import json
 import os
-import pathlib
-import gzip
 import numpy as np
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
-import shutil
-import tempfile
 
 
 
@@ -25,10 +20,10 @@ class ExtractCosmirimpactsMetadata(ExtractNetCDFMetadata):
         # extracting time and space metadata from nc.gz file
         dataset = Dataset(file_path)
         [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
-                        self.get_variables_min_max(dataset, file_path)
+                        self.get_variables_min_max(dataset)
         dataset.close()
 
-    def get_variables_min_max(self, nc, file_path):
+    def get_variables_min_max(self, nc):
         """
         :param nc: Dataset opened
         :param file_path: file path
@@ -57,8 +52,8 @@ class ExtractCosmirimpactsMetadata(ExtractNetCDFMetadata):
                     total_sec = int(hr[i,j]*3600 + mn[i,j]*60 + sec[i,j])
                     dt = datetime(int(year[i,j]), int(mon[i,j]), int(day[i,j])) + \
                          timedelta(seconds=total_sec)
-                    minTime = dt if dt < minTime else minTime
-                    maxTime = dt if dt > maxTime else maxTime
+                    minTime = min(dt, minTime)
+                    maxTime = max(dt, maxTime)
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
