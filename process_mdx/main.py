@@ -53,7 +53,8 @@ class MDX(Process):
             "rss1tpwnv7r01": mdx.ExtractRssClimatologyMetadata,
             "rss1windnv7r01": mdx.ExtractRssClimatologyMetadata,
             "sbuparsimpacts": mdx.ExtractSbuparsimpactsMetadata,
-            "cosmirimpacts": mdx.ExtractCosmirimpactsMetadata
+            "cosmirimpacts": mdx.ExtractCosmirimpactsMetadata,
+            "cplimpacts": mdx.ExtractCplimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -352,7 +353,7 @@ class MDX(Process):
     @property
     def input_keys(self):
         return {
-            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv)$'
+            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv|hdf5)$'
         }
     def get_output_files(self,output_file_path, excluded):
         """
