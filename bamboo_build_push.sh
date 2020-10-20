@@ -4,14 +4,19 @@ export REPO_NAME=mdx
 #access_keys=( "bamboo_ACCESS_KEY_SIT" "bamboo_ACCESS_KEY_UAT" "bamboo_ACCESS_KEY_PROD")
 #access_keys=( $bamboo_ACCESS_KEY_SIT $bamboo_ACCESS_KEY_UAT $bamboo_ACCESS_KEY_PROD)
 #secret_keys=( $bamboo_SECRET_KEY_SIT $bamboo_SECRET_KEY_UAT $bamboo_SECRET_KEY_PROD)
+#prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD)
 #account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
 
 
 access_keys=( $bamboo_ACCESS_KEY_SBX )
 secret_keys=( $bamboo_SECRET_KEY_SBX)
 account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX )
+prefixes=( $bamboo_PREFIX_SBX )
 
+function stop_mdx_task() {
+ ./aws ecs stop-task --cluster $1-CumulusECSCluster --task `aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" | tr -d '"'`}
 
+}
 
 export AWS_REGION=$bamboo_AWS_REGION
 len=${#access_keys[@]}
@@ -33,6 +38,7 @@ do
  	export AWS_ACCESS_KEY_ID=${access_keys[$i]}
 	export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
 	export ACCOUNT_NUMBER=${account_numbers[$i]}
+	export prefix=${prefixes[$i]}
   cat > aws <<EOS
 #!/usr/bin/env bash
 set -o errexit
@@ -62,6 +68,8 @@ echo "login into ecr"
 $(cat ecr.out)
 echo "pushing image to ecr"
 docker push $docker_image_name
+check_exit
+stop_mdx_task $prefix
 check_exit
 echo "removing temp file"
 rm ecr.out
