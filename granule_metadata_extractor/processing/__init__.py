@@ -58,3 +58,4 @@ from .process_sbuparsimpacts import ExtractSbuparsimpactsMetadata
 from .process_sbuplimpacts import ExtractSbuplimpactsMetadata
 from .process_cosmirimpacts import ExtractCosmirimpactsMetadata
 from .process_cplimpacts import ExtractCplimpactsMetadata
+from .process_parprbimpacts import ExtractParprbimpactsMetadata
