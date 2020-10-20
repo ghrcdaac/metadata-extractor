@@ -24,6 +24,8 @@ fi
 }
 
 docker build -t mdx .
+# Copy test results
+docker run --rm --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml /tmp/test_metadata_extractor.xml
 check_exit
 
 for (( i=0; i<$len; i++ ))

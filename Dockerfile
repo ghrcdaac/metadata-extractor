@@ -15,5 +15,5 @@ RUN     bash conda-requirements.sh && \
 
 # Development
 RUN     pip install -r requirements-dev.txt && \
-        pytest test && \
+        pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
         rm -rf test
