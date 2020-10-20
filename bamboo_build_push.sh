@@ -26,9 +26,7 @@ fi
 docker build -t mdx .
 check_exit
 # Copy test results
-echo "Copy test file"
-docker run --rm --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml /tmp/test_metadata_extractor.xml
-echo "Done copy test file"
+docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml  /opt/mount/test_metadata_extractor.xml
 
 for (( i=0; i<$len; i++ ))
 do
