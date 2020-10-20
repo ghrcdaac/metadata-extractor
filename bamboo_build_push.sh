@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export REPO_NAME=mdx
-#access_keys=( "bamboo_ACCESS_KEY_SIT" "bamboo_ACCESS_KEY_UAT" "bamboo_ACCESS_KEY_PROD")
+export AWS_REGION=$bamboo_AWS_REGION
 #access_keys=( $bamboo_ACCESS_KEY_SIT $bamboo_ACCESS_KEY_UAT $bamboo_ACCESS_KEY_PROD)
 #secret_keys=( $bamboo_SECRET_KEY_SIT $bamboo_SECRET_KEY_UAT $bamboo_SECRET_KEY_PROD)
 #prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD)
@@ -14,11 +14,12 @@ account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX )
 prefixes=( $bamboo_PREFIX_SBX )
 
 function stop_mdx_task() {
- ./aws ecs stop-task --cluster $1-CumulusECSCluster --task `aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" | tr -d '"'`}
+ ./aws ecs stop-task --cluster $1-CumulusECSCluster --task `./aws ecs list-tasks --cluster $1-CumulusECSCluster \
+  --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"'` --region $AWS_REGION
 
 }
 
-export AWS_REGION=$bamboo_AWS_REGION
+
 len=${#access_keys[@]}
 
 function check_exit {
