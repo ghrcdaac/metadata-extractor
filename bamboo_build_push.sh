@@ -29,10 +29,10 @@ if [ $EXIT_STATUS -ne 0 ]; then
 fi
 }
 
-docker build -t mdx .
-check_exit
+#docker build -t mdx .
+#check_exit
 # Copy test results
-docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml  /opt/mount/test_metadata_extractor.xml
+#docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml  /opt/mount/test_metadata_extractor.xml
 
 for (( i=0; i<$len; i++ ))
 do
@@ -57,25 +57,27 @@ docker run --rm \
 	"\$@"
 EOS
 chmod a+x aws
-docker_image_name=${ACCOUNT_NUMBER}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME
-docker tag mdx $docker_image_name
-check_exit
-ECR=$(./aws ecr get-login --no-include-email --region ${AWS_REGION})
-#./aws ecr create-repository --repository-name $REPO_NAME 2> /dev/null
-echo "creating login temp file"
-_ECR=$(echo ${ECR} | tr -d '\r')
-echo ${_ECR} > ecr.out
-echo "login into ecr"
-$(cat ecr.out)
-echo "pushing image to ecr"
-docker push $docker_image_name
-check_exit
+#docker_image_name=${ACCOUNT_NUMBER}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME
+#docker tag mdx $docker_image_name
+#check_exit
+#ECR=$(./aws ecr get-login --no-include-email --region ${AWS_REGION})
+##./aws ecr create-repository --repository-name $REPO_NAME 2> /dev/null
+#echo "creating login temp file"
+#_ECR=$(echo ${ECR} | tr -d '\r')
+#echo ${_ECR} > ecr.out
+#echo "login into ecr"
+#$(cat ecr.out)
+#echo "pushing image to ecr"
+#docker push $docker_image_name
+#check_exit
+echo "./aws ecs stop-task --cluster $prefix-CumulusECSCluster --task `./aws ecs list-tasks --cluster $prefix-CumulusECSCluster \
+  --service-name $prefix-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"'` --region $AWS_REGION"
 stop_mdx_task $prefix
 check_exit
-echo "removing temp file"
-rm ecr.out
-docker rmi $docker_image_name
-check_exit
+#echo "removing temp file"
+#rm ecr.out
+#docker rmi $docker_image_name
+#check_exit
 
 done
 
