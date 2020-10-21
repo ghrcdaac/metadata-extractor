@@ -16,8 +16,8 @@ account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX )
 prefixes=( $bamboo_PREFIX_SBX )
 
 function stop_mdx_task() {
-  task_arn=$(./aws2 ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
-  ./aws2 ecs stop-task --cluster $1-CumulusECSCluster --task $task_arn --region $AWS_REGION
+  task_arn=$(./aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
+  ./aws ecs stop-task --cluster $1-CumulusECSCluster --task $task_arn --region $AWS_REGION
 }
 
 
@@ -54,13 +54,14 @@ EOS
 chmod a+x aws
 docker_image_name=${ACCOUNT_NUMBER}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME
 docker tag mdx $docker_image_name
-ECR=$(./aws ecr get-login --no-include-email --region ${AWS_REGION})
+
+aws ecr get-login-password \
+    --region $AWS_REGION \
+| docker login \
+    --username AWS \
+    --password-stdin $ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com
+
 #./aws ecr create-repository --repository-name $REPO_NAME 2> /dev/null
-echo "creating login temp file"
-_ECR=$(echo ${ECR} | tr -d '\r')
-echo ${_ECR} > ecr.out
-echo "login into ecr"
-$(cat ecr.out)
 echo "pushing image to ecr"
 docker push $docker_image_name
 
