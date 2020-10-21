@@ -78,7 +78,7 @@ chmod a+x aws
 #check_exit
 task_id=$(./aws ecs list-tasks --cluster $prefix-CumulusECSCluster --service-name $prefix-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
 echo $task_id
-./aws ecs stop-task --cluster $prefix-CumulusECSCluster --task $task_id --region $AWS_REGION
+./aws ecs stop-task --cluster $prefix-CumulusECSCluster --task 263b89b5-7696-4c0b-9315-a39ea3182476 --region $AWS_REGION
 done
 
 #docker rmi mdx
