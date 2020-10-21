@@ -15,10 +15,7 @@ prefixes=( $bamboo_PREFIX_SBX )
 
 function stop_mdx_task() {
   task_arn=$(./aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
-  IFS='/' read -ra ADDR <<< "arn:aws:ecs:us-west-2:322322076095:task/263b89b5-7696-4c0b-9315-a39ea3182476"
-  for i in "${ADDR[@]}"; do
-    task_id=$i
-  done
+  task_id=${task_arn#*:task/}
  ./aws ecs stop-task --cluster $1-CumulusECSCluster --task $task_id --region $AWS_REGION
 
 }
