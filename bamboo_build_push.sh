@@ -67,8 +67,6 @@ docker push $docker_image_name
 
 stop_mdx_task $prefix
 
-echo "removing temp file"
-rm ecr.out
 docker rmi $docker_image_name
 
 
