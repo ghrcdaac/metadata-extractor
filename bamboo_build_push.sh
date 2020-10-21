@@ -55,7 +55,7 @@ chmod a+x aws
 docker_image_name=${ACCOUNT_NUMBER}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME
 docker tag mdx $docker_image_name
 
-aws ecr get-login-password \
+./aws ecr get-login-password \
     --region $AWS_REGION \
 | docker login \
     --username AWS \
