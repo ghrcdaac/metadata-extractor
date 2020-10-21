@@ -17,7 +17,7 @@ function stop_mdx_task() {
   task_arn=$(./aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
   task_id=${task_arn#*:task/}
   echo $task_id
- ./aws ecs stop-task --cluster $1-CumulusECSCluster --task $task_id --region $AWS_REGION
+ ./aws ecs stop-task --cluster $1-CumulusECSCluster --task $task_arn --region $AWS_REGION
 
 }
 
@@ -55,7 +55,7 @@ docker run --rm \
 	-e "AWS_SECRET_ACCESS_KEY=\${AWS_SECRET_ACCESS_KEY}" \
 	-e "AWS_DEFAULT_REGION=\${AWS_REGION}" \
 	-v "\$(pwd):/project" \
-	maven.earthdata.nasa.gov/awscli:1.18 \
+	maven.earthdata.nasa.gov/aws-cli:2 \
 	"\$@"
 EOS
 chmod a+x aws
