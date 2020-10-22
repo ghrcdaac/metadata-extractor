@@ -68,6 +68,7 @@ docker push $docker_image_name
 stop_mdx_task $prefix
 
 docker rmi $docker_image_name
+rm ./aws
 
 
 done
