@@ -19,8 +19,10 @@ IntegrationTest:
     - pytest --junitxml=test_metadata_extractor.xml test
     - nosetests -c .noserc -q --cover-html-dir=build --cover-html
     - coverage report -m
-  only:
-    - merge_requests
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master'
+    - if: '$CI_MERGE_REQUEST_ID'
+
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   artifacts:
     reports:
