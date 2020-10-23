@@ -20,7 +20,7 @@ IntegrationTest:
     - nosetests -c .noserc -q --cover-html-dir=build --cover-html
     - coverage report -m
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "master'
+    - if: '$CI_COMMIT_REF_NAME == "master"'
     - if: '$CI_MERGE_REQUEST_ID'
 
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
