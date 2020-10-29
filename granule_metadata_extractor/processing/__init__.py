@@ -61,3 +61,4 @@ from .process_cplimpacts import ExtractCplimpactsMetadata
 from .process_parprbimpacts import ExtractParprbimpactsMetadata
 from .process_isslisv1 import ExtractIsslisv1Metadata
 from .process_isslisgv1 import ExtractIsslisgv1Metadata
+from .process_globalir import ExtractGlobalirMetadata

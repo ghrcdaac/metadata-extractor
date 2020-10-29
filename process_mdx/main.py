@@ -59,7 +59,8 @@ class MDX(Process):
             "isslis_v1_nrt": mdx.ExtractIsslisv1Metadata,
             "isslis_v1_nqc": mdx.ExtractIsslisv1Metadata,
             "isslisg_v1_nrt": mdx.ExtractIsslisgv1Metadata,
-            "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata
+            "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata,
+            "globalir": mdx.ExtractGlobalirMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -358,7 +359,7 @@ class MDX(Process):
     @property
     def input_keys(self):
         return {
-            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv|hdf5|hdf)$'
+            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv|hdf5|hdf|mrest)$'
         }
     def get_output_files(self,output_file_path, excluded):
         """
