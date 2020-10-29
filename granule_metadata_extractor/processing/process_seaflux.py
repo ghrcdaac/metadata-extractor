@@ -6,13 +6,6 @@ class ExtractSeafluxMetadata(ExtractNetCDFMetadata):
     """
     A class to extract Seaflux granule metadata
     """
-    start_time = datetime(2100, 1, 1)
-    end_time = datetime(1900, 1, 1)
-    north = -90.0
-    south = 90.0
-    east = -180.0
-    west = 180.0
-
     def __init__(self, file_path):
         super().__init__(file_path)
         self.get_variables_min_max()
