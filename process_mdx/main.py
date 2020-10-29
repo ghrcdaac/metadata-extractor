@@ -57,7 +57,9 @@ class MDX(Process):
             "cplimpacts": mdx.ExtractCplimpactsMetadata,
             "parprbimpacts": mdx.ExtractParprbimpactsMetadata,
             "isslis_v1_nrt": mdx.ExtractIsslisv1Metadata,
-            "isslis_v1_nqc": mdx.ExtractIsslisv1Metadata
+            "isslis_v1_nqc": mdx.ExtractIsslisv1Metadata,
+            "isslisg_v1_nrt": mdx.ExtractIsslisgv1Metadata,
+            "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
