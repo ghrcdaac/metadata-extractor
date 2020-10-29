@@ -7,7 +7,7 @@ from datetime import datetime
 
 #prem metadata for sample file:
 
-class TestGlobalirParprbimpacts(TestCase):
+class TestGlobalir(TestCase):
     """
     Test processing.
     This will test if metadata will be extracted correctly
