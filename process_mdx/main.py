@@ -59,7 +59,8 @@ class MDX(Process):
             "isslis_v1_nrt": mdx.ExtractIsslisv1Metadata,
             "isslis_v1_nqc": mdx.ExtractIsslisv1Metadata,
             "isslisg_v1_nrt": mdx.ExtractIsslisgv1Metadata,
-            "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata
+            "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata,
+            "seaflux": mdx.ExtractSeafluxMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -281,14 +282,6 @@ class MDX(Process):
             self.logger.error("Error uploading file %s: %s" % (
                 os.path.basename(os.path.basename(filename)), str(e)))
 
-    def get_file_staging_directory(self, config, ):
-        """
-        Comute staging files
-        :return:
-        """
-        # TODO Implement filestaging function
-        return "Tobe implemented"
-
     def extract_metadata(self, file_path, config, output_folder):
         """
         High-level extract metadata from file
@@ -358,9 +351,11 @@ class MDX(Process):
     @property
     def input_keys(self):
         return {
-            'input_key': r'^.*.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv|hdf5|hdf)$'
+            'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
+                         r'|hdf5|hdf|nc4)$'
         }
-    def get_output_files(self,output_file_path, excluded):
+
+    def get_output_files(self, output_file_path, excluded):
         """
         """
         output_files = [] if excluded else [output_file_path]
