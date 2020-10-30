@@ -36,16 +36,7 @@ class TestProcessGeoER(TestCase):
         bucket_destination = bucket.get('name')
         self.assertTrue(bucket_destination == "ghrcsbxw-protected")
 
-    def test_2_get_file_staging_directory(self):
-        """
-        Test the staging file
-        :return:
-        """
-
-        file_staging_directory = self.process.get_file_staging_directory(self.config)
-        self.assertTrue(file_staging_directory == "Tobe implemented")
-
-    def test_3_start_stop_date_goesrpltcrs(self):
+    def test_2_start_stop_date_goesrpltcrs(self):
         """
         Test start date and stop date
         :return:
@@ -58,7 +49,7 @@ class TestProcessGeoER(TestCase):
         self.assertEqual(start, "2017-05-07T16:08:45Z")
         self.assertEqual(stop, "2017-05-07T16:08:45Z")
 
-    def test_4_geometry_goesrpltcrs(self):
+    def test_3_geometry_goesrpltcrs(self):
         """
         Test geometry metadata
         :return:

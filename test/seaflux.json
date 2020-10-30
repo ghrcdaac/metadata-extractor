@@ -1,17 +1,17 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/namdropraw__1/NAMMA_DROP_20060807_193132_P.dat"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/seaflux__1/SeaFluxV3_Monthly_199207.nc4"
    ],
    "config":{
       "files_config":[
          {
             "regex":"^(.*)\\.cmr.xml$",
-            "sampleFileName":"NAMMA_DROP_20060807_193132_P.dat.cmr.xml",
+            "sampleFileName":"SeaFluxV3_Monthly_199207.nc4.cmr.xml",
             "bucket":"public"
          },
          {
             "regex":"^(.*)\\.(dat)$",
-            "sampleFileName":"NAMMA_DROP_20060807_193132_P.dat",
+            "sampleFileName":"SeaFluxV3_Monthly_199207.nc4",
             "bucket":"protected"
          }
       ],
@@ -34,37 +34,39 @@
          }
       },
       "collection":{
-         "name":"namdrop_raw",
+         "name":"seaflux",
          "version":"1",
-         "dataType":"namdrop_raw",
+         "dataType":"seaflux",
          "process":"metadataextractor",
+         "url_path":"seaflux__1",
          "duplicateHandling":"replace",
-         "granuleId":"^.*$",
-         "granuleIdExtraction":"NAMMA_DROP_(.*)\\.(dat)$",
+         "granuleId":"^SeaFluxV3_.*\\.(nc4)$",
+         "granuleIdExtraction":"^((SeaFluxV3_).*)",
          "reportToEms":true,
-         "sampleFileName":"NAMMA_DROP_20060807_193132_P.dat",
+         "sampleFileName":"SeaFluxV3_Daily_19880108.nc4",
+         "meta":{
+            "hyrax_processing":"false",
+            "provider_path":"seaflux/seaflux/data/",
+            "large_dataset":"true",
+            "metadata_extractor":[
+               {
+                  "regex":"^SeaFluxV3_(.*)\\.(nc4)$",
+                  "module":"netcdf"
+               }
+            ]
+         },
          "files":[
             {
                "bucket":"public",
-               "regex":"^NAMMA_DROP_(.*)\\.cmr.xml$",
-               "sampleFileName":"NAMMA_DROP_20060807_193132_P.dat.cmr.xml"
+               "regex":"^SeaFluxV3_(.*).*\\.cmr.xml$",
+               "sampleFileName":"SeaFluxV3_Daily_19880108.nc4.cmr.xml"
             },
             {
                "bucket":"protected",
-               "regex":"^NAMMA_DROP_(.*)\\.(dat)$",
-               "sampleFileName":"NAMMA_DROP_20060807_193132_P.dat"
+               "regex":"^SeaFluxV3_(.*).*(nc4)$",
+               "sampleFileName":"SeaFluxV3_Daily_19880108.nc4"
             }
-         ],
-         "meta":{
-            "provider_path":"namdrop_raw/fieldCampaigns/namma/Dropsonde_Raw/data/",
-            "hyrax_processing":"false",
-            "metadata_extractor":[
-               {
-                  "regex":"^(.*)\\.(dat)$",
-                  "module":"ascii"
-               }
-            ]
-         }
+         ]
       },
       "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
    }
