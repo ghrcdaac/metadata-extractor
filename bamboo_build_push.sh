@@ -16,8 +16,8 @@ account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_
 #prefixes=( $bamboo_PREFIX_SBX )
 
 function stop_mdx_task() {
-  task_arn=$(./aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
-  ./aws ecs stop-task --cluster $1-CumulusECSCluster --task $task_arn --region $AWS_REGION
+  task_arn=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
+  aws ecs stop-task --cluster $1-CumulusECSCluster --task $task_arn --region $AWS_REGION
 }
 
 
@@ -62,14 +62,13 @@ aws ecr get-login-password \
     --username AWS \
     --password-stdin $ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com
 
-#./aws ecr create-repository --repository-name $REPO_NAME 2> /dev/null
+#aws ecr create-repository --repository-name $REPO_NAME 2> /dev/null
 echo "pushing image to ecr"
 docker push $docker_image_name
 
 stop_mdx_task $prefix
 
 docker rmi $docker_image_name
-rm ./aws
 
 
 done
