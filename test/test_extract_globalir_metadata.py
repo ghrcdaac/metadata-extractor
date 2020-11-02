@@ -26,7 +26,6 @@ class TestGlobalir(TestCase):
     process_dataset = ExtractGlobalirMetadata(input_file)
     md = process_dataset.get_metadata(ds_short_name= 'globalir')
     expected_metadata = {'ShortName': 'globalir',
-#                         'GranuleUR': granule_name,
                          'GranuleUR': granule_rename,
                          'VersionId': '1', 'DataFormat': 'Binary',
                          }
@@ -134,5 +133,5 @@ class TestGlobalir(TestCase):
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
         echo10xml = GenerateEcho10XML(self.expected_metadata)
         echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
+        self.assertTrue(path.exists(f'/tmp/{self.granule_rename}.cmr.xml'))
 
