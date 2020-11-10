@@ -64,3 +64,4 @@ from .process_isslisgv1 import ExtractIsslisgv1Metadata
 from .process_seaflux import ExtractSeafluxMetadata
 from .process_globalir import ExtractGlobalirMetadata
 from .process_nalma import ExtractNalmaMetadata
+from .process_nalmanrt import ExtractNalmanrtMetadata
