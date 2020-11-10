@@ -1,18 +1,18 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/nalmanrt__1/NALMA_201016_000500_0060.dat.gz"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/namdropraw__1/LM_NALMA_fayetteville_201016_142000.dat"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^NALMA_(.*).*\\.cmr.xml$",
-            "sampleFileName":"NALMA_201015_235900_0060.dat.gz.cmr.xml"
+            "regex":"^.*_NALMA_.*\\.cmr\\.xml$",
+            "sampleFileName":"LK_NALMA_courtland_201015_035000.dat.gz.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^NALMA_(.*).*(gz)$",
-            "sampleFileName":"NALMA_201015_235900_0060.dat.gz"
+            "regex":"^.*_NALMA_.*(\\.gz)$",
+            "sampleFileName":"LK_NALMA_courtland_201015_035000.dat.gz"
          }
       ],
       "buckets":{
@@ -34,18 +34,18 @@
          }
       },
       "collection":{
-         "name":"nalmanrt",
+         "name":"nalmaraw",
          "version":"1",
-         "dataType":"nalmanrt",
+         "dataType":"nalmaraw",
          "process":"metadataextractor",
-         "url_path":"nalmanrt__1",
+         "url_path":"nalmaraw__1",
          "duplicateHandling":"replace",
-         "granuleId":"^NALMA_.*\\.(gz)$",
-         "granuleIdExtraction":"^((NALMA_).*)",
+         "granuleId":"^.*_NALMA_.*(\\.gz)$",
+         "granuleIdExtraction":"^((.*_NALMA_).*)",
          "reportToEms":true,
-         "sampleFileName":"NALMA_201015_235900_0060.dat.gz",
+         "sampleFileName":"LK_NALMA_courtland_201015_035000.dat.gz",
          "meta":{
-            "provider_path":"nalmanrt/lma/nalmanrt/data/%YYYY/%MM%DD",
+            "provider_path":"nalmaraw/lma/nalmaraw/data/%YYYY/%MM%DD",
             "large_dataset":"true",
             "hyrax_processing":"false",
             "metadata_extractor":[
@@ -58,13 +58,13 @@
          "files":[
             {
                "bucket":"public",
-               "regex":"^NALMA_(.*).*\\.cmr.xml$",
-               "sampleFileName":"NALMA_201015_235900_0060.dat.gz.cmr.xml"
+               "regex":"^.*_NALMA_.*\\.cmr\\.xml$",
+               "sampleFileName":"LK_NALMA_courtland_201015_035000.dat.gz.cmr.xml"
             },
             {
                "bucket":"protected",
-               "regex":"^NALMA_(.*).*(gz)$",
-               "sampleFileName":"NALMA_201015_235900_0060.dat.gz"
+               "regex":"^.*_NALMA_.*(\\.gz)$",
+               "sampleFileName":"LK_NALMA_courtland_201015_035000.dat.gz"
             }
          ]
       },

@@ -1,19 +1,19 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/namdropraw__1/NALMA_201016_142000_0600.dat.gz"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/nalma__1/NALMA_201016_142000_0600.dat.gz"
    ],
    "config":{
       "files_config":[
-         {
-            "regex":"^(.*)\\.cmr.xml$",
-            "sampleFileName":"NALMA_201016_142000_0600.dat.gz.cmr.xml",
-            "bucket":"public"
-         },
-         {
-            "regex":"^(.*)\\.(dat\\.gz)$",
-            "sampleFileName":"NALMA_201016_142000_0600.dat.gz",
-            "bucket":"protected"
-         }
+            {
+               "bucket":"public",
+               "regex":"^NALMA_(.*).*\\.cmr.xml$",
+               "sampleFileName":"NALMA_201015_035000_0600.dat.gz.cmr.xml"
+            },
+            {
+               "bucket":"protected",
+               "regex":"^NALMA_(.*).*(gz)$",
+               "sampleFileName":"NALMA_201015_035000_0600.dat.gz"
+            }
       ],
       "buckets":{
          "protected":{
