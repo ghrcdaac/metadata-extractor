@@ -4,6 +4,7 @@ import os
 import re
 import gzip
 import shutil
+import json
 
 
 class ExtractNalmarawMetadata(ExtractASCIIMetadata):
@@ -21,6 +22,9 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
         super().__init__(file_path)
         self.file_path = file_path
         self.file_name = os.path.basename(file_path)
+        with open(os.path.join(os.path.dirname(__file__), f"../src/helpers/nalmarawRefData.json"),
+                  'r') as f:
+            self.station_dict = json.load(f)
         self.get_variables_min_max()
 
     def get_variables_min_max(self, **kwargs):
@@ -32,63 +36,12 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
                               self.start_time)
         self.end_time = max(self.end_time, self.start_time + timedelta(seconds=599))
 
-        station_dict = {
-            "A": {
-                "lat": 34.80925861,
-                "lon": -87.03572250
-            },
-            "B": {
-                "lat": 34.64338080,
-                "lon": -86.77140250
-            },
-            "C": {
-                "lat": 34.72535360,
-                "lon": -86.64497810
-            },
-            "D": {
-                "lat": 34.66563310,
-                "lon": -86.35861290
-            },
-            "E": {
-                "lat": 34.74556220,
-                "lon": -86.51265060
-            },
-            "F": {
-                "lat": 34.98364960,
-                "lon": -86.83935450
-            },
-            "G": {
-                "lat": 34.89969360,
-                "lon": -86.55784870
-            },
-            "H": {
-                "lat": 34.61219060,
-                "lon": -86.51968730
-            },
-            "J": {
-                "lat": 34.52313820,
-                "lon": -86.96816440
-            },
-            "K": {
-                "lat": 34.65786694,
-                "lon": -87.34364694
-            },
-            "L": {
-                "lat": 35.15320361,
-                "lon": -87.06117444
-            },
-            "M": {
-                "lat": 35.06845668,
-                "lon": -86.56240889
-            }
-        }
-
         station_identifier = re.search(r'^L([A-Z])_NALMA_.*_\d{6}_\d{6}.dat$',
                                        self.file_name)[1]
-        self.north = station_dict[station_identifier]['lat'] + 0.001
-        self.south = station_dict[station_identifier]['lat'] - 0.001
-        self.east = station_dict[station_identifier]['lon'] + 0.001
-        self.west = station_dict[station_identifier]['lon'] - 0.001
+        self.north = self.station_dict[station_identifier]['lat'] + 0.001
+        self.south = self.station_dict[station_identifier]['lat'] - 0.001
+        self.east = self.station_dict[station_identifier]['lon'] + 0.001
+        self.west = self.station_dict[station_identifier]['lon'] - 0.001
 
         self.compress_raw_file()
 
