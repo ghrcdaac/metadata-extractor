@@ -147,6 +147,7 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
         data = dict()
         data['ShortName'] = ds_short_name
         data['GranuleUR'] = self.file_name
+        data['UpdatedGranuleUR'] = self.file_name
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
 
         gemetry_list = self.get_wnes_geometry()

@@ -409,9 +409,12 @@ class MDX(Process):
         for output_file_path in output.get(key):
             data = self.extract_metadata(file_path=output_file_path, config=self.config,
                                          output_folder=self.path)
-            output_file_path = os.path.join(self.path, data['GranuleUR']) if data is not None \
-                else output_file_path
             generated_files = self.get_output_files(output_file_path, excluded)
+            if 'UpdatedGranuleUR' in data.keys():
+                updated_output_path = self.get_output_files(os.path.join(self.path,
+                                                                         data['UpdatedGranuleUR']),
+                                                            excluded)
+                generated_files.extend(updated_output_path)
             for generated_file in generated_files:
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
             self.output += generated_files
