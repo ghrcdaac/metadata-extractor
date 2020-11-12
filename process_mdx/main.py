@@ -151,6 +151,7 @@ class MDX(Process):
             "apuimpacts": mdx.ExtractApuimpactsMetadata,
             "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata,
             "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata,
+            "er2navimpacts": mdx.ExtractEr2navimpactsMetadata,
             "nalma": mdx.ExtractNalmaMetadata,
             "nalmanrt": mdx.ExtractNalmanrtMetadata,
             "nalmaraw": mdx.ExtractNalmarawMetadata
@@ -292,7 +293,7 @@ class MDX(Process):
             self.logger.error("Error uploading file %s: %s" % (
                 os.path.basename(os.path.basename(filename)), str(e)))
 
-    def extract_metadata(self, file_path, config, output_folder) -> object:
+    def extract_metadata(self, file_path, config, output_folder):
         """
         High-level extract metadata from file
         :param file_path: Path to file
@@ -362,7 +363,7 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|wrld-ir4km-mrest)$'
+                         r'|hdf5|hdf|nc4|ict)$'
         }
 
     def get_output_files(self, output_file_path, excluded):
