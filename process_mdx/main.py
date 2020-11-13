@@ -81,6 +81,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars={},
                              output_folder='/tmp', format='CSV'):
@@ -113,6 +114,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
                                output_folder='/tmp', format='ASCII'):
@@ -150,6 +152,9 @@ class MDX(Process):
             "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata,
             "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata,
             "er2navimpacts": mdx.ExtractEr2navimpactsMetadata,
+            "nalma": mdx.ExtractNalmaMetadata,
+            "nalmanrt": mdx.ExtractNalmanrtMetadata,
+            "nalmaraw": mdx.ExtractNalmarawMetadata,
             "p3metnavimpacts": mdx.ExtractP3metnavimpactsMetadata
         }
 
@@ -162,6 +167,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, ascii_vars={},
                              output_folder='/tmp', format='KML'):
@@ -191,6 +197,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_browse_metadata(self, ds_short_name, version, access_url, browse_file,
                                 browse_vars={}, output_folder='/tmp', format='BROWSE'):
@@ -242,6 +249,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_avi_metadata(self, ds_short_name, version, access_url, browse_file, browse_vars={},
                              output_folder='/tmp', format='AVI'):
@@ -271,6 +279,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def upload_file(self, filename):
         info = self.get_publish_info(filename)
@@ -312,10 +321,10 @@ class MDX(Process):
         }
 
         for metadata_extractor_var in metadata_extractor_vars:
-            processing_switcher.get(metadata_extractor_var.get('module'),
-                                    self.default_switch)(ds_short_name, version, access_url,
-                                                         file_path, metadata_extractor_var,
-                                                         output_folder)
+            return processing_switcher.get(metadata_extractor_var.get('module'),
+                                           self.default_switch)(ds_short_name, version, access_url,
+                                                                file_path, metadata_extractor_var,
+                                                                output_folder)
 
     def get_bucket(self, filename, files, buckets):
         """
@@ -400,9 +409,14 @@ class MDX(Process):
         assert output[key], "fetched files list should not be empty"
         files_sizes = {}
         for output_file_path in output.get(key):
-            self.extract_metadata(file_path=output_file_path, config=self.config,
-                                  output_folder=self.path)
+            data = self.extract_metadata(file_path=output_file_path, config=self.config,
+                                         output_folder=self.path)
             generated_files = self.get_output_files(output_file_path, excluded)
+            if 'UpdatedGranuleUR' in data.keys():
+                updated_output_path = self.get_output_files(os.path.join(self.path,
+                                                                         data['UpdatedGranuleUR']),
+                                                            excluded)
+                generated_files.extend(updated_output_path)
             for generated_file in generated_files:
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
             self.output += generated_files
