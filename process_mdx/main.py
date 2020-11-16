@@ -155,6 +155,7 @@ class MDX(Process):
             "nalma": mdx.ExtractNalmaMetadata,
             "nalmanrt": mdx.ExtractNalmanrtMetadata,
             "nalmaraw": mdx.ExtractNalmarawMetadata,
+            "p3metnavimpacts": mdx.ExtractP3metnavimpactsMetadata,
             "tammsimpacts": mdx.ExtractTammsimpactsMetadata
         }
 
