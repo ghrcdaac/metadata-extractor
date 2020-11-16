@@ -67,3 +67,4 @@ from .process_er2navimpacts import ExtractEr2navimpactsMetadata
 from .process_nalma import ExtractNalmaMetadata
 from .process_nalmanrt import ExtractNalmanrtMetadata
 from .process_nalmaraw import ExtractNalmarawMetadata
+from .process_tammsimpacts import ExtractTammsimpactsMetadata
