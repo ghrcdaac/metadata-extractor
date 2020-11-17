@@ -1,0 +1,50 @@
+48,1001
+Thornhill, Lee
+NASA Langley
+Fast in-situ 3-D wind and temperature measurements from the NASA P-3
+IMPACTS
+1,1
+2020,02,05,2020,10,02
+0.05
+Time_mid,Secs after midnight,Time of acquisition
+11
+1,1,1,1,1,1,1,1,1,1,1
+-9999,-9999,-9999,-9999,-9999,-9999,-9999,-9999,-9999,-9999,-9999
+Latitude_deg, deg, Platform_Latitude_insitu_None
+Longitude_deg, deg, Platform_Longitude_insitu_None
+PALT_ft,ft, Platform_AltitudePressure_InSitu_None
+Pitch_deg, deg, Platform_PitchAngle_insitu_None
+Roll_deg, deg, Platform_RollAngle_insitu_None
+Tstat_degC, degC, Met_StaticPressure_insitu_None
+WSPD_ms-1, ms-1, Met_WindSpeed_insitu_None
+WDIR_deg, deg, Met_WindDirection_insitu_None
+u_ms-1, ms-1, Met_UWindSpeed_insitu_None
+v_ms-1, ms-1, Met_VWindSpeed_insitu_None
+w_ms-1, ms-1, Met_WWindSpeed_insitu_None
+0
+23
+******************************************************************************************************************
+NASA Langley Fast Response Wind and Temperature Data (2020 IMPACTS) field campaign
+ 
+PI_CONTACT_INFO: Kenneth.L.Thornhill@nasa.gov
+PLATFORM: NASA P-3 aircraft
+LOCATION: Latitude and Longitude included from the NSRC Litton-250
+ASSOCIATED_DATA: N/A
+INSTRUMENT_INFO: Flagged data are due to missing data or non straight and level flight
+DATA_INFO: Winds are valid for straight and level flight, take caution when using data in turns/ascents/descents
+DATA_INFO: Horizontal winds have been corrected for the pressure defect but not yet for the heading offset
+UNCERTAINTY: all data are 5%
+ULOD_FLAG: -7777
+ULOD_VALUE: N/A
+LLOD_FLAG: -8888
+LLOD_VALUE: N/A
+DM_CONTACT_INFO: Lee Thornhill (Kenneth.L.Thornhill@nasa.gov)
+PROJECT_INFO: IMPACTS 2020
+STIPULATIONS_ON_USE: This is FINAL data, please consult PI with any questions on use
+OTHER_COMMENTS: none
+REVISION: R0
+R0: FINAL DATA: near final data, calibrations and filtering applied but need final calibrations to be done and applied post COVID shutdown
+******************************************************************************************************************
+Time_mid,Latitude_deg,Longitude_deg,PALT_ft,Pitch_deg,Roll_deg,Tstat_degC,WSPD_ms-1,WDIR_deg,u_ms-1,v_ms-1,w_ms-1
+66643.00,37.924118,-75.443970,-87.62,-2.79,0.28,7.39,-9999.00,-9999.00,-9999.00,-9999.00,-9999.00
+66643.05,37.924255,-75.443832,-87.00,-2.77,0.27,7.44,-9999.00,-9999.00,-9999.00,-9999.00,-9999.00
