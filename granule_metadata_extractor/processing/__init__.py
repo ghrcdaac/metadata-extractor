@@ -69,3 +69,4 @@ from .process_nalmanrt import ExtractNalmanrtMetadata
 from .process_nalmaraw import ExtractNalmarawMetadata
 from .process_p3metnavimpacts import ExtractP3metnavimpactsMetadata
 from .process_tammsimpacts import ExtractTammsimpactsMetadata
+from .process_asosimpacts import ExtractAsosimpactsMetadata
