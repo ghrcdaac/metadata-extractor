@@ -226,7 +226,8 @@ class MDX(Process):
             "er2mir": mdx.ExtractEr2mirMetadata,
             "dc8ammr": mdx.ExtractDc8ammrMetadata,
             "goesrpltmisrep": mdx.ExtractGoesrpltmisrepMetadata,
-            "gpmlipiphx": mdx.ExtractGpmlipiphxPNGMetadata
+            "gpmlipiphx": mdx.ExtractGpmlipiphxPNGMetadata,
+            "phipsimpacts": mdx.ExtractPhipsimpactsMetadata
         }
 
         format_template = {
@@ -239,7 +240,8 @@ class MDX(Process):
             "er2mir": "GIF",
             "dc8ammr": "GIF",
             "goesrpltmisrep": "PNG",
-            "gpmlipiphx": "PNG"
+            "gpmlipiphx": "PNG",
+            "phipsimpacts": "PNG"
         }
 
         regex = browse_vars.get('regex', '.*')
