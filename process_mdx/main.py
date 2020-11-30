@@ -368,7 +368,7 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|ict)$'
+                         r'|hdf5|hdf|nc4|ict|.*rest)$'
         }
 
     def get_output_files(self, output_file_path, excluded):
