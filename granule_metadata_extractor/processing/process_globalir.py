@@ -102,6 +102,7 @@ class ExtractGlobalirMetadata(ExtractNetCDFMetadata):
         data['ShortName'] = ds_short_name
         #data['GranuleUR'] = self.file_path.split('/')[-1]
         data['GranuleUR'] = self.new_filename
+        data['UpdatedGranuleUR'] = self.new_filename
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
 
         gemetry_list = self.get_wnes_geometry()
