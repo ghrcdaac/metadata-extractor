@@ -61,7 +61,6 @@ class MDX(Process):
             "isslisg_v1_nrt": mdx.ExtractIsslisgv1Metadata,
             "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata,
             "seaflux": mdx.ExtractSeafluxMetadata,
-            "globalir": mdx.ExtractGlobalirMetadata,
             "asosimpacts": mdx.ExtractAsosimpactsMetadata
         }
 
@@ -112,6 +111,23 @@ class MDX(Process):
                                          lat_postion=lat_postion,
                                          format=format, version='0.9')
 
+            data['OnlineAccessURL'] = access_url
+            echo10xml = src.GenerateEcho10XML(data)
+            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
+
+    def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file, binary_vars={},
+                               output_folder='/tmp', format='Binary'):
+        """
+
+        """
+        switcher = {
+            "globalir": mdx.ExtractGlobalirMetadata
+        }
+        regex = binary_vars.get('regex', '.*')
+        if match(regex, os.path.basename(binary_file)):
+            metadata = switcher.get(ds_short_name, self.default_switch)(binary_file)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, version=version, format=format)
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
@@ -318,6 +334,7 @@ class MDX(Process):
         processing_switcher = {
             "netcdf": self.extract_netcdf_metadata,
             "csv": self.extract_csv_metadata,
+            "binary": self.extract_binary_metadata,
             "ascii": self.extract_ascii_metadata,
             "browse": self.extract_browse_metadata,
             "kml": self.extract_kml_metadata,
