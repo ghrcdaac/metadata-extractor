@@ -416,7 +416,7 @@ class MDX(Process):
             data = self.extract_metadata(file_path=output_file_path, config=self.config,
                                          output_folder=self.path)
             generated_files = self.get_output_files(output_file_path, excluded)
-            if data is not None and 'UpdatedGranuleUR' in data.keys():
+            if data.get('UpdatedGranuleUR', False):
                 updated_output_path = self.get_output_files(os.path.join(self.path,
                                                                          data['UpdatedGranuleUR']),
                                                             excluded)
