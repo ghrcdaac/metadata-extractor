@@ -4,8 +4,8 @@ set -o nounset
 set -o pipefail
 export REPO_NAME=mdx
 export AWS_REGION=$bamboo_AWS_REGION
-access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_ACCESS_KEY_UAT $bamboo_ACCESS_KEY_PROD )
-secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_SECRET_KEY_UAT $bamboo_SECRET_KEY_PROD )
+access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
+secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
 prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
 account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
 
