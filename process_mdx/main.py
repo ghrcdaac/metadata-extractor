@@ -61,7 +61,7 @@ class MDX(Process):
             "isslisg_v1_nrt": mdx.ExtractIsslisgv1Metadata,
             "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata,
             "seaflux": mdx.ExtractSeafluxMetadata,
-            "globalir": mdx.ExtractGlobalirMetadata
+            "asosimpacts": mdx.ExtractAsosimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -81,6 +81,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars={},
                              output_folder='/tmp', format='CSV'):
@@ -113,6 +114,24 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
+
+    def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file, binary_vars={},
+                               output_folder='/tmp', format='Binary'):
+        """
+
+        """
+        switcher = {
+            "globalir": mdx.ExtractGlobalirMetadata
+        }
+        regex = binary_vars.get('regex', '.*')
+        if match(regex, os.path.basename(binary_file)):
+            metadata = switcher.get(ds_short_name, self.default_switch)(binary_file)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, version=version, format=format)
+            data['OnlineAccessURL'] = access_url
+            echo10xml = src.GenerateEcho10XML(data)
+            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
                                output_folder='/tmp', format='ASCII'):
@@ -148,7 +167,13 @@ class MDX(Process):
             "2dimpacts": mdx.Extract2dimpactsMetadata,
             "apuimpacts": mdx.ExtractApuimpactsMetadata,
             "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata,
-            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata
+            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata,
+            "er2navimpacts": mdx.ExtractEr2navimpactsMetadata,
+            "nalma": mdx.ExtractNalmaMetadata,
+            "nalmanrt": mdx.ExtractNalmanrtMetadata,
+            "nalmaraw": mdx.ExtractNalmarawMetadata,
+            "p3metnavimpacts": mdx.ExtractP3metnavimpactsMetadata,
+            "tammsimpacts": mdx.ExtractTammsimpactsMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
@@ -160,6 +185,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, ascii_vars={},
                              output_folder='/tmp', format='KML'):
@@ -189,6 +215,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_browse_metadata(self, ds_short_name, version, access_url, browse_file,
                                 browse_vars={}, output_folder='/tmp', format='BROWSE'):
@@ -215,7 +242,8 @@ class MDX(Process):
             "er2mir": mdx.ExtractEr2mirMetadata,
             "dc8ammr": mdx.ExtractDc8ammrMetadata,
             "goesrpltmisrep": mdx.ExtractGoesrpltmisrepMetadata,
-            "gpmlipiphx": mdx.ExtractGpmlipiphxPNGMetadata
+            "gpmlipiphx": mdx.ExtractGpmlipiphxPNGMetadata,
+            "phipsimpacts": mdx.ExtractPhipsimpactsMetadata
         }
 
         format_template = {
@@ -228,7 +256,8 @@ class MDX(Process):
             "er2mir": "GIF",
             "dc8ammr": "GIF",
             "goesrpltmisrep": "PNG",
-            "gpmlipiphx": "PNG"
+            "gpmlipiphx": "PNG",
+            "phipsimpacts": "PNG"
         }
 
         regex = browse_vars.get('regex', '.*')
@@ -240,6 +269,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def extract_avi_metadata(self, ds_short_name, version, access_url, browse_file, browse_vars={},
                              output_folder='/tmp', format='AVI'):
@@ -269,6 +299,7 @@ class MDX(Process):
             data['OnlineAccessURL'] = access_url
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+            return data
 
     def upload_file(self, filename):
         info = self.get_publish_info(filename)
@@ -303,6 +334,7 @@ class MDX(Process):
         processing_switcher = {
             "netcdf": self.extract_netcdf_metadata,
             "csv": self.extract_csv_metadata,
+            "binary": self.extract_binary_metadata,
             "ascii": self.extract_ascii_metadata,
             "browse": self.extract_browse_metadata,
             "kml": self.extract_kml_metadata,
@@ -310,10 +342,10 @@ class MDX(Process):
         }
 
         for metadata_extractor_var in metadata_extractor_vars:
-            processing_switcher.get(metadata_extractor_var.get('module'),
-                                    self.default_switch)(ds_short_name, version, access_url,
-                                                         file_path, metadata_extractor_var,
-                                                         output_folder)
+            return processing_switcher.get(metadata_extractor_var.get('module'),
+                                           self.default_switch)(ds_short_name, version, access_url,
+                                                                file_path, metadata_extractor_var,
+                                                                output_folder)
 
     def get_bucket(self, filename, files, buckets):
         """
@@ -353,7 +385,7 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4)$'
+                         r'|hdf5|hdf|nc4|ict|.*rest)$'
         }
 
     def get_output_files(self, output_file_path, excluded):
@@ -398,9 +430,14 @@ class MDX(Process):
         assert output[key], "fetched files list should not be empty"
         files_sizes = {}
         for output_file_path in output.get(key):
-            self.extract_metadata(file_path=output_file_path, config=self.config,
-                                  output_folder=self.path)
+            data = self.extract_metadata(file_path=output_file_path, config=self.config,
+                                         output_folder=self.path)
             generated_files = self.get_output_files(output_file_path, excluded)
+            if data.get('UpdatedGranuleUR', False):
+                updated_output_path = self.get_output_files(os.path.join(self.path,
+                                                                         data['UpdatedGranuleUR']),
+                                                            excluded)
+                generated_files.extend(updated_output_path)
             for generated_file in generated_files:
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
             self.output += generated_files

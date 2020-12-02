@@ -63,3 +63,11 @@ from .process_isslisv1 import ExtractIsslisv1Metadata
 from .process_isslisgv1 import ExtractIsslisgv1Metadata
 from .process_seaflux import ExtractSeafluxMetadata
 from .process_globalir import ExtractGlobalirMetadata
+from .process_er2navimpacts import ExtractEr2navimpactsMetadata
+from .process_nalma import ExtractNalmaMetadata
+from .process_nalmanrt import ExtractNalmanrtMetadata
+from .process_nalmaraw import ExtractNalmarawMetadata
+from .process_p3metnavimpacts import ExtractP3metnavimpactsMetadata
+from .process_tammsimpacts import ExtractTammsimpactsMetadata
+from .process_asosimpacts import ExtractAsosimpactsMetadata
+from .process_phipsimpacts import ExtractPhipsimpactsMetadata
