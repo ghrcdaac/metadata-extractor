@@ -28,7 +28,6 @@ class ExtractLipimpactsMetadata(ExtractASCIIMetadata):
 
         with open(self.file_path,'r') as f:
              lines = f.readlines()
-        f.close()
     
         dt = []
         lat = []
@@ -36,7 +35,7 @@ class ExtractLipimpactsMetadata(ExtractASCIIMetadata):
         #First line is the header beginning with 'Time'
         for i in range(1,len(lines)): 
             tkn = lines[i].split() #tkn[0] i.e., '23-Feb-2020T13:16:00.000''
-            if tkn[8] == 'NaN' or tkn[9] == 'NaN':
+            if 'NaN' in [tkn[8], tkn[9]]:
                continue #ignore this data line    
             else:
                dt.append(datetime.strptime(tkn[0],'%d-%b-%YT%H:%M:%S.%f'))
