@@ -82,6 +82,7 @@ class MDX(Process):
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
             return data
+        return {}
 
     def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars={},
                              output_folder='/tmp', format='CSV'):
@@ -115,6 +116,7 @@ class MDX(Process):
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
             return data
+        return {}
 
     def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file, binary_vars={},
                                output_folder='/tmp', format='Binary'):
@@ -132,6 +134,7 @@ class MDX(Process):
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
             return data
+        return {}
 
     def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
                                output_folder='/tmp', format='ASCII'):
@@ -186,6 +189,7 @@ class MDX(Process):
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
             return data
+        return {}
 
     def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, ascii_vars={},
                              output_folder='/tmp', format='KML'):
@@ -216,6 +220,7 @@ class MDX(Process):
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
             return data
+        return {}
 
     def extract_browse_metadata(self, ds_short_name, version, access_url, browse_file,
                                 browse_vars={}, output_folder='/tmp', format='BROWSE'):
@@ -270,6 +275,7 @@ class MDX(Process):
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
             return data
+        return {}
 
     def extract_avi_metadata(self, ds_short_name, version, access_url, browse_file, browse_vars={},
                              output_folder='/tmp', format='AVI'):
@@ -300,6 +306,7 @@ class MDX(Process):
             echo10xml = src.GenerateEcho10XML(data)
             echo10xml.generate_echo10_xml_file(output_folder=output_folder)
             return data
+        return {}
 
     def upload_file(self, filename):
         info = self.get_publish_info(filename)
