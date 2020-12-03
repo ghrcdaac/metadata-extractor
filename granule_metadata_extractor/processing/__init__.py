@@ -71,3 +71,4 @@ from .process_p3metnavimpacts import ExtractP3metnavimpactsMetadata
 from .process_tammsimpacts import ExtractTammsimpactsMetadata
 from .process_asosimpacts import ExtractAsosimpactsMetadata
 from .process_phipsimpacts import ExtractPhipsimpactsMetadata
+from .process_lipimpacts import ExtractLipimpactsMetadata
