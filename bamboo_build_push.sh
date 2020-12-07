@@ -4,16 +4,16 @@ set -o nounset
 set -o pipefail
 export REPO_NAME=mdx
 export AWS_REGION=$bamboo_AWS_REGION
-#access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
-#secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
-#prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
-#account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
+access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
+secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
+prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
+account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
 
 
-access_keys=( $bamboo_AWS_SIT_ACCESS_KEY )
-secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY)
-account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT )
-prefixes=( $bamboo_PREFIX_SIT )
+#access_keys=( $bamboo_AWS_SIT_ACCESS_KEY )
+#secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY)
+#account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT )
+#prefixes=( $bamboo_PREFIX_SIT )
 
 function stop_mdx_task() {
   task_arn=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
