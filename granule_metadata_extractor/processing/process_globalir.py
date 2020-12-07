@@ -64,7 +64,7 @@ class ExtractGlobalirMetadata(ExtractBinaryMetadata):
         stop_date = self.end_time.strftime(date_format)
         return start_date, stop_date
 
-    def get_metadata(self, ds_short_name, version='01', format= 'Binary'):
+    def get_metadata(self, ds_short_name, version='01', format='Binary'):
         """
 
         :param ds_short_name:
@@ -75,7 +75,6 @@ class ExtractGlobalirMetadata(ExtractBinaryMetadata):
         start_date, stop_date = self.get_temporal(date_format='%Y-%m-%dT%H:%M:%SZ')
         data = dict()
         data['ShortName'] = ds_short_name
-        #data['GranuleUR'] = self.file_path.split('/')[-1]
         data['GranuleUR'] = self.new_filename
         data['UpdatedGranuleUR'] = self.new_filename
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date

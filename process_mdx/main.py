@@ -11,6 +11,18 @@ class MDX(Process):
     """
     Class to extract spatial and temporal metadata
     """
+    @staticmethod
+    def generate_xml_data(data, access_url,output_folder, granule_new_name = None):
+        """
+
+        """
+        if granule_new_name:
+            access_url = access_url.replace(os.path.basename(access_url), os.path.basename(granule_new_name))
+        data['OnlineAccessURL'] = access_url
+        echo10xml = src.GenerateEcho10XML(data)
+        echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+        return data
+
 
     def extract_netcdf_metadata(self, ds_short_name, version, access_url, netcdf_file, netcdf_vars,
                                 output_folder='/tmp', format='netCDF-4'):
@@ -77,11 +89,7 @@ class MDX(Process):
                                          lon_variable_key=lon_variable_key,
                                          lat_variable_key=lat_variable_key,
                                          time_units=time_units, format=format, version=version)
-
-            data['OnlineAccessURL'] = access_url
-            echo10xml = src.GenerateEcho10XML(data)
-            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
-            return data
+            return MDX.generate_xml_data(data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
     def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars={},
@@ -111,11 +119,7 @@ class MDX(Process):
                                          time_units=time_units, lon_postion=lon_postion,
                                          lat_postion=lat_postion,
                                          format=format, version='0.9')
-
-            data['OnlineAccessURL'] = access_url
-            echo10xml = src.GenerateEcho10XML(data)
-            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
-            return data
+            return MDX.generate_xml_data(data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
     def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file, binary_vars={},
@@ -130,10 +134,8 @@ class MDX(Process):
         if match(regex, os.path.basename(binary_file)):
             metadata = switcher.get(ds_short_name, self.default_switch)(binary_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, version=version, format=format)
-            data['OnlineAccessURL'] = access_url
-            echo10xml = src.GenerateEcho10XML(data)
-            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
-            return data
+            granule_new_name = data.get('UpdatedGranuleUR', None)
+            return MDX.generate_xml_data(data=data, access_url=access_url, output_folder=output_folder, granule_new_name=granule_new_name)
         return {}
 
     def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
@@ -186,10 +188,7 @@ class MDX(Process):
             metadata = switcher.get(ds_short_name, self.default_switch)(ascii_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
-            data['OnlineAccessURL'] = access_url
-            echo10xml = src.GenerateEcho10XML(data)
-            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
-            return data
+            return MDX.generate_xml_data(data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
     def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, ascii_vars={},
@@ -217,10 +216,7 @@ class MDX(Process):
             metadata = switcher.get(ds_short_name, self.default_switch)(kml_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
-            data['OnlineAccessURL'] = access_url
-            echo10xml = src.GenerateEcho10XML(data)
-            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
-            return data
+            return MDX.generate_xml_data(data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
     def extract_browse_metadata(self, ds_short_name, version, access_url, browse_file,
@@ -272,10 +268,7 @@ class MDX(Process):
             data = metadata.get_metadata(ds_short_name=ds_short_name,
                                          format=format_template.get(ds_short_name, format),
                                          version=version)
-            data['OnlineAccessURL'] = access_url
-            echo10xml = src.GenerateEcho10XML(data)
-            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
-            return data
+            return MDX.generate_xml_data(data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
     def extract_avi_metadata(self, ds_short_name, version, access_url, browse_file, browse_vars={},
@@ -303,10 +296,7 @@ class MDX(Process):
             metadata = switcher.get(ds_short_name, self.default_switch)(browse_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
-            data['OnlineAccessURL'] = access_url
-            echo10xml = src.GenerateEcho10XML(data)
-            echo10xml.generate_echo10_xml_file(output_folder=output_folder)
-            return data
+            return MDX.generate_xml_data(data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
     def upload_file(self, filename):
