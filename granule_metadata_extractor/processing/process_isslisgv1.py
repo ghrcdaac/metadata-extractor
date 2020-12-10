@@ -44,18 +44,17 @@ class ExtractIsslisgv1Metadata(ExtractNetCDFMetadata):
         maxlat, minlat, maxlon, minlon = [55., -55., 180., -180.]
 
         if 'bg_data_summary_' in ' '.join(datafile.variables.keys()):
-            lat_corners = datafile['bg_data_summary_corners'][:,[0,2,4,6]].flatten()
-            lon_corners = datafile['bg_data_summary_corners'][:,[1,3,5,7]].flatten()
+            lat = np.array(datafile['bg_data_summary_boresight'][:,0])
+            lon = np.array(datafile['bg_data_summary_boresight'][:,1])
 
             #some files contain  -90. latitude values which are incorrect
             #i.e., ISS_LIS_BG_V1.0_20190408_NQC_12868.nc
             #We need filter such value(s) out as well as their corresponding longitude values
-            idx = np.where(lat_corners != -90.)[0]
+            idx = np.where(lat != -90.)[0]
             if len(idx) > 0:
-               maxlat, minlat, maxlon, minlon = [lat_corners[idx].max(),
-                                                 lat_corners[idx].min(),
-                                                 lon_corners[idx].max(),
-                                                 lon_corners[idx].min()]
+              maxlat, minlat = [lat[idx].max(),lat[idx].min()]
+              maxlon, minlon = [lon[-1],lon[0]]
+
         datafile.close()
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
@@ -77,18 +76,21 @@ class ExtractIsslisgv1Metadata(ExtractNetCDFMetadata):
         maxlat, minlat, maxlon, minlon = [55., -55., 180., -180.]
 
         data = vs.attach('bg_data_summary')
+        #Info about 'bg_data_summary' as below:
+        #member index 2
+        #vdata: bg_data_summary tag,ref: 1962 5
+        #fields: ['TAI93_time', 'address', 'boresight', 'corners']
+        #nrecs: 105 #this number varies with files
+        #'boresight' contains lat/lon values
         try:
            bg_data_summary = data[:] #list
-           corners = [bg_data_summary[i][3] for i in range(len(bg_data_summary))]
-           bg_data_summary_corners = np.array(corners)
-           lat_corners = bg_data_summary_corners[:,[0,2,4,6]].flatten()
-           lon_corners = bg_data_summary_corners[:,[1,3,5,7]].flatten()
-           idx = np.where(lat_corners != -90.)[0]
+           boresight = np.array([bg_data_summary[i][2] for i in range(len(bg_data_summary))])
+           lat = boresight[:,0]
+           lon = boresight[:,1]
+           idx = np.where(lat != -90.)[0]
            if len(idx) > 0:
-              maxlat, minlat, maxlon, minlon = [lat_corners[idx].max(),
-                                                lat_corners[idx].min(),
-                                                lon_corners[idx].max(),
-                                                lon_corners[idx].min()]
+              maxlat, minlat = [lat[idx].max(),lat[idx].min()]
+              maxlon, minlon = [lon[-1],lon[0]]
         except HDF4Error: # end of vdata reached
                           #corresponding *.nc doesn't have bg_data_summary_[lat|lon|corners|TAI93_time] variables
                           #use on-prem bounding box (hard-coded by Nathan)

@@ -4,7 +4,7 @@ from granule_metadata_extractor.processing.process_isslisgv1 import ExtractIssli
 from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 #prem metadata for sample file:
-#host=thor,env=ops,project=NOT APPLICABLE,ds=isslisg_v1_nrt,inv=inventory,file=ISS_LIS_BG_V1.0_20201026_210255_NRT_21679.nc,path=nc/2020/1026/ISS_LIS_BG_V1.0_20201026_210255_NRT_21679.nc,size=107757,start=2020-10-26T21:03:22Z,end=2020-10-26T21:04:59Z,browse=N,checksum=6d1d753f9a0d0045e988e5cdb376c6d5f53cf3af,NLat=34.162620544433594,SLat=23.287738800048828,WLon=84.44564056396484,ELon=96.73506927490234,format=netCDF-4
+#host=thor,env=ops,project=NOT APPLICABLE,ds=isslisg_v1_nrt,inv=inventory,file=ISS_LIS_BG_V1.0_20201026_210255_NRT_21679.nc,path=ISS_LIS_BG_V1.0_20201026_210255_NRT_21679.nc,size=107757,start=2020-10-26T21:03:22Z,end=2020-10-26T21:04:59Z,browse=N,checksum=6d1d753f9a0d0045e988e5cdb376c6d5f53cf3af,NLat=29.853199005126953,SLat=28.25045394897461,WLon=90.20879364013672,ELon=91.89403533935547,format=netCDF-4
 
 class TestProcessIsslisgv1(TestCase):
     """
@@ -63,7 +63,7 @@ class TestProcessIsslisgv1(TestCase):
         wnes = process_geos.get_wnes_geometry()
         return str(round(float(wnes[index]), 3))
 
-    #NLat=34.162620544433594,SLat=23.287738800048828,WLon=84.44564056396484,ELon=96.73506927490234
+    #NLat=29.853199005126953,SLat=28.25045394897461,WLon=90.20879364013672,ELon=91.89403533935547
 
     def test_4_get_north(self):
         """
@@ -72,7 +72,7 @@ class TestProcessIsslisgv1(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '34.163')
+        self.assertEqual(north, '29.853')
 
     def test_5_get_west(self):
         """
@@ -81,7 +81,7 @@ class TestProcessIsslisgv1(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '84.446')
+        self.assertEqual(west, '90.209')
 
     def test_6_get_south(self):
         """
@@ -90,7 +90,7 @@ class TestProcessIsslisgv1(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '23.288')
+        self.assertEqual(south, '28.25')
 
     def test_7_get_east(self):
         """
@@ -99,7 +99,7 @@ class TestProcessIsslisgv1(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '96.735')
+        self.assertEqual(east, '91.894')
 
     def test_8_get_checksum(self):
         """
