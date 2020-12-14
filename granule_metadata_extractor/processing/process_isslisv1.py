@@ -38,16 +38,44 @@ class ExtractIsslisv1Metadata(ExtractNetCDFMetadata):
 
     def get_nc_metadata(self, filename):
         nc = Dataset(filename, 'r')
+        # get time variable
         timevar = nc.variables['one_second_TAI93_time'][:]
-        lat = nc.variables['viewtime_lat'][:]
-        lon = nc.variables['viewtime_lon'][:]
+        # get bounding box from bg_summary as this field is also
+        # for background isslis data
+        try:
+            lon = nc['bg_summary_lon'][:]
+            lat = nc['bg_summary_lat'][:]
+            lat = [val for val in lat if val != -90.0]
+            if len(lat) > 0:
+                slat, nlat = [min(lat), max(lat)]
+                # for ISSLIS orbital data, set wlon as starting point
+                # and elon as ending point of the orbit
+                wlon, elon = [lon[0], lon[lon.size-1]]
+            else:
+                # set default bbox for files without valid lat, lon data
+                slat, nlat, wlon, elon = [-55.0,55.0,-180.0,180.0]
+        except:
+            # if bg_summary field is not available, try viewtime field
+            try:
+                lat = nc['viewtime_lat'][:]
+                lon = nc['viewtime_lon'][:]
+                lat = [val for val in lat if val != -90.0]
+                if len(lat) > 0:
+                    slat, nlat = [min(lat), max(lat)]
+                    wlon, elon = [lon[0], lon[lon.size-1]]
+                else:
+                    # set default bbox for files without valid viewtime
+                    slat, nlat, wlon, elon = [-55.0,55.0,-180.0,180.0]
+            except:
+                # if viewtime field is not available, set default bbox
+                slat, nlat, wlon, elon = [-55.0,55.0,-180.0,180.0]
+
         nc.close()
 
-        maxlat, minlat, maxlon, minlon = [max(lat), min(lat), max(lon), min(lon)]
         minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
                             datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
 
-        return minTime, maxTime, minlat, maxlat, minlon, maxlon
+        return minTime, maxTime, slat, nlat, wlon, elon
 
     def get_hdf_metadata(self, filename):
         f = HDF(filename)
@@ -61,18 +89,50 @@ class ExtractIsslisv1Metadata(ExtractNetCDFMetadata):
         minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
                             datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
         vd.detach()
+        # extract lat and lon from bg_summary field as it is available to
+        # both science and background files
+        try:
+            vd = vs.attach('bg_summary')
+            recs = vd[:]
+            boresight = [recs[i][2] for i in range(len(recs))]
+            # boresight contains lat/lon pair of a point
+            lat = [boresight[i][0] for i in range(len(boresight))]
+            lon = [boresight[i][1] for i in range(len(boresight))]
+            # need to filter out lat = -90.0
+            lat = [val for val in lat if val != -90.0]
+            # some files may just have only missing value (not good file)
+            # still assign default bbox for these files
+            if len(lat) > 0:
+                slat, nlat = [min(lat), max(lat)]
+                wlon, elon = [lon[0], lon[len(lon)-1]]
+            else:
+                slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
+            vd.detach()
+        except:
+            vd.detach()  #detach 'bg_summary' in try block
+            # extract location info from viewtime vgroup first field (location)
+            try:
+                vd = vs.attach('viewtime')
+                recs = vd[:]
+                lat = [recs[i][0][0] for i in range(len(recs))]
+                lon = [recs[i][0][1] for i in range(len(recs))]
+                lat = [val for val in lat if val != -90.0]
+                if len(lat) > 0:
+                    slat, nlat = [min(lat), max(lat)]
+                    wlon, elon = [lon[0], lon[len(lon)-1]]
+                else:
+                    slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
+                vd.detach()
+            except:
+                vd.detach() #detach 'viewtime' in try block
+                slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
+
+
         # extract location info from viewtime vgroup first field (location)
-        vd = vs.attach('viewtime')
-        recs = vd[:]
-        lat = [recs[i][0][0] for i in range(len(recs))]
-        lon = [recs[i][0][1] for i in range(len(recs))]
-        vd.detach()
         vs.end()
         f.close()
-        maxlat, minlat, maxlon, minlon = [max(lat), min(lat),
-                                          max(lon), min(lon)]
 
-        return minTime, maxTime, minlat, maxlat, minlon, maxlon
+        return minTime, maxTime, slat, nlat, wlon, elon
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0):
         """
