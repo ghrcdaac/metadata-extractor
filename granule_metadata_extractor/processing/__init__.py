@@ -73,3 +73,4 @@ from .process_asosimpacts import ExtractAsosimpactsMetadata
 from .process_phipsimpacts import ExtractPhipsimpactsMetadata
 from .process_lipimpacts import ExtractLipimpactsMetadata
 from .process_nymesoimpacts import ExtractNymesoimpactsMetadata
+from .process_wrfimpacts import ExtractWrfimpactsMetadata
