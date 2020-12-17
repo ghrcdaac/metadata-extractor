@@ -39,7 +39,11 @@ class ExtractWrfimpactsMetadata(ExtractNetCDFMetadata):
                                           np.max(lon), np.min(lon)]
     
         minTime = datetime.strptime(dtstr, "%Y-%m-%dT%H:%M:%S") + timedelta(minutes=float(time_min))
-        maxTime = minTime 
+        maxTime = None
+        if '_d01_' in self.file_path or '_d02_' in self.file_path:
+            maxTime = minTime + timedelta(seconds=3 * 3600 - 1)
+        elif '_d03_' in self.file_path:
+            maxTime = minTime + timedelta(seconds=3600 - 1)
 
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon

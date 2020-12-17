@@ -43,7 +43,7 @@ class TestProcessNymesoimpacts(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-01-19T18:00:00Z")
+        self.assertEqual(stop_date, "2020-01-19T20:59:59Z")
 
     def test_3_get_file_size(self):
         """
