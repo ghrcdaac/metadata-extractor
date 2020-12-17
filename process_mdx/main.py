@@ -180,7 +180,8 @@ class MDX(Process):
             "nalmaraw": mdx.ExtractNalmarawMetadata,
             "p3metnavimpacts": mdx.ExtractP3metnavimpactsMetadata,
             "tammsimpacts": mdx.ExtractTammsimpactsMetadata,
-            "lipimpacts": mdx.ExtractLipimpactsMetadata
+            "lipimpacts": mdx.ExtractLipimpactsMetadata,
+            "gpmsurmetc3vp": mdx.ExtractGpmsurmetc3vpMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
@@ -386,7 +387,7 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|ict|.*rest)$'
+                         r'|hdf5|hdf|nc4|ict|xls|.*rest)$'
         }
 
     def get_output_files(self, output_file_path, excluded):
