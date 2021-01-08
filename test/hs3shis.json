@@ -1,18 +1,18 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/wrfimapcts__1/IMPACTS_wrfout_d01_2020011812_30_GFS.nc"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/hs3shis__1/SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^IMPACTS_wrfout_(.*).*\\.cmr.xml$",
-            "sampleFileName":"IMPACTS_wrfout_d01_2020011812_30_GFS.nc.cmr.xml"
+            "regex":"^SHIS_(.*).*\\.cmr.xml$",
+            "sampleFileName":"SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^IMPACTS_wrfout_(.*).*(nc)$",
-            "sampleFileName":"IMPACTS_wrfout_d01_2020011812_30_GFS.nc"
+            "regex":"^SHIS_(.*).*(nc)$",
+            "sampleFileName":"SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc"
          }
       ],
       "buckets":{
@@ -34,23 +34,22 @@
          }
       },
       "collection":{
-         "name":"wrfimpacts", 
+         "name":"hs3shis", 
          "version":"1", 
-         "dataType":"wrfimpacts", 
+         "dataType":"hs3shis", 
          "process":"metadataextractor", 
-         "url_path":"wrfimpacts__1",
+         "url_path":"hs3shis__1",
          "duplicateHandling":"replace",
-         "granuleId":"^IMPACTS_wrfout_.*\\.(nc)$", 
-         "granuleIdExtraction":"^((IMPACTS_wrfout_).*)", 
+         "granuleId":"^SHIS_.*\\.(nc)$", 
+         "granuleIdExtraction":"^((SHIS_).*)", 
          "reportToEms":true, 
-         "sampleFileName":"IMPACTS_wrfout_d01_2020011812_30_GFS.nc", 
+         "sampleFileName":"SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc", 
          "meta":{
-            "provider_path":"wrfimpacts/fieldCampaigns/impacts/WRF/data/",
+            "provider_path":"hs3shis/fieldCampaigns/hs3/S-HIS/data/",
             "hyrax_processing":"false",
-            "large_dataset": "true",
             "metadata_extractor":[
                {
-                  "regex":"^IMPACTS_wrfout_.*\\.(nc)$",
+                  "regex":"^SHIS_(.*).*\\.(nc)$",
                   "module":"netcdf"
                }
             ]
@@ -58,13 +57,13 @@
          "files":[
             {
                "bucket":"public", 
-               "regex":"^IMPACTS_wrfout_(.*).*\\.cmr.xml$", 
-               "sampleFileName":"IMPACTS_wrfout_d01_2020011812_30_GFS.nc.cmr.xml"
+               "regex":"^SHIS_(.*).*\\.cmr.xml$", 
+               "sampleFileName":"SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc.cmr.xml"
             },
             {
                "bucket":"protected", 
-               "regex":"^IMPACTS_wrfout_(.*).*(nc)$", 
-               "sampleFileName":"IMPACTS_wrfout_d01_2020011812_30_GFS.nc"
+               "regex":"^SHIS_(.*).*(nc)$", 
+               "sampleFileName":"SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc"
             }
          ]
       },
