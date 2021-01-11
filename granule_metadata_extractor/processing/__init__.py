@@ -75,3 +75,4 @@ from .process_lipimpacts import ExtractLipimpactsMetadata
 from .process_nymesoimpacts import ExtractNymesoimpactsMetadata
 from .process_wrfimpacts import ExtractWrfimpactsMetadata
 from .process_gpmsurmetc3vp import ExtractGpmsurmetc3vpMetadata
+from .process_hs3shis import ExtractHs3shisMetadata
