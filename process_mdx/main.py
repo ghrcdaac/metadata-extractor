@@ -75,7 +75,8 @@ class MDX(Process):
             "seaflux": mdx.ExtractSeafluxMetadata,
             "asosimpacts": mdx.ExtractAsosimpactsMetadata,
             "wrfimpacts": mdx.ExtractWrfimpactsMetadata,
-            "hs3shis": mdx.ExtractHs3shisMetadata
+            "hs3shis": mdx.ExtractHs3shisMetadata,
+            "hiwrapimpacts": mdx.ExtractHiwrapimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -388,7 +389,7 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|ict|xls|.*rest)$'
+                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5)$'
         }
 
     def get_output_files(self, output_file_path, excluded):
