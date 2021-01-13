@@ -1,7 +1,7 @@
 import os
 from dateutil.relativedelta import relativedelta
 from dateutil.parser import parse
-from hashlib import md5
+import hashlib
 from abc import ABC, abstractmethod
 
 class MetadataExtractor(ABC):
@@ -48,10 +48,14 @@ class MetadataExtractor(ABC):
 
     def get_checksum(self):
         """
+        Reads file in 128 byte chunks to determine checksum
         :return: MD5 checksum
         """
-        with open(self.file_path, 'rb') as file:
-            return md5(file.read()).hexdigest()
+        md5 = hashlib.md5()
+        with open(self.file_path, 'rb') as f:
+            for chunk in iter(lambda: f.read(128 * md5.block_size), b''):
+                md5.update(chunk)
+        return md5.hexdigest()
 
     def get_file_size_bytes(self):
         """
