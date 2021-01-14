@@ -1,8 +1,6 @@
 from .metadata_extractor import MetadataExtractor
 import csv
 import re
-from dateutil.parser import parse
-from hashlib import md5
 
 class ExtractCSVMetadata(MetadataExtractor):
     """

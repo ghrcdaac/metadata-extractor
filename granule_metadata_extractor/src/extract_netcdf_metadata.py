@@ -3,8 +3,6 @@ from netCDF4 import Dataset
 import numpy as np
 import re
 from datetime import datetime
-from dateutil.parser import parse
-from hashlib import md5
 
 class ExtractNetCDFMetadata(MetadataExtractor):
     """
