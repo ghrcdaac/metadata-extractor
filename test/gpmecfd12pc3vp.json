@@ -1,6 +1,6 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/namdropraw__1/C3VP_FD12P_test.csv"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/gpmvisecc3vp__1/C3VP_FD12P_test.csv"
    ],
    "config":{
       "files_config":[
