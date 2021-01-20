@@ -16,8 +16,11 @@ account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_
 #prefixes=( $bamboo_PREFIX_SIT )
 
 function stop_mdx_task() {
-  task_arn=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --service-name $1-MDX --query "taskArns[0]" --region $AWS_REGION | tr -d '"')
-  aws ecs stop-task --cluster $1-CumulusECSCluster --task $task_arn --region $AWS_REGION
+  task_arns=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --family $1-MDX --query "taskArns[*]" --region $AWS_REGION | tr -d '"[],')
+  for task in $task_arns
+  do
+          aws ecs stop-task --cluster $1-CumulusECSCluster --task $task --region $AWS_REGION
+  done
 }
 
 
