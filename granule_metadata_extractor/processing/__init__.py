@@ -80,3 +80,4 @@ from .process_hiwrapimpacts import ExtractHiwrapimpactsMetadata
 from .process_gpmwacrc3vp import ExtractGpmwacrc3vpMetadata
 from .process_crsimpacts import ExtractCrsimpactsMetadata
 from .process_gpmarsifld import ExtractGpmarsifldMetadata
+from .process_gpmvisecc3vp import ExtractGpmvisecc3vpMetadata
