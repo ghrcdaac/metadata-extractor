@@ -13,6 +13,7 @@ class ExtractGpmvisecc3vpMetadata(ExtractASCIIMetadata):
     south = 90.0
     east = -180.0
     west = 180.0
+    format = 'ASCII-csv'
 
     def __init__(self, file_path):
         super().__init__(file_path)
@@ -94,7 +95,7 @@ class ExtractGpmvisecc3vpMetadata(ExtractASCIIMetadata):
             str(x) for x in gemetry_list)
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
-        data['DataFormat'] = format
+        data['DataFormat'] = self.format
         data['VersionId'] = version
         return data
 

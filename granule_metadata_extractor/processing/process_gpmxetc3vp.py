@@ -22,6 +22,7 @@ class ExtractGpmxetc3vpMetadata(ExtractASCIIMetadata):
         self.origin_lon = -79.78
         self.bbox_offset = 0.01
         self.get_variables_min_max(file_name)
+        self.format = 'ASCII-csv'
 
     def get_variables_min_max(self, file_name):
         """
@@ -107,7 +108,7 @@ class ExtractGpmxetc3vpMetadata(ExtractASCIIMetadata):
             str(x) for x in gemetry_list)
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
-        data['DataFormat'] = format
+        data['DataFormat'] = self.format
         data['VersionId'] = version
         return data
 
