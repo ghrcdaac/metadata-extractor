@@ -1,17 +1,21 @@
 import xml.etree.ElementTree as ET
 import subprocess
-from datetime import datetime
+from datetime import datetime, timedelta
+import re
+
 
 class GenerateEcho10XML:
     """
     Class to generate echo 10 XML Data
     """
-    def __init__(self, data):
+
+    def __init__(self, data, age_off=None):
         """
         Initiate the GenerateECHO10XML instance
         :param data: a json object with metadata needed to generate an echo10 xml
         """
         self.data = data
+        self.age_off = age_off
 
     def add_sub_tags(self, top_tag, tag_names):
         """
@@ -35,9 +39,16 @@ class GenerateEcho10XML:
         """
         Granule = ET.Element("Granule")
         data = self.data
-        data['ProductionDateTime'] = data['LastUpdate'] = data['InsertTime'] = datetime.utcnow().strftime(
+        data['ProductionDateTime'] = data['LastUpdate'] = data[
+            'InsertTime'] = datetime.utcnow().strftime(
             '%Y-%m-%dT%H:%M:%SZ')  # Using UTC Time and time format required by CMR
         topList = ['GranuleUR', 'InsertTime', 'LastUpdate']
+        if data.get('AgeOffFlag', False) and self.age_off:
+            topList.append('DeleteTime')
+            data['DeleteTime'] = datetime.strftime(
+                datetime.strptime(data['LastUpdate'], '%Y-%m-%dT%H:%M:%SZ')
+                + timedelta(days=float(re.search(r'(.*) days', self.age_off)[1])),
+                '%Y-%m-%dT%H:%M:%SZ')
         top = self.add_sub_tags(top_tag=Granule, tag_names=topList)
 
         # =============Collection tag tag ========================#
