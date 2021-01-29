@@ -152,7 +152,7 @@ class ExtractIsslisgv1Metadata(ExtractNetCDFMetadata):
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['DataFormat'] = self.fileformat
         data['VersionId'] = version
-        data['AgeOffFlag'] = True if 'NRT' in data['GranuleUR'] else None
+        data['AgeOffFlag'] = True if 'NRT' in data['GranuleUR'] else False
         return data
 
 
