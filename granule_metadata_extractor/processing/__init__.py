@@ -83,3 +83,4 @@ from .process_gpmarsifld import ExtractGpmarsifldMetadata
 from .process_gpmvisecc3vp import ExtractGpmvisecc3vpMetadata
 from .process_cmimpacts import ExtractCmimpactsMetadata
 from .process_gpmxetc3vp import ExtractGpmxetc3vpMetadata
+from .process_exradimpacts import ExtractExradimpactsMetadata
