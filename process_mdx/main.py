@@ -436,7 +436,7 @@ class MDX(Process):
             }
             bucket = s3_client.Bucket(buckets.get('protected').get('name'))
             bucket.copy(copy_source,
-                        f"{url_path}/{re.search('(.*)/(.*)$', input[0])[2]}")
+                        f"{url_path}/{re.search('(.*)/(.*)$', self.input[0])[2]}")
         else:
             output = self.fetch_all()
         # Assert we have inputs to process
