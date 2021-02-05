@@ -82,7 +82,8 @@ class MDX(Process):
             "hiwrapimpacts": mdx.ExtractHiwrapimpactsMetadata,
             "gpmwacrc3vp": mdx.ExtractGpmwacrc3vpMetadata,
             "crsimpacts": mdx.ExtractCrsimpactsMetadata,
-            "exradimpacts": mdx.ExtractExradimpactsMetadata
+            "exradimpacts": mdx.ExtractExradimpactsMetadata,
+            "amprimpacts": mdx.ExtractAmprimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -355,11 +356,16 @@ class MDX(Process):
             "avi": self.extract_avi_metadata
         }
 
+        return_data_dict = {}
         for metadata_extractor_var in metadata_extractor_vars:
-            return processing_switcher.get(metadata_extractor_var.get('module'),
+            data = processing_switcher.get(metadata_extractor_var.get('module'),
                                            self.default_switch)(ds_short_name, version, access_url,
                                                                 file_path, metadata_extractor_var,
                                                                 output_folder)
+            return_data_dict = data if data else return_data_dict
+        return return_data_dict
+
+
 
     def get_bucket(self, filename, files, buckets):
         """
