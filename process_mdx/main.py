@@ -468,9 +468,8 @@ class MDX(Process):
                 {
                     "path": self.config['fileStagingDir'],
                     "url_path": url_path,
-                    "bucket": self.get_bucket(filename, collection.get('files', []),
-                                              buckets)['name'],
-                    "fileName": filename,  # Cumulus changed the key name to be camelCase
+                    "bucket": self.get_bucket(filename, collection.get('files', []),buckets)['name'],
+                    "name": filename,  # Cumulus changed the key name to be camelCase
                     "filename": uploaded_file,  # We still need to provide some custom steps with
                     # this key holding the object URI
                     "size": files_sizes.get(filename, 0)
