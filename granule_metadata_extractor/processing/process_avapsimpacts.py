@@ -1,6 +1,7 @@
 from ..src.extract_ascii_metadata import ExtractASCIIMetadata
 from datetime import datetime, timedelta
 import os
+import re
 
 
 class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
@@ -18,7 +19,6 @@ class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
         super().__init__(file_path)
         self.file_path = file_path
         self.filename = os.path.basename(self.file_path)
-        self.format = 'ASCII'
         self.get_variables_min_max()
 
     def get_variables_min_max(self, **kwargs):
@@ -30,17 +30,13 @@ class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
         dt = []
         dt_base = datetime.strptime(self.filename.split('/')[-1].split('_')[3][0:8], '%Y%m%d')
 
-        num_headers_lines = None
         with open(self.file_path, 'r') as f:
-            for i, line in enumerate(f.readlines()):
-                if i == 0:
-                    num_header_lines = int(line.split(',')[0])
-                elif i > num_header_lines:
-                    tkn = line.split(',')
-                    if len(tkn) > 8 and tkn[7] != '-9999' and tkn[8] != '-9999':
-                        lat.append(float(tkn[7]))
-                        lon.append(float(tkn[8]))
-                        dt.append(float(tkn[0]))
+            for line in f.readlines():
+                matches = re.search(r'^([\d.-]*),(([\d.-]*),){7}([\d.-]*),.*$', line)
+                if matches and any([(x != "-9999") for x in [matches[3], matches[4]]]):
+                    lat.append(float(matches[3]))
+                    lon.append(float(matches[4]))
+                    dt.append(float(matches[1]))
 
         self.start_time = dt_base + timedelta(seconds=min(dt))
         self.end_time = dt_base + timedelta(seconds=max(dt))
@@ -100,7 +96,7 @@ class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
             str(x) for x in gemetry_list)
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
-        data['DataFormat'] = self.format
+        data['DataFormat'] = format
         data['VersionId'] = version
         return data
 
