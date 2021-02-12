@@ -33,7 +33,7 @@ class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
         with open(self.file_path, 'r') as f:
             for line in f.readlines():
                 matches = re.search(r'^([\d.-]*),(([\d.-]*),){7}([\d.-]*),.*$', line)
-                if matches and any([(x != "-9999") for x in [matches[3], matches[4]]]):
+                if matches and all([(x != "-9999") for x in [matches[3], matches[4]]]):
                     lat.append(float(matches[3]))
                     lon.append(float(matches[4]))
                     dt.append(float(matches[1]))
