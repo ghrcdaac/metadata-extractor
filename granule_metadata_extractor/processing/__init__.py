@@ -85,3 +85,4 @@ from .process_cmimpacts import ExtractCmimpactsMetadata
 from .process_gpmxetc3vp import ExtractGpmxetc3vpMetadata
 from .process_exradimpacts import ExtractExradimpactsMetadata
 from .process_amprimpacts import ExtractAmprimpactsMetadata
+from .process_avapsimpacts import ExtractAvapsimpactsMetadata
