@@ -1,0 +1,90 @@
+{
+  "input": [
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/kmhximpacts__1/IMPACTS_nexrad_20200105_003725_kmhx.nc"
+  ],
+  "config": {
+    "files_config": [
+        {
+            "regex": "^(.*).*\\.cmr.xml$",
+            "sampleFileName": "IMPACTS_nexrad_20200105_003725_kmhx.nc.cmr.xml",
+            "bucket": "public"
+        },
+        {
+            "regex": "^IMPACTS_nexrad_.*(\\.nc)$",
+            "sampleFileName": "IMPACTS_nexrad_20200105_003725_kmhx.nc",
+            "bucket": "protected"
+        }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "ghrcsbxw-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "ghrcsbxw-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "ghrcsbxw-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "ghrcsbxw-public"
+      }
+    },
+    "collection":{
+        "name":"kmhximpacts",
+        "version":"1",
+        "dataType":"kmhximpacts",
+        "process":"metadataextractor",
+        "url_path":"kmhximpacts__1",
+        "duplicateHandling":"replace",
+        "granuleId":"^IMPACTS_nexrad_.*\\.(nc)$",
+        "granuleIdExtraction":"^((IMPACTS_nexrad_).*)",
+        "reportToEms":true,
+        "sampleFileName":"IMPACTS_nexrad_20200105_003725_kmhx.nc",
+        "files": [
+                {
+                 "bucket":"public",
+                 "regex":"^IMPACTS_nexrad_(.*).*\\.cmr.xml$",
+                 "sampleFileName":"IMPACTS_nexrad_20200105_003725_kmhx.nc.cmr.xml"
+                },
+                {
+                 "bucket":"protected",
+                 "regex":"^IMPACTS_nexrad_(.*).*(nc)$",
+                 "sampleFileName":"IMPACTS_nexrad_20200105_003725_kmhx.nc"
+                }
+    ],
+    "meta": {
+      "provider_path":"kmhximpacts/fieldCampaigns/impacts/NEXRAD/KMHX/data/",
+      "large_dataset":"true",
+      "hyrax_processing": "false",
+      "metadata_extractor": [
+          {
+              "regex": "^IMPACTS_nexrad_.*\\.(nc)$",
+              "module": "netcdf"
+          }
+        ]
+    }
+  },
+  "distribution_endpoint": "https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/",
+  "messageConfig": {
+    "input": "{[$.payload.granules[*].files[*].filename]}",
+    "outputs": [
+      {
+        "source": "{{$}}",
+        "destination": "{{$.payload}}"
+      }
+    ]
+  },
+  "cumulus_config": {
+    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+    "cumulus_context": {
+      "reingestGranule": "True",
+      "forceDuplicateOverwrite": "True"
+    }
+  }
+}
+}
