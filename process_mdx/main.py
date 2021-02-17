@@ -88,7 +88,9 @@ class MDX(Process):
             "klotimpacts": mdx.ExtractKlotimpactsMetadata,
             "klwximpacts": mdx.ExtractKlwximpactsMetadata,
             "kmhximpacts": mdx.ExtractKmhximpactsMetadata,
-            "kmkximpacts": mdx.ExtractKmkximpactsMetadata
+            "kmkximpacts": mdx.ExtractKmkximpactsMetadata,
+            "isslisg_v1_fin": mdx.ExtractIsslisgv1Metadata,
+            "isslis_v1_fin": mdx.ExtractIsslisv1Metadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
