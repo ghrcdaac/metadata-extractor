@@ -12,10 +12,12 @@ class MDX(Process):
     Class to extract spatial and temporal metadata
     """
 
-    def generate_xml_data(self, data, access_url,output_folder, granule_new_name = None):
+    def generate_xml_data(self, data, access_url,output_folder):
         """
 
         """
+
+        granule_new_name = data.get('UpdatedGranuleUR', None)
         if granule_new_name:
             access_url = access_url.replace(os.path.basename(access_url), os.path.basename(granule_new_name))
         data['OnlineAccessURL'] = access_url
@@ -151,8 +153,7 @@ class MDX(Process):
         if match(regex, os.path.basename(binary_file)):
             metadata = switcher.get(ds_short_name, self.default_switch)(binary_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, version=version, format=format)
-            granule_new_name = data.get('UpdatedGranuleUR', None)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder, granule_new_name=granule_new_name)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
     def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
