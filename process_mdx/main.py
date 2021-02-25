@@ -92,7 +92,13 @@ class MDX(Process):
             "kmhximpacts": mdx.ExtractKmhximpactsMetadata,
             "kmkximpacts": mdx.ExtractKmkximpactsMetadata,
             "isslisg_v1_fin": mdx.ExtractIsslisgv1Metadata,
-            "isslis_v1_fin": mdx.ExtractIsslisv1Metadata
+            "isslis_v1_fin": mdx.ExtractIsslisv1Metadata,
+            "kokximpacts": mdx.ExtractNexradimpactsMetadata,
+            "kpbzimpacts": mdx.ExtractNexradimpactsMetadata,
+            "kraximpacts": mdx.ExtractNexradimpactsMetadata,
+            "krlximpacts": mdx.ExtractNexradimpactsMetadata,
+            "ktyximpacts": mdx.ExtractNexradimpactsMetadata,
+            "kvwximpacts": mdx.ExtractNexradimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
