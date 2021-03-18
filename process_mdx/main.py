@@ -113,7 +113,9 @@ class MDX(Process):
             "kenximpacts": mdx.ExtractNexradimpactsMetadata,
             "kfcximpacts": mdx.ExtractNexradimpactsMetadata,
             "kgrbimpacts": mdx.ExtractNexradimpactsMetadata,
-            "kgrrimpacts": mdx.ExtractNexradimpactsMetadata
+            "kgrrimpacts": mdx.ExtractNexradimpactsMetadata,
+            "lislip": mdx.ExtractLislipMetadata,
+            "lislipG": mdx.ExtractLislipGMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
