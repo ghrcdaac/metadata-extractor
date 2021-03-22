@@ -438,7 +438,8 @@ class MDX(Process):
                          r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive)$'
         }
 
-    def get_output_files(self, output_file_path, excluded):
+    @staticmethod
+    def get_output_files(output_file_path, excluded):
         """
         """
         output_files = [] if excluded else [output_file_path]

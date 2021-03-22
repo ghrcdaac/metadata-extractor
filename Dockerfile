@@ -8,12 +8,20 @@ WORKDIR /build
 
 ENV     BUILD=/build
 
-COPY    . $BUILD/
+COPY ["./conda-requirements.sh", "requirements.txt", "/build/"]
 
 RUN     bash conda-requirements.sh && \
-        python setup.py install
+        pip install -r requirements.txt
 
-# Development
-RUN     pip install -r requirements-dev.txt && \
-        pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
-        rm -rf test
+# For development
+COPY ["./requirements-dev.txt", "/build/"]
+RUN     pip install ipython && \
+        pip install -r requirements-dev.txt
+
+
+COPY    . $BUILD/
+
+RUN     python setup.py install
+
+#RUN     pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
+RUN        rm -rf test
