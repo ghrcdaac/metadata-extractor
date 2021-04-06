@@ -94,3 +94,4 @@ from .process_kmkximpacts import ExtractKmkximpactsMetadata
 from .process_nexradimpacts import ExtractNexradimpactsMetadata
 from .process_lislip import ExtractLislipMetadata
 from .process_lislipG import ExtractLislipGMetadata
+from .process_msu import ExtractMsuMetadata
