@@ -512,7 +512,7 @@ class MDX(Process):
                     "filename": uploaded_file,  # We still need to provide some custom steps with
                     # this key holding the object URI
                     "size": files_sizes.get(filename, 0),
-                    "filepath": f"{os.path.dirname(url_path)}/{filename}"
+                    "filepath": f"{url_path.rstrip('/')}/{filename}"
                 }
             )
         final_output = list(granule_data.values())

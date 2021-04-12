@@ -26,12 +26,14 @@ def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
                                           'bucket': 'ghrcsbxw-protected',
                                           'name': 'lpvex_SHP_Aranda_ODM_u100915_00.txt',
                                           'filename': 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
-                                          'size': 2225},
+                                          'size': 2225,
+                                          'filepath': 'gpmodmlpvex__1/lpvex_SHP_Aranda_ODM_u100915_00.txt'},
                                          {'path': 'gpmodmlpvex__1', 'url_path': 'gpmodmlpvex__1',
                                           'bucket': 'ghrcsbxw-public',
                                           'name': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
                                           'filename': 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
-                                          'size': 0}
+                                          'size': 0,
+                                          'filepath': 'gpmodmlpvex__1/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml'}
                                      ]}],
                        'input': ['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
                                  's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml']}
