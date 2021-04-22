@@ -198,6 +198,7 @@ class MDX(Process):
         """
 
         switcher = {
+            "aces1cont": mdx.ExtractAces1ContMetadata,
             "gpmodmlpvex": mdx.ExtractGpmodmlpvexMetadata,
             "gpmjwlpvex": mdx.ExtractGpmjwlpvexMetadata,
             "gpmparawifld": mdx.ExtractGpmparawifldMetadata,
