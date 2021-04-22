@@ -1,3 +1,4 @@
+import os
 import re
 from datetime import datetime, timedelta
 
@@ -14,9 +15,11 @@ class ExtractAces1ContMetadata(ExtractASCIIMetadata):
     south = 23.0
     east = -81.0
     west = -85.0
+    format = "Binary"
 
     def __init__(self, file_path):
         super().__init__(file_path)
+        self.get_variables_min_max(os.path.basename(file_path))
 
     def get_variables_min_max(self, file_name):
         """
@@ -24,7 +27,7 @@ class ExtractAces1ContMetadata(ExtractASCIIMetadata):
         :param variable_key: The ASCII key we need to target
         :return: list longitude coordinates
         """
-        matches = re.search("aces1cont_(\d{4}).(\d+)_v2.50.tar", file_name)
+        matches = re.search("aces1cont_(\\d{4}).(\\d+)_v2.50.tar", file_name)
         year, day = int(matches[1]), int(matches[2])
         self.start_time = datetime(year, 1, 1) + timedelta(days=day - 1)
         self.end_time = self.start_time + timedelta(days=1) - timedelta(seconds=1)
@@ -83,7 +86,7 @@ class ExtractAces1ContMetadata(ExtractASCIIMetadata):
             str(x) for x in geometry_list)
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
-        data['DataFormat'] = format
+        data['DataFormat'] = self.format
         data['VersionId'] = version
         return data
 
