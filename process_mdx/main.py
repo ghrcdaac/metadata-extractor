@@ -174,6 +174,7 @@ class MDX(Process):
 
         """
         switcher = {
+            "aces1cont": mdx.ExtractAces1ContMetadata,
             "globalir": mdx.ExtractGlobalirMetadata
         }
         regex = binary_vars.get('regex', '.*')
@@ -198,7 +199,6 @@ class MDX(Process):
         """
 
         switcher = {
-            "aces1cont": mdx.ExtractAces1ContMetadata,
             "gpmodmlpvex": mdx.ExtractGpmodmlpvexMetadata,
             "gpmjwlpvex": mdx.ExtractGpmjwlpvexMetadata,
             "gpmparawifld": mdx.ExtractGpmparawifldMetadata,
