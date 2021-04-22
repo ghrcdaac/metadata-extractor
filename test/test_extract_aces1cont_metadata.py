@@ -19,7 +19,7 @@ class TestProcessAces1Cont(TestCase):
     process_aces1cont = ExtractAces1ContMetadata(input_file)
     expected_metadata = {'ShortName': 'aces1cont',
                          'GranuleUR': granule_name,
-                         'VersionId': '1', 'DataFormat': 'ASCII',
+                         'VersionId': '1', 'DataFormat': 'Binary',
                          }
 
     def test_1_get_start_date(self):

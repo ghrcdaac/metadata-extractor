@@ -25,7 +25,7 @@ class ExtractAces1ContMetadata(ExtractASCIIMetadata):
         :param variable_key: The ASCII key we need to target
         :return: list longitude coordinates
         """
-        matches = re.search("aces1cont_(\d{4}).(\d+)_v2.50.tar", file_name)
+        matches = re.search("aces1cont_(\\d{4}).(\\d+)_v2.50.tar", file_name)
         year, day = int(matches[1]), int(matches[2])
         self.start_time = datetime(year, 1, 1) + timedelta(days=day - 1)
         self.end_time = self.start_time + timedelta(days=1) - timedelta(seconds=1)
