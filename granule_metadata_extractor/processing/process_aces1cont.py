@@ -1,3 +1,4 @@
+import os
 import re
 from datetime import datetime, timedelta
 
@@ -18,6 +19,7 @@ class ExtractAces1ContMetadata(ExtractASCIIMetadata):
 
     def __init__(self, file_path):
         super().__init__(file_path)
+        self.get_variables_min_max(os.path.basename(file_path))
 
     def get_variables_min_max(self, file_name):
         """
