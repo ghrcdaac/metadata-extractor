@@ -47,7 +47,7 @@
         {
           "bucket": "public",
           "regex": "^aces1efm_(.*)\\.cmr\\.xml$",
-          "sampleFileName": "aces1efm_2002.191_v2.50.tar.cmr.xml "
+          "sampleFileName": "aces1efm_2002.191_v2.50.tar.cmr.xml"
         },
         {
           "bucket": "protected",
@@ -70,14 +70,8 @@
   },
   "meta": {
     "hyrax_processing": "false",
-    "provider_path": "aces1efm/fieldCampaigns/aces/continuous/data/",
-    "metadata_extractor": [
-      {
-        "regex": "^(.*)\\.(tar)$",
-        "module": "ascii"
-      }
-    ]
+    "provider_path": "aces1efm/fieldCampaigns/aces/continuous/data/"
   },
   "distribution_endpoint": "https://upu37d3oq0.execute-api.us-west-2.amazonaws.com/dev/"
 }
-}
+
