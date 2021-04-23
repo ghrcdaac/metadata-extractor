@@ -114,7 +114,7 @@ class TestProcessAces1Cont(TestCase):
         :return: metadata object
         """
         metadata = self.process_aces1efm.get_metadata(ds_short_name='aces1efm',
-                                                       format='ASCII', version='1')
+                                                       format='Binary', version='1')
         # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])

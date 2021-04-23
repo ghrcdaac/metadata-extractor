@@ -57,10 +57,6 @@
         }
       ]
     },
-    "meta": {
-      "hyrax_processing": "false",
-      "provider_path": "aces1cont/fieldCampaigns/aces/continuous/data/"
-    },
     "distribution_endpoint": "https://upu37d3oq0.execute-api.us-west-2.amazonaws.com/dev/"
   }
 }
