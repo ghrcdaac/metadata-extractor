@@ -1,23 +1,23 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_aces1efm import ExtractAces1EfmMetadata
+from granule_metadata_extractor.processing.process_aces1time import ExtractAces1TimeMetadata
 from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 
-class TestProcessAces1Cont(TestCase):
+class TestProcessAces1Time(TestCase):
     """
     Test processing Aces1Cont.
     This will test if Aces1Cont metadata will be extracted correctly
     """
-    granule_name = "aces1efm_2002.191_v2.50.tar"
+    granule_name = "aces1time_2002.212_v2.50.tar"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
     lat_var_key = 'lat'
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
-    process_aces1 = ExtractAces1EfmMetadata(input_file)
-    expected_metadata = {'ShortName': 'aces1efm',
+    process_aces1time = ExtractAces1TimeMetadata(input_file)
+    expected_metadata = {'ShortName': 'aces1time',
                          'GranuleUR': granule_name,
                          'VersionId': '1', 'DataFormat': 'Binary',
                          }
@@ -27,39 +27,39 @@ class TestProcessAces1Cont(TestCase):
         Testing get correct start date
         :return:
         """
-        self.process_aces1efm.get_variables_min_max(self.granule_name)
-        start_date = self.process_aces1efm.get_temporal(units_variable=self.time_units)[0]
+        self.process_aces1time.get_variables_min_max(self.granule_name)
+        start_date = self.process_aces1time.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2002-07-10T00:00:00Z")
+        self.assertEqual(start_date, "2002-07-31T00:00:00Z")
 
     def test_2_get_stop_date(self):
         """
         Testing get correct start date
         :return:
         """
-        self.process_aces1efm.get_variables_min_max(self.granule_name)
-        stop_date = self.process_aces1efm.get_temporal(units_variable=self.time_units)[1]
+        self.process_aces1time.get_variables_min_max(self.granule_name)
+        stop_date = self.process_aces1time.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2002-07-10T23:59:59Z")
+        self.assertEqual(stop_date, "2002-07-31T23:59:59Z")
 
     def test_3_get_file_size(self):
         """
         Test getting the correct file size
         :return:
         """
-        file_size = round(self.process_aces1efm.get_file_size_megabytes(), 2)
+        file_size = round(self.process_aces1time.get_file_size_megabytes(), 2)
         print(file_size)
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 12.02)
+        self.assertEqual(file_size, 0.01)
 
     def get_wnes(self, index):
         """
         A function helper to ger North, West, Souh, East
         :return: wnes[index] where index: west = 0 - north = 1 - east = 2 - south = 3
         # """
-        process_geos = self.process_aces1efm
+        process_geos = self.process_aces1time
         wnes = process_geos.get_wnes_geometry()
         return str(round(wnes[index], 3))
 
@@ -104,16 +104,16 @@ class TestProcessAces1Cont(TestCase):
         Test getting the checksum of the input file
         :return: the MD5 string
         """
-        checksum = self.process_aces1efm.get_checksum()
+        checksum = self.process_aces1time.get_checksum()
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, 'b8ecf98a7abee273f618ef04d18ddb96')
+        self.assertEqual(checksum, '9c531f0634d42615e77f77490bee5d8f')
 
     def test_9_generate_metadata(self):
         """
-        Test generating metadata of aces1efm
+        Test generating metadata of aces1time
         :return: metadata object
         """
-        metadata = self.process_aces1efm.get_metadata(ds_short_name='aces1efm',
+        metadata = self.process_aces1time.get_metadata(ds_short_name='aces1time',
                                                        format='Binary', version='1')
         # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
