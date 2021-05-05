@@ -27,8 +27,8 @@ class TestProcessAces1Cont(TestCase):
         Testing get correct start date
         :return:
         """
-        self.process_aces1efm.get_variables_min_max(self.granule_name)
-        start_date = self.process_aces1efm.get_temporal(units_variable=self.time_units)[0]
+        self.process_aces1.get_variables_min_max(self.granule_name)
+        start_date = self.process_aces1.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
         self.assertEqual(start_date, "2002-07-10T00:00:00Z")
@@ -38,8 +38,8 @@ class TestProcessAces1Cont(TestCase):
         Testing get correct start date
         :return:
         """
-        self.process_aces1efm.get_variables_min_max(self.granule_name)
-        stop_date = self.process_aces1efm.get_temporal(units_variable=self.time_units)[1]
+        self.process_aces1.get_variables_min_max(self.granule_name)
+        stop_date = self.process_aces1.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
         self.assertEqual(stop_date, "2002-07-10T23:59:59Z")
@@ -49,7 +49,7 @@ class TestProcessAces1Cont(TestCase):
         Test getting the correct file size
         :return:
         """
-        file_size = round(self.process_aces1efm.get_file_size_megabytes(), 2)
+        file_size = round(self.process_aces1.get_file_size_megabytes(), 2)
         print(file_size)
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
         self.assertEqual(file_size, 12.02)
@@ -59,7 +59,7 @@ class TestProcessAces1Cont(TestCase):
         A function helper to ger North, West, Souh, East
         :return: wnes[index] where index: west = 0 - north = 1 - east = 2 - south = 3
         # """
-        process_geos = self.process_aces1efm
+        process_geos = self.process_aces1
         wnes = process_geos.get_wnes_geometry()
         return str(round(wnes[index], 3))
 
@@ -104,7 +104,7 @@ class TestProcessAces1Cont(TestCase):
         Test getting the checksum of the input file
         :return: the MD5 string
         """
-        checksum = self.process_aces1efm.get_checksum()
+        checksum = self.process_aces1.get_checksum()
         self.expected_metadata['checksum'] = checksum
         self.assertEqual(checksum, 'b8ecf98a7abee273f618ef04d18ddb96')
 
@@ -113,7 +113,7 @@ class TestProcessAces1Cont(TestCase):
         Test generating metadata of aces1efm
         :return: metadata object
         """
-        metadata = self.process_aces1efm.get_metadata(ds_short_name='aces1efm',
+        metadata = self.process_aces1.get_metadata(ds_short_name='aces1efm',
                                                        format='Binary', version='1')
         # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
