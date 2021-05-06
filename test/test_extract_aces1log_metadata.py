@@ -1,23 +1,23 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_aces1efm import ExtractAces1EfmMetadata
+from granule_metadata_extractor.processing.process_aces1log import ExtractAces1LogMetadata
 from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 
-class TestProcessAces1Efm(TestCase):
+class TestProcessAces1Log(TestCase):
     """
-    Test processing Aces1Efm.
-    This will test if Aces1Efm metadata will be extracted correctly
+    Test processing Aces1Cont.
+    This will test if Aces1Cont metadata will be extracted correctly
     """
-    granule_name = "aces1efm_2002.191_v2.50.tar"
+    granule_name = "aces1log_2002.197_v2.50.tar"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
     lat_var_key = 'lat'
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
-    process_aces1 = ExtractAces1EfmMetadata(input_file)
-    expected_metadata = {'ShortName': 'aces1efm',
+    process_aces1 = ExtractAces1LogMetadata(input_file)
+    expected_metadata = {'ShortName': 'aces1log',
                          'GranuleUR': granule_name,
                          'VersionId': '1', 'DataFormat': 'Binary',
                          }
@@ -31,7 +31,7 @@ class TestProcessAces1Efm(TestCase):
         start_date = self.process_aces1.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2002-07-10T00:00:00Z")
+        self.assertEqual(start_date, "2002-07-16T00:00:00Z")
 
     def test_2_get_stop_date(self):
         """
@@ -42,7 +42,7 @@ class TestProcessAces1Efm(TestCase):
         stop_date = self.process_aces1.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2002-07-10T23:59:59Z")
+        self.assertEqual(stop_date, "2002-07-16T23:59:59Z")
 
     def test_3_get_file_size(self):
         """
@@ -52,7 +52,7 @@ class TestProcessAces1Efm(TestCase):
         file_size = round(self.process_aces1.get_file_size_megabytes(), 2)
         print(file_size)
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 12.02)
+        self.assertEqual(file_size, 0.02)
 
     def get_wnes(self, index):
         """
@@ -106,15 +106,15 @@ class TestProcessAces1Efm(TestCase):
         """
         checksum = self.process_aces1.get_checksum()
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, 'b8ecf98a7abee273f618ef04d18ddb96')
+        self.assertEqual(checksum, 'a6ffe39f936937bf160d80524bf4fa01')
 
     def test_9_generate_metadata(self):
         """
-        Test generating metadata of aces1efm
+        Test generating metadata of aces1log
         :return: metadata object
         """
-        metadata = self.process_aces1.get_metadata(ds_short_name='aces1efm',
-                                                       format='Binary', version='1')
+        metadata = self.process_aces1.get_metadata(ds_short_name='aces1log',
+                                                   format='Binary', version='1')
         # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
@@ -126,6 +126,6 @@ class TestProcessAces1Efm(TestCase):
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
         echo10xml = GenerateEcho10XML(self.expected_metadata)
-        print(self.expected_metadata)
+        # print(self.expected_metadata)
         echo10xml.generate_echo10_xml_file()
         self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
