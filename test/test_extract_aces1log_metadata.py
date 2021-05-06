@@ -126,6 +126,6 @@ class TestProcessAces1Log(TestCase):
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
         echo10xml = GenerateEcho10XML(self.expected_metadata)
-        print(self.expected_metadata)
+        # print(self.expected_metadata)
         echo10xml.generate_echo10_xml_file()
         self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))

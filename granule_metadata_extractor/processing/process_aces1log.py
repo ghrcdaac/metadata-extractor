@@ -24,7 +24,6 @@ class ExtractAces1LogMetadata(ExtractASCIIMetadata):
     def get_variables_min_max(self, file_name):
         """
         :param file_name: file name
-        :param variable_key: The ASCII key we need to target
         :return: list longitude coordinates
         """
         matches = re.search("aces1log_(\\d{4}).(\\d+)_v2.50.tar", file_name)
@@ -51,8 +50,6 @@ class ExtractAces1LogMetadata(ExtractASCIIMetadata):
     def get_wnes_geometry(self, scale_factor=1.0, offset=0):
         """
         Extract the geometry from a netCDF file
-        :param nc_data: netCDF data
-        :param timestamp:  The NetCDF variable we need to target
         :param scale_factor: In case it is not CF compliant we will need scale factor
         :param offset: data offset if the netCDF not CF compliant
         :return: list of bounding box coordinates [west, north, east, south]
@@ -64,10 +61,6 @@ class ExtractAces1LogMetadata(ExtractASCIIMetadata):
     def get_metadata(self, ds_short_name, format='ASCII', version='01'):
         """
         :param ds_short_name:
-        :param time_variable_key:
-        :param lon_variable_key:
-        :param lat_variable_key:
-        :param time_units:
         :param format:
         :return:
         """
