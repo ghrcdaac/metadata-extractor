@@ -15,6 +15,7 @@ from .process_gripstorm_kml import ExtractGripstormKMLMetadata
 from .process_aces1am import ExtractAces1amMetadata
 from .process_aces1cont import ExtractAces1ContMetadata
 from .process_aces1efm import ExtractAces1EfmMetadata
+from .process_aces1log import ExtractAces1LogMetadata
 from .process_aces1time import ExtractAces1TimeMetadata
 from .process_tcspecmwf import ExtractTcspecmwfMetadata
 from .process_er2mir import ExtractEr2mirMetadata
