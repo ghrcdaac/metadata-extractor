@@ -176,6 +176,7 @@ class MDX(Process):
         switcher = {
             "aces1cont": mdx.ExtractAces1ContMetadata,
             "aces1efm": mdx.ExtractAces1EfmMetadata,
+            "aces1log": mdx.ExtractAces1LogMetadata,
             "aces1time": mdx.ExtractAces1TimeMetadata,
             "globalir": mdx.ExtractGlobalirMetadata
         }
