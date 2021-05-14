@@ -356,6 +356,28 @@ class MDX(Process):
             return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
+    def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file, legacy_vars={},
+                             output_folder='/tmp', format='ASCII'):
+        """
+        Function to extract metadata from legacy dataset files
+        :param ds_short_name: collection shortname
+        :param version: version
+        :param access_url: The access URL to the granule
+        :param legacy_file: Path to legacy file
+        :param legacy_vars: legacy variables
+        :param output_folder: Location to output created echo10xml file
+        :param format: data type of input file
+        :return:
+        """
+        regex = legacy_vars.get('regex', '.*')
+
+        if match(regex, os.path.basename(legacy_file)):
+            metadata = mdx.ExtractLegacyMetadata(legacy_file)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
+                                         version=version)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+        return {}
+
     def upload_file(self, filename):
         info = self.get_publish_info(filename)
         if info is None:
@@ -393,7 +415,8 @@ class MDX(Process):
             "ascii": self.extract_ascii_metadata,
             "browse": self.extract_browse_metadata,
             "kml": self.extract_kml_metadata,
-            "avi": self.extract_avi_metadata
+            "avi": self.extract_avi_metadata,
+            "legacy": self.extract_legacy_metadata
         }
 
         return_data_dict = {}
@@ -473,7 +496,8 @@ class MDX(Process):
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
         url_path = collection.get('url_path', self.config['fileStagingDir'])
 
-        excluded = collection_name in self.exclude_fetch()
+        excluded = collection_name in self.exclude_fetch() or \
+                   collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') is 'legacy'
         if excluded:
             output = {key: self.mutate_input(self.path, self.input[0])}
             s3_client = boto3.resource('s3')
