@@ -3,5 +3,5 @@ numpy==1.19.1
 python-dateutil==2.7.5
 six~=1.11.0
 cumulus-process==0.8.0
-xlrd==1.2.
+xlrd==1.2.0
 requests==2.25.0

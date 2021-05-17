@@ -2,6 +2,7 @@ from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_legacy import ExtractLegacyMetadata
 from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+import re
 
 
 class TestProcessLegacy(TestCase):
@@ -105,7 +106,10 @@ class TestProcessLegacy(TestCase):
         # checksum = self.process_Legacy.get_checksum()
         checksum = self.process_Legacy.checksum
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '2121d7505fb809fd2e93fdcf35e4ee4d')
+        # self.assertEqual(checksum, '68b67c53a899df34537118f34a58ecb0')
+        # Because we are randomly generating a checksum for granules which don't have one, we are instead
+        # unit testing for the expected checksum pattern rather than a specific checksum
+        self.assertRegex(checksum, r'^[0-9a-fA-F]{32}$')
 
     def test_9_generate_metadata(self):
         """

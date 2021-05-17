@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 import requests
 import urllib
+import secrets
 
 
 class ExtractLegacyMetadata(ExtractASCIIMetadata):
@@ -52,7 +53,7 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
         # If granule doesn't have a checksum, we fake it. If legacy dataset needs checksum, we will create
         # dedicated MDX for it.
         self.checksum = granule_info.get('checksum') if granule_info.get('checksum') is not None else \
-            "2121d7505fb809fd2e93fdcf35e4ee4d"
+            secrets.token_hex(nbytes=16)
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
