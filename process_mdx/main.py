@@ -468,7 +468,8 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5})$'
+                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5})$',
+            'legacy_key': r'^(.*).*$'
         }
 
     @staticmethod
@@ -485,19 +486,18 @@ class MDX(Process):
         Override the processing wrapper
         :return:
         """
-        key = 'input_key'
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
+        is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') == 'legacy'
+        key = 'legacy_key' if is_legacy else 'input_key'
         buckets = self.config.get('buckets')
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
         url_path = collection.get('url_path', self.config['fileStagingDir'])
-
-        excluded = collection_name in self.exclude_fetch() or \
-                   collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') is 'legacy'
+        excluded = collection_name in self.exclude_fetch() or is_legacy
         if excluded:
             output = {key: self.mutate_input(self.path, self.input[0])}
             s3_client = boto3.resource('s3')

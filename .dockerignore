@@ -3,3 +3,6 @@ test_results
 *.pytest_cache*
 *.idea*
 */__pycache__*
+bamboo_build_push.sh
+build_push_docker.sh
+build_python_tasks.sh
