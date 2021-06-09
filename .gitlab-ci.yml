@@ -6,6 +6,7 @@ before_script:
 
 stages:
   - Test
+  - Experimenting
 
 IntegrationTest:
   stage: Test
@@ -27,3 +28,6 @@ IntegrationTest:
   artifacts:
     reports:
       junit: test*.xml
+Experimenting:
+  stage: Experimenting
+  script: python create_deploy_release_package.py
