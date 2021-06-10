@@ -9,6 +9,9 @@ def find_collection_processors(collection_name):
     output, error = process.communicate()
     return str(output).strip('b\'\\n').split('\\n')
 
+def create_release():
+    pass
+
 
 if __name__ == '__main__':
     data_sets = ['amsua', 'isslis', 'nalma', 'rss']

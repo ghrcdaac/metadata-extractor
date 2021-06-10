@@ -30,4 +30,6 @@ IntegrationTest:
       junit: test*.xml
 Experimenting:
   stage: Experimenting
-  script: python create_deploy_release_package.py
+  script:
+   - python create_deploy_release_package.py
+   - python create_deploy_release.py
