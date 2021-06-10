@@ -6,7 +6,7 @@ before_script:
 
 stages:
   - Test
-  - Experimenting
+  - CreateReleasePackageLite
 
 IntegrationTest:
   stage: Test
@@ -28,8 +28,20 @@ IntegrationTest:
   artifacts:
     reports:
       junit: test*.xml
-Experimenting:
-  stage: Experimenting
+
+CreateReleasePackageLite:
+  stage: CreateReleasePackageLite
   script:
    - python create_deploy_release_package.py
-   - python create_deploy_release.py
+  artifacts:
+    paths:
+      - package.zip
+      - main.tf
+      - terraform.tfvars
+      - variables.tf
+      - "*/modules"
+
+#CreateReleaseLite:
+#  stage: CreateReleaseLite
+#  script:
+#    - python create_deploy_release_package.py

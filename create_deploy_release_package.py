@@ -9,9 +9,6 @@ def find_collection_processors(collection_name):
     output, error = process.communicate()
     return str(output).strip('b\'\\n').split('\\n')
 
-def create_release():
-    pass
-
 
 if __name__ == '__main__':
     data_sets = ['amsua', 'isslis', 'nalma', 'rss']
@@ -21,7 +18,8 @@ if __name__ == '__main__':
                     ignore=shutil.ignore_patterns('helpers', '__init__.py'))
 
     # install the requirements into the ./package directory
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "--target", "./package", '-r', 'requirements.txt'])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--target", "./package", '-r',
+                           'requirements_lambda.txt'])
 
     # copy the relevant processing files from ./granule_metadata_extractor/processing/
     for set_name in data_sets:

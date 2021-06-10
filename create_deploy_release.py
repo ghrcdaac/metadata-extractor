@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 
@@ -6,5 +7,5 @@ data = {"name": "New release",
         "description": "Test release",
         "assets:links:filepath": './package.zip'}
 headers = {'Content-Type': 'application/json', 'PRIVATE-TOKEN': os.environ['CI_JOB_TOKEN']}
-post_resp = requests.post(url, data=data, headers=headers)
-print(post_resp.json())
+post_resp = requests.post(url, data=json.dumps(data), headers=headers)
+print(post_resp)
