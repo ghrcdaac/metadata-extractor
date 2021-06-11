@@ -7,6 +7,7 @@ before_script:
 stages:
   - Test
   - CreateReleasePackageLite
+  - CreateReleaseLite
 
 IntegrationTest:
   stage: Test
@@ -34,14 +35,16 @@ CreateReleasePackageLite:
   script:
    - python create_deploy_release_package.py
   artifacts:
+    name: "${CI_PROJECT_NAME}_lite_${CI_COMMIT_SHA}"
     paths:
       - package.zip
       - main.tf
       - terraform.tfvars
       - variables.tf
-      - "*/modules"
+      - modules
+    expire_in: never
 
-#CreateReleaseLite:
-#  stage: CreateReleaseLite
-#  script:
-#    - python create_deploy_release_package.py
+CreateReleaseLite:
+  stage: CreateReleaseLite
+  script:
+    - python create_deploy_release.py
