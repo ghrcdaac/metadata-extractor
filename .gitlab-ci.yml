@@ -7,7 +7,6 @@ before_script:
 stages:
   - Test
   - CreateReleasePackageLite
-  - CreateReleaseLite
 
 IntegrationTest:
   stage: Test
@@ -43,8 +42,3 @@ CreateReleasePackageLite:
       - variables.tf
       - modules
     expire_in: never
-
-CreateReleaseLite:
-  stage: CreateReleaseLite
-  script:
-    - python create_deploy_release.py
