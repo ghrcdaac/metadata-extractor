@@ -2,7 +2,6 @@ import os
 import subprocess
 import sys
 import shutil
-from pathlib import Path
 
 
 def find_collection_processors(collection_name):
@@ -31,19 +30,11 @@ if __name__ == '__main__':
     shutil.copytree('./granule_metadata_extractor/src/', './package/granule_metadata_extractor/src/',
                     ignore=shutil.ignore_patterns('helpers'))
 
-    # Copy the main and version
+    # Copy the main, version, and lambda handler
     shutil.copytree('./process_mdx', './package/process_mdx')
-
-    # Copy Modules
-    shutil.copytree('./modules', './package/modules')
-
-    for file in os.listdir():
-        if os.path.isfile(file):
-            shutil.copy(file, f'./package/{file.lstrip("./")}')
 
     # Copy the relevant processing files from ./granule_metadata_extractor/processing/
     for set_name in data_sets:
-        # [shutil.copy(ele, f'./package/{ele.lstrip("./")}') for ele in find_collection_processors(set_name)]
         processors = find_collection_processors(set_name)
         for processor in processors:
             try:
@@ -55,7 +46,6 @@ if __name__ == '__main__':
     # Get __init__.py
     for init in find_init_py():
         try:
-            print(f'init = {init}')
             shutil.copy(init, f'./package/{init.lstrip("./")}')
         except IOError as io_err:
             os.mkdir(f'./package/{os.path.dirname(init).lstrip("./")}')
