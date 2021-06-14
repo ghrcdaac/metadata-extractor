@@ -62,7 +62,8 @@ if __name__ == "__main__":
     url = f"https://gitlab.com/api/v4/projects/19420926/jobs"
     # headers = {'PRIVATE-TOKEN': os.environ['CI_BUILD_TOKEN']}
     # headers = {'PRIVATE-TOKEN': os.environ['CI_JOB_TOKEN']}
-    headers = {'JOB-TOKEN': os.environ['CI_JOB_TOKEN']}
+    headers = {'PRIVATE-TOKEN': os.environ['CI_JOB_TOKEN'],
+               'JOB-TOKEN': os.environ['CI_JOB_TOKEN']}
     data = {'scope': ['success']}
 
     post_resp = requests.get(url, headers=headers)
