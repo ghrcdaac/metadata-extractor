@@ -7,6 +7,7 @@ before_script:
 stages:
   - Test
   - CreateReleasePackageLite
+  - CreateReleaseLite
 
 IntegrationTest:
   stage: Test
@@ -33,10 +34,6 @@ CreateReleasePackageLite:
   stage: CreateReleasePackageLite
   script:
    - python create_deploy_release_package.py
-  rules:
-   - if: '$CI_COMMIT_REF_NAME == "master"'
-   - if: '$CI_MERGE_REQUEST_ID'
-
   artifacts:
     name: "${CI_PROJECT_NAME}_lite_${CI_COMMIT_SHA}"
     paths:
@@ -47,3 +44,7 @@ CreateReleasePackageLite:
       - modules
     expire_in: never
 
+CreateReleaseLite:
+  stage: CreateReleaseLite
+  script:
+    - python create_deploy_release.py
