@@ -58,12 +58,13 @@ import requests
 
 # Get artifacts for last CreateReleasePackageLite stage in jobs
 if __name__ == "__main__":
-    url = f"https://gitlab.com/api/v4/projects/19420926/pipelines/{os.environ['CI_PIPELINE_ID']}/jobs"
-    # url = f"https://gitlab.com/api/v4/projects/19420926/jobs"
+    # url = f"https://gitlab.com/api/v4/projects/19420926/pipelines/{os.environ['CI_PIPELINE_ID']}/jobs"
+    url = f"https://gitlab.com/api/v4/projects/19420926/jobs"
     # headers = {'PRIVATE-TOKEN': os.environ['CI_BUILD_TOKEN']}
     # headers = {'PRIVATE-TOKEN': os.environ['CI_JOB_TOKEN']}
     headers = {'JOB-TOKEN': os.environ['CI_JOB_TOKEN']}
     data = {'scope': ['success']}
+
     post_resp = requests.get(url, headers=headers)
     # Get the last successful job id (add logic to not call this if the checks for merging into master fail)
     job_id = ''
