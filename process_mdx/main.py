@@ -11,6 +11,7 @@ class MDX(Process):
     """
     Class to extract spatial and temporal metadata
     """
+    debug_msg = ''
 
     def generate_xml_data(self, data, access_url,output_folder):
         """
@@ -464,6 +465,27 @@ class MDX(Process):
         filename = os.path.basename(input_file)
         return [f"{output_folder.rstrip('/')}/{filename}"]
 
+    def upload_output_files(self):
+        """
+        Uploads all self.output files to same location as input file
+        :return: list of files uploaded to S3 (as well as input which should already be in S3)
+        """
+        upload_output_list = list()
+        source_path = os.path.dirname(self.input[0])
+        for output_file in self.output:
+            output_filename = os.path.basename(output_file)
+            uri_out = os.path.join(source_path, output_filename)
+            upload_output_list.append(uri_out)
+            if output_filename is not os.path.basename(self.input[0]):
+                try:
+                    uri_out_info = s3.uri_parser(uri_out)
+                    s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).Object(uri_out_info['key'])
+                    with open(output_file, 'rb') as data:
+                        s3_client.upload_fileobj(data)
+                except Exception as e:
+                    self.logger.error(f'Error uploading file {output_filename}: {str(e)}')
+        return upload_output_list
+
     @property
     def input_keys(self):
         return {
@@ -500,15 +522,6 @@ class MDX(Process):
         excluded = collection_name in self.exclude_fetch() or is_legacy
         if excluded:
             output = {key: self.mutate_input(self.path, self.input[0])}
-            s3_client = boto3.resource('s3')
-            source_bucket = buckets.get('internal').get('name')
-            copy_source = {
-                'Bucket': source_bucket,
-                'Key': re.search(f'^s3://{source_bucket}/(.*)', self.input[0])[1]
-            }
-            bucket = s3_client.Bucket(buckets.get('protected').get('name'))
-            bucket.copy(copy_source,
-                        f"{url_path}/{re.search('(.*)/(.*)$', self.input[0])[2]}")
         else:
             output = self.fetch_all()
         # Assert we have inputs to process
@@ -539,12 +552,12 @@ class MDX(Process):
                 {
                     "path": self.config['fileStagingDir'],
                     "url_path": url_path,
-                    "bucket": self.get_bucket(filename, collection.get('files', []),buckets)['name'],
                     "name": filename,  # Cumulus changed the key name to be camelCase
                     "filename": uploaded_file,  # We still need to provide some custom steps with
                     # this key holding the object URI
                     "size": files_sizes.get(filename, 0),
-                    "filepath": f"{url_path.rstrip('/')}/{filename}"
+                    "filepath": f"{url_path.rstrip('/')}/{filename}",
+                    "fileStagingDir": os.path.dirname(s3.uri_parser(uploaded_file)['key'])
                 }
             )
         final_output = list(granule_data.values())
