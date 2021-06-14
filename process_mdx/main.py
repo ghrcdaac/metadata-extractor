@@ -4,14 +4,12 @@ from cumulus_process import Process, s3
 from re import match
 import os
 import boto3
-import re
 
 
 class MDX(Process):
     """
     Class to extract spatial and temporal metadata
     """
-    debug_msg = ''
 
     def generate_xml_data(self, data, access_url,output_folder):
         """
