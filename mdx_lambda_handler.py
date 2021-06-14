@@ -9,7 +9,7 @@ if os.environ.get('CUMULUS_MESSAGE_ADAPTER_DIR'):
     from run_cumulus_task import run_cumulus_task
 
 
-def lambda_handler(event, context=None):
+def mdx_lambda_handler(event, context=None):
     print(event)
     MDX.cli()
     return {"Temp": "temp"}
@@ -17,6 +17,6 @@ def lambda_handler(event, context=None):
 
 def handler(event, context):
     if run_cumulus_task:
-        return run_cumulus_task(lambda_handler, event, context)
+        return run_cumulus_task(mdx_lambda_handler, event, context)
     else:
         return []
