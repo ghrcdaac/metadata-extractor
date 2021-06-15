@@ -31,7 +31,9 @@ if __name__ == '__main__':
                     ignore=shutil.ignore_patterns('helpers'))
 
     # Copy the main, version, and lambda handler
-    shutil.copytree('./process_mdx', './package/process_mdx')
+    # shutil.copytree('./process_mdx', './package/process_mdx')
+
+    shutil.copy("./handler.py", "./package'handler.py")
 
     # Copy the relevant processing files from ./granule_metadata_extractor/processing/
     for set_name in data_sets:

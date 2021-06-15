@@ -4,7 +4,6 @@ from cumulus_process import Process, s3
 from re import match
 import os
 import boto3
-import re
 
 
 class MDX(Process):
@@ -356,6 +355,28 @@ class MDX(Process):
             return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
         return {}
 
+    def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file, legacy_vars={},
+                             output_folder='/tmp', format='ASCII'):
+        """
+        Function to extract metadata from legacy dataset files
+        :param ds_short_name: collection shortname
+        :param version: version
+        :param access_url: The access URL to the granule
+        :param legacy_file: Path to legacy file
+        :param legacy_vars: legacy variables
+        :param output_folder: Location to output created echo10xml file
+        :param format: data type of input file
+        :return:
+        """
+        regex = legacy_vars.get('regex', '.*')
+
+        if match(regex, os.path.basename(legacy_file)):
+            metadata = mdx.ExtractLegacyMetadata(legacy_file)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
+                                         version=version)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+        return {}
+
     def upload_file(self, filename):
         info = self.get_publish_info(filename)
         if info is None:
@@ -393,7 +414,8 @@ class MDX(Process):
             "ascii": self.extract_ascii_metadata,
             "browse": self.extract_browse_metadata,
             "kml": self.extract_kml_metadata,
-            "avi": self.extract_avi_metadata
+            "avi": self.extract_avi_metadata,
+            "legacy": self.extract_legacy_metadata
         }
 
         return_data_dict = {}
@@ -441,11 +463,33 @@ class MDX(Process):
         filename = os.path.basename(input_file)
         return [f"{output_folder.rstrip('/')}/{filename}"]
 
+    def upload_output_files(self):
+        """
+        Uploads all self.output files to same location as input file
+        :return: list of files uploaded to S3 (as well as input which should already be in S3)
+        """
+        upload_output_list = list()
+        source_path = os.path.dirname(self.input[0])
+        for output_file in self.output:
+            output_filename = os.path.basename(output_file)
+            uri_out = os.path.join(source_path, output_filename)
+            upload_output_list.append(uri_out)
+            if output_filename is not os.path.basename(self.input[0]):
+                try:
+                    uri_out_info = s3.uri_parser(uri_out)
+                    s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).Object(uri_out_info['key'])
+                    with open(output_file, 'rb') as data:
+                        s3_client.upload_fileobj(data)
+                except Exception as e:
+                    self.logger.error(f'Error uploading file {output_filename}: {str(e)}')
+        return upload_output_list
+
     @property
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5})$'
+                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5})$',
+            'legacy_key': r'^(.*).*$'
         }
 
     @staticmethod
@@ -462,29 +506,20 @@ class MDX(Process):
         Override the processing wrapper
         :return:
         """
-        key = 'input_key'
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
+        is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') == 'legacy'
+        key = 'legacy_key' if is_legacy else 'input_key'
         buckets = self.config.get('buckets')
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
         url_path = collection.get('url_path', self.config['fileStagingDir'])
-
-        excluded = collection_name in self.exclude_fetch()
+        excluded = collection_name in self.exclude_fetch() or is_legacy
         if excluded:
             output = {key: self.mutate_input(self.path, self.input[0])}
-            s3_client = boto3.resource('s3')
-            source_bucket = buckets.get('internal').get('name')
-            copy_source = {
-                'Bucket': source_bucket,
-                'Key': re.search(f'^s3://{source_bucket}/(.*)', self.input[0])[1]
-            }
-            bucket = s3_client.Bucket(buckets.get('protected').get('name'))
-            bucket.copy(copy_source,
-                        f"{url_path}/{re.search('(.*)/(.*)$', self.input[0])[2]}")
         else:
             output = self.fetch_all()
         # Assert we have inputs to process
@@ -515,12 +550,12 @@ class MDX(Process):
                 {
                     "path": self.config['fileStagingDir'],
                     "url_path": url_path,
-                    "bucket": self.get_bucket(filename, collection.get('files', []),buckets)['name'],
                     "name": filename,  # Cumulus changed the key name to be camelCase
                     "filename": uploaded_file,  # We still need to provide some custom steps with
                     # this key holding the object URI
                     "size": files_sizes.get(filename, 0),
-                    "filepath": f"{url_path.rstrip('/')}/{filename}"
+                    "filepath": f"{url_path.rstrip('/')}/{filename}",
+                    "fileStagingDir": os.path.dirname(s3.uri_parser(uploaded_file)['key'])
                 }
             )
         final_output = list(granule_data.values())

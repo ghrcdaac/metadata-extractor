@@ -4,16 +4,16 @@ set -o nounset
 set -o pipefail
 export REPO_NAME=mdx
 export AWS_REGION=$bamboo_AWS_REGION
-access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
-secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
-prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
-account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
+#access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
+#secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
+#prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
+#account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
 
 
-#access_keys=( $bamboo_AWS_SIT_ACCESS_KEY )
-#secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY)
-#account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT )
-#prefixes=( $bamboo_PREFIX_SIT )
+access_keys=( $bamboo_AWS_SIT_ACCESS_KEY )
+secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY)
+account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT )
+prefixes=( $bamboo_PREFIX_SIT )
 
 function stop_mdx_task() {
   task_arns=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --family $1-MDX --query "taskArns[*]" --region $AWS_REGION | tr -d '"[],')
@@ -26,7 +26,14 @@ function stop_mdx_task() {
 
 len=${#access_keys[@]}
 
-
+# Check keys
+for (( i=0; i<$len; i++ ))
+do
+ 	export AWS_ACCESS_KEY_ID=${access_keys[$i]}
+	export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
+  aws sts get-caller-identity
+  (($? != 0)) && { printf '%s\n' "Command exited with non-zero. AWS keys invalid"; exit 1; }
+done
 
 docker build -t mdx .
 
@@ -39,23 +46,7 @@ do
 	export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
 	export ACCOUNT_NUMBER=${account_numbers[$i]}
 	export prefix=${prefixes[$i]}
-#   cat > aws <<EOS
-# #!/usr/bin/env bash
-# set -o errexit
-# set -o nounset
-# set -o pipefail
-# # enable interruption signal handling
-# trap - INT TERM
-# docker run --rm \
-# 	-e "AWS_ACCESS_KEY_ID=\${AWS_ACCESS_KEY_ID}" \
-# 	-e "AWS_SECRET_ACCESS_KEY=\${AWS_SECRET_ACCESS_KEY}" \
-# 	-e "AWS_DEFAULT_REGION=\${AWS_REGION}" \
-# 	-v "\$(pwd):/project" \
-# 	amazon/aws-cli:2.0.58  \
-# 	"\$@"
-# EOS
-# echo "Creating aws executable"
-# chmod a+x aws
+
 docker_image_name=${ACCOUNT_NUMBER}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME
 docker tag mdx $docker_image_name
 
