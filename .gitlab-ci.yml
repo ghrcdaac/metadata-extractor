@@ -41,9 +41,5 @@ CreateReleasePackageLite:
     name: "${CI_PROJECT_NAME}_lite_${CI_COMMIT_SHA}"
     paths:
       - package.zip
-      - main.tf
-      - terraform.tfvars
-      - variables.tf
-      - modules
     expire_in: never
 
