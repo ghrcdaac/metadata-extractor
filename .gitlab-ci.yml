@@ -40,6 +40,6 @@ CreateReleasePackageLite:
   artifacts:
     name: "${CI_PROJECT_NAME}_lite_${CI_COMMIT_SHA}"
     paths:
-      - package.zip
+      - mdx_lambda.zip
     expire_in: never
 
