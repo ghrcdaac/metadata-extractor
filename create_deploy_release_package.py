@@ -54,7 +54,7 @@ if __name__ == '__main__':
             os.mkdir(f'./package/{os.path.dirname(init).lstrip("./")}')
             shutil.copy(init, f'./package/{init}')
 
-    shutil.copy("/home/michael/__init__.py", "./package/granule_metadata_extractor/processing")
+    shutil.copy("./temp/__init__.py", "./package/granule_metadata_extractor/processing")
 
     # install the requirements into the ./package directory
     subprocess.check_call([sys.executable, "-m", "pip", "install", "--target", "./package", '-r',
