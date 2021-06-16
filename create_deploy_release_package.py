@@ -19,10 +19,13 @@ def find_init_py():
 
 
 if __name__ == '__main__':
-    data_sets = ['amsua', 'isslis', 'nalma', 'rss']
+    data_sets = ['nalma', 'globalir']
+
+    # Delete previous package directory if there was an error on last run
     if os.path.exists('./package'):
         shutil.rmtree('./package')
 
+    # Delete previous package
     if os.path.exists('package.zip'):
         os.remove('./package.zip')
 
@@ -30,10 +33,8 @@ if __name__ == '__main__':
     shutil.copytree('./granule_metadata_extractor/src/', './package/granule_metadata_extractor/src/',
                     ignore=shutil.ignore_patterns('helpers'))
 
-    # Copy the main, version, and lambda handler
-    # shutil.copytree('./process_mdx', './package/process_mdx')
-
-    shutil.copy("./handler.py", "./package'handler.py")
+    # Copy Lambda handler
+    shutil.copy("./handler.py", "./package/handler.py")
 
     # Copy the relevant processing files from ./granule_metadata_extractor/processing/
     for set_name in data_sets:
@@ -52,6 +53,8 @@ if __name__ == '__main__':
         except IOError as io_err:
             os.mkdir(f'./package/{os.path.dirname(init).lstrip("./")}')
             shutil.copy(init, f'./package/{init}')
+
+    shutil.copy("/home/michael/__init__.py", "./package/granule_metadata_extractor/processing")
 
     # install the requirements into the ./package directory
     subprocess.check_call([sys.executable, "-m", "pip", "install", "--target", "./package", '-r',
