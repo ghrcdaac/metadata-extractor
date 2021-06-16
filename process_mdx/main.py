@@ -519,15 +519,18 @@ class MDX(Process):
         url_path = collection.get('url_path', self.config['fileStagingDir'])
         excluded = collection_name in self.exclude_fetch() or is_legacy
         if excluded:
+            self.output.append(self.input[0])
             output = {key: self.mutate_input(self.path, self.input[0])}
         else:
             output = self.fetch_all()
         # Assert we have inputs to process
         assert output[key], "fetched files list should not be empty"
         files_sizes = {}
+        input_size = None
         for output_file_path in output.get(key):
             data = self.extract_metadata(file_path=output_file_path, config=self.config,
                                          output_folder=self.path)
+            input_size = float(data.get('SizeMBDataGranule', 0)) * 1E6
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
                 updated_output_path = self.get_output_files(os.path.join(self.path,
@@ -553,7 +556,7 @@ class MDX(Process):
                     "name": filename,  # Cumulus changed the key name to be camelCase
                     "filename": uploaded_file,  # We still need to provide some custom steps with
                     # this key holding the object URI
-                    "size": files_sizes.get(filename, 0),
+                    "size": files_sizes.get(filename, input_size),
                     "filepath": f"{url_path.rstrip('/')}/{filename}",
                     "fileStagingDir": os.path.dirname(s3.uri_parser(uploaded_file)['key'])
                 }
@@ -561,7 +564,8 @@ class MDX(Process):
         final_output = list(granule_data.values())
         # Clean up
         for generated_file in self.output:
-            os.remove(generated_file)
+            if os.path.exists(generated_file):
+                os.remove(generated_file)
 
         return {"granules": final_output, "input": uploaded_files}
 
