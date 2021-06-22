@@ -24,19 +24,7 @@ class TestProcessGeoER(TestCase):
     collection = config['collection']
     process = MDX(input=payload.get('input'), config=payload.get('config'))
 
-    def test_1_get_bucket(self):
-        """
-        Testing get bucket to insure it returns the correct value
-        :return:
-        """
-        files = self.collection['files']
-        file_name = self.input_files[0].split('/')[-1]
-        buckets = self.config.get('buckets')
-        bucket = self.process.get_bucket(file_name, files, buckets)
-        bucket_destination = bucket.get('name')
-        self.assertTrue(bucket_destination == "ghrcsbxw-protected")
-
-    def test_2_start_stop_date_goesrpltcrs(self):
+    def test_1_start_stop_date_goesrpltcrs(self):
         """
         Test start date and stop date
         :return:
@@ -49,7 +37,7 @@ class TestProcessGeoER(TestCase):
         self.assertEqual(start, "2017-05-07T16:08:45Z")
         self.assertEqual(stop, "2017-05-07T16:08:45Z")
 
-    def test_3_geometry_goesrpltcrs(self):
+    def test_2_geometry_goesrpltcrs(self):
         """
         Test geometry metadata
         :return:
