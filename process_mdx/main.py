@@ -11,14 +11,19 @@ class MDX(Process):
     Class to extract spatial and temporal metadata
     """
 
-    def generate_xml_data(self, data, access_url,output_folder):
+    def generate_xml_data(self, data, access_url, output_folder):
         """
-
+        Generates echo10xml file from python dict
+        :param data: Python dict containing metadata information of granule
+        :param access_url: S3 location where granule can be downloaded from
+        :param output_folder: Local location where echo10xml file will be stored
+        :return: input dict
         """
 
         granule_new_name = data.get('UpdatedGranuleUR', None)
         if granule_new_name:
-            access_url = access_url.replace(os.path.basename(access_url), os.path.basename(granule_new_name))
+            access_url = access_url.replace(os.path.basename(access_url),
+                                            os.path.basename(granule_new_name))
         data['OnlineAccessURL'] = access_url
         echo10xml = src.GenerateEcho10XML(data,
                                           age_off=self.config.get('collection',
@@ -27,9 +32,8 @@ class MDX(Process):
         echo10xml.generate_echo10_xml_file(output_folder=output_folder)
         return data
 
-
     def extract_netcdf_metadata(self, ds_short_name, version, access_url, netcdf_file, netcdf_vars,
-                                output_folder='/tmp', format='netCDF-4'):
+                                output_folder='/tmp', file_format='netCDF-4'):
         """
         Function to extract metadata from netCDF files
         :param ds_short_name: collection shortname
@@ -38,7 +42,7 @@ class MDX(Process):
         :param netcdf_file: Path to netCDF file
         :param netcdf_vars: netCDF variables
         :param output_folder: Location to output created echo10xml file
-        :param format: data type of input file
+        :param file_format: data type of input file
         :return:
         """
         regex = netcdf_vars.get('regex')
@@ -128,17 +132,19 @@ class MDX(Process):
 
         if match(regex, os.path.basename(netcdf_file)):
             metadata = switcher.get(ds_short_name, src.ExtractNetCDFMetadata)(netcdf_file)
-            format = 'netCDF-3' if '.nc4' not in netcdf_file else format
+            file_format = 'netCDF-3' if '.nc4' not in netcdf_file else file_format
             data = metadata.get_metadata(ds_short_name=ds_short_name,
                                          time_variable_key=time_variable_key,
                                          lon_variable_key=lon_variable_key,
                                          lat_variable_key=lat_variable_key,
-                                         time_units=time_units, format=format, version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+                                         time_units=time_units, format=file_format,
+                                         version=version)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
 
     def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars={},
-                             output_folder='/tmp', format='CSV'):
+                             output_folder='/tmp', file_format='CSV'):
         """
         Function to extract metadata from netCDF files
         :param ds_short_name: collection shortname
@@ -147,7 +153,7 @@ class MDX(Process):
         :param csv_file: Path to csv file
         :param csv_vars: Variables within csv file
         :param output_folder: Location to output created echo10xml file
-        :param format: data type of input file
+        :param file_format: data type of input file
         :return:
         """
 
@@ -163,14 +169,23 @@ class MDX(Process):
             data = metadata.get_metadata(ds_short_name=ds_short_name, time_position=time_position,
                                          time_units=time_units, lon_postion=lon_postion,
                                          lat_postion=lat_postion,
-                                         format=format, version='0.9')
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+                                         format=file_format, version='0.9')
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
 
-    def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file, binary_vars={},
-                               output_folder='/tmp', format='Binary'):
+    def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file,
+                                binary_vars={}, output_folder='/tmp', file_format='Binary'):
         """
-
+        Function to extract metadata from binary files
+        :param ds_short_name: collection shortname
+        :param version: collection version
+        :param access_url: The access URL to the granule
+        :param binary_file: Path to binary file
+        :param binary_vars: binary variables
+        :param output_folder: Location to output created echo10xml file
+        :param file_format: data type of input file
+        :return:
         """
         switcher = {
             "aces1cont": mdx.ExtractAces1ContMetadata,
@@ -182,12 +197,14 @@ class MDX(Process):
         regex = binary_vars.get('regex', '.*')
         if match(regex, os.path.basename(binary_file)):
             metadata = switcher.get(ds_short_name, self.default_switch)(binary_file)
-            data = metadata.get_metadata(ds_short_name=ds_short_name, version=version, format=format)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, version=version,
+                                         format=file_format)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
 
     def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
-                               output_folder='/tmp', format='ASCII'):
+                               output_folder='/tmp', file_format='ASCII'):
         """
         Function to extract metadata from ASCII files
         :param ds_short_name: collection shortname
@@ -196,7 +213,7 @@ class MDX(Process):
         :param ascii_file: Path to ascii file
         :param ascii_vars: ASCII variables
         :param output_folder: Location to output created echo10xml file
-        :param format: data type of input file
+        :param file_format: data type of input file
         :return:
         """
 
@@ -240,22 +257,23 @@ class MDX(Process):
 
         if match(regex, os.path.basename(ascii_file)):
             metadata = switcher.get(ds_short_name, self.default_switch)(ascii_file)
-            data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
+            data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
 
-    def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, ascii_vars={},
-                             output_folder='/tmp', format='KML'):
+    def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, kml_vars={},
+                             output_folder='/tmp', file_format='KML'):
         """
         Function to extract metadata from KML files
         :param ds_short_name: collection shortname
         :param version: version
         :param access_url: The access URL to the granule
         :param kml_file: Path to kml file
-        :param ascii_vars: ascii variables
+        :param kml_vars: kml variables
         :param output_folder: Location to output created echo10xml file
-        :param format: data type of input file
+        :param file_format: data type of input file
         :return:
         """
 
@@ -264,27 +282,27 @@ class MDX(Process):
             "gripstorm": mdx.ExtractGripstormKMLMetadata
         }
 
-        regex = ascii_vars.get('regex', '.*')
+        regex = kml_vars.get('regex', '.*')
 
         if match(regex, os.path.basename(kml_file)):
             metadata = switcher.get(ds_short_name, self.default_switch)(kml_file)
-            data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
+            data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
 
     def extract_browse_metadata(self, ds_short_name, version, access_url, browse_file,
-                                browse_vars={}, output_folder='/tmp', format='BROWSE'):
+                                browse_vars={}, output_folder='/tmp', file_format='BROWSE'):
         """
         Function to extract metadata from Browse files
-        :param format:
         :param ds_short_name: collection shortname
         :param version: version
         :param access_url: The access URL to the granule
         :param browse_file: Path to Browse file
         :param browse_vars: Browse variables
         :param output_folder: Location to output created echo10xml file
-        :param format: data type of input file
+        :param file_format: data type of input file
         :return:
         """
 
@@ -322,23 +340,23 @@ class MDX(Process):
         if match(regex, os.path.basename(browse_file)):
             metadata = switcher.get(ds_short_name, self.default_switch)(browse_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name,
-                                         format=format_template.get(ds_short_name, format),
+                                         format=format_template.get(ds_short_name, file_format),
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
 
-    def extract_avi_metadata(self, ds_short_name, version, access_url, browse_file, browse_vars={},
-                             output_folder='/tmp', format='AVI'):
+    def extract_avi_metadata(self, ds_short_name, version, access_url, avi_file, avi_vars={},
+                             output_folder='/tmp', file_format='AVI'):
         """
         Function to extract metadata from Browse files
-        :param format:
         :param ds_short_name: collection shortname
         :param version: version
         :param access_url: The access URL to the granule
-        :param browse_file: Path to Browse file
-        :param browse_vars: Browse variables
+        :param avi_file: Path to AVI file
+        :param avi_vars: AVI variables
         :param output_folder: Location to output created echo10xml file
-        :param format: data type of input file
+        :param file_format: data type of input file
         :return:
         """
 
@@ -346,17 +364,18 @@ class MDX(Process):
             "gpmpipicepop": mdx.ExtractGpmpipicepopAVIMetadata
         }
 
-        regex = browse_vars.get('regex', '.*')
+        regex = avi_vars.get('regex', '.*')
 
-        if match(regex, os.path.basename(browse_file)):
-            metadata = switcher.get(ds_short_name, self.default_switch)(browse_file)
-            data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
+        if match(regex, os.path.basename(avi_file)):
+            metadata = switcher.get(ds_short_name, self.default_switch)(avi_file)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
 
-    def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file, legacy_vars={},
-                             output_folder='/tmp', format='ASCII'):
+    def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file,
+                                legacy_vars={}, output_folder='/tmp', file_format='ASCII'):
         """
         Function to extract metadata from legacy dataset files
         :param ds_short_name: collection shortname
@@ -365,30 +384,18 @@ class MDX(Process):
         :param legacy_file: Path to legacy file
         :param legacy_vars: legacy variables
         :param output_folder: Location to output created echo10xml file
-        :param format: data type of input file
+        :param file_format: data type of input file
         :return:
         """
         regex = legacy_vars.get('regex', '.*')
 
         if match(regex, os.path.basename(legacy_file)):
             metadata = mdx.ExtractLegacyMetadata(legacy_file)
-            data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
+            data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_xml_data(self, data=data, access_url=access_url,
+                                         output_folder=output_folder)
         return {}
-
-    def upload_file(self, filename):
-        info = self.get_publish_info(filename)
-        if info is None:
-            return filename
-        try:
-            uri = None
-            if info.get('s3', None) is not None:
-                uri = s3.upload(filename, info['s3'], extra={})
-            return uri
-        except Exception as e:
-            self.logger.error("Error uploading file %s: %s" % (
-                os.path.basename(os.path.basename(filename)), str(e)))
 
     def extract_metadata(self, file_path, config, output_folder):
         """
@@ -426,23 +433,6 @@ class MDX(Process):
                                                                 output_folder)
             return_data_dict = data if data else return_data_dict
         return return_data_dict
-
-
-
-    def get_bucket(self, filename, files, buckets):
-        """
-        Extract the bucket from the files
-        :param filename: Granule file name
-        :param files: list of collection files
-        :param buckets: Object holding buckets info
-        :return: Bucket object
-        """
-        bucket_type = "public"
-        for file in files:
-            if match(file.get('regex', '*.'), filename):
-                bucket_type = file['bucket']
-                break
-        return buckets[bucket_type]
 
     def exclude_fetch(self):
         """
@@ -482,6 +472,8 @@ class MDX(Process):
                         s3_client.upload_fileobj(data)
                 except Exception as e:
                     self.logger.error(f'Error uploading file {output_filename}: {str(e)}')
+            if not output_filename.startswith('s3'):
+                os.remove(output_file)
         return upload_output_list
 
     @property
@@ -495,6 +487,11 @@ class MDX(Process):
     @staticmethod
     def get_output_files(output_file_path, excluded):
         """
+        Returns list of granules processed through MDX (source and generated)
+        :param output_file_path: path to file
+        :param excluded: variable that defines whether a collection is excluded from "normal" mdx
+                         processing
+        :return: list of granules processed through MDX
         """
         output_files = [] if excluded else [output_file_path]
         if os.path.isfile(output_file_path + ".cmr.xml"):
@@ -504,14 +501,13 @@ class MDX(Process):
     def process(self):
         """
         Override the processing wrapper
-        :return:
+        :return: dict with list of granules (source and generated) associated with granule & input
         """
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
         is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') == 'legacy'
         key = 'legacy_key' if is_legacy else 'input_key'
-        buckets = self.config.get('buckets')
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
@@ -543,9 +539,7 @@ class MDX(Process):
         uploaded_files = self.upload_output_files()
         granule_data = {}
         for uploaded_file in uploaded_files:
-            if uploaded_file is None or not uploaded_file.startswith('s3'):
-                continue
-            filename = uploaded_file.split('/')[-1]
+            filename = os.path.basename(uploaded_file)
             granule_id = filename.split('.cmr.xml')[0]
             if granule_id not in granule_data.keys():
                 granule_data[granule_id] = {'granuleId': granule_id, 'files': []}
@@ -562,10 +556,6 @@ class MDX(Process):
                 }
             )
         final_output = list(granule_data.values())
-        # Clean up
-        for generated_file in self.output:
-            if os.path.exists(generated_file):
-                os.remove(generated_file)
 
         return {"granules": final_output, "input": uploaded_files}
 
