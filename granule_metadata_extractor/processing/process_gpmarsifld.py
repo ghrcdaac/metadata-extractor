@@ -1,11 +1,12 @@
-from ..src.extract_csv_metadata import ExtractCSVMetadata
-from datetime import datetime, timedelta
+from ..src.extract_ascii_metadata import ExtractASCIIMetadata
+from datetime import datetime
 import numbers
 import xlrd
 
-class ExtractGpmarsifldMetadata(ExtractCSVMetadata):
+
+class ExtractGpmarsifldMetadata(ExtractASCIIMetadata):
     """
-    A class to extract gpmarsifld 
+    A class to extract gpmarsifld
     """
     start_time = None
     end_time = None
@@ -34,15 +35,15 @@ class ExtractGpmarsifldMetadata(ExtractCSVMetadata):
                     'SF13': [42.403180, -93.309710],
                     'SF14': [42.328310, -93.254860],
                     'SF15': [42.420340, -93.220770] }
-        self.choose_file_type()
+        self.get_variables_min_max(file_path)
 
-    def choose_file_type(self):
+    def get_variables_min_max(self, file_path):
         """
         Chooses which method to use to extract metadata info of file
         :return:
         :rtype:
         """
-        if '.csv' in self.file_path:
+        if '.csv' in file_path:
             self.format = 'ASCII-csv'
             self.extract_csv_metadata()
         else:
@@ -54,7 +55,7 @@ class ExtractGpmarsifldMetadata(ExtractCSVMetadata):
         Extract metadata information from csv file
         """
         # read data to buffer
-        with open(self.file_path,'rb') as fp: 
+        with open(self.file_path,'rb') as fp:
              lines = fp.readlines()
              # skip first 4 header liens
              lines = lines[4:]
@@ -75,7 +76,7 @@ class ExtractGpmarsifldMetadata(ExtractCSVMetadata):
                     except:
                        continue
 
-             self.north = self.loc[site][0] + 0.01 
+             self.north = self.loc[site][0] + 0.01
              self.south = self.loc[site][0] - 0.01
              self.east = self.loc[site][1] + 0.01
              self.west = self.loc[site][1] - 0.01
@@ -138,8 +139,7 @@ class ExtractGpmarsifldMetadata(ExtractCSVMetadata):
         stop_date = self.end_time.strftime(date_format)
         return start_date, stop_date
 
-    def get_metadata(self, ds_short_name, time_variable_key='time', lon_variable_key='lon',
-                     lat_variable_key='lat', time_units='units', format='ASCII-csv', version='01'):
+    def get_metadata(self, ds_short_name, time_units='units', format='ASCII-csv', version='01'):
         """
 
         :param ds_short_name:

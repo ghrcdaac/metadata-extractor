@@ -44,7 +44,7 @@ class ExtractASCIIMetadata(MetadataExtractor):
 
     @abstractmethod
     def get_metadata(self, ds_short_name, time_position=0, time_units="hours", lon_postion=15, date_format='%Y-%m-%dT%H:%M:%SZ',
-                     lat_postion=16, format='CSV', version='1'):
+                     lat_postion=16, format='ASCII', version='1'):
         """
 
         :param ds_short_name:

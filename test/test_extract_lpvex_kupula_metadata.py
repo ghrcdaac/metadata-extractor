@@ -1,5 +1,4 @@
 from os import path
-import json
 from unittest import TestCase
 from granule_metadata_extractor.src.extract_csv_metadata import ExtractCSVMetadata
 from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
@@ -31,8 +30,8 @@ class TestProcessLpvex(TestCase):
         """
         start_date = self.process_lpvex.get_temporal(time_position=self.time_position, time_units=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
-        
-        
+
+
         self.assertEqual(start_date, "2010-10-12T08:34:00Z")
 
     def test_2_get_stop_date(self):
@@ -42,7 +41,7 @@ class TestProcessLpvex(TestCase):
         """
         stop_date = self.process_lpvex.get_temporal(time_position=self.time_position, time_units=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
-        
+
         self.assertEqual(stop_date, "2011-07-20T22:34:00Z")
 
     def test_3_get_file_size(self):
@@ -65,7 +64,7 @@ class TestProcessLpvex(TestCase):
         return str(round(wnes[index], 3))
 
 
-    
+
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -83,7 +82,7 @@ class TestProcessLpvex(TestCase):
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
         self.assertEqual(west, '58.8')
-    
+
     def test_6_get_south(self):
         """
         Test geometry metadata
@@ -92,7 +91,7 @@ class TestProcessLpvex(TestCase):
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
         self.assertEqual(south, '24.96')
-    
+
     def test_7_get_east(self):
         """
         Test geometry metadata
@@ -102,30 +101,30 @@ class TestProcessLpvex(TestCase):
         self.expected_metadata['EastBoundingCoordinate'] = east
         self.assertEqual(east, '60.2')
 
-    
+
     def test_8_get_checksum(self):
         """
         Test geting the chucksom of the input file
         :return: the MD5 string
         """
-    
+
         checksum = self.process_lpvex.get_checksum()
         self.expected_metadata['checksum'] = checksum
         self.assertEqual(checksum, '018a125cacbd749be8c25b5465aa7dc5')
-    
-    
+
+
     def test_9_generate_metadata(self):
         """
         Test generating metadata of lpvex
-        :return: metadata object 
+        :return: metadata object
         """
-        
+
         metadata = self.process_lpvex.get_metadata(ds_short_name='lpvex',
         time_position=self.time_position, time_units=self.time_units, lon_postion=self.lon_position, format='CSV', version='0.1')
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
-        
-    
+
+
     def test_a1_generate_echo10(self):
         """
         Test generate the echo 10 in tmp folder
