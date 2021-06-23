@@ -143,7 +143,7 @@ class MDX(Process):
                                          output_folder=output_folder)
         return {}
 
-    def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars={},
+    def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars=None,
                              output_folder='/tmp', file_format='CSV'):
         """
         Function to extract metadata from netCDF files
@@ -156,7 +156,7 @@ class MDX(Process):
         :param file_format: data type of input file
         :return:
         """
-
+        csv_vars = csv_vars or {}
         metadata = src.ExtractCSVMetadata(csv_file)
 
         time_position = csv_vars.get('time_row_position', 0)
@@ -169,13 +169,13 @@ class MDX(Process):
             data = metadata.get_metadata(ds_short_name=ds_short_name, time_position=time_position,
                                          time_units=time_units, lon_postion=lon_postion,
                                          lat_postion=lat_postion,
-                                         format=file_format, version='0.9')
+                                         format=file_format, version=version)
             return MDX.generate_xml_data(self, data=data, access_url=access_url,
                                          output_folder=output_folder)
         return {}
 
     def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file,
-                                binary_vars={}, output_folder='/tmp', file_format='Binary'):
+                                binary_vars=None, output_folder='/tmp', file_format='Binary'):
         """
         Function to extract metadata from binary files
         :param ds_short_name: collection shortname
@@ -187,6 +187,7 @@ class MDX(Process):
         :param file_format: data type of input file
         :return:
         """
+        binary_vars = binary_vars or {}
         switcher = {
             "aces1cont": mdx.ExtractAces1ContMetadata,
             "aces1efm": mdx.ExtractAces1EfmMetadata,
@@ -203,8 +204,8 @@ class MDX(Process):
                                          output_folder=output_folder)
         return {}
 
-    def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
-                               output_folder='/tmp', file_format='ASCII'):
+    def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file,
+                               ascii_vars=None, output_folder='/tmp', file_format='ASCII'):
         """
         Function to extract metadata from ASCII files
         :param ds_short_name: collection shortname
@@ -216,7 +217,7 @@ class MDX(Process):
         :param file_format: data type of input file
         :return:
         """
-
+        ascii_vars = ascii_vars or {}
         switcher = {
             "gpmodmlpvex": mdx.ExtractGpmodmlpvexMetadata,
             "gpmjwlpvex": mdx.ExtractGpmjwlpvexMetadata,
@@ -263,7 +264,7 @@ class MDX(Process):
                                          output_folder=output_folder)
         return {}
 
-    def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, kml_vars={},
+    def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, kml_vars=None,
                              output_folder='/tmp', file_format='KML'):
         """
         Function to extract metadata from KML files
@@ -276,7 +277,7 @@ class MDX(Process):
         :param file_format: data type of input file
         :return:
         """
-
+        kml_vars = kml_vars or {}
         switcher = {
             "gpmsatpaifld": mdx.ExtractGpmsatpaifldMetadata,
             "gripstorm": mdx.ExtractGripstormKMLMetadata
@@ -293,7 +294,7 @@ class MDX(Process):
         return {}
 
     def extract_browse_metadata(self, ds_short_name, version, access_url, browse_file,
-                                browse_vars={}, output_folder='/tmp', file_format='BROWSE'):
+                                browse_vars=None, output_folder='/tmp', file_format='BROWSE'):
         """
         Function to extract metadata from Browse files
         :param ds_short_name: collection shortname
@@ -305,7 +306,7 @@ class MDX(Process):
         :param file_format: data type of input file
         :return:
         """
-
+        browse_vars = browse_vars or {}
         switcher = {
             "er2edop": mdx.ExtractEr2edopMetadata,
             "dc8lase": mdx.ExtractDc8laseMetadata,
@@ -346,7 +347,7 @@ class MDX(Process):
                                          output_folder=output_folder)
         return {}
 
-    def extract_avi_metadata(self, ds_short_name, version, access_url, avi_file, avi_vars={},
+    def extract_avi_metadata(self, ds_short_name, version, access_url, avi_file, avi_vars=None,
                              output_folder='/tmp', file_format='AVI'):
         """
         Function to extract metadata from Browse files
@@ -359,7 +360,7 @@ class MDX(Process):
         :param file_format: data type of input file
         :return:
         """
-
+        avi_vars = avi_vars or {}
         switcher = {
             "gpmpipicepop": mdx.ExtractGpmpipicepopAVIMetadata
         }
@@ -375,7 +376,7 @@ class MDX(Process):
         return {}
 
     def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file,
-                                legacy_vars={}, output_folder='/tmp', file_format='ASCII'):
+                                legacy_vars=None, output_folder='/tmp', file_format='ASCII'):
         """
         Function to extract metadata from legacy dataset files
         :param ds_short_name: collection shortname
@@ -387,6 +388,7 @@ class MDX(Process):
         :param file_format: data type of input file
         :return:
         """
+        legacy_vars = legacy_vars or {}
         regex = legacy_vars.get('regex', '.*')
 
         if match(regex, os.path.basename(legacy_file)):
@@ -434,7 +436,8 @@ class MDX(Process):
             return_data_dict = data if data else return_data_dict
         return return_data_dict
 
-    def exclude_fetch(self):
+    @staticmethod
+    def exclude_fetch():
         """
         This function is to exclude fetching the granules from specific shortnames
         :return:
@@ -443,7 +446,8 @@ class MDX(Process):
                 "gpmikalpvex", "gpmkorlpvex", "gpmkerlpvex", "gpmkumlpvex", "gpmseafluxicepop",
                 "kakqimpacts", "kccximpacts", "kbgmimpacts", "kboximpacts", "kbufimpacts"]
 
-    def mutate_input(self, output_folder, input_file):
+    @staticmethod
+    def mutate_input(output_folder, input_file):
         """
         Point the input to local folder instead of S3
         :param input_file: The input file from S3
@@ -467,7 +471,8 @@ class MDX(Process):
             if output_filename is not os.path.basename(self.input[0]):
                 try:
                     uri_out_info = s3.uri_parser(uri_out)
-                    s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).Object(uri_out_info['key'])
+                    s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).\
+                        Object(uri_out_info['key'])
                     with open(output_file, 'rb') as data:
                         s3_client.upload_fileobj(data)
                 except Exception as e:
@@ -506,7 +511,8 @@ class MDX(Process):
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
-        is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') == 'legacy'
+        is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') == \
+                    'legacy'
         key = 'legacy_key' if is_legacy else 'input_key'
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
