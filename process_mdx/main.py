@@ -4,6 +4,7 @@ from cumulus_process import Process, s3
 from re import match
 import os
 import boto3
+import json
 
 
 class MDX(Process):
@@ -46,93 +47,18 @@ class MDX(Process):
         :return:
         """
         regex = netcdf_vars.get('regex')
-        switcher = {
-            "goesrpltcrs": mdx.ExtractGeosrpltcrsMetadata,
-            "gpmwrflpvex": mdx.ExtractLpvexwrfMetadata,
-            "gpmseafluxicepop": mdx.ExtractGpmseafluxicepopMetadata,
-            "uiucsndimpacts": mdx.ExtractUiucsndimpactsMetadata,
-            "gpmvn": mdx.ExtractGpmvnMetadata,
-            "noaasndimpacts": mdx.ExtractNoaasndimpactsMetadata,
-            "kakqimpacts": mdx.ExtractKakqimpactsMetadata,
-            "kccximpacts": mdx.ExtractKccximpactsMetadata,
-            "kbgmimpacts": mdx.ExtractKbgmimpactsMetadata,
-            "kboximpacts": mdx.ExtractKboximpactsMetadata,
-            "kbufimpacts": mdx.ExtractKbufimpactsMetadata,
-            "sbusndimpacts": mdx.ExtractSbusndimpactsMetadata,
-            "nexeastimpacts": mdx.ExtractNexeastimpactsMetadata,
-            "nexmidwstimpacts": mdx.ExtractNexmidwstimpactsMetadata,
-            "ncsusndimpacts": mdx.ExtractNcsusndimpactsMetadata,
-            "goesimpacts": mdx.ExtractGoesimpactsMetadata,
-            "amsua15sp": mdx.ExtractAMSUAMetadata,
-            "npolimpacts": mdx.ExtractNpolimpactsMetadata,
-            "sbuceilimpacts": mdx.ExtractSbuceilimpactsMetadata,
-            "sbulidarimpacts": mdx.ExtractSbulidarimpactsMetadata,
-            "sbukasprimpacts": mdx.ExtractSbukasprimpactsMetadata,
-            "sbumrr2impacts": mdx.ExtractSbumrr2impactsMetadata,
-            "sbumetimpacts": mdx.ExtractSbumetimpactsNetCDFMetadata,
-            "rss1tpwnv7r01": mdx.ExtractRssClimatologyMetadata,
-            "rss1windnv7r01": mdx.ExtractRssClimatologyMetadata,
-            "sbuparsimpacts": mdx.ExtractSbuparsimpactsMetadata,
-            "cosmirimpacts": mdx.ExtractCosmirimpactsMetadata,
-            "cplimpacts": mdx.ExtractCplimpactsMetadata,
-            "parprbimpacts": mdx.ExtractParprbimpactsMetadata,
-            "isslis_v1_nrt": mdx.ExtractIsslisv1Metadata,
-            "isslis_v1_nqc": mdx.ExtractIsslisv1Metadata,
-            "isslisg_v1_nrt": mdx.ExtractIsslisgv1Metadata,
-            "isslisg_v1_nqc": mdx.ExtractIsslisgv1Metadata,
-            "seaflux": mdx.ExtractSeafluxMetadata,
-            "asosimpacts": mdx.ExtractAsosimpactsMetadata,
-            "wrfimpacts": mdx.ExtractWrfimpactsMetadata,
-            "hs3shis": mdx.ExtractHs3shisMetadata,
-            "hiwrapimpacts": mdx.ExtractHiwrapimpactsMetadata,
-            "gpmwacrc3vp": mdx.ExtractGpmwacrc3vpMetadata,
-            "crsimpacts": mdx.ExtractCrsimpactsMetadata,
-            "exradimpacts": mdx.ExtractExradimpactsMetadata,
-            "amprimpacts": mdx.ExtractAmprimpactsMetadata,
-            "kjklimpacts": mdx.ExtractKjklimpactsMetadata,
-            "klotimpacts": mdx.ExtractKlotimpactsMetadata,
-            "klwximpacts": mdx.ExtractKlwximpactsMetadata,
-            "kmhximpacts": mdx.ExtractKmhximpactsMetadata,
-            "kmkximpacts": mdx.ExtractKmkximpactsMetadata,
-            "isslisg_v1_fin": mdx.ExtractIsslisgv1Metadata,
-            "isslis_v1_fin": mdx.ExtractIsslisv1Metadata,
-            "kokximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kpbzimpacts": mdx.ExtractNexradimpactsMetadata,
-            "kraximpacts": mdx.ExtractNexradimpactsMetadata,
-            "krlximpacts": mdx.ExtractNexradimpactsMetadata,
-            "ktyximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kvwximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kcleimpacts": mdx.ExtractNexradimpactsMetadata,
-            "kcxximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kdiximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kdoximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kdtximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kgyximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kilnimpacts": mdx.ExtractNexradimpactsMetadata,
-            "kilximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kindimpacts": mdx.ExtractNexradimpactsMetadata,
-            "kiwximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kdvnimpacts": mdx.ExtractNexradimpactsMetadata,
-            "kenximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kfcximpacts": mdx.ExtractNexradimpactsMetadata,
-            "kgrbimpacts": mdx.ExtractNexradimpactsMetadata,
-            "kgrrimpacts": mdx.ExtractNexradimpactsMetadata,
-            "lislip": mdx.ExtractLislipMetadata,
-            "lislipG": mdx.ExtractLislipGMetadata,
-            "msutls": mdx.ExtractMsuMetadata,
-            "msutlt": mdx.ExtractMsuMetadata,
-            "msutmt": mdx.ExtractMsuMetadata,
-            "msuttp": mdx.ExtractMsuMetadata
-        }
+        switcher = self.read_switcher_json("netcdf")
 
         time_variable_key = netcdf_vars.get('time_var_key')
         lon_variable_key = netcdf_vars.get('lon_var_key')
         lat_variable_key = netcdf_vars.get('lat_var_key')
         time_units = netcdf_vars.get('time_units', 'units')
 
+        file_format = 'netCDF-3' if '.nc4' not in netcdf_file else file_format
+
         if match(regex, os.path.basename(netcdf_file)):
-            metadata = switcher.get(ds_short_name, src.ExtractNetCDFMetadata)(netcdf_file)
-            file_format = 'netCDF-3' if '.nc4' not in netcdf_file else file_format
+            # TODO- Future optimization to have better error handling here with default switcher
+            metadata = getattr(mdx, switcher.get(ds_short_name, "None"))(netcdf_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name,
                                          time_variable_key=time_variable_key,
                                          lon_variable_key=lon_variable_key,
@@ -157,7 +83,7 @@ class MDX(Process):
         :return:
         """
         csv_vars = csv_vars or {}
-        metadata = src.ExtractCSVMetadata(csv_file)
+        metadata = getattr(src, "ExtractCSVMetadata")(csv_file)
 
         time_position = csv_vars.get('time_row_position', 0)
         lon_postion = csv_vars.get('lon_row_position', 15)
@@ -188,16 +114,10 @@ class MDX(Process):
         :return:
         """
         binary_vars = binary_vars or {}
-        switcher = {
-            "aces1cont": mdx.ExtractAces1ContMetadata,
-            "aces1efm": mdx.ExtractAces1EfmMetadata,
-            "aces1log": mdx.ExtractAces1LogMetadata,
-            "aces1time": mdx.ExtractAces1TimeMetadata,
-            "globalir": mdx.ExtractGlobalirMetadata
-        }
+        switcher = self.read_switcher_json("binary")
         regex = binary_vars.get('regex', '.*')
         if match(regex, os.path.basename(binary_file)):
-            metadata = switcher.get(ds_short_name, self.default_switch)(binary_file)
+            metadata = getattr(mdx, switcher.get(ds_short_name, "None"))(binary_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, version=version,
                                          format=file_format)
             return MDX.generate_xml_data(self, data=data, access_url=access_url,
@@ -218,46 +138,12 @@ class MDX(Process):
         :return:
         """
         ascii_vars = ascii_vars or {}
-        switcher = {
-            "gpmodmlpvex": mdx.ExtractGpmodmlpvexMetadata,
-            "gpmjwlpvex": mdx.ExtractGpmjwlpvexMetadata,
-            "gpmparawifld": mdx.ExtractGpmparawifldMetadata,
-            "gpmpipicepop": mdx.ExtractGpmpipicepopASCIIMetadata,
-            "namdrop_raw": mdx.ExtractNamdrop_rawMetadata,
-            "gripstorm": mdx.ExtractGripstormASCIIMetadata,
-            "relampagolma": mdx.ExtractLmarelampagoMetadata,
-            "goesrpltavirisng": mdx.ExtractGoesrpltavirisngMetadata,
-            "gpmvanlpvex": mdx.ExtractGpmvanlpvexMetadata,
-            "gpmikalpvex": mdx.ExtractGpmikalpvexMetadata,
-            "gpmkorlpvex": mdx.ExtractGpmkorlpvexMetadata,
-            "gpmkerlpvex": mdx.ExtractGpmkerlpvexMetadata,
-            "gpmkumlpvex": mdx.ExtractGpmkumlpvexMetadata,
-            "gpm2dc3vp": mdx.ExtractGpm2dc3vpMetadata,
-            "gpmlipiphx": mdx.ExtractGpmlipiphxASCIIMetadata,
-            "misrepimpacts": mdx.ExtractMisrepimpactsMetadata,
-            "2dimpacts": mdx.Extract2dimpactsMetadata,
-            "apuimpacts": mdx.ExtractApuimpactsMetadata,
-            "sbumetimpacts": mdx.ExtractSbumetimpactsASCIIMetadata,
-            "sbuplimpacts": mdx.ExtractSbuplimpactsMetadata,
-            "er2navimpacts": mdx.ExtractEr2navimpactsMetadata,
-            "nalma": mdx.ExtractNalmaMetadata,
-            "nalmanrt": mdx.ExtractNalmanrtMetadata,
-            "nalmaraw": mdx.ExtractNalmarawMetadata,
-            "p3metnavimpacts": mdx.ExtractP3metnavimpactsMetadata,
-            "tammsimpacts": mdx.ExtractTammsimpactsMetadata,
-            "lipimpacts": mdx.ExtractLipimpactsMetadata,
-            "gpmsurmetc3vp": mdx.ExtractGpmsurmetc3vpMetadata,
-            "gpmarsifld": mdx.ExtractGpmarsifldMetadata,
-            "gpmvisecc3vp": mdx.ExtractGpmvisecc3vpMetadata,
-            "cmimpacts": mdx.ExtractCmimpactsMetadata,
-            "gpmxetc3vp": mdx.ExtractGpmxetc3vpMetadata,
-            "avapsimpacts": mdx.ExtractAvapsimpactsMetadata
-        }
+        switcher = self.read_switcher_json("ascii")
 
         regex = ascii_vars.get('regex', '.*')
 
         if match(regex, os.path.basename(ascii_file)):
-            metadata = switcher.get(ds_short_name, self.default_switch)(ascii_file)
+            metadata = getattr(mdx, switcher.get(ds_short_name, "None"))(ascii_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
             return MDX.generate_xml_data(self, data=data, access_url=access_url,
@@ -278,15 +164,12 @@ class MDX(Process):
         :return:
         """
         kml_vars = kml_vars or {}
-        switcher = {
-            "gpmsatpaifld": mdx.ExtractGpmsatpaifldMetadata,
-            "gripstorm": mdx.ExtractGripstormKMLMetadata
-        }
+        switcher = self.read_switcher_json("kml")
 
         regex = kml_vars.get('regex', '.*')
 
         if match(regex, os.path.basename(kml_file)):
-            metadata = switcher.get(ds_short_name, self.default_switch)(kml_file)
+            metadata = getattr(mdx, switcher.get(ds_short_name, "None"))(kml_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
             return MDX.generate_xml_data(self, data=data, access_url=access_url,
@@ -307,39 +190,12 @@ class MDX(Process):
         :return:
         """
         browse_vars = browse_vars or {}
-        switcher = {
-            "er2edop": mdx.ExtractEr2edopMetadata,
-            "dc8lase": mdx.ExtractDc8laseMetadata,
-            "gpmsatpaifld": mdx.ExtractGpmsatpaifldPNGMetadata,
-            "gpmpipicepop": mdx.ExtractGpmpipicepopPNGMetadata,
-            "aces1am": mdx.ExtractAces1amMetadata,
-            "tcspecmwf": mdx.ExtractTcspecmwfMetadata,
-            "er2mir": mdx.ExtractEr2mirMetadata,
-            "dc8ammr": mdx.ExtractDc8ammrMetadata,
-            "goesrpltmisrep": mdx.ExtractGoesrpltmisrepMetadata,
-            "gpmlipiphx": mdx.ExtractGpmlipiphxPNGMetadata,
-            "phipsimpacts": mdx.ExtractPhipsimpactsMetadata,
-            "nymesoimpacts": mdx.ExtractNymesoimpactsMetadata
-        }
-
-        format_template = {
-            "er2edop": "GIF",
-            "dc8lase": "GIF",
-            "gpmsatpaifld": "PNG",
-            "gpmpipicepop": "PNG",
-            "aces1am": "MATLAB",
-            "tcspecmwf": "GRIB",
-            "er2mir": "GIF",
-            "dc8ammr": "GIF",
-            "goesrpltmisrep": "PNG",
-            "gpmlipiphx": "PNG",
-            "phipsimpacts": "PNG",
-            "nymesoimpacts": "PNG"
-        }
+        switcher = self.read_switcher_json("browse_process")
+        format_template = self.read_switcher_json("browse_format")
 
         regex = browse_vars.get('regex', '.*')
         if match(regex, os.path.basename(browse_file)):
-            metadata = switcher.get(ds_short_name, self.default_switch)(browse_file)
+            metadata = getattr(mdx, switcher.get(ds_short_name, "None"))(browse_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name,
                                          format=format_template.get(ds_short_name, file_format),
                                          version=version)
@@ -361,14 +217,12 @@ class MDX(Process):
         :return:
         """
         avi_vars = avi_vars or {}
-        switcher = {
-            "gpmpipicepop": mdx.ExtractGpmpipicepopAVIMetadata
-        }
+        switcher = self.read_switcher_json("avi")
 
         regex = avi_vars.get('regex', '.*')
 
         if match(regex, os.path.basename(avi_file)):
-            metadata = switcher.get(ds_short_name, self.default_switch)(avi_file)
+            metadata = getattr(mdx, switcher.get(ds_short_name, "None"))(avi_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
             return MDX.generate_xml_data(self, data=data, access_url=access_url,
@@ -392,7 +246,7 @@ class MDX(Process):
         regex = legacy_vars.get('regex', '.*')
 
         if match(regex, os.path.basename(legacy_file)):
-            metadata = mdx.ExtractLegacyMetadata(legacy_file)
+            metadata = getattr(mdx, "ExtractLegacyMetadata")(legacy_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=file_format,
                                          version=version)
             return MDX.generate_xml_data(self, data=data, access_url=access_url,
@@ -502,6 +356,19 @@ class MDX(Process):
         if os.path.isfile(output_file_path + ".cmr.xml"):
             output_files += [output_file_path + ".cmr.xml"]
         return output_files
+
+    @staticmethod
+    def read_switcher_json(file_type):
+        """
+        Reads switchers.json and returns the appropriate json switcher for the file type
+        :param file_type: string which describes which extract module is calling the method
+        :return: dict of processes for specific file type
+        """
+        path_to_switcher_json = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                             "switchers.json")
+        with open(path_to_switcher_json, 'r') as f:
+            output_dict = json.load(f)
+        return output_dict[file_type]
 
     def process(self):
         """
