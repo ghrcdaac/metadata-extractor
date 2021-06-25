@@ -13,7 +13,7 @@ export AWS_REGION=$bamboo_AWS_REGION
 access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY)
 secret_keys=( $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY)
 account_numbers=( $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT)
-prefixes=( $bamboo_PREFIX_SIT $bamboo_ACCOUNT_NUMBER_UAT)
+prefixes=( $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT)
 
 function stop_mdx_task() {
   task_arns=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --family $1-MDX --query "taskArns[*]" --region $AWS_REGION | tr -d '"[],')
