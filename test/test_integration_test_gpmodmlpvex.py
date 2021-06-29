@@ -37,7 +37,7 @@ def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
                                      ]}],
                        'input': ['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
                                  's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml'],
-                       'system-bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt'}
+                       'system_bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt'}
     print(x)
     print(expected_result)
     assert (x == expected_result)
