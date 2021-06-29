@@ -511,7 +511,7 @@ class MDX(Process):
         collection_version = collection.get('version')
         is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') == 'legacy'
         key = 'legacy_key' if is_legacy else 'input_key'
-        buckets = self.config.get('buckets')
+        buckets = self.config.get('buckets', {})
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
@@ -567,7 +567,11 @@ class MDX(Process):
             if os.path.exists(generated_file):
                 os.remove(generated_file)
 
-        return {"granules": final_output, "input": uploaded_files}
+        # Workaround for local file since system bucket shouldn't matter locally
+        system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
+            f"s3://{os.path.basename(self.input[0])}"
+        return {"granules": final_output, "input": uploaded_files,
+                "system-bucket": s3.uri_parser(system_bucket_path)['bucket']}
 
     def default_switch(self, *args):
         """
