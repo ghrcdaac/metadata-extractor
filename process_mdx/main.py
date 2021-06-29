@@ -571,7 +571,7 @@ class MDX(Process):
         system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
             f"s3://{os.path.basename(self.input[0])}"
         return {"granules": final_output, "input": uploaded_files,
-                "system-bucket": s3.uri_parser(system_bucket_path)['bucket']}
+                "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
 
     def default_switch(self, *args):
         """
