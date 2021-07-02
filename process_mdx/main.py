@@ -11,22 +11,25 @@ class MDX(Process):
     Class to extract spatial and temporal metadata
     """
 
-    def generate_xml_data(self, data, access_url,output_folder):
+    def generate_json_data(self, data, access_url, output_folder):
         """
-
+        Generates umm-g json for CMR metadata
+        :param data: python dict containing granule extracted metadata
+        :param access_url: url to get data
+        :param output_folder: local folder to create json file at
+        :return: input dict
         """
 
         granule_new_name = data.get('UpdatedGranuleUR', None)
         if granule_new_name:
-            access_url = access_url.replace(os.path.basename(access_url), os.path.basename(granule_new_name))
+            access_url = access_url.replace(os.path.basename(access_url),
+                                            os.path.basename(granule_new_name))
         data['OnlineAccessURL'] = access_url
-        echo10xml = src.GenerateEcho10XML(data,
-                                          age_off=self.config.get('collection',
-                                                                  {}).get('meta',
-                                                                          {}).get('age-off', None))
-        echo10xml.generate_echo10_xml_file(output_folder=output_folder)
+        umm_json = src.GenerateUmmGJson(data,
+                                        age_off=self.config.get('collection', {}).get('meta', {}).
+                                        get('age-off', None))
+        umm_json.generate_umm_json_file(output_folder=output_folder)
         return data
-
 
     def extract_netcdf_metadata(self, ds_short_name, version, access_url, netcdf_file, netcdf_vars,
                                 output_folder='/tmp', format='netCDF-4'):
@@ -134,7 +137,8 @@ class MDX(Process):
                                          lon_variable_key=lon_variable_key,
                                          lat_variable_key=lat_variable_key,
                                          time_units=time_units, format=format, version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
     def extract_csv_metadata(self, ds_short_name, version, access_url, csv_file, csv_vars={},
@@ -164,11 +168,13 @@ class MDX(Process):
                                          time_units=time_units, lon_postion=lon_postion,
                                          lat_postion=lat_postion,
                                          format=format, version='0.9')
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
-    def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file, binary_vars={},
-                               output_folder='/tmp', format='Binary'):
+    def extract_binary_metadata(self, ds_short_name, version, access_url, binary_file,
+                                binary_vars={},
+                                output_folder='/tmp', format='Binary'):
         """
 
         """
@@ -182,8 +188,10 @@ class MDX(Process):
         regex = binary_vars.get('regex', '.*')
         if match(regex, os.path.basename(binary_file)):
             metadata = switcher.get(ds_short_name, self.default_switch)(binary_file)
-            data = metadata.get_metadata(ds_short_name=ds_short_name, version=version, format=format)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, version=version,
+                                         format=format)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
     def extract_ascii_metadata(self, ds_short_name, version, access_url, ascii_file, ascii_vars={},
@@ -242,7 +250,8 @@ class MDX(Process):
             metadata = switcher.get(ds_short_name, self.default_switch)(ascii_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
     def extract_kml_metadata(self, ds_short_name, version, access_url, kml_file, ascii_vars={},
@@ -270,7 +279,8 @@ class MDX(Process):
             metadata = switcher.get(ds_short_name, self.default_switch)(kml_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
     def extract_browse_metadata(self, ds_short_name, version, access_url, browse_file,
@@ -324,7 +334,8 @@ class MDX(Process):
             data = metadata.get_metadata(ds_short_name=ds_short_name,
                                          format=format_template.get(ds_short_name, format),
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
     def extract_avi_metadata(self, ds_short_name, version, access_url, browse_file, browse_vars={},
@@ -352,11 +363,13 @@ class MDX(Process):
             metadata = switcher.get(ds_short_name, self.default_switch)(browse_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
-    def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file, legacy_vars={},
-                             output_folder='/tmp', format='ASCII'):
+    def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file,
+                                legacy_vars={},
+                                output_folder='/tmp', format='ASCII'):
         """
         Function to extract metadata from legacy dataset files
         :param ds_short_name: collection shortname
@@ -374,7 +387,8 @@ class MDX(Process):
             metadata = mdx.ExtractLegacyMetadata(legacy_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
-            return MDX.generate_xml_data(self, data=data, access_url=access_url, output_folder=output_folder)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
         return {}
 
     def upload_file(self, filename):
@@ -427,8 +441,6 @@ class MDX(Process):
             return_data_dict = data if data else return_data_dict
         return return_data_dict
 
-
-
     def get_bucket(self, filename, files, buckets):
         """
         Extract the bucket from the files
@@ -477,7 +489,8 @@ class MDX(Process):
             if output_filename is not os.path.basename(self.input[0]):
                 try:
                     uri_out_info = s3.uri_parser(uri_out)
-                    s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).Object(uri_out_info['key'])
+                    s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).Object(
+                        uri_out_info['key'])
                     with open(output_file, 'rb') as data:
                         s3_client.upload_fileobj(data)
                 except Exception as e:
@@ -497,8 +510,8 @@ class MDX(Process):
         """
         """
         output_files = [] if excluded else [output_file_path]
-        if os.path.isfile(output_file_path + ".cmr.xml"):
-            output_files += [output_file_path + ".cmr.xml"]
+        if os.path.isfile(f"{output_file_path}.cmr.json"):
+            output_files += [f"{output_file_path}.cmr.json"]
         return output_files
 
     def process(self):
@@ -509,7 +522,8 @@ class MDX(Process):
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
-        is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get('module') == 'legacy'
+        is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
+            'module') == 'legacy'
         key = 'legacy_key' if is_legacy else 'input_key'
         buckets = self.config.get('buckets', {})
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
@@ -546,7 +560,7 @@ class MDX(Process):
             if uploaded_file is None or not uploaded_file.startswith('s3'):
                 continue
             filename = uploaded_file.split('/')[-1]
-            granule_id = filename.split('.cmr.xml')[0]
+            granule_id = filename.split('.cmr.json')[0]
             if granule_id not in granule_data.keys():
                 granule_data[granule_id] = {'granuleId': granule_id, 'files': []}
             granule_data[granule_id]['files'].append(

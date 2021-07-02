@@ -11,7 +11,7 @@ granule_name = "lpvex_SHP_Aranda_ODM_u100915_00.txt"
        return_value={'input_key': [path.join(path.dirname(__file__), f"fixtures/{granule_name}")]})
 @patch('process_mdx.main.MDX.upload_output_files',
        return_value=['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
-                     's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml'])
+                     's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json'])
 @patch('os.remove', return_value=granule_name)
 @patch('os.path.getsize', return_value=2225)
 def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
@@ -29,14 +29,14 @@ def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
                                           'filepath': 'gpmodmlpvex__1/lpvex_SHP_Aranda_ODM_u100915_00.txt',
                                           'fileStagingDir': ''},
                                          {'path': 'gpmodmlpvex__1', 'url_path': 'gpmodmlpvex__1',
-                                          'name': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
-                                          'filename': 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
+                                          'name': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json',
+                                          'filename': 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json',
                                           'size': 0.0,
-                                          'filepath': 'gpmodmlpvex__1/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml',
+                                          'filepath': 'gpmodmlpvex__1/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json',
                                           'fileStagingDir': ''}
                                      ]}],
                        'input': ['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt',
-                                 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.xml'],
+                                 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json'],
                        'system_bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt'}
     print(x)
     print(expected_result)
