@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_gpmsurmetc3vp import ExtractGpmsurmetc3vpMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=C3VP,ds=gpmsurmetc3vp,inv=inventory,file=c3vp_ClimateData_Winter_062005_072007.xls,path=c3vp_ClimateData_Winter_062005_072007.xls,size=223232,start=2005-11-01T13:00:00Z,end=2007-03-31T21:00:00Z,browse=N,checksum=4ea6b09b5921ca4251753f8e574c7d16143d5f07,NLat=44.33,SLat=44.129999999999995,WLon=-79.86999999999999,ELon=-79.67,format=MS Excel
@@ -121,12 +121,11 @@ class TestProcessGpmsurmetc3vp(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
-
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

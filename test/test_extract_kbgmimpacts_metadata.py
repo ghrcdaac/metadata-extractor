@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_kbgmimpacts import ExtractKbgmimpactsMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #metadata['IMPACTS_nexrad_20200111_003544_kbgm.nc']
 #{'temporal': ['2020-01-11T00:35:44Z', '2020-01-11T00:39:28Z'], 'wnes_geometry': ['-81.563', '46.329', '-70.406', '38.07'], 'SizeMBDataGranule': '4.48', 'checksum': '2a3bf9866903fcb193c375e7ff0e4c88', 'format': 'netCDF-4'}
@@ -121,14 +121,11 @@ class TestProcessKbgmimpacts(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        #print(self.expected_metadata)
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        #echo10xml.generate_echo10_xml_file(output_folder='C:\\Users\\xli\\xli\\GHRC_cloud\\tmp')
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
-
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

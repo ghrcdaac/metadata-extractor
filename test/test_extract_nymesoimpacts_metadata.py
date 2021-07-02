@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_nymesoimpacts import ExtractNymesoimpactsMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=nymesoimpacts,inv=inventory,file=IMPACTS_NYS_ground_timeseries_202001130000_malo.png,path=20200113/IMPACTS_NYS_ground_timeseries_202001130000_malo.png,size=165874,start=2020-01-13T00:00:00Z,end=2020-01-14T00:00:00Z,browse=N,checksum=132c93f0c998fc007ba3baa237f29c77974a6d22,NLat=44.862899999999996,SLat=44.8429,WLon=-74.33890000000001,ELon=-74.3189,format=PNG
@@ -123,12 +123,11 @@ class TestProcessNymesoimpacts(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
-
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

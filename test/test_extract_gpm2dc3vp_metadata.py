@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_gpm2dc3vp import ExtractGpm2dc3vpMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=C3VP,ds=gpm2dc3vp,inv=inventory,file=c3vp_2dvd_sn16_V06336_flakes_noRA.txt,path=c3vp_2dvd_sn16_V06336_flakes_noRA.txt,size=5470,start=2006-12-02T08:23:53Z,end=2006-12-02T12:55:19Z,browse=N,checksum=7b5cd3fdf68709e23b93a8bd57e9af88fccc5d56,NLat=44.243180555555554,SLat=44.22318055555556,WLon=-79.79058611111111,ELon=-79.7705861111111,format=ASCII
 
@@ -117,12 +117,11 @@ class TestProcessGpm2dc3vp(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
-        :return: None
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

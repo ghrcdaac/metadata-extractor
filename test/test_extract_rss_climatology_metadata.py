@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_rssclimatology import ExtractRssClimatologyMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 
 class TestProcessRSSClimatology(TestCase):
@@ -101,16 +101,11 @@ class TestProcessRSSClimatology(TestCase):
 
         ] for key in self.expected_metadata[0].keys()]
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
-        :return: None
+        Test generate the umm json in tmp folder
         """
         for md in self.md:
             md['OnlineAccessURL'] = "http://localhost.com"
-            GenerateEcho10XML(md).generate_echo10_xml_file()
-            self.assertTrue(path.exists(f"/tmp/{md['GranuleUR']}.cmr.xml"))
-
-if __name__ == '__main__':
-    test = TestProcessRSSClimatology()
-    test.test_3_get_file_size()
+            GenerateUmmGJson(md).generate_umm_json_file()
+            self.assertTrue(path.exists(f"/tmp/{md['GranuleUR']}.cmr.json"))

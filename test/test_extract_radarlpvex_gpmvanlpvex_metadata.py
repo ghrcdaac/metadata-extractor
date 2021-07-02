@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_radarlpvex_gpmvanlpvex import ExtractGpmvanlpvexMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 ##host=thor,env=ops,project=LPVEx,ds=gpmvanlpvex,inv=inventory,file=lpvex_RADAR_VANTAA_RAW_20100916.tar.gz,path=raw/201009/lpvex_RADAR_VANTAA_RAW_20100916.tar.gz,size=1272948637,start=2010-09-16T00:00:00Z,end=2010-09-16T23:59:59Z,browse=Y,checksum=dda24ea1a0acc80ff01004745c16711cd2c48f83,NLat=60.34222222,SLat=60.32222222,WLon=24.89611111,ELon=24.916111110000003,format=Binary
 
@@ -124,11 +124,11 @@ class TestProcessGpmvanlpvex(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

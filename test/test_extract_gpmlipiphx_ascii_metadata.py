@@ -2,7 +2,7 @@ from os import path
 import json
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_gpmlipiphx_ascii import ExtractGpmlipiphxASCIIMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #"14121": {"start": "2014-05-01T18:00:29Z", "end": "2014-05-01T21:49:46Z", "NLat": 36.4756, "SLat": 34.1076, "ELon": -117.9568, "WLon": -121.853}
 #host=thor,env=ops,project=IPHEx,ds=gpmlipiphx,inv=inventory,file=iphex_lip_14121.txt,path=iphex_lip_14121.txt,size=9442575,start=2014-05-01T18:00:29Z,end=2014-05-01T21:49:46Z,browse=Y,checksum=f9184b16d127af44759f12ec4fb108fceb77351a,NLat=36.4756,SLat=34.1076,WLon=-121.853,ELon=-117.9568,format=ASCII
@@ -128,12 +128,11 @@ class TestProcess(TestCase):
             self.assertEqual(metadata[key], self.expected_metadata[key])
         
     
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
-        :return: None
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_lislipG import ExtractLislipGMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=LIS,ds=lislipG,inv=inventory,file=TRMM_LIS_BG.04.1_2002.277.27868,path=hdf/2002/1004/TRMM_LIS_BG.04.1_2002.277.27868,size=159618,start=2002-10-05T00:00:03Z,end=2002-10-05T00:02:51Z,browse=N,checksum=e947d78c1cd11a2b9622d3e144ee0509548e4a38,NLat=-34.828678131103516,SLat=-35.05946731567383,WLon=-146.67478942871094,ELon=-141.45120239257812,format=HDF-4
 
@@ -123,12 +123,11 @@ class TestProcessLislipiG(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
-
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

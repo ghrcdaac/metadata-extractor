@@ -2,7 +2,7 @@ from os import path
 import json
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_uiucsndimpacts import ExtractUiucsndimpactsMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=uiucsndimpacts,inv=inventory,file=IMPACTS_UIUC_Mobile_research_sounding_20200118_1600.nc,path=IMPACTS_UIUC_Mobile_research_sounding_20200118_1600.nc,size=39395,start=2020-01-18T16:00:00Z,end=2020-01-18T17:30:10Z,browse=N,checksum=1b6744b81b7e6a8e2c400c1f3ad907add6da9ffe,NLat=42.111999999999995,SLat=42.092,WLon=-76.4,ELon=-76.38,format=netCDF-4
 
@@ -128,12 +128,11 @@ class TestProcess(TestCase):
             self.assertEqual(metadata[key], self.expected_metadata[key])
         
     
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
-        :return: None
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

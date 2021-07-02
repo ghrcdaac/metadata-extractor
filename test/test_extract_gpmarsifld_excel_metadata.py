@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_gpmarsifld import ExtractGpmarsifldMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IFLOODS,ds=gpmarsifld,inv=inventory,file=ifloods_ars_SF14_Hourly.xlsx,path=xls/ifloods_ars_SF14_Hourly.xlsx,size=146472,start=2013-04-16T12:00:00Z,end=2013-06-04T12:00:00Z,browse=N,checksum=5fc535c751d61776b8526ee6d0e1049259e02fce,NLat=42.33831,SLat=42.318310000000004,WLon=-93.26486,ELon=-93.24485999999999,format=MS Excel
@@ -123,12 +123,11 @@ class TestProcessGpmarsifldExcel(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
-
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))

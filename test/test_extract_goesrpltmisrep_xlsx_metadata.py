@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 from granule_metadata_extractor.processing.process_goesrpltmisrep import ExtractGoesrpltmisrepMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=GOES-R PLT,ds=goesrpltmisrep,inv=inventory,file=GOES-R_mission-scientist-report_20170422_1.xlsx,path=mission_scientist/GOES-R_mission-scientist-report_20170422_1.xlsx,size=15028,start=2017-03-13T00:00:00Z,end=2017-05-17T23:59:59Z,browse=N,checksum=f63d8d9608550b597b7a14574de90d0528853c05,NLat=43.573,SLat=26.449,WLon=-124.625,ELon=-72.202,format=MS Excel
 
@@ -126,12 +126,11 @@ class TestProcessGoesrpltmisrep(TestCase):
             self.assertEqual(metadata[key], self.expected_metadata[key])
         
     
-    def test_a1_generate_echo10(self):
+    def test_a1_generate_umm_json(self):
         """
-        Test generate the echo 10 in tmp folder
-        :return: None
+        Test generate the umm json in tmp folder
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
-        echo10xml = GenerateEcho10XML(self.expected_metadata)
-        echo10xml.generate_echo10_xml_file()
-        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.xml'))
+        umm_json = GenerateUmmGJson(self.expected_metadata)
+        umm_json.generate_umm_json_file()
+        self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))
