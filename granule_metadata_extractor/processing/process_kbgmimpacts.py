@@ -6,12 +6,12 @@ import pathlib
 
 class ExtractKbgmimpactsMetadata(ExtractNetCDFMetadata):
     """
-    A class to extract dataset metadata 
+    A class to extract dataset metadata
     """
 
     def __init__(self, file_path):
         self.file_path = file_path
-
+        self.granule_name = os.path.basename(file_path)
         with open(os.path.join(pathlib.Path(__file__).parent.absolute(),
                                '../src/helpers/kbgmimpactsRefData.json'), 'r') as fp:
             #self.gpmseafluxicepop_loc = json.load(fp)
@@ -32,7 +32,7 @@ class ExtractKbgmimpactsMetadata(ExtractNetCDFMetadata):
         :param offset: data offset if the netCDF not CF compliant
         :return: list of bounding box coordinates [west, north, east, south]
         """
-        pass
+        return [float(x) for x in self.dataset_loc.get(self.granule_name).get('wnes_geometry')]
 
     def get_temporal(self, time_variable_key='time', units_variable='units', scale_factor=1.0,
                      offset=0,
@@ -45,7 +45,8 @@ class ExtractKbgmimpactsMetadata(ExtractNetCDFMetadata):
         :param date_format IF specified the return type will be a string type
         :return:
         """
-        pass
+        start_date, stop_date = self.dataset_loc.get(self.granule_name).get('temporal')
+        return start_date, stop_date
 
     def get_temporal_lookup(self, granule_name):
         """
@@ -68,6 +69,21 @@ class ExtractKbgmimpactsMetadata(ExtractNetCDFMetadata):
         """
         return self.dataset_loc.get(granule_name).get('wnes_geometry')
 
+    def get_checksum(self):
+        """
+        Read checksum from ref file
+        :return: checksum value as str
+        """
+        return self.dataset_loc.get(self.granule_name).get('checksum',
+                                                           "09f7e02f1290be211da707a266f153b3")
+
+    def get_file_size_megabytes(self):
+        """
+        Read file size for ref file
+        :return: size in megabytes
+        """
+        return float(self.dataset_loc.get(self.granule_name).get('SizeMBDataGranule', "1400"))
+
     def get_metadata(self, ds_short_name, format='netCDF-4', version='1', **kwargs):
         """
         :param ds_short_name:
@@ -88,10 +104,8 @@ class ExtractKbgmimpactsMetadata(ExtractNetCDFMetadata):
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(
             str(x) for x in geometry_list)
-        data['checksum'] = self.dataset_loc.get(granule_name).get('checksum',
-                                                                   "09f7e02f1290be211da707a266f153b3")
-        data['SizeMBDataGranule'] = self.dataset_loc.get(granule_name).get('SizeMBDataGranule',
-                                                                            "1400")
+        data['checksum'] = self.get_checksum()
+        data['SizeMBDataGranule'] = str(self.get_file_size_megabytes())
         data['DataFormat'] = self.dataset_loc.get(granule_name).get('format')
         data['VersionId'] = version
         return data

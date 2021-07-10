@@ -35,7 +35,7 @@ class ExtractCSVMetadata(MetadataExtractor):
         with open(self.file_path) as csv_file:
             reader = csv.reader(csv_file, delimiter='\t')
             return self.__get_min_max(reader, postion)
-    
+
 
     def get_temporal(self, time_position=0, time_units='hours', scale_factor=1.0, offset=0,
                      date_format = '%Y-%m-%dT%H:%M:%SZ'):
@@ -49,7 +49,7 @@ class ExtractCSVMetadata(MetadataExtractor):
         """
         reg_ex = r'.*(\d{8})_(\d{4})'
         extract_date_time = re.search(reg_ex, self.file_path).group
-        
+
         group = (time_units, "%s %s" %(extract_date_time(1), extract_date_time(2)))
         min_data, max_data = self.get_variables_min_max(time_position)
         args_min = {group[0]: (scale_factor*min_data) + offset}
@@ -76,9 +76,9 @@ class ExtractCSVMetadata(MetadataExtractor):
         west, east = [round((x * scale_factor) + offset, 3) for x in self.get_variables_min_max(lat_position)]
 
         return [self.convert_360_to_180(west), north, self.convert_360_to_180(east), south]
-    
-    def get_metadata(self, ds_short_name, time_position=0, time_units="hours", lon_postion=15, date_format='%Y-%m-%dT%H:%M:%SZ',
-                     lat_postion=16, format='CSV', version='1'):
+
+    def get_metadata(self, ds_short_name, time_position=0, time_units="hours", lon_postion=16, date_format='%Y-%m-%dT%H:%M:%SZ',
+                     lat_postion=15, format='CSV', version='1'):
         """
 
         :param ds_short_name:

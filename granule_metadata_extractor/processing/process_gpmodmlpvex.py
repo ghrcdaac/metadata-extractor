@@ -25,6 +25,7 @@ class ExtractGpmodmlpvexMetadata(ExtractASCIIMetadata):
             aranda_loc = json.load(fp)
         with open(file_path, 'r') as f:
             file_lines = f.readlines()
+        self.timestamp = None
 
     def __get_min_max(self, date_format):
         """
@@ -34,7 +35,7 @@ class ExtractGpmodmlpvexMetadata(ExtractASCIIMetadata):
         :return: min_value, max_value
         """
         global file_lines, minTime, maxTime
-
+        dtstr = None
         for ii in range(1, len(file_lines)):
             if '-' in file_lines[ii] and ':' in file_lines[ii]:
                 # print(ii,' ',lines[ii])
@@ -69,14 +70,9 @@ class ExtractGpmodmlpvexMetadata(ExtractASCIIMetadata):
                 dtstr = dt.strftime('%Y%m%d%H%M')
                 self.get_variables_min_max(dtstr)
                 dt = dt.strftime(date_format)
-                # print(str(minTime), str(maxTime))
 
-                # print(dt)
-
-                if dt < minTime:
-                    minTime = dt
-                if dt > maxTime:
-                    maxTime = dt
+                minTime = min(dt, minTime)
+                maxTime = max(dt, maxTime)
 
         return minTime, maxTime, dtstr
 
@@ -91,17 +87,13 @@ class ExtractGpmodmlpvexMetadata(ExtractASCIIMetadata):
         if variable_key in aranda_loc:
             current_lat = aranda_loc[variable_key]['lat']
             current_lon = aranda_loc[variable_key]['lon']
-            if current_lat > max_lat:
-                max_lat = current_lat
-            if current_lat < min_lat:
-                min_lat = current_lat
-            if current_lon > max_lon:
-                max_lon = current_lon
-            if current_lon < min_lon:
-                min_lon = current_lon
+            max_lat = max(current_lat, max_lat)
+            min_lat = min(current_lat, min_lat)
+            max_lon = max(current_lon, max_lon)
+            min_lon = min(current_lon, min_lon)
         return max_lat, min_lat, max_lon, min_lon
 
-    def get_wnes_geometry(self, timestamp, scale_factor=1.0, offset=0):
+    def get_wnes_geometry(self, scale_factor=1.0, offset=0):
         """
         Extract the geometry from a netCDF file
         :param nc_data: netCDF data
@@ -111,7 +103,8 @@ class ExtractGpmodmlpvexMetadata(ExtractASCIIMetadata):
         :return: list of bounding box coordinates [west, north, east, south]
         """
         self.__get_min_max('%Y-%m-%dT%H:%M:%SZ')
-        north, south, east, west = [round((x * scale_factor) + offset, 3) for x in self.get_variables_min_max(timestamp)]
+        north, south, east, west = [round((x * scale_factor) + offset, 3) for x in
+                                    self.get_variables_min_max(self.timestamp)]
         return [self.convert_360_to_180(west), north, self.convert_360_to_180(east), south]
 
     def get_temporal(self, time_variable_key='time', units_variable='units',  scale_factor=1.0, offset=0,
@@ -126,7 +119,8 @@ class ExtractGpmodmlpvexMetadata(ExtractASCIIMetadata):
         """
 
         start_date, stop_date, timestamp = self.__get_min_max(date_format)
-        return start_date, stop_date, timestamp
+        self.timestamp = timestamp
+        return start_date, stop_date
 
 
     def get_metadata(self, ds_short_name, format='ASCII', version='01'):
@@ -140,15 +134,15 @@ class ExtractGpmodmlpvexMetadata(ExtractASCIIMetadata):
         :param format:
         :return:
         """
-        start_date, stop_date, loc_time = self.get_temporal(time_variable_key='lon',
-                                                                              units_variable='time',
-                                                                              date_format='%Y-%m-%dT%H:%M:%SZ')
+        start_date, stop_date = self.get_temporal(time_variable_key='lon',
+                                                  units_variable='time',
+                                                  date_format='%Y-%m-%dT%H:%M:%SZ')
         data = dict()
         data['ShortName'] = ds_short_name
         data['GranuleUR'] = self.file_path.split('/')[-1]
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
 
-        gemetry_list = self.get_wnes_geometry(loc_time)
+        gemetry_list = self.get_wnes_geometry()
 
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(str(x) for x in gemetry_list)

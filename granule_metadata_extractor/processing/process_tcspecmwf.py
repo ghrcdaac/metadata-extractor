@@ -3,16 +3,15 @@ import json
 import os
 import pathlib
 # from os import path
-from datetime import datetime, timedelta
-import tarfile
+from datetime import datetime
 
 tcspecmwf_loc = {}
 north = 0
 south = 0
 west = 0
 east = 0
-start_time = 0
-end_time = 0
+start_time = datetime(2100, 1, 1)
+end_time = datetime(1900, 1, 1)
 
 
 class ExtractTcspecmwfMetadata(ExtractBrowseMetadata):
@@ -27,7 +26,7 @@ class ExtractTcspecmwfMetadata(ExtractBrowseMetadata):
         with open(os.path.join(pathlib.Path(__file__).parent.absolute(),
                                '../src/helpers/tscpecmwfRefData.json'), 'r') as fp:
             tcspecmwf_loc = json.load(fp)
-
+        self.granule_name = os.path.basename(file_path)
         # file_name_list = tarfile.open(file_path).getnames()
         # default_val = tcspecmwf_loc.get('default')
         #
@@ -56,9 +55,10 @@ class ExtractTcspecmwfMetadata(ExtractBrowseMetadata):
         :param offset: data offset if the netCDF not CF compliant
         :return: list of bounding box coordinates [west, north, east, south]
         """
-        global north, south, east, west
-        north, south, east, west = [round((x * scale_factor) + offset, 3) for x in [north, south, east, west]]
-        return [self.convert_360_to_180(west), north, self.convert_360_to_180(east), south]
+        # global north, south, east, west
+        # north, south, east, west = [round((x * scale_factor) + offset, 3) for x in [north, south, east, west]]
+        # return [self.convert_360_to_180(west), north, self.convert_360_to_180(east), south]
+        return [float(x) for x in tcspecmwf_loc.get(self.granule_name).get('wnes_geometry')]
 
     def get_temporal(self, time_variable_key='time', units_variable='units',  scale_factor=1.0, offset=0,
                      date_format = '%Y-%m-%dT%H:%M:%SZ'):
@@ -70,13 +70,15 @@ class ExtractTcspecmwfMetadata(ExtractBrowseMetadata):
         :param date_format IF specified the return type will be a string type
         :return:
         """
-        global start_time, end_time
-        start_date = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M:%S')
-        start_date = start_date.strftime(date_format)
-
-        stop_date = datetime.strptime(str(end_time), '%Y-%m-%d %H:%M:%S')
-        stop_date = stop_date.strftime(date_format)
-
+        # global start_time, end_time
+        # start_date = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M:%S')
+        # start_date = start_date.strftime(date_format)
+        #
+        # stop_date = datetime.strptime(str(end_time), '%Y-%m-%d %H:%M:%S')
+        # stop_date = stop_date.strftime(date_format)
+        #
+        # return start_date, stop_date
+        start_date, stop_date = tcspecmwf_loc.get(self.granule_name).get('temporal')
         return start_date, stop_date
 
 
@@ -103,8 +105,20 @@ class ExtractTcspecmwfMetadata(ExtractBrowseMetadata):
         """
         return tcspecmwf_loc.get(granule_name).get('wnes_geometry')
 
+    def get_checksum(self):
+        """
+        Read checksum from ref file
+        :return: checksum value as str
+        """
+        return tcspecmwf_loc.get(self.granule_name).get('checksum',
+                                                           "09f7e02f1290be211da707a266f153b3")
 
-
+    def get_file_size_megabytes(self):
+        """
+        Read file size for ref file
+        :return: size in megabytes
+        """
+        return float(tcspecmwf_loc.get(self.granule_name).get('SizeMBDataGranule', "1400"))
 
     def get_metadata(self, ds_short_name, format='GRIB', version='1'):
         """
@@ -131,10 +145,8 @@ class ExtractTcspecmwfMetadata(ExtractBrowseMetadata):
         geometry_list = self.get_wnes_geometry_lookup(granule_name)
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(str(x) for x in geometry_list)
-        #data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
-        #data['checksum'] = self.get_checksum()
-        data['checksum'] = tcspecmwf_loc.get(granule_name).get('checksum', "09f7e02f1290be211da707a266f153b3")
-        data['SizeMBDataGranule'] = tcspecmwf_loc.get(granule_name).get('SizeMBDataGranule', "1400")
+        data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
+        data['checksum'] = self.get_checksum()
         data['DataFormat'] = format
         data['VersionId'] = version
         return data

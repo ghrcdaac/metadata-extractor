@@ -12,7 +12,7 @@ class ExtractGpmikalpvexMetadata(ExtractASCIIMetadata):
     def __init__(self, file_path):
         # global dataset_loc, north, south, east, west, start_time, end_time
         super().__init__(file_path)
-
+        self.granule_name = os.path.basename(file_path)
         with open(os.path.join(pathlib.Path(__file__).parent.absolute(),
                                '../src/helpers/gpmikalpvexRefData.json'), 'r') as fp:
             self.dataset_loc = json.load(fp)
@@ -35,7 +35,7 @@ class ExtractGpmikalpvexMetadata(ExtractASCIIMetadata):
         # north, south, east, west = [round((x * scale_factor) + offset, 3) for x in
         #                             [self.north, self.south, self.east, self.west]]
         # return [self.convert_360_to_180(west), north, self.convert_360_to_180(east), south]
-        pass
+        return [float(x) for x in self.dataset_loc.get(self.granule_name).get('wnes_geometry')]
 
     def get_temporal(self, time_variable_key='time', units_variable='units', scale_factor=1.0,
                      offset=0,
@@ -55,7 +55,8 @@ class ExtractGpmikalpvexMetadata(ExtractASCIIMetadata):
         # stop_date = stop_date.strftime(date_format)
         #
         # return start_date, stop_date
-        pass
+        start_date, stop_date = self.dataset_loc.get(self.granule_name).get('temporal')
+        return [start_date, stop_date]
 
     def get_temporal_lookup(self, granule_name):
         """
@@ -77,6 +78,21 @@ class ExtractGpmikalpvexMetadata(ExtractASCIIMetadata):
         :return: [west, north,east, south]
         """
         return self.dataset_loc.get(granule_name).get('wnes_geometry')
+
+    def get_checksum(self):
+        """
+        Read checksum from ref file
+        :return: checksum value as str
+        """
+        return self.dataset_loc.get(self.granule_name).get('checksum',
+                                                           "09f7e02f1290be211da707a266f153b3")
+
+    def get_file_size_megabytes(self):
+        """
+        Read file size for ref file
+        :return: size in megabytes
+        """
+        return float(self.dataset_loc.get(self.granule_name).get('SizeMBDataGranule', "1400"))
 
     def get_metadata(self, ds_short_name, format='GRIB', version='1', **kwargs):
         """
@@ -104,12 +120,8 @@ class ExtractGpmikalpvexMetadata(ExtractASCIIMetadata):
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(
             str(x) for x in geometry_list)
-        # data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
-        # data['checksum'] = self.get_checksum()
-        data['checksum'] = self.dataset_loc.get(granule_name).get('checksum',
-                                                                   "09f7e02f1290be211da707a266f153b3")
-        data['SizeMBDataGranule'] = self.dataset_loc.get(granule_name).get('SizeMBDataGranule',
-                                                                            "1400")
+        data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
+        data['checksum'] = self.get_checksum()
         data['DataFormat'] = self.dataset_loc.get(granule_name).get('format')
         data['VersionId'] = version
         return data

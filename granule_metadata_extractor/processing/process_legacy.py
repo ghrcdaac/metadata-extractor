@@ -83,6 +83,18 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
         stop_date = self.end_time.strftime(date_format)
         return start_date, stop_date
 
+    def get_checksum(self):
+        """
+        Read checksum from dict
+        """
+        return self.checksum
+
+    def get_file_size_megabytes(self):
+        """
+        Read file size from dict
+        """
+        return self.file_size
+
     def get_metadata(self, ds_short_name, format='ASCII', version='01', **kwargs):
         """
 
@@ -104,10 +116,8 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(
             str(x) for x in gemetry_list)
-        # data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
-        data['SizeMBDataGranule'] = str(round(self.file_size, 2))
-        # data['checksum'] = self.get_checksum()
-        data['checksum'] = self.checksum
+        data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
+        data['checksum'] = self.get_checksum()
         data['DataFormat'] = self.format
         data['VersionId'] = version
         return data

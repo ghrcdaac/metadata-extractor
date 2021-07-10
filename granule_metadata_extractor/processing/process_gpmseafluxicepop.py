@@ -13,7 +13,7 @@ class ExtractGpmseafluxicepopMetadata(ExtractNetCDFMetadata):
         # global gpmseafluxicepop_loc, north, south, east, west, start_time, end_time
         # super().__init__(file_path)
         self.file_path = file_path
-
+        self.granule_name = os.path.basename(file_path)
         with open(os.path.join(pathlib.Path(__file__).parent.absolute(),
                                '../src/helpers/gpmseafluxicepopRefData.json'), 'r') as fp:
             self.gpmseafluxicepop_loc = json.load(fp)
@@ -33,7 +33,7 @@ class ExtractGpmseafluxicepopMetadata(ExtractNetCDFMetadata):
         :param offset: data offset if the netCDF not CF compliant
         :return: list of bounding box coordinates [west, north, east, south]
         """
-        pass
+        return [float(x) for x in self.gpmseafluxicepop_loc.get(self.granule_name).get('wnes_geometry')]
 
     def get_temporal(self, time_variable_key='time', units_variable='units', scale_factor=1.0,
                      offset=0,
@@ -46,7 +46,8 @@ class ExtractGpmseafluxicepopMetadata(ExtractNetCDFMetadata):
         :param date_format IF specified the return type will be a string type
         :return:
         """
-        pass
+        start_date, stop_date = self.gpmseafluxicepop_loc.get(self.granule_name).get('temporal')
+        return start_date, stop_date
 
     def get_temporal_lookup(self, granule_name):
         """
@@ -69,6 +70,21 @@ class ExtractGpmseafluxicepopMetadata(ExtractNetCDFMetadata):
         """
         return self.gpmseafluxicepop_loc.get(granule_name).get('wnes_geometry')
 
+    def get_checksum(self):
+        """
+        Read checksum from ref file
+        :return: checksum value as str
+        """
+        return self.gpmseafluxicepop_loc.get(self.granule_name).get('checksum',
+                                                           "09f7e02f1290be211da707a266f153b3")
+
+    def get_file_size_megabytes(self):
+        """
+        Read file size for ref file
+        :return: size in megabytes
+        """
+        return float(self.gpmseafluxicepop_loc.get(self.granule_name).get('SizeMBDataGranule', "1400"))
+
     def get_metadata(self, ds_short_name, format='netCDF-4', version='1', **kwargs):
         """
         :param ds_short_name:
@@ -89,10 +105,8 @@ class ExtractGpmseafluxicepopMetadata(ExtractNetCDFMetadata):
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(
             str(x) for x in geometry_list)
-        data['checksum'] = self.gpmseafluxicepop_loc.get(granule_name).get('checksum',
-                                                                   "09f7e02f1290be211da707a266f153b3")
-        data['SizeMBDataGranule'] = self.gpmseafluxicepop_loc.get(granule_name).get('SizeMBDataGranule',
-                                                                            "1400")
+        data['checksum'] = self.get_checksum()
+        data['SizeMBDataGranule'] = str(self.get_file_size_megabytes())
         data['DataFormat'] = self.gpmseafluxicepop_loc.get(granule_name).get('format')
         data['VersionId'] = version
         return data
