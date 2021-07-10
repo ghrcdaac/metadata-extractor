@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201_subset.h5",
+    "shortname": "exradimpacts",
+    "version": "1",
+    "format": "HDF-5",
+    "start": "2020-01-25T18:19:57Z",
+    "end": "2020-01-26T00:52:01Z",
+    "size": 1.51,
+    "north": "44.76",
+    "west": "-80.128",
+    "south": "32.743",
+    "east": "-71.691",
+    "checksum": "815c2392c5b488e04d2ef9f420ca39cc",
+    "collection_type": "netcdf"
+}

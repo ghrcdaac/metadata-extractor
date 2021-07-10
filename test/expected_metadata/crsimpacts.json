@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_CRS_L1B_RevA_20200207T122227_to_20200207T180109_subset.h5",
+    "shortname": "crsimpacts",
+    "version": "1",
+    "format": "HDF-5",
+    "start": "2020-02-07T12:22:27Z",
+    "end": "2020-02-07T18:01:09Z",
+    "size": 1.31,
+    "north": "43.154",
+    "west": "-79.918",
+    "south": "33.061",
+    "east": "-73.182",
+    "checksum": "71af631d70391f3f67a52dc87b97a93e",
+    "collection_type": "netcdf"
+}

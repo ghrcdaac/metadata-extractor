@@ -1,0 +1,15 @@
+{
+    "granule_name": "GOES-R_mission-scientist-report_20170422_1.xlsx",
+    "shortname": "goesrpltmisrep",
+    "version": "0.1",
+    "format": "MS Excel",
+    "start": "2017-03-13T00:00:00Z",
+    "end": "2017-05-17T23:59:59Z",
+    "size": 0.02,
+    "north": "43.573",
+    "west": "-124.625",
+    "south": "26.449",
+    "east": "-72.202",
+    "checksum": "2aeb2ff120e03848195583a4ccbfbf22",
+    "collection_type": "browse"
+}

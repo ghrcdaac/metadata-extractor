@@ -1,0 +1,15 @@
+{
+    "granule_name": "grip_storm_track_fcst_11L_late_latest_201009191620.kml",
+    "shortname": "gripstorm",
+    "version": "1",
+    "format": "KML",
+    "start": "2010-09-19T12:00:00Z",
+    "end": "2010-09-19T12:00:00Z",
+    "size": 0.06,
+    "north": "63.7",
+    "west": "-66.1",
+    "south": "30.4",
+    "east": "-19.8",
+    "checksum": "5b7e01c76a730d8755a0fe8fad558f83",
+    "collection_type": "kml"
+}

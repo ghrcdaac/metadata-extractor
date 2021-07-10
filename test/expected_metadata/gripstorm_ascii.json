@@ -1,0 +1,15 @@
+{
+    "granule_name": "grip_storm_201008120830_consensus-forecast.txt",
+    "shortname": "gripstorm",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2010-08-12T00:00:00Z",
+    "end": "2010-08-17T00:00:00Z",
+    "size": 0.02,
+    "north": "34.0",
+    "west": "-89.8",
+    "south": "11.7",
+    "east": "-2.1",
+    "checksum": "ed8ef900d42dda2915c3d3ddbdccbca7",
+    "collection_type": "ascii"
+}

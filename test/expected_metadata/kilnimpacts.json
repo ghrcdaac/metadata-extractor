@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200214_211217_kiln.nc",
+    "shortname": "kilnimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-14T21:12:17Z",
+    "end": "2020-02-14T21:12:29Z",
+    "size": 0.13,
+    "north": "39.407",
+    "west": "-84.733",
+    "south": "36.732",
+    "east": "-81.479",
+    "checksum": "b4dc915499293404e308887b2fc6798c",
+    "collection_type": "netcdf"
+}

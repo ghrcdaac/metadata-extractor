@@ -1,0 +1,15 @@
+{
+    "granule_name": "er2mir_1998_251.gif",
+    "shortname": "er2mir",
+    "version": "1",
+    "format": "GIF",
+    "start": "1998-09-08T20:31:00Z",
+    "end": "1998-09-08T20:51:00Z",
+    "size": 0.02,
+    "north": "29.017",
+    "west": "-81.946",
+    "south": "27.428",
+    "east": "-81.493",
+    "checksum": "95554bbf1b05cbf29a9f9442e4a7deab",
+    "collection_type": "browse"
+}

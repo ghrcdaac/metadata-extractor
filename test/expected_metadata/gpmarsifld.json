@@ -1,0 +1,15 @@
+{
+    "granule_name": "ifloods_ars_SF14_Hourly.xlsx",
+    "shortname": "gpmarsifld",
+    "version": "1",
+    "format": "MS Excel",
+    "start": "2013-04-16T12:00:00Z",
+    "end": "2013-06-04T12:00:00Z",
+    "size": 0.15,
+    "north": "42.338",
+    "west": "-93.265",
+    "south": "42.318",
+    "east": "-93.245",
+    "checksum": "d3f5784a3b1daf4882d4c17c302aaaa2",
+    "collection_type": "ascii"
+}

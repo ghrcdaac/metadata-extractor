@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_PHIPS_20200201_1109_20200201113854_000006_C2.png",
+    "shortname": "phipsimpacts",
+    "version": "1",
+    "format": "PNG",
+    "start": "2020-02-01T11:09:00Z",
+    "end": "2020-02-01T11:38:54Z",
+    "size": 0.56,
+    "north": "37.985",
+    "west": "-75.695",
+    "south": "37.619",
+    "east": "-75.447",
+    "checksum": "04d0a00b4d140f0717755b227d1ce164",
+    "collection_type": "browse"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5",
+    "shortname": "hiwrapimpacts",
+    "version": "1",
+    "format": "HDF-5",
+    "start": "2020-02-07T12:22:21Z",
+    "end": "2020-02-07T18:00:45Z",
+    "size": 0.66,
+    "north": "43.154",
+    "west": "-79.892",
+    "south": "33.095",
+    "east": "-73.182",
+    "checksum": "6455dfdb1d1eb73f3cccd01416464837",
+    "collection_type": "netcdf"
+}

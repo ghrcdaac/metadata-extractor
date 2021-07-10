@@ -1,0 +1,15 @@
+{
+    "granule_name": "SeaFluxV3_fake_test_file.nc4",
+    "shortname": "seaflux",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2016-09-15T00:00:00Z",
+    "end": "2016-09-15T23:29:59Z",
+    "size": 0.0,
+    "north": "85.549",
+    "west": "-179.87",
+    "south": "-85.549",
+    "east": "179.87",
+    "checksum": "93ffa49eed23192f8b0c11d2f6a71fae",
+    "collection_type": "netcdf"
+}

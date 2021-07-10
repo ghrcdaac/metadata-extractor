@@ -1,0 +1,15 @@
+{
+    "granule_name": "tltglhmam_6.0.nc",
+    "shortname": "msutlt",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "1978-01-01T00:00:00Z",
+    "end": "2021-12-31T23:59:59Z",
+    "size": 0.07,
+    "north": "88.75",
+    "west": "-178.75",
+    "south": "-88.75",
+    "east": "178.75",
+    "checksum": "50875c91f4349ee2965f7ee4b27a50ae",
+    "collection_type": "netcdf"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_RADAR_VANTAA_RAW_20100916.tar.gz",
+    "shortname": "gpmvanlpvex",
+    "version": "1",
+    "format": "Binary",
+    "start": "2010-09-16T00:00:00Z",
+    "end": "2010-09-16T23:59:59Z",
+    "size": 1272.95,
+    "north": "60.342",
+    "west": "24.896",
+    "south": "60.322",
+    "east": "24.916",
+    "checksum": "a494e469d7923da270229515141b35f4",
+    "collection_type": "ascii"
+}

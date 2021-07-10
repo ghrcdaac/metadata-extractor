@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_TAMMS_P3_20200205_R0.ict",
+    "shortname": "tammsimpacts",
+    "version": "1",
+    "format": "ASCII-ict",
+    "start": "2020-02-05T18:30:43Z",
+    "end": "2020-02-05T18:30:43Z",
+    "size": 0.0,
+    "north": "37.924",
+    "west": "-75.444",
+    "south": "37.924",
+    "east": "-75.444",
+    "checksum": "012a23baa52f5222a0f719f8e099cb96",
+    "collection_type": "ascii"
+}

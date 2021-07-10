@@ -1,0 +1,15 @@
+{
+    "granule_name": "TRMM_LIS_BG.04.1_2002.277.27868",
+    "shortname": "lislipG",
+    "version": "1",
+    "format": "HDF-4",
+    "start": "2002-10-05T00:00:03Z",
+    "end": "2002-10-05T00:02:51Z",
+    "size": 0.16,
+    "north": "-34.829",
+    "west": "-146.675",
+    "south": "-35.059",
+    "east": "-141.451",
+    "checksum": "a667a6c2455469c956a46a690c88db13",
+    "collection_type": "netcdf"
+}

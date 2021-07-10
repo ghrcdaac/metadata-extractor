@@ -1,0 +1,15 @@
+{
+    "granule_name": "icepop_pip_003_201712161032_LAR_AVI.zip",
+    "shortname": "gpmpipicepop",
+    "version": "0.1",
+    "format": "AVI",
+    "start": "2017-12-16T10:32:00Z",
+    "end": "2017-12-16T10:32:59Z",
+    "size": 0.01,
+    "north": "37.665",
+    "west": "128.7",
+    "south": "37.665",
+    "east": "128.7",
+    "checksum": "d7397c241a4f5521d095daa50caa9480",
+    "collection_type": "avi"
+}

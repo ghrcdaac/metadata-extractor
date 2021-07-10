@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_MetNav_ER2_20200225_R0.ict",
+    "shortname": "er2navimpacts",
+    "version": "1",
+    "format": "ASCII-ict",
+    "start": "2020-02-25T20:06:39Z",
+    "end": "2020-02-26T03:57:48Z",
+    "size": 4.42,
+    "north": "41.847",
+    "west": "-88.651",
+    "south": "31.99",
+    "east": "-79.915",
+    "checksum": "5be3631ac6e4913a9b510e19559b0258",
+    "collection_type": "ascii"
+}

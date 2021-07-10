@@ -1,0 +1,15 @@
+{
+    "granule_name": "LM_NALMA_fayetteville_201016_142000.dat",
+    "updated_granule_name": "LM_NALMA_fayetteville_201016_142000.dat.gz",
+    "shortname": "nalmaraw",
+    "version": "1",
+    "format": "Binary",
+    "start": "2020-10-16T14:20:00Z",
+    "end": "2020-10-16T14:29:59Z",
+    "size": 0.0,
+    "north": "35.069",
+    "west": "-86.563",
+    "south": "35.067",
+    "east": "-86.561",
+    "collection_type": "ascii"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "ISS_LIS_BG_V1.0_20201026_210255_NRT_21679.nc",
+    "shortname": "isslisg_v1_nrt",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-10-26T21:03:22Z",
+    "end": "2020-10-26T21:04:59Z",
+    "size": 0.11,
+    "north": "29.853",
+    "west": "90.209",
+    "south": "28.25",
+    "east": "91.894",
+    "checksum": "6a7bdf4c1a702f2beeb0308ff18f936a",
+    "collection_type": "netcdf"
+}

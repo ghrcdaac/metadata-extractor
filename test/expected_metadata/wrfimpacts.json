@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_wrfout_d01_2020011812_30_GFS.nc",
+    "shortname": "wrfimpacts",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2020-01-19T18:00:00Z",
+    "end": "2020-01-19T20:59:59Z",
+    "size": 0.13,
+    "north": "53.589",
+    "west": "-114.202",
+    "south": "22.971",
+    "east": "-53.798",
+    "checksum": "637c54146679765989a8b62b0273de96",
+    "collection_type": "netcdf"
+}

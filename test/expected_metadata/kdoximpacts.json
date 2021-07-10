@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200208_130230_kdox.nc",
+    "shortname": "kdoximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-08T13:02:30Z",
+    "end": "2020-02-08T13:02:33Z",
+    "size": 0.13,
+    "north": "38.825",
+    "west": "-80.727",
+    "south": "37.803",
+    "east": "-75.464",
+    "checksum": "fe4b3c998ec83a4675a04656ab9c3f87",
+    "collection_type": "netcdf"
+}

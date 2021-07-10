@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200101_160300_mosaic_midwest.nc",
+    "shortname": "nexmidwstimpacts",
+    "version": "0.1",
+    "format": "netCDF-4",
+    "start": "2020-01-01T15:45:39Z",
+    "end": "2020-01-01T16:02:59Z",
+    "size": 0.0,
+    "north": "45.975",
+    "west": "-93.0",
+    "south": "36.0",
+    "east": "-79.025",
+    "checksum": "2c2421f659ffaa1df2c93210393e76ad",
+    "collection_type": "netcdf"
+}

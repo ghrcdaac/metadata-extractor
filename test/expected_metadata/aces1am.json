@@ -1,0 +1,15 @@
+{
+    "granule_name": "aces1am_2002_227.tar",
+    "shortname": "aces1am",
+    "version": "1",
+    "format": "MATLAB",
+    "start": "2002-08-15T00:00:00Z",
+    "end": "2002-08-15T23:59:59Z",
+    "size": 0.01,
+    "north": "26.0",
+    "west": "-85.0",
+    "south": "23.0",
+    "east": "-81.0",
+    "checksum": "1276481102f218c981e0324180bafd9f",
+    "collection_type": "browse"
+}

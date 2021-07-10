@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200205_173714_kjkl.nc",
+    "shortname": "kjklimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-05T17:37:14Z",
+    "end": "2020-02-05T17:37:18Z",
+    "size": 0.68,
+    "north": "37.574",
+    "west": "-85.703",
+    "south": "33.461",
+    "east": "-80.765",
+    "checksum": "f2c164f377ff6d3bc78efe0ae2e27cfa",
+    "collection_type": "netcdf"
+}

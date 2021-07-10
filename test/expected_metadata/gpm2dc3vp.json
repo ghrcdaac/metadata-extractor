@@ -1,0 +1,15 @@
+{
+    "granule_name": "c3vp_2dvd_sn16_V06336_flakes_noRA.txt",
+    "shortname": "gpm2dc3vp",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2006-12-02T08:23:53Z",
+    "end": "2006-12-02T12:55:19Z",
+    "size": 0.01,
+    "north": "44.243",
+    "west": "-79.791",
+    "south": "44.223",
+    "east": "-79.771",
+    "checksum": "1a67612d08db3bc34a3af87755261420",
+    "collection_type": "ascii"
+}

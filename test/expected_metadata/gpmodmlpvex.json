@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_SHP_Aranda_ODM_u100915_08.txt",
+    "shortname": "gpmodmlpvex",
+    "version": "0.1",
+    "format": "ASCII",
+    "start": "2010-09-15T08:21:26Z",
+    "end": "2010-09-15T15:37:40Z",
+    "size": 0.35,
+    "north": "60.172",
+    "west": "21.501",
+    "south": "59.886",
+    "east": "21.7",
+    "checksum": "ec0952498bbdb87ff16401dda7199475",
+    "collection_type": "ascii"
+}

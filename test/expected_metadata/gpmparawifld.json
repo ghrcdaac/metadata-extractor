@@ -1,0 +1,15 @@
+{
+    "granule_name": "ifloods_apu01_20130502_N421419.54_W922749.33_raw.zip",
+    "shortname": "gpmparawifld",
+    "version": "0.1",
+    "format": "ASCII",
+    "start": "2013-05-02T00:00:00Z",
+    "end": "2013-05-02T23:59:50Z",
+    "size": 0.53,
+    "north": "42.142",
+    "west": "-92.275",
+    "south": "42.142",
+    "east": "-92.275",
+    "checksum": "dba593254512d6030f4e8740d14dab6a",
+    "collection_type": "ascii"
+}

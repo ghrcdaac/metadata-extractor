@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_SBU_dopplerlidar_20200103_vel_az_BNL.nc",
+    "shortname": "sbulidarimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-03T00:00:40Z",
+    "end": "2020-01-03T23:59:52Z",
+    "size": 6.85,
+    "north": "40.889",
+    "west": "-72.891",
+    "south": "40.861",
+    "east": "-72.863",
+    "checksum": "fef3a5dece839ab54bd2eeece8c976b7",
+    "collection_type": "netcdf"
+}

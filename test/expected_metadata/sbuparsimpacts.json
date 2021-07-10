@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_SBU_parsivel_20200224_SB.nc",
+    "shortname": "sbuparsimpacts",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2020-02-24T13:06:00Z",
+    "end": "2020-02-24T23:59:00Z",
+    "size": 2.72,
+    "north": "40.897",
+    "west": "-73.127",
+    "south": "40.897",
+    "east": "-73.127",
+    "checksum": "26a949f159f714ebbafea42c44d130d3",
+    "collection_type": "netcdf"
+}

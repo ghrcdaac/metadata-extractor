@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_CM_Summary_20_01_25_13_36_03.impacts_archive",
+    "shortname": "cmimpacts",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2020-01-25T18:36:03Z",
+    "end": "2020-01-26T00:29:03Z",
+    "size": 1.82,
+    "north": "44.433",
+    "west": "-75.515",
+    "south": "37.892",
+    "east": "-71.595",
+    "checksum": "5eb954e863f8fef1bd590b4226052a4f",
+    "collection_type": "ascii"
+}

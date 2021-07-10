@@ -1,0 +1,15 @@
+{
+    "granule_name": "camex3_ammr_1998260_37ghz.gif",
+    "shortname": "dc8ammr",
+    "version": "1",
+    "format": "GIF",
+    "start": "1998-09-17T18:04:08Z",
+    "end": "1998-09-17T22:51:40Z",
+    "size": 0.01,
+    "north": "28.413",
+    "west": "-84.815",
+    "south": "26.153",
+    "east": "-80.26",
+    "checksum": "efb6dfd45caa7528d6d7996bb2ba333a",
+    "collection_type": "browse"
+}

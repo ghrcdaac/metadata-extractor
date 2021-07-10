@@ -1,0 +1,15 @@
+{
+    "granule_name": "aces1efm_2002.191_v2.50.tar",
+    "shortname": "aces1efm",
+    "version": "1",
+    "format": "Binary",
+    "start": "2002-07-10T00:00:00Z",
+    "end": "2002-07-10T23:59:59Z",
+    "size": 12.02,
+    "north": "26.0",
+    "west": "-85.0",
+    "south": "23.0",
+    "east": "-81.0",
+    "checksum": "b8ecf98a7abee273f618ef04d18ddb96",
+    "collection_type": "binary"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200210_154100_kgrr.nc",
+    "shortname": "kgrrimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-10T15:41:00Z",
+    "end": "2020-02-10T15:41:32Z",
+    "size": 0.26,
+    "north": "47.024",
+    "west": "-91.186",
+    "south": "39.107",
+    "east": "-85.096",
+    "checksum": "f9c55fc8563a291dfdae408847192070",
+    "collection_type": "netcdf"
+}

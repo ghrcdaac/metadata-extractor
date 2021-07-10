@@ -1,0 +1,15 @@
+{
+    "granule_name": "C3VP_FD12P_test.csv",
+    "shortname": "gpmvisecc3vp",
+    "version": "1",
+    "format": "ASCII-csv",
+    "start": "2006-10-06T16:59:00Z",
+    "end": "2006-10-06T17:07:00Z",
+    "size": 0.0,
+    "north": "44.242",
+    "west": "-79.791",
+    "south": "44.222",
+    "east": "-79.771",
+    "checksum": "6f028be5aa9b36ae31c24b2a05cc2d5d",
+    "collection_type": "ascii"
+}

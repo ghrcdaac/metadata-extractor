@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200106_164754_kind.nc",
+    "shortname": "kindimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-06T16:47:54Z",
+    "end": "2020-01-06T16:48:06Z",
+    "size": 0.2,
+    "north": "43.837",
+    "west": "-88.836",
+    "south": "39.724",
+    "east": "-83.467",
+    "checksum": "a1beaae3088d626b47270532fc0a8ff2",
+    "collection_type": "netcdf"
+}

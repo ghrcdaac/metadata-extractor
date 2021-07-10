@@ -1,0 +1,15 @@
+{
+    "granule_name": "impacts_cosmir_20200223_nadir_v1.nc",
+    "shortname": "cosmirimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-23T17:01:32Z",
+    "end": "2020-02-23T18:04:36Z",
+    "size": 1.01,
+    "north": "34.638",
+    "west": "-78.932",
+    "south": "32.788",
+    "east": "-76.057",
+    "checksum": "bd9f3712a0d291f4bfb3f5d7e625a1de",
+    "collection_type": "netcdf"
+}

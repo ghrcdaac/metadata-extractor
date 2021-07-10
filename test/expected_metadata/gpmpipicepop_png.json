@@ -1,0 +1,15 @@
+{
+    "granule_name": "icepop_pip_003_20170809_Daily_png.zip",
+    "shortname": "gpmpipicepop",
+    "version": "0.1",
+    "format": "PNG",
+    "start": "2017-08-09T00:00:00Z",
+    "end": "2017-08-09T23:59:59Z",
+    "size": 0.07,
+    "north": "37.665",
+    "west": "128.7",
+    "south": "37.665",
+    "east": "128.7",
+    "checksum": "abe4390f6dbc98beadd4c940367cee6c",
+    "collection_type": "browse"
+}

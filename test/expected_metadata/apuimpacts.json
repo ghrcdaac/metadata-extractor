@@ -1,0 +1,15 @@
+{
+    "granule_name": "impacts_apu01_rainparameter_min.txt",
+    "shortname": "apuimpacts",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2020-01-16T05:13:00Z",
+    "end": "2020-02-14T01:02:00Z",
+    "size": 0.49,
+    "north": "37.939",
+    "west": "-75.484",
+    "south": "37.919",
+    "east": "-75.464",
+    "checksum": "1dae0a553cd974036ee8af08333fd8c8",
+    "collection_type": "ascii"
+}

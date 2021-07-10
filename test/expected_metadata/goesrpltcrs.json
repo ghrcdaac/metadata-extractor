@@ -1,0 +1,15 @@
+{
+    "granule_name": "GOESR_CRS_L1B_20170507_v0.nc",
+    "shortname": "goesrpltcrs",
+    "version": "0.1",
+    "format": "NetCDF-4",
+    "start": "2017-05-07T16:08:45Z",
+    "end": "2017-05-07T16:08:45Z",
+    "size": 0.01,
+    "north": "30.039",
+    "west": "-84.014",
+    "south": "30.039",
+    "east": "-84.014",
+    "checksum": "dc9af8acabf7888ee6d83ffec39584d5",
+    "collection_type": "netcdf"
+}

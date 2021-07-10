@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_sounding_20200220_1649_NCSU.nc",
+    "shortname": "ncsusndimpacts",
+    "version": "0.1",
+    "format": "netCDF-4",
+    "start": "2020-02-20T16:49:00Z",
+    "end": "2020-02-20T17:49:00Z",
+    "size": 0.03,
+    "north": "35.777",
+    "west": "-78.643",
+    "south": "35.757",
+    "east": "-78.623",
+    "checksum": "355609a775df3b56d0cafb7499c9f5b0",
+    "collection_type": "netcdf"
+}

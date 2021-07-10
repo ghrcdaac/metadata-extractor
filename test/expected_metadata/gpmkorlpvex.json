@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_RADAR_KORPO_UF_20101019.tar.gz",
+    "shortname": "gpmkorlpvex",
+    "version": "1",
+    "format": "Universal Format (UF)",
+    "start": "2010-10-19T07:00:00Z",
+    "end": "2010-10-19T11:05:59Z",
+    "size": 120.09,
+    "north": "62.373",
+    "west": "17.136",
+    "south": "57.884",
+    "east": "26.157",
+    "checksum": "3d2d90807aebbc80d62101f5ce8cf74e",
+    "collection_type": "ascii"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_SBU_pluvio_20200114.csv",
+    "shortname": "sbuplimpacts",
+    "version": "1",
+    "format": "ASCII-csv",
+    "start": "2020-01-14T00:00:00Z",
+    "end": "2020-01-14T23:59:01Z",
+    "size": 0.17,
+    "north": "40.9",
+    "west": "-73.138",
+    "south": "40.88",
+    "east": "-73.118",
+    "checksum": "a4e2b44c7701ad57509f8550104ecb50",
+    "collection_type": "ascii"
+}

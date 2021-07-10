@@ -1,0 +1,15 @@
+{
+    "granule_name": "NAMMA_DROP_20060912_155745_P.dat",
+    "shortname": "namdrop_raw",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2006-09-12T15:57:46Z",
+    "end": "2006-09-12T16:09:20Z",
+    "size": 0.25,
+    "north": "10.71",
+    "west": "-23.99",
+    "south": "10.698",
+    "east": "-23.949",
+    "checksum": "fb264840b00b0187e471a265600730e7",
+    "collection_type": "ascii"
+}

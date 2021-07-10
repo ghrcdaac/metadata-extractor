@@ -1,0 +1,15 @@
+{
+    "granule_name": "SeaFluxV3_ICEPOP_025x025.nc4.gz",
+    "shortname": "gpmseafluxicepop",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2017-09-01T00:30:00Z",
+    "end": "2018-04-30T23:30:00Z",
+    "size": 1911.58,
+    "north": "54.25",
+    "west": "98.5",
+    "south": "8.5",
+    "east": "177.5",
+    "checksum": "4043203ee4362a70f25c9326772bc38e",
+    "collection_type": "netcdf"
+}

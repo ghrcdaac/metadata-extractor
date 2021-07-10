@@ -1,0 +1,15 @@
+{
+    "granule_name": "c3vp_wacr_20070219_172850_v1.nc",
+    "shortname": "gpmwacrc3vp",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2007-02-19T17:28:50Z",
+    "end": "2007-02-19T19:55:33Z",
+    "size": 3.47,
+    "north": "44.231",
+    "west": "-79.783",
+    "south": "44.231",
+    "east": "-79.783",
+    "checksum": "c2362670aeeb97e4361c4d9dc1258b68",
+    "collection_type": "netcdf"
+}

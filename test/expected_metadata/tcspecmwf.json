@@ -1,0 +1,15 @@
+{
+    "granule_name": "tcspecmwf_2005_180_daily.tar",
+    "shortname": "tcspecmwf",
+    "version": "1",
+    "format": "GRIB",
+    "start": "2005-06-29T00:00:00Z",
+    "end": "2005-06-29T21:00:00Z",
+    "size": 1550.93,
+    "north": "90.0",
+    "west": "-180.0",
+    "south": "-90.0",
+    "east": "180.0",
+    "checksum": "787a322ddafcb5e565af144d4c4aee0b",
+    "collection_type": "browse"
+}

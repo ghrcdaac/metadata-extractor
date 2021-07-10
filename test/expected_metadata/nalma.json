@@ -1,0 +1,15 @@
+{
+    "granule_name": "NALMA_201016_142000_0600.dat.gz",
+    "shortname": "nalma",
+    "version": "1",
+    "format": "Binary",
+    "start": "2020-10-16T14:20:00Z",
+    "end": "2020-10-16T14:29:59Z",
+    "size": 0.0,
+    "north": "34.709",
+    "west": "-86.632",
+    "south": "34.707",
+    "east": "-86.63",
+    "checksum": "5ee8f2807c3aba57ee9d7469fd6bac07",
+    "collection_type": "ascii"
+}

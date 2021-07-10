@@ -1,0 +1,15 @@
+{
+    "granule_name": "c3vp_ClimateData_Winter_062005_072007.xls",
+    "shortname": "gpmsurmetc3vp",
+    "version": "1",
+    "format": "MSExcel",
+    "start": "2005-11-01T13:00:00Z",
+    "end": "2007-03-31T21:00:00Z",
+    "size": 0.22,
+    "north": "44.33",
+    "west": "-79.87",
+    "south": "44.13",
+    "east": "-79.67",
+    "checksum": "87a5efacd5422cce78eff58887b68b56",
+    "collection_type": "ascii"
+}

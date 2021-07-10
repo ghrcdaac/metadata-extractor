@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200222_014320_krlx.nc",
+    "shortname": "krlximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-22T01:43:20Z",
+    "end": "2020-02-22T01:51:37Z",
+    "size": 0.85,
+    "north": "42.441",
+    "west": "-86.989",
+    "south": "34.181",
+    "east": "-76.457",
+    "checksum": "1053359a09ef93c40e9cb75bb88436f0",
+    "collection_type": "netcdf"
+}

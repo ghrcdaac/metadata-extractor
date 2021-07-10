@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_AMPR_L2_20200227_v1_subset.nc",
+    "shortname": "amprimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-27T07:02:55Z",
+    "end": "2020-02-27T15:29:53Z",
+    "size": 6.29,
+    "north": "44.548",
+    "west": "-81.213",
+    "south": "31.99",
+    "east": "-72.467",
+    "checksum": "dcf58ed5ded5fc46c5d1abe74241ea09",
+    "collection_type": "netcdf"
+}

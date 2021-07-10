@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200221_200750_kakq.nc",
+    "shortname": "kakqimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-21T20:07:50Z",
+    "end": "2020-02-21T20:13:14Z",
+    "size": 2.27,
+    "north": "41.114",
+    "west": "-82.181",
+    "south": "32.854",
+    "east": "-71.834",
+    "checksum": "2ecc7ae1b737eea6230221217092eef1",
+    "collection_type": "netcdf"
+}

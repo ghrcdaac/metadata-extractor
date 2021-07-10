@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_SBU_weatherdhs_20200216_MAN.csv",
+    "shortname": "sbumetimpacts",
+    "version": "1",
+    "format": "ASCII-csv",
+    "start": "2020-02-16T00:00:34Z",
+    "end": "2020-02-16T23:59:34Z",
+    "size": 0.62,
+    "north": "40.738",
+    "west": "-74.017",
+    "south": "40.718",
+    "east": "-73.997",
+    "checksum": "51374c3cb416f96f9b5c4e5e5ced3589",
+    "collection_type": "ascii"
+}

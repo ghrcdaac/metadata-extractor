@@ -1,0 +1,15 @@
+{
+    "granule_name": "camex3_er2edop_1998.235_daily.tar",
+    "shortname": "er2edop",
+    "version": "1",
+    "format": "GIF",
+    "start": "1998-08-23T20:20:00Z",
+    "end": "1998-08-23T20:34:00Z",
+    "size": 0.15,
+    "north": "25.347",
+    "west": "-73.885",
+    "south": "24.503",
+    "east": "-72.542",
+    "checksum": "83c168ea985a4c96cdafefd2153b3d26",
+    "collection_type": "browse"
+}

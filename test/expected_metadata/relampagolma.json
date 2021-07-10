@@ -1,0 +1,15 @@
+{
+    "granule_name": "RELAMP_LMA_20181127_level2.tar.gz",
+    "shortname": "relampagolma",
+    "version": "1",
+    "format": "HDF-5",
+    "start": "2018-11-27T00:00:01Z",
+    "end": "2018-11-28T00:00:00Z",
+    "size": 6.72,
+    "north": "-29.856",
+    "west": "-66.167",
+    "south": "-33.464",
+    "east": "-61.959",
+    "checksum": "2cf562a571b4ed613199642c3b4c0342",
+    "collection_type": "ascii"
+}

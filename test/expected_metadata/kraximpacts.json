@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200214_211159_krax.nc",
+    "shortname": "kraximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-14T21:11:59Z",
+    "end": "2020-02-14T21:15:52Z",
+    "size": 0.45,
+    "north": "39.793",
+    "west": "-78.747",
+    "south": "31.54",
+    "east": "-73.404",
+    "checksum": "2da40c1b394a243a1360993dfcba52de",
+    "collection_type": "netcdf"
+}

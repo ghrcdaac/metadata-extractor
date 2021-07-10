@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_AVAPS_P3B_202002202248_R0.ict",
+    "shortname": "avapsimpacts",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2020-02-20T22:48:52Z",
+    "end": "2020-02-20T22:52:59Z",
+    "size": 0.1,
+    "north": "33.9",
+    "west": "-77.81",
+    "south": "33.89",
+    "east": "-77.79",
+    "checksum": "b738d7bea7e8dda4f7c1372513e5ba58",
+    "collection_type": "ascii"
+}

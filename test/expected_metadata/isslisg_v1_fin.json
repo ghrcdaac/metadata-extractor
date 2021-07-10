@@ -1,0 +1,15 @@
+{
+    "granule_name": "ISS_LIS_BG_V1.0_20200109_FIN_17159.nc",
+    "shortname": "isslisg_v1_fin",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-09T23:53:56Z",
+    "end": "2020-01-09T23:59:47Z",
+    "size": 0.27,
+    "north": "-48.343",
+    "west": "-139.086",
+    "south": "-51.676",
+    "east": "-115.11",
+    "checksum": "d1f68467c42eb7f6e625aeb44a7ba297",
+    "collection_type": "netcdf"
+}

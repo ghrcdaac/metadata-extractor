@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200214_212359_kdtx.nc",
+    "shortname": "kdtximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-14T21:23:59Z",
+    "end": "2020-02-14T21:28:31Z",
+    "size": 0.17,
+    "north": "46.796",
+    "west": "-88.863",
+    "south": "40.091",
+    "east": "-77.85",
+    "checksum": "4c02ba268d908d186966ae2fed7c389c",
+    "collection_type": "netcdf"
+}

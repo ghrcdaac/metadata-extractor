@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_MetNav_P3B_20200220_R0.ict",
+    "shortname": "p3metnavimpacts",
+    "version": "1",
+    "format": "ASCII-ict",
+    "start": "2020-02-20T19:39:12Z",
+    "end": "2020-02-21T01:12:20Z",
+    "size": 4.38,
+    "north": "37.976",
+    "west": "-79.877",
+    "south": "33.261",
+    "east": "-75.451",
+    "checksum": "2990383a904a9df420844ec535d0bc83",
+    "collection_type": "ascii"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200131_174442_kenx.nc",
+    "shortname": "kenximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-31T17:44:42Z",
+    "end": "2020-01-31T17:44:46Z",
+    "size": 0.12,
+    "north": "45.627",
+    "west": "-74.047",
+    "south": "42.595",
+    "east": "-68.926",
+    "checksum": "48ac442de6dd04ddc4256e6a672cc515",
+    "collection_type": "netcdf"
+}

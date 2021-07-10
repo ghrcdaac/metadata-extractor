@@ -1,0 +1,15 @@
+{
+    "granule_name": "aces1log_2002.197_v2.50.tar",
+    "shortname": "aces1log",
+    "version": "1",
+    "format": "Binary",
+    "start": "2002-07-16T00:00:00Z",
+    "end": "2002-07-16T23:59:59Z",
+    "size": 0.02,
+    "north": "26.0",
+    "west": "-85.0",
+    "south": "23.0",
+    "east": "-81.0",
+    "checksum": "a6ffe39f936937bf160d80524bf4fa01",
+    "collection_type": "binary"
+}

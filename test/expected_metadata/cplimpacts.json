@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_CPL_L2_V1-02_01kmLay_20200115.hdf5",
+    "shortname": "cplimpacts",
+    "version": "1",
+    "format": "HDF-5",
+    "start": "2020-01-15T17:55:40Z",
+    "end": "2020-01-15T21:33:13Z",
+    "size": 7.94,
+    "north": "35.07",
+    "west": "-117.23",
+    "south": "33.061",
+    "east": "-85.327",
+    "checksum": "d685334723345765489502716dab9d55",
+    "collection_type": "netcdf"
+}

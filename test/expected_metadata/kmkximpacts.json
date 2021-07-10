@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200128_152519_kmkx.nc",
+    "shortname": "kmkximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-28T15:25:19Z",
+    "end": "2020-01-28T15:25:20Z",
+    "size": 0.11,
+    "north": "42.968",
+    "west": "-88.525",
+    "south": "42.383",
+    "east": "-82.917",
+    "checksum": "32ff370966b3ed60ec74fd8fadc89320",
+    "collection_type": "netcdf"
+}

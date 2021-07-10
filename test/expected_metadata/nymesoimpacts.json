@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_NYS_ground_timeseries_202001130000_malo.png",
+    "shortname": "nymesoimpacts",
+    "version": "1",
+    "format": "PNG",
+    "start": "2020-01-13T00:00:00Z",
+    "end": "2020-01-14T00:00:00Z",
+    "size": 0.17,
+    "north": "44.863",
+    "west": "-74.339",
+    "south": "44.843",
+    "east": "-74.319",
+    "checksum": "79c8592743a11a7181310dc608b297ae",
+    "collection_type": "browse"
+}

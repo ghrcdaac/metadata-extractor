@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200107_003948_kbox.nc",
+    "shortname": "kboximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-07T00:39:48Z",
+    "end": "2020-01-07T00:45:30Z",
+    "size": 2.52,
+    "north": "46.086",
+    "west": "-76.694",
+    "south": "37.826",
+    "east": "-65.58",
+    "checksum": "0bac1fd79e823584f02cf36330904917",
+    "collection_type": "netcdf"
+}

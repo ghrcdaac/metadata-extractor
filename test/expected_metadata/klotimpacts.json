@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200214_210922_klot.nc",
+    "shortname": "klotimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-14T21:09:22Z",
+    "end": "2020-02-14T21:09:57Z",
+    "size": 0.27,
+    "north": "41.635",
+    "west": "-93.609",
+    "south": "37.939",
+    "east": "-82.587",
+    "checksum": "d3fb0946c36c26af18e362b033963924",
+    "collection_type": "netcdf"
+}

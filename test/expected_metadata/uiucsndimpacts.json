@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_UIUC_Mobile_research_sounding_20200118_1600.nc",
+    "shortname": "uiucsndimpacts",
+    "version": "0.1",
+    "format": "netCDF-4",
+    "start": "2020-01-18T16:00:00Z",
+    "end": "2020-01-18T17:30:10Z",
+    "size": 0.04,
+    "north": "42.112",
+    "west": "-76.4",
+    "south": "42.092",
+    "east": "-76.38",
+    "checksum": "92c477977c8e370918195fae65a1319b",
+    "collection_type": "netcdf"
+}

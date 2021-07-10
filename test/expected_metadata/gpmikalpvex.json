@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz",
+    "shortname": "gpmikalpvex",
+    "version": "1",
+    "format": "Universal Format (UF)",
+    "start": "2010-10-19T07:00:00Z",
+    "end": "2010-10-19T11:06:14Z",
+    "size": 534.97,
+    "north": "64.012",
+    "west": "18.33",
+    "south": "59.522",
+    "east": "27.83",
+    "checksum": "e59bd8003c30167af47b0d5712fffbe2",
+    "collection_type": "ascii"
+}

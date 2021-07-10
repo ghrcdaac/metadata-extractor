@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200214_211404_kcle.nc",
+    "shortname": "kcleimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-14T21:14:04Z",
+    "end": "2020-02-14T21:14:16Z",
+    "size": 0.15,
+    "north": "45.541",
+    "west": "-84.924",
+    "south": "41.429",
+    "east": "-79.141",
+    "checksum": "05fb436f8d1776bd35bd1ab49d39918a",
+    "collection_type": "netcdf"
+}

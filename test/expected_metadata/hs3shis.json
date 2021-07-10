@@ -1,0 +1,15 @@
+{
+    "granule_name": "SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc",
+    "shortname": "hs3shis",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2011-09-10T01:24:13Z",
+    "end": "2011-09-10T02:16:38Z",
+    "size": 0.58,
+    "north": "34.775",
+    "west": "-118.978",
+    "south": "34.536",
+    "east": "-118.94",
+    "checksum": "9b8b4767e4b4fc7b1d1230c0e2679cbd",
+    "collection_type": "netcdf"
+}

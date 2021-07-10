@@ -1,0 +1,15 @@
+{
+    "granule_name": "amsua15_2020.205_15437_1048_1231_WI.nc",
+    "shortname": "amsua15sp",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-07-23T10:49:02Z",
+    "end": "2020-07-23T10:49:02Z",
+    "size": 0.0,
+    "north": "-89.413",
+    "west": "-179.808",
+    "south": "-89.413",
+    "east": "-179.808",
+    "checksum": "867abcb7b12cdd142dee7b41dc62b5a2",
+    "collection_type": "netcdf"
+}

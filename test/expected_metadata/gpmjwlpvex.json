@@ -1,0 +1,15 @@
+{
+    "granule_name": "jw_lpvex_Jarvenpaa_20101103-0000.txt",
+    "shortname": "gpmjwlpvex",
+    "version": "0.1",
+    "format": "ASCII",
+    "start": "2010-11-03T00:00:00Z",
+    "end": "2010-11-03T02:59:00Z",
+    "size": 0.02,
+    "north": "60.495",
+    "west": "25.072",
+    "south": "60.475",
+    "east": "25.092",
+    "checksum": "b57d48aa760791d74c1045949673bfb9",
+    "collection_type": "ascii"
+}

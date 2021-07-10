@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_SBU_ceilo_20200104_ct25k_BNL.nc",
+    "shortname": "sbuceilimpacts",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2020-01-04T00:00:01Z",
+    "end": "2020-01-04T23:58:17Z",
+    "size": 6.15,
+    "north": "40.897",
+    "west": "-73.128",
+    "south": "40.897",
+    "east": "-73.127",
+    "checksum": "5c20bf745b73bd7f59d6aea51cd194cc",
+    "collection_type": "netcdf"
+}

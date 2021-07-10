@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_sciencePlan_20200127.pdf",
+    "shortname": "misrepimpacts",
+    "version": "1",
+    "format": "PDF",
+    "start": "2020-01-17T00:00:00Z",
+    "end": "2020-03-01T00:00:00Z",
+    "size": 0.0,
+    "north": "45.0",
+    "west": "-81.0",
+    "south": "35.0",
+    "east": "-66.0",
+    "checksum": "8cf8463b34caa8ac871a52d5dd7ad1ef",
+    "collection_type": "ascii"
+}

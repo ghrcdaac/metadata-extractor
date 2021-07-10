@@ -1,0 +1,15 @@
+{
+    "granule_name": "icepop_pip_002_201803131318_q.dat",
+    "shortname": "gpmpipicepop",
+    "version": "0.1",
+    "format": "ASCII",
+    "start": "2018-03-13T13:18:08Z",
+    "end": "2018-03-13T13:19:07Z",
+    "size": 0.09,
+    "north": "37.738",
+    "west": "128.806",
+    "south": "37.738",
+    "east": "128.806",
+    "checksum": "8f13c10b6e5c90294871520686bce909",
+    "collection_type": "ascii"
+}

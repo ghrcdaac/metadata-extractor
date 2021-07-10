@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_LIP_ER2_02272020.txt",
+    "shortname": "lipimpacts",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2020-02-27T07:00:43Z",
+    "end": "2020-02-27T15:27:03Z",
+    "size": 23.32,
+    "north": "43.62",
+    "west": "-81.17",
+    "south": "32.0",
+    "east": "-74.34",
+    "checksum": "6a1960b212f8270a482f7f13a20afe21",
+    "collection_type": "ascii"
+}

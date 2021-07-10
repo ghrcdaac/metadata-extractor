@@ -1,0 +1,15 @@
+{
+    "granule_name": "camex3_98233_lase408_n071.gif",
+    "shortname": "dc8lase",
+    "version": "1",
+    "format": "GIF",
+    "start": "1998-08-21T17:38:27Z",
+    "end": "1998-08-22T02:31:27Z",
+    "size": 0.05,
+    "north": "39.033",
+    "west": "-82.282",
+    "south": "22.995",
+    "east": "-62.995",
+    "checksum": "637d6ad22b883e57a4822cf35634bfdc",
+    "collection_type": "browse"
+}

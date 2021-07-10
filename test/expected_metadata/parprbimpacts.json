@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_2DSV-P3_20200218_sizedistributions_v01.nc",
+    "shortname": "parprbimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-18T17:22:00Z",
+    "end": "2020-02-18T22:13:00Z",
+    "size": 7.16,
+    "north": "45.25",
+    "west": "-75.581",
+    "south": "37.91",
+    "east": "-70.193",
+    "checksum": "04af0020aca73a422d1fc95274a25e0f",
+    "collection_type": "netcdf"
+}

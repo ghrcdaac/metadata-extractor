@@ -1,0 +1,16 @@
+{
+    "granule_name": "20200526_1600.wrld-ir4km-mrest",
+    "updated_granule_name":"globir.20147.1600",
+    "shortname": "globalir",
+    "version": "1",
+    "format": "Binary",
+    "start": "2020-05-26T15:45:00Z",
+    "end": "2020-05-26T16:00:00Z",
+    "size": 0.0,
+    "north": "66.0",
+    "west": "-180.0",
+    "south": "-61.0",
+    "east": "180.0",
+    "checksum": "697b529407309bd71e62d92a10badad1",
+    "collection_type": "binary"
+}

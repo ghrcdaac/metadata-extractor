@@ -1,0 +1,15 @@
+{
+    "granule_name": "fake_IMPACTS_SBU_mrr2_20200106_BNL.nc",
+    "shortname": "sbumrr2impacts",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2020-01-06T00:01:00Z",
+    "end": "2020-01-07T00:00:00Z",
+    "size": 0.01,
+    "north": "40.889",
+    "west": "-72.884",
+    "south": "40.869",
+    "east": "-72.864",
+    "checksum": "2393431f8671a6409d3739f80d3bcd9c",
+    "collection_type": "netcdf"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "iphex_lip_14121_01.png",
+    "shortname": "gpmlipiphx",
+    "version": "0.1",
+    "format": "PNG",
+    "start": "2014-05-01T18:00:29Z",
+    "end": "2014-05-01T21:49:46Z",
+    "size": 0.01,
+    "north": "36.476",
+    "west": "-121.853",
+    "south": "34.108",
+    "east": "-117.957",
+    "checksum": "32d5b424478590ebfe69cb89c4bd3395",
+    "collection_type": "ascii"
+}

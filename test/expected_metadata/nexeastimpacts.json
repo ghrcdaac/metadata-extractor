@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200101_235800_mosaic_east.nc",
+    "shortname": "nexeastimpacts",
+    "version": "0.1",
+    "format": "netCDF-4",
+    "start": "2020-01-01T23:40:46Z",
+    "end": "2020-01-01T23:57:44Z",
+    "size": 0.0,
+    "north": "46.475",
+    "west": "-85.0",
+    "south": "32.5",
+    "east": "-67.525",
+    "checksum": "889ae416c69060c66d4773828058537e",
+    "collection_type": "netcdf"
+}

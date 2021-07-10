@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_SBU_kaspr_20200224_192348_vpt.nc",
+    "shortname": "sbukasprimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-24T19:23:48Z",
+    "end": "2020-02-24T19:28:46Z",
+    "size": 5.43,
+    "north": "40.891",
+    "west": "-73.128",
+    "south": "40.89",
+    "east": "-73.128",
+    "checksum": "d7bf0c3a9bb8027be4ae327db004c557",
+    "collection_type": "netcdf"
+}

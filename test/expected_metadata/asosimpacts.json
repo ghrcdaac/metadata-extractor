@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_ASOS_20200111_kadg.nc",
+    "shortname": "asosimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-11T00:00:00Z",
+    "end": "2020-01-11T23:55:00Z",
+    "size": 0.05,
+    "north": "41.868",
+    "west": "-84.08",
+    "south": "41.866",
+    "east": "-84.078",
+    "checksum": "ccd3d9f5ff5528537f3d2b29c6c60ea2",
+    "collection_type": "netcdf"
+}

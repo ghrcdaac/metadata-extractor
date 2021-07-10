@@ -1,0 +1,15 @@
+{
+    "granule_name": "C3VP_XET_test.csv",
+    "shortname": "gpmxetc3vp",
+    "version": "1",
+    "format": "ASCII-csv",
+    "start": "2006-10-04T00:00:00Z",
+    "end": "2006-10-04T00:03:00Z",
+    "size": 0.0,
+    "north": "44.24",
+    "west": "-79.79",
+    "south": "44.22",
+    "east": "-79.77",
+    "checksum": "ddd88ee4ca6f0afbfe03625f4ea4220a",
+    "collection_type": "ascii"
+}

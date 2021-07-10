@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200212_170433_kmhx.nc",
+    "shortname": "kmhximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-12T17:04:33Z",
+    "end": "2020-02-12T17:04:39Z",
+    "size": 0.19,
+    "north": "34.762",
+    "west": "-80.137",
+    "south": "30.646",
+    "east": "-74.938",
+    "checksum": "40483e57a25478d6e44c910e52dfb848",
+    "collection_type": "netcdf"
+}

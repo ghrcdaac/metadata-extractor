@@ -1,0 +1,15 @@
+{
+    "granule_name": "aces1time_2002.212_v2.50.tar",
+    "shortname": "aces1time",
+    "version": "1",
+    "format": "Binary",
+    "start": "2002-07-31T00:00:00Z",
+    "end": "2002-07-31T23:59:59Z",
+    "size": 0.01,
+    "north": "26.0",
+    "west": "-85.0",
+    "south": "23.0",
+    "east": "-81.0",
+    "checksum": "9c531f0634d42615e77f77490bee5d8f",
+    "collection_type": "binary"
+}

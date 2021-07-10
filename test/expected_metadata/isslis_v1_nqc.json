@@ -1,0 +1,15 @@
+{
+    "granule_name": "ISS_LIS_SC_V1.0_20201015_NQC_21495.hdf",
+    "shortname": "isslis_v1_nqc",
+    "version": "1",
+    "format": "HDF-4",
+    "start": "2020-10-15T01:13:12Z",
+    "end": "2020-10-15T02:46:04Z",
+    "size": 1.17,
+    "north": "51.88",
+    "west": "-15.216",
+    "south": "-51.699",
+    "east": "-44.394",
+    "checksum": "d4fc04cd975dc67a122f8d5f143f4f71",
+    "collection_type": "netcdf"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_RADAR_KUMPULA_UF_20100901.tar.gz",
+    "shortname": "gpmkumlpvex",
+    "version": "1",
+    "format": "Universal Format (UF)",
+    "start": "2010-09-01T00:00:13Z",
+    "end": "2010-09-01T23:58:10Z",
+    "size": 1134.63,
+    "north": "64.687",
+    "west": "15.915",
+    "south": "55.722",
+    "east": "34.012",
+    "checksum": "71ad02168783417a591d07d8daa3b3a4",
+    "collection_type": "ascii"
+}

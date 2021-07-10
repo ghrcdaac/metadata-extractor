@@ -1,0 +1,15 @@
+{
+    "granule_name": "aces1trig_2002.242_v2.50.tar",
+    "shortname": "aces1trig",
+    "version": "1",
+    "format": "Binary",
+    "start": "2002-08-30T00:00:00Z",
+    "end": "2002-08-30T23:59:00Z",
+    "size": 593.24,
+    "north": "26.0",
+    "west": "-85.0",
+    "south": "23.0",
+    "east": "-81.0",
+    "checksum": "^[0-9a-fA-F]{32}$",
+    "collection_type": "legacy"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "goesrplt_avng_20170323t214600.tar.gz",
+    "shortname": "goesrpltavirisng",
+    "version": "1",
+    "format": "Various: Binary, ASCII",
+    "start": "2017-03-23T21:46:12Z",
+    "end": "2017-03-23T21:50:14Z",
+    "size": 366.38,
+    "north": "35.771",
+    "west": "-115.456",
+    "south": "35.406",
+    "east": "-115.327",
+    "checksum": "f238aed9e8fadfad83a450cd57518184",
+    "collection_type": "ascii"
+}

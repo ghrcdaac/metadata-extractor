@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200131_065857_kpbz.nc",
+    "shortname": "kpbzimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-31T06:58:57Z",
+    "end": "2020-01-31T07:07:16Z",
+    "size": 0.56,
+    "north": "44.661",
+    "west": "-85.655",
+    "south": "36.402",
+    "east": "-74.781",
+    "checksum": "884af7abad46548f5079120a9ba5bac8",
+    "collection_type": "netcdf"
+}

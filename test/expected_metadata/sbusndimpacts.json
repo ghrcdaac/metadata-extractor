@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_sounding_20200119_004158_SBU_Mobile.nc",
+    "shortname": "sbusndimpacts",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2020-01-19T00:41:58Z",
+    "end": "2020-01-19T01:56:47Z",
+    "size": 0.36,
+    "north": "41.529",
+    "west": "-73.03",
+    "south": "40.965",
+    "east": "-70.869",
+    "checksum": "d18eaf900b9fc955d1839daddc492e7f",
+    "collection_type": "netcdf"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "TRMM_LIS_SC.04.1_2002.277.27868.nc",
+    "shortname": "lislip",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2002-10-05T00:00:03Z",
+    "end": "2002-10-05T00:02:51Z",
+    "size": 0.08,
+    "north": "-34.829",
+    "west": "-146.675",
+    "south": "-35.059",
+    "east": "-141.451",
+    "checksum": "9a2f8ff589cbbea3c6aa473b203ac7b7",
+    "collection_type": "netcdf"
+}

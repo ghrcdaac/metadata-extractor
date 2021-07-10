@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_MDL_WRFSBM_wrfout_d02_20101019_140000.gz",
+    "shortname": "gpmwrflpvex",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2010-10-19T14:00:00Z",
+    "end": "2010-10-19T15:00:00Z",
+    "size": 359.07,
+    "north": "61.88",
+    "west": "20.806",
+    "south": "58.264",
+    "east": "28.314",
+    "checksum": "137b755d0785402787a8031bf329de1d",
+    "collection_type": "netcdf"
+}

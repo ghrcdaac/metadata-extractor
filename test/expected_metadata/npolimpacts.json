@@ -1,0 +1,15 @@
+{
+    "granule_name": "impacts_NPOL1_2020_0115_212558_rhi.cf.gz",
+    "shortname": "npolimpacts",
+    "version": "1",
+    "format": "netCDF-3/CF",
+    "start": "2020-01-15T21:26:00Z",
+    "end": "2020-01-15T21:26:41Z",
+    "size": 0.26,
+    "north": "38.263",
+    "west": "-75.787",
+    "south": "37.101",
+    "east": "-73.87",
+    "checksum": "0347b2436b97b24774474b22db565da7",
+    "collection_type": "netcdf"
+}

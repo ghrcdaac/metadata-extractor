@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_RADAR_KERAVA_UF_20100921.tar.gz",
+    "shortname": "gpmkerlpvex",
+    "version": "1",
+    "format": "Universal Format (UF)",
+    "start": "2010-09-21T00:00:04Z",
+    "end": "2010-09-22T00:00:00Z",
+    "size": 3260.2,
+    "north": "61.055",
+    "west": "22.999",
+    "south": "59.264",
+    "east": "27.341",
+    "checksum": "c850bca1f6104b55c752f4abe594881b",
+    "collection_type": "ascii"
+}

@@ -1,0 +1,15 @@
+{
+    "granule_name": "GRtoGPROF.GPM.GMI.KABR.140321.334.V05A.1_2.nc.gz",
+    "shortname": "gpmvn",
+    "version": "1",
+    "format": "netCDF-3",
+    "start": "2014-03-21T03:49:39Z",
+    "end": "2014-03-21T03:53:00Z",
+    "size": 0.81,
+    "north": "46.539",
+    "west": "-99.976",
+    "south": "44.172",
+    "east": "-96.663",
+    "checksum": "e5332926162e29e3a5e827448aa7c987",
+    "collection_type": "netcdf"
+}

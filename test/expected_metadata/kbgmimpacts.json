@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200111_003544_kbgm.nc",
+    "shortname": "kbgmimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-11T00:35:44Z",
+    "end": "2020-01-11T00:39:28Z",
+    "size": 4.48,
+    "north": "46.329",
+    "west": "-81.563",
+    "south": "38.07",
+    "east": "-70.406",
+    "checksum": "2a3bf9866903fcb193c375e7ff0e4c88",
+    "collection_type": "netcdf"
+}

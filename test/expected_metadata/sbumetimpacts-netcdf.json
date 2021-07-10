@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_SBU_airmarweather_20200119_RT.nc",
+    "shortname": "sbumetimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-19T00:00:00Z",
+    "end": "2020-01-19T02:03:04Z",
+    "size": 0.67,
+    "north": "40.975",
+    "west": "-73.04",
+    "south": "40.955",
+    "east": "-73.02",
+    "checksum": "3ba78f084358fff93a1ff2ff3ce684d4",
+    "collection_type": "netcdf"
+}

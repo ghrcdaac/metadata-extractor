@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_goes16_conus_20200102_002856_ch08.nc",
+    "shortname": "goesimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-02T00:26:18Z",
+    "end": "2020-01-02T00:28:56Z",
+    "size": 1.7,
+    "north": "49.98",
+    "west": "-105.0",
+    "south": "25.0",
+    "east": "-65.02",
+    "checksum": "064f0d1a9569dbd6db06b1e5ac2f0b60",
+    "collection_type": "netcdf"
+}

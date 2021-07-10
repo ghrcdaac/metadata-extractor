@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200115_073722_kokx.nc",
+    "shortname": "kokximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-15T07:37:22Z",
+    "end": "2020-01-15T07:37:34Z",
+    "size": 0.14,
+    "north": "44.95",
+    "west": "-78.035",
+    "south": "40.873",
+    "east": "-72.868",
+    "checksum": "3ad579e182153f7aa7f48ea9fd7d1aa6",
+    "collection_type": "netcdf"
+}

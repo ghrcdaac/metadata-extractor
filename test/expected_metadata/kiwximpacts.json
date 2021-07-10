@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200214_211414_kiwx.nc",
+    "shortname": "kiwximpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-02-14T21:14:14Z",
+    "end": "2020-02-14T21:14:18Z",
+    "size": 0.13,
+    "north": "42.082",
+    "west": "-89.29",
+    "south": "39.5",
+    "east": "-85.719",
+    "checksum": "44cef4a352de20aeb3febe97d8b75696",
+    "collection_type": "netcdf"
+}

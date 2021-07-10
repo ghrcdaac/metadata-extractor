@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_sounding_20200101_000000_ALB.nc",
+    "shortname": "noaasndimpacts",
+    "version": "0.1",
+    "format": "netCDF-4",
+    "start": "2020-01-01T00:00:00Z",
+    "end": "2020-01-01T11:59:59Z",
+    "size": 0.04,
+    "north": "42.702",
+    "west": "-73.842",
+    "south": "42.682",
+    "east": "-73.822",
+    "checksum": "cb3713c772b24133eac67f1015212b2b",
+    "collection_type": "netcdf"
+}

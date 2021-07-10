@@ -1,0 +1,15 @@
+{
+    "granule_name": "impacts_2dvd_sn25_raintotalhour.txt",
+    "shortname": "2dimpacts",
+    "version": "1",
+    "format": "ASCII",
+    "start": "2020-01-18T19:54:00Z",
+    "end": "2020-02-21T01:58:00Z",
+    "size": 0.0,
+    "north": "37.947",
+    "west": "-75.476",
+    "south": "37.927",
+    "east": "-75.456",
+    "checksum": "c1b4891eb31b9d38b790e8700f595fad",
+    "collection_type": "ascii"
+}

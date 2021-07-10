@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200116_144933_kdvn.nc",
+    "shortname": "kdvnimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-16T14:49:33Z",
+    "end": "2020-01-16T14:49:38Z",
+    "size": 0.14,
+    "north": "45.399",
+    "west": "-94.853",
+    "south": "41.625",
+    "east": "-90.591",
+    "checksum": "9b7e7a304cce3ac4912118e92372b8b4",
+    "collection_type": "netcdf"
+}

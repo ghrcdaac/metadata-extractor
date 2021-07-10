@@ -1,0 +1,15 @@
+{
+    "granule_name": "lpvex_Kumpula_20101012_0834.tsv",
+    "shortname": "lpvex",
+    "version": "0.1",
+    "format": "CSV",
+    "start": "2010-10-12T08:34:00Z",
+    "end": "2011-07-20T22:34:00Z",
+    "size": 0.68,
+    "north": "60.2",
+    "west": "24.96",
+    "south": "58.8",
+    "east": "26.96",
+    "checksum": "018a125cacbd749be8c25b5465aa7dc5",
+    "collection_type": "csv"
+}

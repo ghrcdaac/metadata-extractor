@@ -1,0 +1,15 @@
+{
+    "granule_name": "IMPACTS_nexrad_20200110_005704_kbuf.nc",
+    "shortname": "kbufimpacts",
+    "version": "1",
+    "format": "netCDF-4",
+    "start": "2020-01-10T00:57:04Z",
+    "end": "2020-01-10T01:01:33Z",
+    "size": 4.11,
+    "north": "47.079",
+    "west": "-84.384",
+    "south": "38.818",
+    "east": "-73.09",
+    "checksum": "5853baef569a8836255100a68a6456e7",
+    "collection_type": "netcdf"
+}
