@@ -1,0 +1,78 @@
+{
+    "input": [
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/er2navimpacts__1/IMPACTS_MetNav_ER2_20200225_R0.ict"
+    ],
+    "config": {
+      "files_config": [
+      {
+         "bucket":"public",
+         "regex":"^IMPACTS_MetNav_ER2_(.*).*\\.cmr.xml$",
+         "sampleFileName":"IMPACTS_MetNav_ER2_20200225_R0.ict.cmr.xml"
+      },
+      {
+         "bucket":"protected",
+         "regex":"^IMPACTS_MetNav_ER2_(.*).*(ict)$",
+         "sampleFileName":"IMPACTS_MetNav_ER2_20200225_R0.ict"
+      }
+      ],
+      "buckets": {
+        "protected": {
+          "type": "protected",
+          "name": "ghrc-test-protected"
+        },
+        "protected-1": {
+          "type": "protected",
+          "name": "ghrc-test-restore-protected"
+        },
+        "internal": {
+          "type": "internal",
+          "name": "ghrc-test-internal"
+        },
+        "private": {
+          "type": "private",
+          "name": "ghrc-test-private"
+        },
+        "public": {
+          "type": "public",
+          "name": "ghrc-test-public"
+        }
+      },
+      "collection": {
+   "name":"er2navimpacts",
+   "version":"1",
+   "dataType":"er2navimpacts",
+   "process":"metadataextractor",
+   "url_path":"er2navimpacts__1",
+   "duplicateHandling":"replace",
+   "granuleId":"^IMPACTS_MetNav_ER2_.*\\.(ict)$",
+   "granuleIdExtraction":"^((IMPACTS_MetNav_ER2_).*)",
+   "reportToEms":true,
+   "sampleFileName":"IMPACTS_MetNav_ER2_20200225_R0.ict",
+   "meta":{
+      "hyrax_processing": "false",
+      "provider_path":"er2navimpacts/fieldCampaigns/impacts/ER2Nav/data/",
+	  "metadata_extractor": [
+			{
+				"regex": "^IMPACTS_MetNav_ER2_(.*).*(ict)$",
+				"module": "ascii"
+			}
+		]
+   },
+   "files":[
+      {
+         "bucket":"public",
+         "regex":"^IMPACTS_MetNav_ER2_(.*).*\\.cmr.xml$",
+         "sampleFileName":"IMPACTS_MetNav_ER2_20200225_R0.ict.cmr.xml"
+      },
+      {
+         "bucket":"protected",
+         "regex":"^IMPACTS_MetNav_ER2_(.*).*(ict)$",
+         "sampleFileName":"IMPACTS_MetNav_ER2_20200225_R0.ict"
+      }
+   ]
+}
+,
+      "distribution_endpoint": "https://d1j8d846bzs73c.cloudfront.net/"
+    }
+
+  }

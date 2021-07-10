@@ -1,0 +1,78 @@
+{
+   "input":[
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/lislipG__4/TRMM_LIS_BG.04.1_2001.006.17907"
+   ],
+   "config":{
+      "files_config":[
+		{
+			"bucket": "public",
+			"regex": "^TRMM_LIS_(.*)\\.cmr.xml$",
+			"sampleFileName": "TRMM_LIS_BG.04.1_2001.006.17907.cmr.xml",
+			"reportToEms": true
+		},
+		{
+			"bucket": "protected",
+			"regex": "^TRMM_LIS_BG(.*)(\\d{5}|\\.nc|\\.nc.dmrpp)$",
+			"sampleFileName": "TRMM_LIS_BG.04.1_2001.006.17907",
+			"reportToEms": true
+		}
+      ],
+      "buckets":{
+         "protected":{
+            "type":"protected",
+            "name":"ghrcsbxw-protected"
+         },
+         "internal":{
+            "type":"internal",
+            "name":"ghrcsbxw-internal"
+         },
+         "private":{
+            "type":"private",
+            "name":"ghrcsbxw-private"
+         },
+         "public":{
+            "type":"public",
+            "name":"ghrcsbxw-public"
+         }
+      },
+      "collection":{
+	"name": "lislipG",
+	"version": "4",
+	"dataType": "lislipG",
+	"process": "metadataextractor",
+	"url_path": "lislipG__4",
+	"duplicateHandling": "replace",
+	"granuleId": "^TRMM_LIS_(.*)$",
+	"granuleIdExtraction": "^((TRMM_LIS_).*)",
+	"reportToEms": true,
+	"sampleFileName": "TRMM_LIS_BG.04.1_2001.006.17907",
+	"files": [
+		{
+			"bucket": "public",
+			"regex": "^TRMM_LIS_(.*)\\.cmr.xml$",
+			"sampleFileName": "TRMM_LIS_BG.04.1_2001.006.17907.cmr.xml",
+			"reportToEms": true
+		},
+		{
+			"bucket": "protected",
+			"regex": "^TRMM_LIS_BG(.*)(\\d{5}|\\.nc|\\.nc.dmrpp)$",
+			"sampleFileName": "TRMM_LIS_BG.04.1_2001.006.17907",
+			"reportToEms": true
+		}
+	],
+	"meta": {
+		"hyrax_processing": "true",
+		"provider_path": "lislipG/lis/trmm/data/backgrounds/",
+		"large_dataset": "true",
+		"metadata_extractor": [
+			{
+				"regex": "^TRMM_LIS_(.*)$",
+				"module": "netcdf"
+			}
+		]
+	}
+}
+,
+      "distribution_endpoint":"https://upu37d3oq0.execute-api.us-west-2.amazonaws.com/dev/"
+   }
+}
