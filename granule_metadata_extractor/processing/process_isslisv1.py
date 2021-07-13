@@ -1,6 +1,5 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
 import os
-import numpy as np
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
 from pyhdf.HDF import *
@@ -9,73 +8,58 @@ from pyhdf.VS import *
 
 class ExtractIsslisv1Metadata(ExtractNetCDFMetadata):
     """
-    A class to extract both isslis_v1_nqc and isslis_v1_nrt 
+    A class to extract ISSLIS science files
     """
 
     def __init__(self, file_path):
-        #super().__init__(file_path)
+        # super().__init__(file_path)
         self.file_path = file_path
-        #these are needed to metadata extractor
-        if file_path.endswith('.hdf'):
-            self.fileformat = 'HDF-4'
-        elif file_path.endswith('.nc'):
-            self.fileformat = 'netCDF-4'
+        self.fileformat = 'HDF-4'
 
         # extracting time and space metadata from nc.gz file
         [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
-                        self.get_variables_min_max(file_path)
+            self.get_variables_min_max(file_path)
 
-    def get_variables_min_max(self, filename):
+    def get_variables_min_max(self, file_path):
         """
         :param nc: Dataset opened
         :param file_path: file path
         :return:
         """
-        if filename.endswith('.nc'):
-            return self.get_nc_metadata(filename)
-        elif filename.endswith('.hdf'):
-            return self.get_hdf_metadata(filename)
+        if '.nc' in file_path:
+            self.fileformat = 'netCDF-4'
+            return self.get_nc_metadata(file_path)
+        else:
+            return self.get_hdf_metadata(file_path)
 
-    def get_nc_metadata(self, filename):
-        nc = Dataset(filename, 'r')
+    @staticmethod
+    def get_nc_metadata(file_path):
+        nc = Dataset(file_path, 'r')
+        slat, nlat, wlon, elon = [None] * 4
         # get time variable
         timevar = nc.variables['one_second_TAI93_time'][:]
-        # get bounding box from bg_summary as this field is also
-        # for background isslis data
-        try:
-            lon = nc['bg_summary_lon'][:]
-            lat = nc['bg_summary_lat'][:]
-            lat = [val for val in lat if val != -90.0]
-            if len(lat) > 0:
-                slat, nlat = [min(lat), max(lat)]
-                # for ISSLIS orbital data, set wlon as starting point
-                # and elon as ending point of the orbit
-                wlon, elon = [lon[0], lon[lon.size-1]]
-            else:
-                # set default bbox for files without valid lat, lon data
-                slat, nlat, wlon, elon = [-55.0,55.0,-180.0,180.0]
-        except:
-            # if bg_summary field is not available, try viewtime field
-            try:
-                lat = nc['viewtime_lat'][:]
-                lon = nc['viewtime_lon'][:]
+
+        for var_key in ['bg_summary', 'viewtime']:
+            lat_var = f"{var_key}_lat"
+            lon_var = f"{var_key}_lon"
+            if all([x in nc.variables.keys() for x in [lat_var, lon_var]]) and \
+                    all([x is None for x in [slat, nlat, wlon, elon]]):
+                lon = nc[lon_var][:]
+                lat = nc[lat_var][:]
                 lat = [val for val in lat if val != -90.0]
                 if len(lat) > 0:
                     slat, nlat = [min(lat), max(lat)]
-                    wlon, elon = [lon[0], lon[lon.size-1]]
-                else:
-                    # set default bbox for files without valid viewtime
-                    slat, nlat, wlon, elon = [-55.0,55.0,-180.0,180.0]
-            except:
-                # if viewtime field is not available, set default bbox
-                slat, nlat, wlon, elon = [-55.0,55.0,-180.0,180.0]
+                    wlon, elon = [lon[0], lon[-1]]
+
+        if any([x is None for x in [slat, nlat, wlon, elon]]):
+            slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
 
         nc.close()
 
-        minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
-                            datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
+        min_time, max_time = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
+                              datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
 
-        return minTime, maxTime, slat, nlat, wlon, elon
+        return min_time, max_time, slat, nlat, wlon, elon
 
     def get_hdf_metadata(self, filename):
         f = HDF(filename)
@@ -86,11 +70,12 @@ class ExtractIsslisv1Metadata(ExtractNetCDFMetadata):
         recs = vd[:]
         # extract TAI93_time which is the first field
         timevar = [recs[i][0] for i in range(len(recs))]
-        minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
-                            datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
+        min_time, max_time = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
+                              datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
         vd.detach()
         # extract lat and lon from bg_summary field as it is available to
         # both science and background files
+        slat, nlat, wlon, elon = [None] * 4
         try:
             vd = vs.attach('bg_summary')
             recs = vd[:]
@@ -105,8 +90,6 @@ class ExtractIsslisv1Metadata(ExtractNetCDFMetadata):
             if len(lat) > 0:
                 slat, nlat = [min(lat), max(lat)]
                 wlon, elon = [lon[0], lon[len(lon)-1]]
-            else:
-                slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
             vd.detach()
         except:
             vd.detach()  #detach 'bg_summary' in try block
@@ -120,19 +103,18 @@ class ExtractIsslisv1Metadata(ExtractNetCDFMetadata):
                 if len(lat) > 0:
                     slat, nlat = [min(lat), max(lat)]
                     wlon, elon = [lon[0], lon[len(lon)-1]]
-                else:
-                    slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
                 vd.detach()
             except:
                 vd.detach() #detach 'viewtime' in try block
-                slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
 
+        if any([x is None for x in [slat, nlat, wlon, elon]]):
+            slat, nlat, wlon, elon = [-55.0, 55.0, -180.0, 180.0]
 
         # extract location info from viewtime vgroup first field (location)
         vs.end()
         f.close()
 
-        return minTime, maxTime, slat, nlat, wlon, elon
+        return min_time, max_time, slat, nlat, wlon, elon
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0):
         """
@@ -171,7 +153,7 @@ class ExtractIsslisv1Metadata(ExtractNetCDFMetadata):
         :return:
         """
         data = dict()
-        data['GranuleUR'] = granule_name = os.path.basename(self.file_path)
+        data['GranuleUR'] = os.path.basename(self.file_path)
         start_date, stop_date = self.get_temporal()
         data['ShortName'] = ds_short_name
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
