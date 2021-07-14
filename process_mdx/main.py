@@ -121,7 +121,13 @@ class MDX(Process):
             "msutls": mdx.ExtractMsuMetadata,
             "msutlt": mdx.ExtractMsuMetadata,
             "msutmt": mdx.ExtractMsuMetadata,
-            "msuttp": mdx.ExtractMsuMetadata
+            "msuttp": mdx.ExtractMsuMetadata,
+            "isslis_v2_nrt": mdx.ExtractIsslisv1Metadata,
+            "isslis_v2_nqc": mdx.ExtractIsslisv1Metadata,
+            "isslis_v2_fin": mdx.ExtractIsslisv1Metadata,
+            "isslisg_v2_nrt": mdx.ExtractIsslisgv1Metadata,
+            "isslisg_v2_nqc": mdx.ExtractIsslisgv1Metadata,
+            "isslisg_v2_fin": mdx.ExtractIsslisgv1Metadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
