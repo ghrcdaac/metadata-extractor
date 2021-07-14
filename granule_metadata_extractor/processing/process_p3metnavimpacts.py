@@ -25,8 +25,8 @@ class ExtractP3metnavimpactsMetadata(ExtractASCIIMetadata):
         """
         :return:
         """
-        # data starts at line 58
-        lines = self.file_lines[76:]
+        num_header_lines = int(self.file_lines[0].split(',')[0])
+        lines = self.file_lines[num_header_lines:]
         minTime, maxTime, minlat, maxlat, minlon, maxlon = [datetime(2100,1,1),
                                                             datetime(1900,1,1),
                                                             90.0,-90.0,180.0,-180.0]
