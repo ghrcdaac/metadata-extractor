@@ -3,15 +3,13 @@ from unittest import TestCase
 from granule_metadata_extractor.processing.process_lipimpacts import ExtractLipimpactsMetadata
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
-#prem metadata for sample file:
-#host=thor,env=ops,project=IMPACTS,ds=lipimpacts,inv=inventory,file=IMPACTS_LIP_ER2_02272020.txt,path=IMPACTS_LIP_ER2_02272020.txt,size=23321341,start=2020-02-27T07:00:43Z,end=2020-02-27T15:27:03Z,browse=N,checksum=d38d3b75585e870dac4e5c7aace710e26e65c1cd,NLat=43.62,SLat=32.0,WLon=-81.17,ELon=-74.34,format=ASCII
 
 class TestProcessLipimpacts(TestCase):
     """
     Test processing.
     This will test if metadata will be extracted correctly
     """
-    granule_name = "IMPACTS_LIP_ER2_02272020.txt"
+    granule_name = "IMPACTS_LIP_ER2_02232020.txt"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -33,7 +31,7 @@ class TestProcessLipimpacts(TestCase):
         start_date = self.process_dataset.get_temporal()[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-02-27T07:00:43Z")
+        self.assertEqual(start_date, "2020-02-23T16:48:51Z")
 
     def test_2_get_stop_date(self):
         """
@@ -43,7 +41,7 @@ class TestProcessLipimpacts(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-02-27T15:27:03Z")
+        self.assertEqual(stop_date, "2020-02-23T16:48:51Z")
 
     def test_3_get_file_size(self):
         """
@@ -52,7 +50,7 @@ class TestProcessLipimpacts(TestCase):
         """
         file_size = float(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 23.32)
+        self.assertEqual(file_size, 0.0)
 
     def get_wnes(self, index):
         """
@@ -63,8 +61,6 @@ class TestProcessLipimpacts(TestCase):
         wnes = process_geos.get_wnes_geometry()
         return str(round(float(wnes[index]), 3))
 
-    #NLat=43.62,SLat=32.0,WLon=-81.17,ELon=-74.34
-
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -72,7 +68,7 @@ class TestProcessLipimpacts(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '43.62')
+        self.assertEqual(north, '32.8')
 
     def test_5_get_west(self):
         """
@@ -81,7 +77,7 @@ class TestProcessLipimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-81.17')
+        self.assertEqual(west, '-80.33')
 
     def test_6_get_south(self):
         """
@@ -90,7 +86,7 @@ class TestProcessLipimpacts(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '32.0')
+        self.assertEqual(south, '32.8')
 
     def test_7_get_east(self):
         """
@@ -99,7 +95,7 @@ class TestProcessLipimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-74.34')
+        self.assertEqual(east, '-80.33')
 
     def test_8_get_checksum(self):
         """
@@ -110,12 +106,12 @@ class TestProcessLipimpacts(TestCase):
         # checksum = self.process_goesrpltavirisng.get_checksum()
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '6a1960b212f8270a482f7f13a20afe21')
+        self.assertEqual(checksum, 'a1dcf80b36a291c5e37bbd09fa8a7068')
 
     def test_9_generate_metadata(self):
         """
         Test generating metadata of goesrpltavirisng
-        :return: metadata object 
+        :return: metadata object
         """
 
         metadata = self.process_dataset.get_metadata(ds_short_name='lipimpacts',
