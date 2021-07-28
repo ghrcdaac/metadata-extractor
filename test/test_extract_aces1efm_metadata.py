@@ -9,7 +9,7 @@ class TestProcessAces1Efm(TestCase):
     Test processing Aces1Efm.
     This will test if Aces1Efm metadata will be extracted correctly
     """
-    granule_name = "aces1efm_2002.191_v2.50.tar"
+    granule_name = "aces1efm_2002.218_v2.50.tar"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -31,7 +31,7 @@ class TestProcessAces1Efm(TestCase):
         start_date = self.process_aces1.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2002-07-10T00:00:00Z")
+        self.assertEqual(start_date, "2002-08-06T00:00:00Z")
 
     def test_2_get_stop_date(self):
         """
@@ -42,7 +42,7 @@ class TestProcessAces1Efm(TestCase):
         stop_date = self.process_aces1.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2002-07-10T23:59:59Z")
+        self.assertEqual(stop_date, "2002-08-06T23:59:59Z")
 
     def test_3_get_file_size(self):
         """
@@ -52,7 +52,7 @@ class TestProcessAces1Efm(TestCase):
         file_size = round(self.process_aces1.get_file_size_megabytes(), 2)
         print(file_size)
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 12.02)
+        self.assertEqual(file_size, 0.07)
 
     def get_wnes(self, index):
         """
@@ -106,7 +106,7 @@ class TestProcessAces1Efm(TestCase):
         """
         checksum = self.process_aces1.get_checksum()
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, 'b8ecf98a7abee273f618ef04d18ddb96')
+        self.assertEqual(checksum, '81e3455b43c6d5e7850fb3be20008f24')
 
     def test_9_generate_metadata(self):
         """
