@@ -127,7 +127,8 @@ class MDX(Process):
             "isslis_v2_fin": mdx.ExtractIsslisv1Metadata,
             "isslisg_v2_nrt": mdx.ExtractIsslisgv1Metadata,
             "isslisg_v2_nqc": mdx.ExtractIsslisgv1Metadata,
-            "isslisg_v2_fin": mdx.ExtractIsslisgv1Metadata
+            "isslisg_v2_fin": mdx.ExtractIsslisgv1Metadata,
+            "ualbparsimpacts": mdx.ExtractUalbparsimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
