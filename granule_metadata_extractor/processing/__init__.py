@@ -101,3 +101,4 @@ from .process_lislipG import ExtractLislipGMetadata
 from .process_msu import ExtractMsuMetadata
 from .process_legacy import ExtractLegacyMetadata
 from .process_ualbparsimpacts import ExtractUalbparsimpactsMetadata
+from .process_ualbmrr2impacts import ExtractUalbmrr2impactsMetadata

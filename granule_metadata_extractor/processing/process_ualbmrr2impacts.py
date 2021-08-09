@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 from netCDF4 import Dataset
 import numpy as np
 
-class ExtractUalbparsimpactsMetadata(ExtractNetCDFMetadata):
+class ExtractUalbmrr2impactsMetadata(ExtractNetCDFMetadata):
     """
-    A class to extract Ualbparsimpacts netCDF-4
+    A class to extract Ualbmrr2impacts netCDF-3
     """
     start_time = None
     end_time = None
@@ -18,7 +18,7 @@ class ExtractUalbparsimpactsMetadata(ExtractNetCDFMetadata):
     def __init__(self, file_path):
         # super().__init__(file_path)
         self.file_path = file_path
-        self.format = 'netCDF-4'
+        self.format = 'netCDF-3'
 
         self.get_variables_min_max()
 
@@ -26,20 +26,17 @@ class ExtractUalbparsimpactsMetadata(ExtractNetCDFMetadata):
         """
         Extract metadata information from netcdf file
         """
-        datafile = Dataset(self.file_path)
-        lats = datafile['latitude'][0].item()
-        lons = datafile['longitude'][0].item()*(-1.) #units: deg west
-        sec = np.array(datafile['time'][:])
-        ref_time_str = 'T'.join(datafile['time'].units.split(' ')[-2:]) #i.e., '2020-01-30T00:00:00'
-        ref_time = datetime.strptime(ref_time_str,'%Y-%m-%dT%H:%M:%S')
+        nc = Dataset(self.file_path, 'r')
+        lat = nc.variables['lat'][:]
+        lon = nc.variables['lon'][:]
+        tm = nc.variables['time'][:]
+        self.north, self.south, self.east, self.west = [np.max(lat)+0.06/111.325, np.min(lat)-0.06/111.325,
+                                                        np.max(lon)+0.06/111.325, np.min(lon)-0.06/111.325]
 
-        self.start_time, self.end_time = [ref_time+timedelta(seconds=sec.min().item()),
-                                          ref_time+timedelta(seconds=sec.max().item())]
-        self.north, self.south, self.east, self.west = [lats+0.01,
-                                                        lats-0.01,
-                                                        lons+0.01,
-                                                        lons-0.01]
-        datafile.close()
+        self.start_time = datetime(1970,1,1) + timedelta(seconds=float(np.min(tm)))
+        self.end_time = datetime(1970,1,1) + timedelta(seconds=float(np.max(tm)))
+
+        nc.close()
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0):
         """
@@ -70,7 +67,7 @@ class ExtractUalbparsimpactsMetadata(ExtractNetCDFMetadata):
         return start_date, stop_date
 
     def get_metadata(self, ds_short_name, time_variable_key='time', lon_variable_key='lon',
-                     lat_variable_key='lat', time_units='units', format='netCDF-4', version='01'):
+                     lat_variable_key='lat', time_units='units', format='netCDF-3', version='01'):
         """
 
         :param ds_short_name:
