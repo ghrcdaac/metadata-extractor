@@ -1,0 +1,91 @@
+{
+  "input": [
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/goesrglmgrid__1/OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc"
+  ],
+  "config": {
+    "files_config": [
+        {
+            "regex": "^OR_GLM-L3-(.*).*\\.cmr\\.(xml|json)$",
+            "sampleFileName": "OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc.cmr.xml",
+            "bucket": "public"
+        },
+        {
+            "regex": "^OR_GLM-L3-.*(\\.nc)$",
+            "sampleFileName": "OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc",
+            "bucket": "protected"
+        }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "ghrcsbxw-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "ghrcsbxw-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "ghrcsbxw-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "ghrcsbxw-public"
+      }
+    },
+    "collection":{
+        "name":"goesrglmgrid",
+        "version":"1",
+        "dataType":"goesrglmgrid",
+        "process":"metadataextractor",
+        "url_path":"goesrglmgrid__1",
+        "duplicateHandling":"replace",
+        "granuleId":"^OR_GLM-L3-.*\\.(nc)$",
+        "granuleIdExtraction":"^((OR_GLM-L3-).*)",
+        "reportToEms":true,
+        "sampleFileName":"OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc",
+        "files": [
+                {
+                 "bucket":"public",
+                 "regex":"^OR_GLM-L3-(.*).*\\.cmr\\.(xml|json)$",
+                 "sampleFileName":"OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc.cmr.xml"
+                },
+                {
+                 "bucket":"protected",
+                 "regex":"^OR_GLM-L3-(.*).*(nc)$",
+                 "sampleFileName":"OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc"
+                }
+    ],
+    "meta": {
+      "provider_path":"glm/%YY%MM/",
+      "hyrax_processing": "false",
+      "collection_type": "ongoing",
+      "large_dataset": true,
+      "metadata_extractor": [
+          {
+              "regex": "^OR_GLM-L3-.*\\.(nc)$",
+              "module": "netcdf"
+          }
+        ]
+    }
+  },
+  "distribution_endpoint": "https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/",
+  "messageConfig": {
+    "input": "{[$.payload.granules[*].files[*].filename]}",
+    "outputs": [
+      {
+        "source": "{{$}}",
+        "destination": "{{$.payload}}"
+      }
+    ]
+  },
+  "cumulus_config": {
+    "state_machine": "arn:aws:states:us-east-1:739365603671:stateMachine:ghrcuatAppIngestGranuleStateMachine-hItduPFzGlvi",
+    "execution_name": "bb9d4f0e-afe6-4c83-9a51-448baf4778d4",
+    "cumulus_context": {
+      "reingestGranule": "True",
+      "forceDuplicateOverwrite": "True"
+    }
+  }
+}
+}
