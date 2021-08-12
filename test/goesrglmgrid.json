@@ -60,7 +60,7 @@
       "provider_path":"glm/%YY%MM/",
       "hyrax_processing": "false",
       "collection_type": "ongoing",
-      "large_dataset": true,
+      "large_dataset": "true",
       "metadata_extractor": [
           {
               "regex": "^OR_GLM-L3-.*\\.(nc)$",
