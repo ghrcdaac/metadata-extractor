@@ -103,3 +103,4 @@ from .process_legacy import ExtractLegacyMetadata
 from .process_ualbparsimpacts import ExtractUalbparsimpactsMetadata
 from .process_ualbmrr2impacts import ExtractUalbmrr2impactsMetadata
 from .process_goesrglmgrid import ExtractGoesrglmgridMetadata
+from .process_exradepoch import ExtractExradepochMetadata
