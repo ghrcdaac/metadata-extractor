@@ -35,7 +35,7 @@ class ExtractExradepochMetadata(ExtractNetCDFMetadata):
         maxlat, minlat, maxlon, minlon = [np.max(lat), np.min(lat),
                                           np.max(lon), np.min(lon)]
 
-        m = re.match(r".*.(\d\d\d\d\d\d\d\d)T(\d\d\d\d\d\d)_to_(\d\d\d\d\d\d\d\d)T(\d\d\d\d\d\d).*", self.file_path)
+        m = re.match(r".*.(\d{8})T(\d{6})_to_(\d{8})T(\d{6}).*", self.file_path)
         minTime = datetime.strptime(m.group(1)+m.group(2),'%Y%m%d%H%M%S')
         maxTime = datetime.strptime(m.group(3)+m.group(4),'%Y%m%d%H%M%S')
 
