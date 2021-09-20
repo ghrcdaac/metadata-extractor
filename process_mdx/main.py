@@ -130,7 +130,8 @@ class MDX(Process):
             "isslisg_v2_fin": mdx.ExtractIsslisgv1Metadata,
             "ualbparsimpacts": mdx.ExtractUalbparsimpactsMetadata,
             "ualbmrr2impacts": mdx.ExtractUalbmrr2impactsMetadata,
-            "goesrglmgrid": mdx.ExtractGoesrglmgridMetadata
+            "goesrglmgrid": mdx.ExtractGoesrglmgridMetadata,
+            "exradepoch": mdx.ExtractExradepochMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
