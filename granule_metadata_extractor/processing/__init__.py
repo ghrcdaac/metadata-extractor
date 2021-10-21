@@ -104,3 +104,5 @@ from .process_ualbparsimpacts import ExtractUalbparsimpactsMetadata
 from .process_ualbmrr2impacts import ExtractUalbmrr2impactsMetadata
 from .process_goesrglmgrid import ExtractGoesrglmgridMetadata
 from .process_exradepoch import ExtractExradepochMetadata
+from .process_gpmkarx2ifld import ExtractGpmkarx2ifldMetadata
+from .process_gpmkdmx2ifld import ExtractGpmkdmx2ifldMetadata
