@@ -133,7 +133,9 @@ class MDX(Process):
             "goesrglmgrid": mdx.ExtractGoesrglmgridMetadata,
             "exradepoch": mdx.ExtractExradepochMetadata,
             "gpmkarx2ifld": mdx.ExtractGpmkarx2ifldMetadata,
-            "gpmkdmx2ifld": mdx.ExtractGpmkdmx2ifldMetadata
+            "gpmkdmx2ifld": mdx.ExtractGpmkdmx2ifldMetadata,
+            "gpmkdvn2ifld": mdx.ExtractGpmkdvn2ifldMetadata,
+            "gpmkmpx2ifld": mdx.ExtractGpmkmpx2ifldMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -476,7 +478,7 @@ class MDX(Process):
         return ["tcspecmwf", "gpmwrflpvex", "relampagolma", "goesrpltavirisng", "gpmvanlpvex",
                 "gpmikalpvex", "gpmkorlpvex", "gpmkerlpvex", "gpmkumlpvex", "gpmseafluxicepop",
                 "kakqimpacts", "kccximpacts", "kbgmimpacts", "kboximpacts", "kbufimpacts",
-                "gpmkarx2ifld", "gpmkdmx2ifld"]
+                "gpmkarx2ifld", "gpmkdmx2ifld", "gpmkdvn2ifld", "gpmkmpx2ifld"]
 
     def mutate_input(self, output_folder, input_file):
         """
