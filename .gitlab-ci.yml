@@ -29,7 +29,7 @@ IntegrationTest:
       junit: test*.xml
 
 CreateLambdaArtifact:
-  stage: CreateArtifact
+  stage: .post
   script:
     - python create-artifact.py
   artifacts:
