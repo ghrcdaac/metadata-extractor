@@ -27,3 +27,13 @@ IntegrationTest:
   artifacts:
     reports:
       junit: test*.xml
+
+CreateLambdaArtifact:
+  stage: CreateArtifact
+  script:
+    - python create-artifact.py
+  artifacts:
+    name: "${CI_PROJECT_NAME}_lambda_artifact_${CI_COMMIT_SHA}"
+    paths:
+      - mdx_lambda_artifact.zip
+    expire_in: never
