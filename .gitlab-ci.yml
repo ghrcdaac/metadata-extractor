@@ -32,6 +32,5 @@ CreateLambdaArtifact:
   artifacts:
     name: "${CI_PROJECT_NAME}_lambda_artifact_${CI_COMMIT_SHA}"
     paths:
-      - mdx_lambda_artifact/granule_metadata_extractor
-      - mdx_lambda_artifact/process_mdx
+      - mdx_lambda_artifact/
     expire_in: never
