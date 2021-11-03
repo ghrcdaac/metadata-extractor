@@ -15,7 +15,7 @@ class CreateMDXArtifact:
         self.repo_root_dir = None
         self.create_artifact_dir()
         self.add_needed_files()
-        shutil.make_archive(self.artifact_location, 'zip', self.artifact_location)
+        # shutil.make_archive(self.artifact_location, 'zip', self.artifact_location)
         self.local_cleanup()
 
     def delete_artifact_dir(self):
@@ -125,7 +125,7 @@ class CreateMDXArtifact:
         if os.path.exists(lambda_handler_path):
             os.remove(lambda_handler_path)
         # Clean up local artifact directory
-        self.delete_artifact_dir()
+        # self.delete_artifact_dir()
 
 
 if __name__ == '__main__':
