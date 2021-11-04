@@ -1,11 +1,14 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
 import os, re
 from datetime import datetime, timedelta
-import pyart
+try:
+    import pyart
+except ImportError:
+    pyart = None
 
 class ExtractKjklimpactsMetadata(ExtractNetCDFMetadata):
     """
-    A class to extract kjklimpacts 
+    A class to extract kjklimpacts
     """
 
     def __init__(self, file_path):

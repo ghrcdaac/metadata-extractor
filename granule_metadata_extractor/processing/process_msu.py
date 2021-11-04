@@ -32,7 +32,7 @@ class ExtractMsuMetadata(ExtractASCIIMetadata):
         self.start_time, self.end_time, self.north, self.south, self.east, self.west = \
             [self.default_metadata[x] for x in ['start', 'end', 'north', 'south', 'east', 'west']]
 
-        if self.format is "ASCII":
+        if self.format == "ASCII":
             self.get_variables_min_max()
         else:
             self.get_netcdf_metadata()
