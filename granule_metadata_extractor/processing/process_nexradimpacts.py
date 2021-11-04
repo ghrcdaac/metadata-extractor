@@ -1,11 +1,14 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
 import os, re
 from datetime import datetime, timedelta
-import pyart
+try:
+    import pyart
+except ImportError:
+    pyart = None
 
 class ExtractNexradimpactsMetadata(ExtractNetCDFMetadata):
     """
-    A class to extract kokx, kpbz, krax, krlx, ktyx, kvwximpacts 
+    A class to extract kokx, kpbz, krax, krlx, ktyx, kvwximpacts
     """
 
     def __init__(self, file_path):
