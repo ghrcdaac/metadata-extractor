@@ -6,8 +6,7 @@ exclude_processes_in_lambda = ["creators*", "*pycache*"]
 
 class CreateMDXArtifact:
     """
-    Class used to create a lighter artifact to be used within AWS lambda for nrt and ongoing
-    processing
+    Class used to create an artifact to be used within AWS lambda for mdx processing
     """
 
     def __init__(self):
