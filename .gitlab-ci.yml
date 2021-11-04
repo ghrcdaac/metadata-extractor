@@ -32,5 +32,5 @@ CreateLambdaArtifact:
   artifacts:
     name: "${CI_PROJECT_NAME}_lambda_artifact_${CI_COMMIT_SHA}"
     paths:
-      - mdx_lambda_artifact/
+      - mdx_lambda_artifact.zip
     expire_in: never
