@@ -501,7 +501,7 @@ class MDX(Process):
             output_filename = os.path.basename(output_file)
             uri_out = os.path.join(source_path, output_filename)
             upload_output_list.append(uri_out)
-            if output_filename is not os.path.basename(self.input[0]):
+            if output_filename != os.path.basename(self.input[0]):
                 try:
                     uri_out_info = s3.uri_parser(uri_out)
                     s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).Object(
@@ -510,6 +510,7 @@ class MDX(Process):
                         s3_client.upload_fileobj(data)
                 except Exception as e:
                     self.logger.error(f'Error uploading file {output_filename}: {str(e)}')
+                    raise e from None
         return upload_output_list
 
     @property

@@ -3,8 +3,11 @@ from datetime import datetime, timedelta
 import gzip
 import tempfile
 import shutil
-import pyart
 import os
+try:
+    import pyart
+except ImportError:
+    pyart = None
 
 
 class ExtractNpolimpactsMetadata(ExtractNetCDFMetadata):
