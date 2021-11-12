@@ -19,23 +19,23 @@ IntegrationTest:
     - pytest --junitxml=test_metadata_extractor.xml test
     - nosetests -c .noserc -q --cover-html-dir=build --cover-html
     - coverage report -m
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "master"'
-    - if: '$CI_MERGE_REQUEST_ID'
+#  rules:
+#    - if: '$CI_COMMIT_REF_NAME == "master"'
+#    - if: '$CI_MERGE_REQUEST_ID'
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   artifacts:
     reports:
       junit: test*.xml
 
-CreateLambdaArtifact:
+BuildArtifact:
   stage: .post
   script:
     - python create-artifact.py
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "master"'
-    - if: '$CI_MERGE_REQUEST_ID'
+#  rules:
+#    - if: '$CI_COMMIT_REF_NAME == "master"'
+#    - if: '$CI_MERGE_REQUEST_ID'
   artifacts:
     name: "${CI_PROJECT_NAME}_lambda_artifact"
     paths:
-      - lambda_tf.zip
+      - mdx_lambda_artifact.zip
     expire_in: never

@@ -6,19 +6,16 @@ exclude_processes_in_lambda = ["creators*", "*pycache*"]
 
 class CreateMDXArtifact:
     """
-    Class used to create a lighter artifact to be used within AWS lambda for nrt and ongoing
-    processing
+    Class used to create an artifact to be used within AWS lambda for mdx processing
     """
 
     def __init__(self):
-        self.repo_root_dir = os.path.dirname(os.path.realpath(__file__))
-        self.zip_path = os.path.join(self.repo_root_dir, 'lambda_tf')
-        self.artifact_location = os.path.join(self.zip_path, 'mdx_source')
+        self.artifact_location = None
+        self.repo_root_dir = None
         self.create_artifact_dir()
         self.add_needed_files()
         shutil.make_archive(self.artifact_location, 'zip', self.artifact_location)
         self.local_cleanup()
-        shutil.make_archive(self.zip_path, 'zip', self.zip_path)
 
     def delete_artifact_dir(self):
         """
@@ -31,6 +28,8 @@ class CreateMDXArtifact:
         """
         Creates artifact directory. If already exists, deletes first
         """
+        self.repo_root_dir = os.path.dirname(os.path.realpath(__file__))
+        self.artifact_location = os.path.join(self.repo_root_dir, 'mdx_lambda_artifact')
         self.delete_artifact_dir()
         os.mkdir(self.artifact_location)
 
