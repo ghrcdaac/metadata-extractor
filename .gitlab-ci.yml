@@ -27,7 +27,7 @@ IntegrationTest:
     reports:
       junit: test*.xml
 
-CreateLambdaArtifact:
+BuildArtifact:
   stage: .post
   script:
     - python create-artifact.py
@@ -37,5 +37,5 @@ CreateLambdaArtifact:
   artifacts:
     name: "${CI_PROJECT_NAME}_lambda_artifact"
     paths:
-      - lambda_tf.zip
+      - mdx_lambda_artifact.zip
     expire_in: never
