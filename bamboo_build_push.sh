@@ -98,10 +98,4 @@ do
 done
 
 docker rmi mdx
-
-# Update lambda
-
-for (( i=0; i<$len; i++ ))
-do
-
-done
+rm -rf /tmp/mdx_lambda_artifact.zip
