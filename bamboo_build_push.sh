@@ -21,13 +21,13 @@ function stop_mdx_task() {
   task_arns=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --family $1-MDX --query "taskArns[*]" --region $AWS_REGION | tr -d '"[],')
   for task in $task_arns
   do
-          aws ecs stop-task --cluster $1-CumulusECSCluster --task $task --region $AWS_REGION
+    aws ecs stop-task --cluster $1-CumulusECSCluster --task $task --region $AWS_REGION
   done
 }
 
 function push_to_ecr() {
   # $ACCOUNT_NUMBER = $1
-	# $prefix = $2
+  # $prefix = $2
   docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
   docker tag mdx $docker_image_name
 
@@ -66,8 +66,8 @@ len=${#access_keys[@]}
 # Check keys
 for (( i=0; i<$len; i++ ))
 do
- 	export AWS_ACCESS_KEY_ID=${access_keys[$i]}
-	export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
+  export AWS_ACCESS_KEY_ID=${access_keys[$i]}
+  export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
   aws sts get-caller-identity
   (($? != 0)) && { printf '%s\n' "Command exited with non-zero. AWS keys invalid"; exit 1; }
 done
@@ -80,10 +80,10 @@ docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /build/tes
 
 for (( i=0; i<$len; i++ ))
 do
- 	export AWS_ACCESS_KEY_ID=${access_keys[$i]}
-	export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
-	export ACCOUNT_NUMBER=${account_numbers[$i]}
-	export prefix=${prefixes[$i]}
+  export AWS_ACCESS_KEY_ID=${access_keys[$i]}
+  export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
+  export ACCOUNT_NUMBER=${account_numbers[$i]}
+  export prefix=${prefixes[$i]}
 
   # Push mdx to all account's ecr
   push_to_ecr $ACCOUNT_NUMBER $prefix
