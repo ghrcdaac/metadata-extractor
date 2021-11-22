@@ -47,15 +47,14 @@ function push_to_ecr() {
 
 function update_lambda_source() {
   # prefix = $1
-  aws lambda get-function --function-name $1-$LAMBDA_BASE_NAME > /dev/null 2>&1
-  if [ 0 -eq $? ]; then
+  if `aws lambda get-function --function-name $1-$LAMBDA_BASE_NAME > /dev/null 2>&1`; then
     echo "Updating lambda source."
     aws lambda update-function-code \
       --function-name $1-$LAMBDA_BASE_NAME \
       --s3-bucket $1-internal \
       --s3-key $1/$S3_KEY_PATH
   else
-    echo "Lambda does not exist. Skipping lambda source update."
+   echo "Lambda does not exist. Skipping lambda source update."
   fi
 }
 
