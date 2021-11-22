@@ -4,7 +4,6 @@ set -o nounset
 set -o pipefail
 export REPO_NAME=mdx
 export AWS_REGION=$bamboo_AWS_REGION
-# TODO- update below names and values
 export S3_KEY_PATH=$bamboo_S3_KEY_PATH
 export LAMBDA_BASE_NAME=$bamboo_LAMBDA_BASE_NAME
 access_keys=( $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
@@ -91,8 +90,10 @@ do
   # Push mdx artifact to all account's s3
   aws s3 cp /tmp/mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH
 
-  # Update mdx lambda source
-  update_lambda_source $prefix
+  # Update mdx lambda source unless env is prod
+  if [ "$prefix" != "$bamboo_PREFIX_PROD" ]; then
+    update_lambda_source $prefix
+  fi
 
 
 done
