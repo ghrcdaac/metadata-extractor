@@ -34,13 +34,13 @@ function push_to_ecr() {
       --region $AWS_REGION \
   | docker login \
       --username AWS \
-      --password-stdin $ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com
+      --password-stdin $1.dkr.ecr.$AWS_REGION.amazonaws.com
 
   #aws ecr create-repository --repository-name $REPO_NAME 2> /dev/null
   echo "pushing image to ecr"
   docker push $docker_image_name
 
-  stop_mdx_task $prefix
+  stop_mdx_task $2
 
   docker rmi $docker_image_name
 }
@@ -53,7 +53,7 @@ function update_lambda_source() {
     aws lambda update-function-code \
       --function-name $1-$LAMBDA_BASE_NAME \
       --s3-bucket $1-internal \
-      --s3-key $prefix/$S3_KEY_PATH
+      --s3-key $1/$S3_KEY_PATH
   else
     echo "Lambda does not exist. Skipping lambda source update."
   fi
