@@ -72,7 +72,7 @@ do
 done
 
 docker build -t mdx .
-curl -L --output /tmp/mdx_lambda_artifact.zip --header "PRIVATE-TOKEN: $GIT_TOKEN_SECRET" "https://gitlab.com/api/v4/projects/ghrc-cloud%2Fmetadata-extractor/jobs/artifacts/master/raw/mdx_lambda_artifact.zip?job=BuildArtifact"
+curl -L --output /tmp/mdx_lambda_artifact.zip --header "PRIVATE-TOKEN: $bamboo_GIT_TOKEN_SECRET" "https://gitlab.com/api/v4/projects/ghrc-cloud%2Fmetadata-extractor/jobs/artifacts/master/raw/mdx_lambda_artifact.zip?job=BuildArtifact"
 
 # Copy test results
 docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml  /opt/mount/test_metadata_extractor.xml
