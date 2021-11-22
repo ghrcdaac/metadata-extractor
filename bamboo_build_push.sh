@@ -45,19 +45,6 @@ function push_to_ecr() {
   docker rmi $docker_image_name
 }
 
-function update_lambda_source() {
-  # prefix = $1
-  if `aws lambda get-function --function-name $1-$LAMBDA_BASE_NAME > /dev/null 2>&1`; then
-    echo "Updating lambda source."
-    aws lambda update-function-code \
-      --function-name $1-$LAMBDA_BASE_NAME \
-      --s3-bucket $1-internal \
-      --s3-key $1/$S3_KEY_PATH
-  else
-   echo "Lambda does not exist. Skipping lambda source update."
-  fi
-}
-
 
 len=${#access_keys[@]}
 
@@ -89,9 +76,12 @@ do
   # Push mdx artifact to all account's s3
   aws s3 cp /tmp/mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH
 
-  # Update mdx lambda source unless env is prod
-  if [ "$prefix" != "$bamboo_PREFIX_PROD" ]; then
-    update_lambda_source $prefix
+  # Update mdx lambda source unless env is prod or uat
+  if [ "$prefix" != "$bamboo_PREFIX_PROD" ] && [ "$prefix" != "$bamboo_PREFIX_UAT" ]; then
+    aws lambda update-function-code \
+      --function-name $prefix-$LAMBDA_BASE_NAME \
+      --s3-bucket $prefix-internal \
+      --s3-key $prefix/$S3_KEY_PATH
   fi
 
 
