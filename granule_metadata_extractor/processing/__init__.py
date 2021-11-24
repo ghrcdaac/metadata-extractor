@@ -109,3 +109,4 @@ from .process_gpmkdmx2ifld import ExtractGpmkdmx2ifldMetadata
 from .process_gpmkdvn2ifld import ExtractGpmkdvn2ifldMetadata
 from .process_gpmkmpx2ifld import ExtractGpmkmpx2ifldMetadata
 from .process_wisperimpacts import ExtractWisperimpactsMetadata
+from .process_fltrepepoch import ExtractFltrepepochMetadata
