@@ -13,7 +13,10 @@
     "build-docker": "docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mdx .",
     "login-ecr": "LOGIN=$(aws ecr get-login --no-include-email --region ${AWS_REGION} --profile $AWS_PROFILE); $LOGIN",
     "push-docker": "npm run create-ecr; npm run login-ecr; docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mdx",
-    "build-push-docker": "npm run build-docker && npm run push-docker"
+    "build-push-docker": "npm run build-docker && npm run push-docker",
+    "push-lambda": "aws s3 cp mdx_lambda_artifact.zip s3://$AWS_PREFIX-internal/$AWS_PREFIX/$S3_KEY_PATH --profile $AWS_PROFILE",
+    "update-lambda": "aws lambda update-function-code --function-name $AWS_PREFIX-$LAMBDA_BASE_NAME --s3-bucket $AWS_PREFIX-internal --s3-key $AWS_PREFIX/$S3_KEY_PATH --profile $AWS_PROFILE",
+    "build-push-lambda": "python create-artifact.py && npm run push-lambda && rm -rf mdx_lambda_artifact.zip && npm run update-lambda"
   },
   "repository": {
     "type": "git",
