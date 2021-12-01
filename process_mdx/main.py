@@ -17,7 +17,7 @@ class MDX(Process):
 
     def __init__(self):
         logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
-        self.logger = CumulusLogger(name='Recursive-Discover-Granules', level=logging_level)
+        self.logger = CumulusLogger(name='MDX-Process', level=logging_level)
 
     def generate_json_data(self, data, access_url, output_folder):
         """
