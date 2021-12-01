@@ -1,3 +1,7 @@
+import logging
+
+from cumulus_logger import CumulusLogger
+
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
 from cumulus_process import Process, s3
@@ -10,6 +14,10 @@ class MDX(Process):
     """
     Class to extract spatial and temporal metadata
     """
+
+    def __init__(self):
+        logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
+        self.logger = CumulusLogger(name='Recursive-Discover-Granules', level=logging_level)
 
     def generate_json_data(self, data, access_url, output_folder):
         """
