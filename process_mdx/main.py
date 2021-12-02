@@ -9,15 +9,14 @@ from re import match
 import os
 import boto3
 
+logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
+logger = CumulusLogger(name='MDX-Processing', level=logging_level)
+
 
 class MDX(Process):
     """
     Class to extract spatial and temporal metadata
     """
-
-    def __init__(self):
-        logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
-        self.logger = CumulusLogger(name='MDX-Process', level=logging_level)
 
     def generate_json_data(self, data, access_url, output_folder):
         """
@@ -545,6 +544,9 @@ class MDX(Process):
         Override the processing wrapper
         :return:
         """
+        # def __init__(self):
+        #     logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
+        #     self.logger = CumulusLogger(name='MDX-Process', level=logging_level)
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
