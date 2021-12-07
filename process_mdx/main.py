@@ -547,6 +547,7 @@ class MDX(Process):
         # def __init__(self):
         #     logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
         #     self.logger = CumulusLogger(name='MDX-Process', level=logging_level)
+        logger.info('MDX processing started.')
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
@@ -612,6 +613,7 @@ class MDX(Process):
         # Workaround for local file since system bucket shouldn't matter locally
         system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
             f"s3://{os.path.basename(self.input[0])}"
+        logger.info('MDX processing completed.')
         return {"granules": final_output, "input": uploaded_files,
                 "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
 
