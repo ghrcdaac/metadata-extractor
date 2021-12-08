@@ -1,9 +1,16 @@
+import logging
+
+from cumulus_logger import CumulusLogger
+
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
 from cumulus_process import Process, s3
 from re import match
 import os
 import boto3
+
+logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
+logger = CumulusLogger(name='MDX-Processing', level=logging_level)
 
 
 class MDX(Process):
@@ -418,7 +425,7 @@ class MDX(Process):
                 uri = s3.upload(filename, info['s3'], extra={})
             return uri
         except Exception as e:
-            self.logger.error("Error uploading file %s: %s" % (
+            logger.error("Error uploading file %s: %s" % (
                 os.path.basename(os.path.basename(filename)), str(e)))
 
     def extract_metadata(self, file_path, config, output_folder):
@@ -512,7 +519,7 @@ class MDX(Process):
                     with open(output_file, 'rb') as data:
                         s3_client.upload_fileobj(data)
                 except Exception as e:
-                    self.logger.error(f'Error uploading file {output_filename}: {str(e)}')
+                    logger.error(f'Error uploading file {output_filename}: {str(e)}')
                     raise e from None
         return upload_output_list
 
@@ -538,6 +545,10 @@ class MDX(Process):
         Override the processing wrapper
         :return:
         """
+        # def __init__(self):
+        #     logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
+        #     logger = CumulusLogger(name='MDX-Process', level=logging_level)
+        logger.info('MDX processing started.')
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
@@ -603,6 +614,7 @@ class MDX(Process):
         # Workaround for local file since system bucket shouldn't matter locally
         system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
             f"s3://{os.path.basename(self.input[0])}"
+        logger.info('MDX processing completed.')
         return {"granules": final_output, "input": uploaded_files,
                 "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
 
