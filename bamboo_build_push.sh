@@ -77,12 +77,11 @@ do
   aws s3 cp /tmp/mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH
 
   # Update mdx lambda source unless env is prod or uat
-  if [ "$prefix" != "$bamboo_PREFIX_PROD" ] && [ "$prefix" != "$bamboo_PREFIX_UAT" ]; then
-    aws lambda update-function-code \
-      --function-name $prefix-$LAMBDA_BASE_NAME \
-      --s3-bucket $prefix-internal \
-      --s3-key $prefix/$S3_KEY_PATH
-  fi
+ aws lambda update-function-code \
+  --function-name $prefix-$LAMBDA_BASE_NAME \
+  --s3-bucket $prefix-internal \
+  --s3-key $prefix/$S3_KEY_PATH
+
 
 
 done
