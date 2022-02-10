@@ -31,7 +31,7 @@ class ExtractPmhailclimMetadata(ExtractNetCDFMetadata):
         lon = nc.variables['longitude'][:]
         maxlat, minlat, maxlon, minlon = [lat.max(),lat.min(),lon.max(),lon.min()]
         minTime = datetime(1998,1,1)
-        maxTime = datetime.strptime('03/31/2019 23:59:59', '%m/%d/%Y %H:%M:%S')
+        maxTime = datetime.strptime('03/31/2021 23:59:59', '%m/%d/%Y %H:%M:%S')
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
