@@ -45,8 +45,9 @@ function push_to_ecr() {
   docker rmi $docker_image_name
 }
 
-
-len=${#access_keys[@]}
+# The following is commented out to temporarily prevent deployment to AWS environments per Abdelhak's advisement
+# len=${#access_keys[@]}
+len=0
 
 # Check keys
 for (( i=0; i<$len; i++ ))

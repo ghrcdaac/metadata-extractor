@@ -573,10 +573,12 @@ class MDX(Process):
         assert output[key], "fetched files list should not be empty"
         files_sizes = {}
         input_size = None
+        checksum = None
         for output_file_path in output.get(key):
             data = self.extract_metadata(file_path=output_file_path, config=self.config,
                                          output_folder=self.path)
             input_size = float(data.get('SizeMBDataGranule', 0)) * 1E6
+            checksum = data.get('checksum')
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
                 updated_output_path = self.get_output_files(os.path.join(self.path,
@@ -591,22 +593,23 @@ class MDX(Process):
         for uploaded_file in uploaded_files:
             if uploaded_file is None or not uploaded_file.startswith('s3'):
                 continue
-            filename = uploaded_file.split('/')[-1]
+            parsed_uri = s3.uri_parser(uploaded_file)
+            filename = parsed_uri['filename']
             granule_id = filename.split('.cmr.json')[0]
             if granule_id not in granule_data.keys():
                 granule_data[granule_id] = {'granuleId': granule_id, 'files': []}
-            granule_data[granule_id]['files'].append(
-                {
-                    "path": self.config['fileStagingDir'],
-                    "url_path": url_path,
-                    "name": filename,  # Cumulus changed the key name to be camelCase
-                    "filename": uploaded_file,  # We still need to provide some custom steps with
-                    # this key holding the object URI
-                    "size": files_sizes.get(filename, input_size),
-                    "filepath": f"{url_path.rstrip('/')}/{filename}",
-                    "fileStagingDir": os.path.dirname(s3.uri_parser(uploaded_file)['key'])
-                }
-            )
+            individual_granule_data = {
+                'bucket': parsed_uri['bucket'],
+                'key': parsed_uri['key'],
+                'fileName': parsed_uri['filename']
+            }
+            individual_granule_data.update({
+                'checksum': checksum,
+                'checksumType': "md5",
+                'size': files_sizes.get(filename, input_size)
+            }) if not excluded and '.cmr.json' not in filename else None
+            individual_granule_data['type'] = "data" if '.cmr.json' not in filename else "metadata"
+            granule_data[granule_id]['files'].append(individual_granule_data)
         final_output = list(granule_data.values())
         # Clean up
         for generated_file in self.output:
