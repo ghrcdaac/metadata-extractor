@@ -7,45 +7,47 @@ from process_mdx.main import MDX
 sys.path.insert(0, path.join(path.dirname(__file__), '..'))
 
 granule_name = "lpvex_SHP_Aranda_ODM_u100915_00.txt"
-@patch('cumulus_process.Process.fetch_all',
+
+
+@patch('process_mdx.main.MDX.download_files',
        return_value={'input_key': [path.join(path.dirname(__file__), f"fixtures/{granule_name}")]})
-@patch('process_mdx.main.MDX.upload_output_files',
+@patch('process_mdx.main.MDX.upload_output_files_to_staging',
        return_value=['s3://fake-bucket/fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt',
                      's3://fake-bucket/fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json'])
 @patch('os.remove', return_value=granule_name)
 @patch('os.path.getsize', return_value=2225)
-def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
+def test_task(mock_fetch, mock_upload, mock_remove, mock_size):
     payload = path.join(path.dirname(__file__), 'gpmodmlpvex.json')
     with open(payload) as f:
         event = json.loads(f.read())
     process = MDX(input=event.get('input'), config=event.get('config'))
     x = process.process()
     expected_result = {
-        "granules":[{
-            "granuleId":"lpvex_SHP_Aranda_ODM_u100915_00.txt",
-            "files":[
+        "granules": [{
+            "granuleId": "lpvex_SHP_Aranda_ODM_u100915_00.txt",
+            "files": [
                 {
-                    "bucket":"fake-bucket",
-                    "key":"fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt",
-                    "fileName":"lpvex_SHP_Aranda_ODM_u100915_00.txt",
-                    "checksum":"ec0952498bbdb87ff16401dda7199475",
-                    "checksumType":"md5",
-                    "size":2225,
-                    "type":"data"
+                    "bucket": "fake-bucket",
+                    "key": "fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt",
+                    "fileName": "lpvex_SHP_Aranda_ODM_u100915_00.txt",
+                    "checksum": "ec0952498bbdb87ff16401dda7199475",
+                    "checksumType": "md5",
+                    "size": 2225,
+                    "type": "data"
                 },
                 {
-                    "bucket":"fake-bucket",
-                    "key":"fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json",
-                    "fileName":"lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json",
-                    "type":"metadata"
+                    "bucket": "fake-bucket",
+                    "key": "fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json",
+                    "fileName": "lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json",
+                    "type": "metadata"
                 }
             ]
         }],
-        "input":[
+        "input": [
             "s3://fake-bucket/fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt",
             "s3://fake-bucket/fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json"
         ],
-        "system_bucket":"fake-bucket"
+        "system_bucket": "fake-bucket"
     }
     print(x)
     print(expected_result)

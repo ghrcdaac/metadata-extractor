@@ -1,7 +1,27 @@
 {
-   "input":[
-      "./test/fixtures/lpvex_SHP_Aranda_ODM_u100915_00.txt"
+   "input": {
+   "granules": [
+      {
+         "granuleId": "lpvex_SHP_Aranda_ODM_u100915_00.txt",
+         "dataType": "gpmodmlpvex",
+         "version": "1",
+         "files": [
+            {
+               "size": 2225,
+               "bucket": "fake-bucket",
+               "key": "fake/path/lpvex_SHP_Aranda_ODM_u100915_00.txt",
+               "source": "gpmodmlpvex__1/lpvex_SHP_Aranda_ODM_u100915_00.txt",
+               "fileName": "lpvex_SHP_Aranda_ODM_u100915_00.txt",
+               "type": ""
+            }
+         ],
+         "sync_granule_duration": 2228,
+         "createdAt": 1649798673951
+      }
    ],
+   "granuleDuplicates": {},
+   "process": "mdx"
+},
    "config":{
       "files_config":[
          {
