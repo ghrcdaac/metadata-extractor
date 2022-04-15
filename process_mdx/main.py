@@ -482,6 +482,7 @@ class MDX(Process):
                 break
         return buckets[bucket_type]
 
+
     def exclude_fetch(self):
         """
         This function is to exclude fetching the granules from specific shortnames
@@ -557,13 +558,15 @@ class MDX(Process):
         is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
             'module') == 'legacy'
         key = 'legacy_key' if is_legacy else 'input_key'
-        buckets = self.config.get('buckets', {})
-        self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
-            self.config['fileStagingDir']
-        self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
-            self.config['fileStagingDir'] is None else self.config['fileStagingDir']
-        url_path = collection.get('url_path', self.config['fileStagingDir'])
+
+        self.config['fileStagingDir'] = self.config.get('fileStagingDir',f"{collection_name}__{collection_version}")
         excluded = collection_name in self.exclude_fetch() or is_legacy
+
+        granules = self.input['granules']
+        self.input = []
+        for granule in granules:
+            for file_ in granule['files']:
+                self.input.append(f's3://{file_["bucket"]}/{file_["key"]}')
         if excluded:
             self.output.append(self.input[0])
             output = {key: self.mutate_input(self.path, self.input[0])}
