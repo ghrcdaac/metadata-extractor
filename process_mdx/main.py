@@ -107,7 +107,7 @@ class MDX(Process):
             if m is not None:
                 fname = s3.download(file_uri, path=self.path)
                 self.downloads.append(fname)
-                outfiles.append(file_uri)
+                outfiles.append(fname)
             return_dict[key] = outfiles
         return return_dict
 
