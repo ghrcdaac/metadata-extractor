@@ -5,9 +5,7 @@ from re import match
 import logging
 import boto3
 import os
-
-logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
-logger = CumulusLogger(name='MDX-Processing', level=logging_level)
+logger = CumulusLogger(name='MDX-Processing') if os.getenv('enable_logging', 'false').lower() == 'true' else logging
 
 
 class MDX(Process):
@@ -57,23 +55,13 @@ class MDX(Process):
         Uploads all self.output files to same location as input file
         :return: list of files uploaded to S3 (as well as input which should already be in S3)
         """
-        upload_output_list = list()
-        source_path = os.path.dirname(staging_file)
-        for output_file in self.output:
-            output_filename = os.path.basename(output_file)
-            uri_out = os.path.join(source_path, output_filename)
-            upload_output_list.append(uri_out)
-            if output_filename != os.path.basename(staging_file):
-                try:
-                    uri_out_info = s3.uri_parser(uri_out)
-                    s3_client = boto3.resource('s3').Bucket(uri_out_info["bucket"]).Object(
-                        uri_out_info['key'])
-                    with open(output_file, 'rb') as data:
-                        s3_client.upload_fileobj(data)
-                except Exception as e:
-                    logger.error(f'Error uploading file {output_filename}: {str(e)}')
-                    raise e from None
-        return upload_output_list
+        uploaded_files = list()
+        for _output in self.output:
+            try:
+                uploaded_files.append(s3.upload(_output, staging_file, extra={}))
+            except Exception as e:
+                logger.error("Error uploading file %s: %s" % (os.path.basename(os.path.basename(filename)), str(e)))
+        return uploaded_files
 
     @property
     def input_keys(self):
@@ -83,10 +71,10 @@ class MDX(Process):
         }
 
     @staticmethod
-    def get_output_files(output_file_path, excluded):
+    def get_output_files(output_file_path):
         """
         """
-        output_files = [] if excluded else [output_file_path]
+        output_files = []
         if os.path.isfile(f"{output_file_path}.cmr.json"):
             output_files += [f"{output_file_path}.cmr.json"]
         return output_files
@@ -107,9 +95,20 @@ class MDX(Process):
             if m is not None:
                 fname = s3.download(file_uri, path=self.path)
                 self.downloads.append(fname)
-                outfiles.append(file_uri)
+                outfiles.append(fname)
             return_dict[key] = outfiles
         return return_dict
+
+    @staticmethod
+    def belong_to_protected_bucket(files, file_name):
+        """
+        This function check if the file needs to be in protected bucket
+
+        """
+        for _file in files:
+            if _file['bucket'] == 'protected' and match(_file['regex'], file_name):
+                return True
+        return False
 
     def process(self):
         """
@@ -129,10 +128,14 @@ class MDX(Process):
                                                         f"{collection_name}__{collection_version}")
         excluded = collection_name in self.exclude_fetch()
         granules = self.input['granules']
+        system_bucket = self.config.get('bucket')
         for granule in granules:
             files = []
             for file in granule['files']:
                 file_uri = f"s3://{file['bucket']}/{file['key']}"
+                file_name = os.path.basename(file['key'])
+                if not self.belong_to_protected_bucket(files=collection['files'], file_name=file_name):
+                    continue
                 if excluded:
                     self.output.append(file_uri)
                     output = {key: self.mutate_input(self.path, file_uri)}
@@ -149,16 +152,15 @@ class MDX(Process):
                                                                  output_folder=self.path)
                     input_size = float(data.get('SizeMBDataGranule', 0)) * 1E6
                     checksum = data.get('checksum')
-                    generated_files = self.get_output_files(output_file_path, excluded)
+                    generated_files = self.get_output_files(output_file_path)
                     if data.get('UpdatedGranuleUR', False):
-                        updated_output_path = self.get_output_files(os.path.join(self.path,
-                                                                                 data['UpdatedGranuleUR']),
-                                                                    excluded)
+                        updated_output_path = self.get_output_files(os.path.join(self.path,data['UpdatedGranuleUR']))
                         generated_files.extend(updated_output_path)
                     for generated_file in generated_files:
+
                         files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
                     self.output += generated_files
-                uploaded_files = self.upload_output_files_to_staging(file_uri)
+                uploaded_files = self.upload_output_files_to_staging(f"{file_uri}.cmr.json")
                 for uploaded_file in uploaded_files:
                     if uploaded_file is None or not uploaded_file.startswith('s3'):
                         continue
@@ -167,14 +169,12 @@ class MDX(Process):
                     individual_file_data = {
                         'bucket': parsed_uri['bucket'],
                         'key': parsed_uri['key'],
-                        'fileName': parsed_uri['filename']
-                    }
-                    individual_file_data.update({
+                        'fileName': parsed_uri['filename'],
                         'checksum': checksum,
                         'checksumType': "md5",
+                        'type': "metadata",
                         'size': files_sizes.get(filename, input_size)
-                    }) if not excluded and '.cmr.json' not in filename else None
-                    individual_file_data['type'] = "data" if '.cmr.json' not in filename else "metadata"
+                    }
                     files.append(individual_file_data)
 
                     # Workaround for local file since system bucket shouldn't matter locally
@@ -189,7 +189,8 @@ class MDX(Process):
                 os.remove(generated_file)
 
         logger.info('MDX processing completed.')
-        return self.input
+        return {"granules": granules, "input": self.input,
+                "system_bucket": system_bucket}
 
 
 if __name__ == '__main__':
