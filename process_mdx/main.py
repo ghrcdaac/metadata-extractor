@@ -145,7 +145,8 @@ class MDX(Process):
             "gpmkmpx2ifld": mdx.ExtractGpmkmpx2ifldMetadata,
             "pmhailclim": mdx.ExtractPmhailclimMetadata,
             "hamsrepoch": mdx.ExtractHamsrepochMetadata,
-            "hamsrcpexaw": mdx.ExtractHamsrcpexawMetadata
+            "hamsrcpexaw": mdx.ExtractHamsrcpexawMetadata,
+            "glmgoesL3": mdx.ExtractGlmgoesL3Metadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
