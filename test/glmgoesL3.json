@@ -37,7 +37,7 @@
         "name":"glmgoesL3",
         "version":"1",
         "dataType":"glmgoesL3",
-        "process":"metadataextractor",
+        "process":"metadataextractorActivity",
         "url_path":"glmgoesL3__1",
         "duplicateHandling":"replace",
         "granuleId":"^OR_GLM-L4-.*\\.(nc)$",
