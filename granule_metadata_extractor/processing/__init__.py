@@ -114,3 +114,4 @@ from .process_pmhailclim import ExtractPmhailclimMetadata
 from .process_navghepoch import ExtractNavghepochMetadata
 from .process_hamsrepoch import ExtractHamsrepochMetadata
 from .process_hamsrcpexaw import ExtractHamsrcpexawMetadata
+from .process_glmgoesL3 import ExtractGlmgoesL3Metadata
