@@ -1,9 +1,17 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
 import os
 #from datetime import datetime, timedelta
-import h5py
-import pandas as pd
 import numpy as np
+
+try:
+    import h5py 
+except ImportError:
+    h5py = None
+
+try:
+    import pandas as pd
+except ImportError:
+    pd = None
 
 class ExtractApr3cpexawMetadata(ExtractNetCDFMetadata):
     """
