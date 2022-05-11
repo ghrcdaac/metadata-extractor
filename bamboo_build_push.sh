@@ -74,13 +74,14 @@ do
   push_to_ecr $ACCOUNT_NUMBER $prefix
 
   # Push mdx artifact to all account's s3
-  aws s3 cp /tmp/mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH
+  aws s3 cp /tmp/mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH --region $AWS_REGION
 
   # Update mdx lambda source unless env is prod or uat
  aws lambda update-function-code \
   --function-name $prefix-$LAMBDA_BASE_NAME \
   --s3-bucket $prefix-internal \
-  --s3-key $prefix/$S3_KEY_PATH
+  --s3-key $prefix/$S3_KEY_PATH \
+  --region $AWS_REGION
 
 
 
