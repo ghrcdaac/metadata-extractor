@@ -1,16 +1,14 @@
-import logging
-
-from cumulus_logger import CumulusLogger
-
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
 from cumulus_process import Process, s3
 from re import match
 import os
 import boto3
+from .helpers import get_logger
 
-logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
-logger = CumulusLogger(name='MDX-Processing', level=logging_level)
+
+
+logger = get_logger()
 
 
 class MDX(Process):
@@ -551,18 +549,24 @@ class MDX(Process):
         #     logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
         #     logger = CumulusLogger(name='MDX-Process', level=logging_level)
         logger.info('MDX processing started.')
+        granules = self.input['granules']
+        self.input = []
+        for granule in granules:
+            for _file in granule['files']:
+                self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
+
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
         is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
             'module') == 'legacy'
         key = 'legacy_key' if is_legacy else 'input_key'
-        buckets = self.config.get('buckets', {})
+        
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
-        url_path = collection.get('url_path', self.config['fileStagingDir'])
+        
         excluded = collection_name in self.exclude_fetch() or is_legacy
         if excluded:
             self.output.append(self.input[0])
@@ -593,18 +597,15 @@ class MDX(Process):
                 continue
             filename = uploaded_file.split('/')[-1]
             granule_id = filename.split('.cmr.json')[0]
+            parsed_uri = s3.uri_parser(uploaded_file)
             if granule_id not in granule_data.keys():
                 granule_data[granule_id] = {'granuleId': granule_id, 'files': []}
             granule_data[granule_id]['files'].append(
                 {
-                    "path": self.config['fileStagingDir'],
-                    "url_path": url_path,
-                    "name": filename,  # Cumulus changed the key name to be camelCase
-                    "filename": uploaded_file,  # We still need to provide some custom steps with
-                    # this key holding the object URI
-                    "size": files_sizes.get(filename, input_size),
-                    "filepath": f"{url_path.rstrip('/')}/{filename}",
-                    "fileStagingDir": os.path.dirname(s3.uri_parser(uploaded_file)['key'])
+                    'bucket': parsed_uri['bucket'],
+                    'key': parsed_uri['key'],
+                    'fileName': filename,
+                    "size": files_sizes.get(filename, input_size)
                 }
             )
         final_output = list(granule_data.values())
