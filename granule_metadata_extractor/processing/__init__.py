@@ -113,3 +113,7 @@ from .process_fltrepepoch import ExtractFltrepepochMetadata
 from .process_pmhailclim import ExtractPmhailclimMetadata
 from .process_navghepoch import ExtractNavghepochMetadata
 from .process_hamsrepoch import ExtractHamsrepochMetadata
+from .process_hamsrcpexaw import ExtractHamsrcpexawMetadata
+from .process_glmgoesL3 import ExtractGlmgoesL3Metadata
+from .process_apr3cpexaw import ExtractApr3cpexawMetadata
+from .process_metnavcpexaw import ExtractMetnavcpexawMetadata
