@@ -1,4 +1,4 @@
-import logging
+
 import os
 from cumulus_logger import CumulusLogger
 
