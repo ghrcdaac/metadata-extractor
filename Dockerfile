@@ -23,5 +23,5 @@ COPY    . $BUILD/
 
 RUN     python setup.py install
 
-# RUN     pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
-#         rm -rf test
+RUN     pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
+        rm -rf test
