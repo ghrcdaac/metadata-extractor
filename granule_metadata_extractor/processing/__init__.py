@@ -117,3 +117,4 @@ from .process_hamsrcpexaw import ExtractHamsrcpexawMetadata
 from .process_glmgoesL3 import ExtractGlmgoesL3Metadata
 from .process_apr3cpexaw import ExtractApr3cpexawMetadata
 from .process_metnavcpexaw import ExtractMetnavcpexawMetadata
+from .process_misrepcpexaw import ExtractMisrepcpexawMetadata
