@@ -5,7 +5,7 @@ from re import match
 import os
 import boto3
 from .helpers import get_logger
-
+import copy
 
 
 logger = get_logger()
@@ -594,25 +594,29 @@ class MDX(Process):
             for generated_file in generated_files:
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
             self.output += generated_files
+        temp_output = copy.deepcopy(self.output)
+        for ele in temp_output:
+            if os.path.basename(ele) in [os.path.basename(base_name) for base_name in self.input]:
+                self.output.remove(ele)
+        
         uploaded_files = self.upload_output_files()
-        granule_data = {}
-        for uploaded_file in uploaded_files:
-            if uploaded_file is None or not uploaded_file.startswith('s3'):
-                continue
-            filename = uploaded_file.split('/')[-1]
-            granule_id = filename.split('.cmr.json')[0]
-            parsed_uri = s3.uri_parser(uploaded_file)
-            if granule_id not in granule_data.keys():
-                granule_data[granule_id] = {'granuleId': granule_id, 'files': []}
-            granule_data[granule_id]['files'].append(
-                {
+        #granule_data = {}
+        for granule in granules:
+            for uploaded_file in uploaded_files:
+                if uploaded_file is None or not uploaded_file.startswith('s3'):
+                    continue
+                parsed_uri = s3.uri_parser(uploaded_file)
+
+
+                granule['files'].append(
+                    {
                     'bucket': parsed_uri['bucket'],
                     'key': parsed_uri['key'],
-                    'fileName': filename,
-                    "size": files_sizes.get(filename, input_size)
-                }
-            )
-        final_output = list(granule_data.values())
+                    'fileName': os.path.basename(uploaded_file),
+                    "size": files_sizes[uploaded_file.split('/')[-1]]
+                    }
+                )
+        
         # Clean up
         for generated_file in self.output:
             if os.path.exists(generated_file):
@@ -622,7 +626,7 @@ class MDX(Process):
         system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
             f"s3://{os.path.basename(self.input[0])}"
         logger.info('MDX processing completed.')
-        return {"granules": final_output, "input": uploaded_files,
+        return {"granules": granules, "input": uploaded_files,
                 "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
 
     def default_switch(self, *args):
