@@ -20,10 +20,10 @@ def test_task(mock_fetch, mock_upload,mock_remove, mock_size):
         event = json.loads(f.read())
     process = MDX(input=event.get('input'), config=event.get('config'))
     x = process.process()
-    expected_result = {'granules': [{'granuleId': 'lpvex_SHP_Aranda_ODM_u100915_00.txt', 
-    'files': [{'bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt', 'key': '', 'fileName': 'lpvex_SHP_Aranda_ODM_u100915_00.txt', 'size': 2225},
-     {'bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json', 'key': '', 'fileName': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json', 'size': 0.0}]}],
-      'input': ['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt', 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json'], 'system_bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt'}
+    expected_result = {'granules': [{'files': [{'bucket': 'foo', 'key': 'test/fixtures/lpvex_SHP_Aranda_ODM_u100915_00.txt'},
+     {'bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt', 'key': '', 'fileName': 'lpvex_SHP_Aranda_ODM_u100915_00.txt', 'size': 2225},
+      {'bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json', 'key': '', 'fileName': 'lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json', 'size': 1983}]}],
+       'input': ['s3://lpvex_SHP_Aranda_ODM_u100915_00.txt', 's3://lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json'], 'system_bucket': 'lpvex_SHP_Aranda_ODM_u100915_00.txt'}
     print(x)
     print(expected_result)
     assert (x == expected_result)

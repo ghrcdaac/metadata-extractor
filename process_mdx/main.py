@@ -582,11 +582,9 @@ class MDX(Process):
         # Assert we have inputs to process
         assert output[key], "fetched files list should not be empty"
         files_sizes = {}
-        input_size = None
         for output_file_path in output.get(key):
             data = self.extract_metadata(file_path=output_file_path, config=self.config,
                                          output_folder=self.path)
-            input_size = float(data.get('SizeMBDataGranule', 0)) * 1E6
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
                 updated_output_path = self.get_output_files(os.path.join(self.path,
@@ -608,14 +606,15 @@ class MDX(Process):
                 if uploaded_file is None or not uploaded_file.startswith('s3'):
                     continue
                 parsed_uri = s3.uri_parser(uploaded_file)
+                filename = os.path.basename(uploaded_file)
 
 
                 granule['files'].append(
                     {
                     'bucket': parsed_uri['bucket'],
                     'key': parsed_uri['key'],
-                    'fileName': os.path.basename(uploaded_file),
-                    "size": files_sizes[uploaded_file.split('/')[-1]]
+                    'fileName': filename,
+                    "size": files_sizes.get(filename, 1983)
                     }
                 )
         
