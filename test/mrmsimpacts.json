@@ -1,0 +1,73 @@
+{
+  "input": [
+    "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/mrmsimpacts__1/IMPACTS_mrms_20220113_194432_DBZ.nc"
+  ],
+  "config": {
+    "files_config": [
+        {
+            "regex": "^(.*).*\\.cmr.(xml|json)$",
+            "sampleFileName": "IMPACTS_mrms_20220113_194432_DBZ.nc.cmr.xml",
+            "bucket": "public"
+        },
+        {
+            "regex": "^(.*).*(\\.nc)$",
+            "sampleFileName": "IMPACTS_mrms_20220113_194432_DBZ.nc",
+            "bucket": "protected"
+        }
+    ],
+    "buckets": {
+      "protected": {
+        "type": "protected",
+        "name": "ghrcsbxw-protected"
+      },
+      "internal": {
+        "type": "internal",
+        "name": "ghrcsbxw-internal"
+      },
+      "private": {
+        "type": "private",
+        "name": "ghrcsbxw-private"
+      },
+      "public": {
+        "type": "public",
+        "name": "ghrcsbxw-public"
+      }
+    },
+    "collection":{
+        "name": "mrmsimpacts",
+	"version": "1",
+	"dataType": "mrmsimpacts",
+	"process": "metadataextractorActivity",
+        "url_path": "mrmsimpacts__1",
+	"duplicateHandling": "replace",
+	"granuleId": "^IMPACTS_mrms_.*\\.(nc)$",
+	"granuleIdExtraction": "^((IMPACTS_mrms_).*)",
+        "reportToEms":true,
+	"sampleFileName": "IMPACTS_mrms_20220113_194432_DBZ.nc",
+        "meta": {
+            "provider_path": "mrmsimpacts/fieldCampaigns/impacts/MRMS/data/",
+            "hyrax_processing":"false",
+            "large_dataset": "true",
+           "metadata_extractor": [
+             {
+              "regex": "^IMPACTS_mrms_.*\\.(nc)$",
+              "module": "netcdf"
+             }
+           ]
+         },
+        "files": [
+                {
+                        "bucket": "public",
+                        "regex": "^IMPACTS_mrms_(.*).*\\.cmr.(xml|json)$",
+                        "sampleFileName": "IMPACTS_mrms_20220113_194432_DBZ.nc.cmr.xml"
+                },
+                {
+                        "bucket": "protected",
+                        "regex": "^IMPACTS_mrms_(.*).*(nc)$",
+                        "sampleFileName": "IMPACTS_mrms_20220113_194432_DBZ.nc"
+                }
+         ]
+  },
+  "distribution_endpoint": "https://vcylgky3ol.execute-api.us-west-2.amazonaws.com/dev/"
+}
+}
