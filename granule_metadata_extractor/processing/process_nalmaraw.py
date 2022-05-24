@@ -22,9 +22,11 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
         super().__init__(file_path)
         self.file_path = file_path
         self.file_name = os.path.basename(file_path)
-        with open(os.path.join(os.path.dirname(__file__), f"../src/helpers/nalmarawRefData.json"),
-                  'r') as f:
-            self.station_dict = json.load(f)
+
+        if not file_path.endswith('.gz'):
+            with open(os.path.join(os.path.dirname(__file__), f"../src/helpers/nalmarawRefData.json"),
+                      'r') as f:
+                self.station_dict = json.load(f)
         self.get_variables_min_max()
 
     def get_variables_min_max(self, **kwargs):
@@ -38,12 +40,24 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
 
         station_identifier = re.search(r'^L([A-Z])_NALMA_.*_\d{6}_\d{6}.dat$',
                                        self.file_name)[1]
-        self.north = self.station_dict[station_identifier]['lat'] + 0.001
-        self.south = self.station_dict[station_identifier]['lat'] - 0.001
-        self.east = self.station_dict[station_identifier]['lon'] + 0.001
-        self.west = self.station_dict[station_identifier]['lon'] - 0.001
 
-        self.compress_raw_file()
+        if self.station_dict:
+            self.north = self.station_dict[station_identifier]['lat'] + 0.001
+            self.south = self.station_dict[station_identifier]['lat'] - 0.001
+            self.east = self.station_dict[station_identifier]['lon'] + 0.001
+            self.west = self.station_dict[station_identifier]['lon'] - 0.001
+            self.compress_raw_file()
+        else:
+            header_flag = False
+            with gzip.open(self.file_path, 'r') as f:
+                for line in f.readlines():
+                    if header_flag:
+                        self.north, self.south = [max(self.north, float(line.split()[1])),
+                                                  min(self.south, float(line.split()[1]))]
+                        self.east, self.west = [max(self.east, float(line.split()[2])),
+                                                min(self.west, float(line.split()[2]))]
+                    if b'*** data ***' in line:
+                        header_flag = True
 
     def compress_raw_file(self):
         """
