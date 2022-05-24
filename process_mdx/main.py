@@ -556,6 +556,8 @@ class MDX(Process):
         #     logger = CumulusLogger(name='MDX-Process', level=logging_level)
         logger.info('MDX processing started.')
         granules = self.input['granules']
+        cumulus_granules_meta = copy.deepcopy(granules[0])
+        [cumulus_granules_meta.pop(ele) for ele in ['granuleId', 'files']]
         self.input = []
         for granule in granules:
             for _file in granule['files']:
@@ -600,23 +602,23 @@ class MDX(Process):
                 self.output.remove(ele)
         
         uploaded_files = self.upload_output_files()
-        #granule_data = {}
-        for granule in granules:
-            for uploaded_file in uploaded_files:
-                if uploaded_file is None or not uploaded_file.startswith('s3'):
-                    continue
-                parsed_uri = s3.uri_parser(uploaded_file)
-                filename = os.path.basename(uploaded_file)
-
-
-                granule['files'].append(
+        granule_data = {}
+        for uploaded_file in uploaded_files:
+            if uploaded_file is None or not uploaded_file.startswith('s3'):
+                continue
+            granule_id = os.path.basename(uploaded_file).split('.cmr.json')[0]
+            if granule_id not in granule_data.keys():
+                granule_data[granule_id] = {'granuleId': granule_id, 'files': [], **cumulus_granules_meta}
+            parsed_uri = s3.uri_parser(uploaded_file)
+            granule_data[granule_id]['files'].append(
                     {
                     'bucket': parsed_uri['bucket'],
-                    'key': parsed_uri['key'],
-                    'fileName': filename,
-                    "size": files_sizes.get(filename, 1983)
+                    "fileName": os.path.basename(uploaded_file),  # Cumulus changed the key name to be camelCase
+                    "key": parsed_uri['key'],
+                    "size": files_sizes[uploaded_file.split('/')[-1]]
                     }
                 )
+        granules.append(granule_data[granule_id])
         
         # Clean up
         for generated_file in self.output:
