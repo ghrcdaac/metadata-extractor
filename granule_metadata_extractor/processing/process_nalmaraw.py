@@ -36,14 +36,15 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
                               self.start_time)
         self.end_time = max(self.end_time, self.start_time + timedelta(seconds=599))
 
-        station_identifier = re.search(r'^L([A-Z])_NALMA_.*_\d{6}_\d{6}.dat$',
+        station_identifier = re.search(r'^L([A-Z])_NALMA_.*_\d{6}_\d{6}.dat(.gz)?$',
                                        self.file_name)[1]
         self.north = self.station_dict[station_identifier]['lat'] + 0.001
         self.south = self.station_dict[station_identifier]['lat'] - 0.001
         self.east = self.station_dict[station_identifier]['lon'] + 0.001
         self.west = self.station_dict[station_identifier]['lon'] - 0.001
 
-        self.compress_raw_file()
+        if not self.file_name.endswith('gz'):
+            self.compress_raw_file()
 
     def compress_raw_file(self):
         """

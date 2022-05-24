@@ -10,7 +10,7 @@ class TestProcessNalmaraw(TestCase):
     Test processing Nalmaraw.
     This will test if nalmaraw metadata will be extracted correctly
     """
-    granule_name = "LM_NALMA_fayetteville_201016_142000.dat"
+    granule_name = "LM_NALMA_fayetteville_201016_142000.dat.gz"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     compressed_granule_name = granule_name if granule_name.endswith('gz') else f'{granule_name}.gz'
     compressed_file_path = path.join(path.dirname(__file__), f"fixtures/{compressed_granule_name}")
@@ -20,11 +20,10 @@ class TestProcessNalmaraw(TestCase):
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
     process_nalmaraw = ExtractNalmarawMetadata(input_file)
-    expected_metadata = {
-        'ShortName': 'nalmaraw',
-        'GranuleUR': compressed_granule_name,
-        'VersionId': '1', 'DataFormat': 'Binary',
-    }
+    expected_metadata = {'ShortName': 'nalmaraw',
+                         'GranuleUR': compressed_granule_name,
+                         'VersionId': '1', 'DataFormat': 'Binary',
+                         }
 
     def test_1_get_start_date(self):
         """
