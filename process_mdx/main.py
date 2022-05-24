@@ -558,7 +558,7 @@ class MDX(Process):
         logger.info('MDX processing started.')
         granules = self.input['granules']
         cumulus_granules_meta = copy.deepcopy(granules[0])
-        [cumulus_granules_meta.pop(ele) for ele in ['granuleId', 'files']]
+        [cumulus_granules_meta.pop(ele, False) for ele in ['granuleId', 'files']]
         self.input = []
         for granule in granules:
             for _file in granule['files']:
@@ -616,7 +616,7 @@ class MDX(Process):
                     'bucket': parsed_uri['bucket'],
                     "fileName": os.path.basename(uploaded_file),  # Cumulus changed the key name to be camelCase
                     "key": parsed_uri['key'],
-                    "size": files_sizes[uploaded_file.split('/')[-1]]
+                    "size": files_sizes.get(os.path.basename(uploaded_file), 1983),
                     }
                 )
         granules.append(granule_data[granule_id])
