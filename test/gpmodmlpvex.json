@@ -1,15 +1,17 @@
 {
    "input":{
       "granules": [{
+         "granuleId": "lpvex_SHP_Aranda_ODM_u100915_00.txt",
          "files": [
          {
-         "bucket": "foo",
-         "key": "test/fixtures/lpvex_SHP_Aranda_ODM_u100915_00.txt"
+            "bucket": "foo",
+            "fileName": "lpvex_SHP_Aranda_ODM_u100915_00.txt",
+            "key": "test/fixtures/lpvex_SHP_Aranda_ODM_u100915_00.txt"
          }
 
          ]
       }]
-      
+
    },
    "config":{
       "files_config":[

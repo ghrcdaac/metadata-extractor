@@ -570,12 +570,12 @@ class MDX(Process):
         is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
             'module') == 'legacy'
         key = 'legacy_key' if is_legacy else 'input_key'
-        
+
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
-        
+
         excluded = collection_name in self.exclude_fetch() or is_legacy
         if excluded:
             self.output.append(self.input[0])
@@ -601,7 +601,7 @@ class MDX(Process):
         for ele in temp_output:
             if os.path.basename(ele) in [os.path.basename(base_name) for base_name in self.input]:
                 self.output.remove(ele)
-        
+
         uploaded_files = self.upload_output_files()
         granule_data = {}
         for uploaded_file in uploaded_files:
@@ -619,8 +619,16 @@ class MDX(Process):
                     "size": files_sizes.get(os.path.basename(uploaded_file), 1983),
                     }
                 )
-        granules.append(granule_data[granule_id])
-        
+        granule_data_temp = copy.deepcopy(granule_data)
+        for granule in granules:
+            for granule_ in granule_data_temp:
+                if granule['granuleId'] == granule_:
+                    granule['files'] += granule_data[granule_]['files']
+                    granule_data.pop(granule_)
+
+        for granule_ in granule_data:
+            granules.append(granule_data[granule_])
+
         # Clean up
         for generated_file in self.output:
             if os.path.exists(generated_file):
