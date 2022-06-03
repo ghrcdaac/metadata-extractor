@@ -1,18 +1,18 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/apr3cpexaw__1/CPEXAW_APR3_S20210820a192822u_20210820a205432uw_c1.mat"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/apr3cpexaw__1/CPEXAW_APR3_S20210824a185330_20210824a185400_Wn.h5"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
             "regex":"^CPEXAW_APR3_(.*).*\\.cmr.(xml|json)$",
-            "sampleFileName":"CPEXAW_APR3_S20210820a192822u_20210820a205432uw_c1.mat.cmr.xml"
+            "sampleFileName":"CPEXAW_APR3_S20210824a185330_20210824a185400_Wn.h5.cmr.xml"
          },
          {
             "bucket":"protected",
-            "regex":"^CPEXAW_APR3_(.*).*(mat)$",
-            "sampleFileName":"CPEXAW_APR3_S20210820a192822u_20210820a205432uw_c1.mat"
+            "regex":"^CPEXAW_APR3_(.*).*(h5)$",
+            "sampleFileName":"CPEXAW_APR3_S20210824a185330_20210824a185400_Wn.h5"
          }
       ],
       "buckets":{
@@ -40,17 +40,17 @@
          "process":"metadataextractorActivity", 
          "url_path":"apr3cpexaw__1",
          "duplicateHandling":"replace",
-         "granuleId":"^CPEXAW_APR3_.*\\.(mat)$", 
+         "granuleId":"^CPEXAW_APR3_.*\\.(h5)$", 
          "granuleIdExtraction":"^((CPEXAW_APR3_).*)", 
          "reportToEms":true, 
-         "sampleFileName":"CPEXAW_APR3_S20210820a192822u_20210820a205432uw_c1.mat", 
+         "sampleFileName":"CPEXAW_APR3_S20210824a185330_20210824a185400_Wn.h5", 
          "meta":{
             "provider_path":"apr3cpexaw/fieldCampaigns/cpexaw/apr3/data/",
             "hyrax_processing":"false",
             "large_dataset": "true",
             "metadata_extractor":[
                {
-                  "regex":"^CPEXAW_APR3_(.*).*\\.(mat)$",
+                  "regex":"^CPEXAW_APR3_(.*).*\\.(h5)$",
                   "module":"netcdf"
                }
             ]
@@ -59,12 +59,12 @@
             {
                "bucket":"public", 
                "regex":"^CPEXAW_APR3_(.*).*\\.cmr.(xml|json)$", 
-               "sampleFileName":"CPEXAW_APR3_S20210820a192822u_20210820a205432uw_c1.mat.cmr.xml"
+               "sampleFileName":"CPEXAW_APR3_S20210824a185330_20210824a185400_Wn.h5.cmr.xml"
             },
             {
                "bucket":"protected", 
-               "regex":"^CPEXAW_APR3_(.*).*(mat)$", 
-               "sampleFileName":"CPEXAW_APR3_S20210820a192822u_20210820a205432uw_c1.mat"
+               "regex":"^CPEXAW_APR3_(.*).*(h5)$", 
+               "sampleFileName":"CPEXAW_APR3_S20210824a185330_20210824a185400_Wn.h5"
             }
          ]
       },

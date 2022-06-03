@@ -1,17 +1,10 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
 import os
-#from datetime import datetime, timedelta
+from datetime import datetime, timedelta
 import numpy as np
+from netCDF4 import Dataset
+import math
 
-try:
-    import h5py 
-except ImportError:
-    h5py = None
-
-try:
-    import pandas as pd
-except ImportError:
-    pd = None
 
 class ExtractApr3cpexawMetadata(ExtractNetCDFMetadata):
     """
@@ -22,7 +15,7 @@ class ExtractApr3cpexawMetadata(ExtractNetCDFMetadata):
         #super().__init__(file_path)
         self.file_path = file_path
         #these are needed to metadata extractor
-        self.fileformat = 'MAT'
+        self.fileformat = 'HDF-5'
 
         # extracting time and space metadata from .mat file
         [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
@@ -30,19 +23,32 @@ class ExtractApr3cpexawMetadata(ExtractNetCDFMetadata):
 
     def get_variables_min_max(self):
 
-        fp = h5py.File(self.file_path,'r')
-        matlab_datenum = np.array(fp.get('lores/timeM')).ravel() #MatLab datenum; flatten 2d to 1d
-        timestamps = pd.to_datetime(matlab_datenum-719529, unit='D').round('s')
+        fp = Dataset(self.file_path)
 
-        lat = np.array(fp.get('lores/lat')).ravel()  #missing/fill value = 0.0
-        lon = np.array(fp.get('lores/lon')).ravel() #missing/fill value = 0.0
-        #mask out 0.0 values
+        utc_sec0 = np.array(fp['lores/scantime']).ravel() #Seconds since 1,1,1970; flatten 2d to 1d
+        lat0 = np.array(fp['lores/lat']).ravel()  #missing/fill value = 0.0
+        lon0 = np.array(fp['lores/lon']).ravel() #missing/fill value = 0.0
+
+        utc_sec0_nan = [x for x in utc_sec0 if math.isnan(x)]
+        if len(utc_sec0_nan) > 0:
+           #remove records with scantime == float('nan')
+           num_rec = len(utc_sec0)
+           utc_sec =[utc_sec0[i] for i in range(0,num_rec) if not np.isnan(utc_sec0[i])]
+           lat = [lat0[i] for i in range(0,num_rec) if not np.isnan(utc_sec0[i])]
+           lon = [lon0[i] for i in range(0,num_rec) if not np.isnan(utc_sec0[i])]
+        else: #if no 'nan' values
+           utc_sec = utc_sec0
+           lat = lat0
+           lon = lon0
+
+        timestamps = [datetime(1970,1,1) + timedelta(seconds=x) for x in utc_sec]
+
+        #mask out 0.0 values if any
         lat = np.ma.masked_equal(lat, 0.0)
         lon = np.ma.masked_equal(lon, 0.0)
 
-
-        minTime = timestamps.min()
-        maxTime = timestamps.max()
+        minTime = min(timestamps)
+        maxTime = max(timestamps)
         maxlat = lat.max()
         minlat = lat.min()
         maxlon = lon.max()
@@ -79,7 +85,7 @@ class ExtractApr3cpexawMetadata(ExtractNetCDFMetadata):
         stop_date = self.maxTime.strftime(date_format)
         return start_date, stop_date
 
-    def get_metadata(self, ds_short_name, format='MAT', version='1', **kwargs):
+    def get_metadata(self, ds_short_name, format='HDF-5', version='1', **kwargs):
         """
         :param ds_short_name:
         :param time_variable_key:

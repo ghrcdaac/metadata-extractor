@@ -33,40 +33,44 @@
             "name":"ghrcsbxw-public"
          }
       },
-      "collection":{
-         "name":"goesimpacts",
-         "version":"1",
-         "dataType":"goesimpacts",
-         "process":"metadataextractor",
-         "url_path":"goesimpacts__1",
-         "duplicateHandling":"replace",
-         "granuleId":"^IMPACTS_goes16_.*\\.(nc)$",
-         "granuleIdExtraction":"^((IMPACTS_goes16_).*)",
-         "reportToEms":true,
-         "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc",
-         "meta":{
-            "provider_path":"goesimpacts/fieldCampaigns/impacts/GOES/data/",
-            "hyrax_processing":"false",
-            "metadata_extractor":[
-               {
-                  "regex":"^IMPACTS_goes16_.*\\.(nc)$",
-                  "module":"netcdf"
-               }
-            ]
-         },
-         "files":[
-            {
-               "bucket":"public",
-               "regex":"^IMPACTS_goes16_(.*).*\\.cmr.xml$",
-               "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc.cmr.xml"
-            },
-            {
-               "bucket":"protected",
-               "regex":"^IMPACTS_goes16_(.*).*(nc)$",
-               "sampleFileName":"IMPACTS_goes16_conus_20200102_002856_ch08.nc"
-            }
-         ]
-      },
+   "collection":{
+	"name": "goesimpacts",
+	"version": "1",
+	"dataType": "goesimpacts",
+	"process": "metadataextractor",
+	"url_path": "goesimpacts__1",
+	"duplicateHandling": "replace",
+	"granuleId": "^IMPACTS_goes16_.*\\.(nc)$",
+	"granuleIdExtraction": "^((IMPACTS_goes16_).*)",
+	"reportToEms": true,
+	"sampleFileName": "IMPACTS_goes16_conus_20200102_002856_ch08.nc",
+	"files": [
+		{
+			"bucket": "public",
+			"regex": "^IMPACTS_goes16_(.*).*\\.cmr\\.(xml|json)$",
+			"sampleFileName": "IMPACTS_goes16_conus_20200102_002856_ch08.nc.cmr.xml",
+			"reportToEms": true
+		},
+		{
+			"bucket": "protected",
+			"regex": "^IMPACTS_goes16_(.*).*(dmrpp|nc)$",
+			"sampleFileName": "IMPACTS_goes16_conus_20200102_002856_ch08.nc",
+			"reportToEms": true
+		}
+	],
+	"updatedAt": 1654277525008,
+	"meta": {
+		"large_dataset": "true",
+		"provider_path": "goesimpacts/fieldCampaigns/impacts/GOES/data/",
+		"hyrax_processing": "true",
+		"metadata_extractor": [
+			{
+				"regex": "^IMPACTS_goes16_.*\\.(nc)$",
+				"module": "netcdf"
+			}
+		]
+	}
+},
    "distribution_endpoint":"https://y90y21dcf1.execute-api.us-west-2.amazonaws.com/dev/"
    }
 }
