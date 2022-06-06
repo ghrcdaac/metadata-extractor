@@ -6,11 +6,15 @@ export REPO_NAME=mdx
 export AWS_REGION=$bamboo_AWS_REGION
 export S3_KEY_PATH=$bamboo_S3_KEY_PATH
 export LAMBDA_BASE_NAME=$bamboo_LAMBDA_BASE_NAME
-access_keys=( $bamboo_AWS_SBX_ACCESS_KEY $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
-secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
-prefixes=( $bamboo_PREFIX_SBX $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
-account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
+# access_keys=( $bamboo_AWS_SBX_ACCESS_KEY $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
+# secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
+# prefixes=( $bamboo_PREFIX_SBX $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
+# account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
 
+access_keys=( $bamboo_AWS_SBX_ACCESS_KEY  )
+secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY )
+prefixes=( $bamboo_PREFIX_SBX )
+account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX )
 
 
 function stop_mdx_task() {
@@ -55,8 +59,8 @@ do
 done
 
 docker build -t mdx .
-curl -L --output /tmp/mdx_lambda_artifact.zip --header "PRIVATE-TOKEN: $bamboo_GIT_TOKEN_SECRET" "https://gitlab.com/api/v4/projects/ghrc-cloud%2Fmetadata-extractor/jobs/artifacts/master/raw/mdx_lambda_artifact.zip?job=BuildArtifact"
-
+#curl -L --output /tmp/mdx_lambda_artifact.zip --header "PRIVATE-TOKEN: $bamboo_GIT_TOKEN_SECRET" "https://gitlab.com/api/v4/projects/ghrc-cloud%2Fmetadata-extractor/jobs/artifacts/master/raw/mdx_lambda_artifact.zip?job=BuildArtifact"
+python3 create-artifact.py
 # Copy test results
 docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml  /opt/mount/test_metadata_extractor.xml
 
@@ -71,7 +75,7 @@ do
   push_to_ecr $ACCOUNT_NUMBER $prefix
 
   # Push mdx artifact to all account's s3
-  aws s3 cp /tmp/mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH --region $AWS_REGION
+  aws s3 cp ./mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH --region $AWS_REGION
 
   # Update mdx lambda source unless env is prod or uat
  aws lambda update-function-code \
