@@ -89,4 +89,4 @@ do
 done
 
 docker rmi mdx
-rm -rf /tmp/mdx_lambda_artifact.zip
+rm -rf ./mdx_lambda_artifact.zip
