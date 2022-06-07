@@ -1,10 +1,6 @@
 image: python:3.8.3
-
-# pipeline stages definitions
-test: &test
-  step:
-    name: test
-    caches:
-      - pip
-    script:
-      - python --version
+pipelines:
+  default:
+    - step:
+        script:
+          - echo "Hello World"
