@@ -71,22 +71,30 @@ do
   export ACCOUNT_NUMBER=${account_numbers[$i]}
   export prefix=${prefixes[$i]}
 
-  # Push mdx to all account's ecr
-  push_to_ecr $ACCOUNT_NUMBER $prefix
+#   # Push mdx to all account's ecr
+#   push_to_ecr $ACCOUNT_NUMBER $prefix
 
-  # Push mdx artifact to all account's s3
-  aws s3 cp ./mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH --region $AWS_REGION
+#   # Push mdx artifact to all account's s3
+#   aws s3 cp ./mdx_lambda_artifact.zip s3://$prefix-internal/$prefix/$S3_KEY_PATH --region $AWS_REGION
 
-  # Update mdx lambda source unless env is prod or uat
- aws lambda update-function-code \
-  --function-name $prefix-$LAMBDA_BASE_NAME \
-  --s3-bucket $prefix-internal \
-  --s3-key $prefix/$S3_KEY_PATH \
-  --region $AWS_REGION
+#   # Update mdx lambda source unless env is prod or uat
+#  aws lambda update-function-code \
+#   --function-name $prefix-$LAMBDA_BASE_NAME \
+#   --s3-bucket $prefix-internal \
+#   --s3-key $prefix/$S3_KEY_PATH \
+#   --region $AWS_REGION
 
-
+aws ecr get-login-password \
+      --region $AWS_REGION \
+  | docker login \
+      --username AWS \
+      --password-stdin $1.dkr.ecr.$AWS_REGION.amazonaws.com
+docker pull 322322076095.dkr.ecr.us-west-2.amazonaws.com/mdx
+docker push 322322076095.dkr.ecr.us-west-2.amazonaws.com/mdx
 
 done
 
-docker rmi mdx
-rm -rf ./mdx_lambda_artifact.zip
+# docker rmi mdx
+# rm -rf ./mdx_lambda_artifact.zip
+
+
