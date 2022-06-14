@@ -26,14 +26,9 @@ class ExtractExradimpactsMetadata(ExtractNetCDFMetadata):
         :param h5: Dataset opened
         :return:
         """
-        if 'Scan_' in self.file_path:
-           lat = h5.groups['Ungridded'].groups['Navigation'].groups['Data'].variables['Latitude'][:]
-           lon = h5.groups['Ungridded'].groups['Navigation'].groups['Data'].variables['Longitude'][:]
-           tm = h5.groups['Ungridded'].groups['Time'].groups['Data'].variables['TimeUTC'][:]
-        elif 'Nadir_' in self.file_path:
-           lat = h5.groups['Navigation'].groups['Data'].variables['Latitude'][:]
-           lon = h5.groups['Navigation'].groups['Data'].variables['Longitude'][:]
-           tm = h5.groups['Time'].groups['Data'].variables['TimeUTC'][:]
+        lat = h5.groups['Navigation'].groups['Data'].variables['Latitude'][:]
+        lon = h5.groups['Navigation'].groups['Data'].variables['Longitude'][:]
+        tm = h5.groups['Time'].groups['Data'].variables['TimeUTC'][:]
 
         maxlat, minlat, maxlon, minlon = [np.max(lat), np.min(lat),
                                           np.max(lon), np.min(lon)]
