@@ -4,14 +4,14 @@ from granule_metadata_extractor.processing.process_exradimpacts import ExtractEx
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
-#host=thor,env=ops,project=IMPACTS,ds=exradimpacts,inv=inventory,file=IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201_subset.h5,path=IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201_subset.h5,size=1514558,start=2020-01-25T18:19:57Z,end=2020-01-26T00:52:01Z,browse=N,checksum=9a5b7518bea348e92cbf7ceb617172558e2eed41,NLat=44.760128021240234,SLat=32.74341583251953,WLon=-80.12772369384766,ELon=-71.69060516357422,format=HDF-5
+#host=thor,env=ops,project=IMPACTS,ds=exradimpacts,inv=inventory,file=IMPACTS_EXRAD_L1B_RevC_20200225.h5,path=IMPACTS_EXRAD_L1B_RevC_20200225.h5,size=3872650096,start=2020-02-25T20:29:39Z,end=2020-02-26T03:30:09Z,browse=N,checksum=f80d359becc5a55e9b16dadc4cf41837de59dbd9,NLat=41.82302474975586,SLat=32.534446716308594,WLon=-88.65122985839844,ELon=-80.41510772705078,format=HDF-5
 
-class TestProcessHiwrapimpacts(TestCase):
+class TestProcessExradimpacts(TestCase):
     """
     Test processing.
     This will test if metadata will be extracted correctly
     """
-    granule_name = "IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201_subset.h5"
+    granule_name = "IMPACTS_EXRAD_L1B_RevC_20200225_subset.h5"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -33,7 +33,7 @@ class TestProcessHiwrapimpacts(TestCase):
         start_date = self.process_dataset.get_temporal()[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-01-25T18:19:57Z")
+        self.assertEqual(start_date, "2020-02-25T20:29:39Z")
 
     def test_2_get_stop_date(self):
         """
@@ -43,7 +43,7 @@ class TestProcessHiwrapimpacts(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-01-26T00:52:01Z")
+        self.assertEqual(stop_date, "2020-02-26T03:30:09Z")
 
     def test_3_get_file_size(self):
         """
@@ -52,7 +52,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         file_size = float(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 1.51)
+        self.assertEqual(file_size, 1.62)
 
     def get_wnes(self, index):
         """
@@ -63,8 +63,7 @@ class TestProcessHiwrapimpacts(TestCase):
         wnes = process_geos.get_wnes_geometry()
         return str(round(float(wnes[index]), 3))
 
-    #NLat=44.760128021240234,SLat=32.74341583251953,WLon=-80.12772369384766,ELon=-71.69060516357422
-
+    #NLat=41.82302474975586,SLat=32.534446716308594,WLon=-88.65122985839844,ELon=-80.41510772705078
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -72,7 +71,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '44.76')
+        self.assertEqual(north, '41.823')
 
     def test_5_get_west(self):
         """
@@ -81,7 +80,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-80.128')
+        self.assertEqual(west, '-88.651')
 
     def test_6_get_south(self):
         """
@@ -90,7 +89,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '32.743')
+        self.assertEqual(south, '32.534')
 
     def test_7_get_east(self):
         """
@@ -99,7 +98,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-71.691')
+        self.assertEqual(east, '-80.415')
 
     def test_8_get_checksum(self):
         """
@@ -107,10 +106,9 @@ class TestProcessHiwrapimpacts(TestCase):
         :return: the MD5 string
         """
 
-        # checksum = self.process_goesrpltavirisng.get_checksum()
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '815c2392c5b488e04d2ef9f420ca39cc')
+        self.assertEqual(checksum, '24539b301c2f7db3c76cfd0e7bc92f39')
 
     def test_9_generate_metadata(self):
         """

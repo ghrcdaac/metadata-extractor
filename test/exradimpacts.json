@@ -1,18 +1,18 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/exradimpacts__1/IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201.h5"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/exradimpacts__1/IMPACTS_EXRAD_L1B_RevC_20200225.h5"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^IMPACTS_EXRAD_(.*).*\\.cmr.xml$",
-            "sampleFileName":"IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201.h5.cmr.xml"
+            "regex":"^IMPACTS_EXRAD_(.*).*\\.cmr.(xml|json)$",
+            "sampleFileName":"IMPACTS_EXRAD_L1B_RevC_20200225.h5.cmr.xml"
          },
          {
             "bucket":"protected",
             "regex":"^IMPACTS_EXRAD_(.*).*(h5)$",
-            "sampleFileName":"IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201.h5"
+            "sampleFileName":"IMPACTS_EXRAD_L1B_RevC_20200225.h5"
          }
       ],
       "buckets":{
@@ -37,16 +37,17 @@
          "name":"exradimpacts", 
          "version":"1", 
          "dataType":"exradimpacts", 
-         "process":"metadataextractor", 
+         "process":"metadataextractorActivity", 
          "url_path":"exradimpacts__1",
          "duplicateHandling":"replace",
          "granuleId":"^IMPACTS_EXRAD_.*\\.(h5)$", 
          "granuleIdExtraction":"^((IMPACTS_EXRAD_).*)", 
          "reportToEms":true, 
-         "sampleFileName":"IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201.h5", 
+         "sampleFileName":"IMPACTS_EXRAD_L1B_RevC_20200225.h5", 
          "meta":{
             "provider_path":"exradimpacts/fieldCampaigns/impacts/EXRAD/data/",
             "hyrax_processing":"false",
+            "large_dataset": "true",
             "metadata_extractor":[
                {
                   "regex":"^IMPACTS_EXRAD_(.*).*\\.(h5)$",
@@ -57,13 +58,13 @@
          "files":[
             {
                "bucket":"public", 
-               "regex":"^IMPACTS_EXRAD_(.*).*\\.cmr.xml$", 
-               "sampleFileName":"IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201.h5.cmr.xml"
+               "regex":"^IMPACTS_EXRAD_(.*).*\\.cmr.(xml|json)$", 
+               "sampleFileName":"IMPACTS_EXRAD_L1B_RevC_20200225.h5.cmr.xml"
             },
             {
                "bucket":"protected", 
                "regex":"^IMPACTS_EXRAD_(.*).*(h5)$", 
-               "sampleFileName":"IMPACTS_EXRAD_Nadir_L1B_RevB_20200125T181957_to_20200126T005201.h5"
+               "sampleFileName":"IMPACTS_EXRAD_L1B_RevC_20200225.h5"
             }
          ]
       },
