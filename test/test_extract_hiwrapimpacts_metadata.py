@@ -4,14 +4,13 @@ from granule_metadata_extractor.processing.process_hiwrapimpacts import ExtractH
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
-#host=thor,env=ops,project=IMPACTS,ds=hiwrapimpacts,inv=inventory,file=IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5,path=IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5,size=2798291155,start=2020-02-07T12:22:21Z,end=2020-02-07T18:00:45Z,browse=N,checksum=c0866816455b8d70d8b2a27096f462496af268f4,NLat=43.15413284301758,SLat=33.09546661376953,WLon=-79.89248657226562,ELon=-73.18217468261719,format=HDF-5
-
+#host=thor,env=ops,project=IMPACTS,ds=hiwrapimpacts,inv=inventory,file=IMPACTS_HIWRAP_L1B_RevC_20200201.h5,path=IMPACTS_HIWRAP_L1B_RevC_20200201.h5,size=3115696524,start=2020-02-01T11:33:16Z,end=2020-02-01T15:52:57Z,browse=N,checksum=6a99d1e957610c13dab45fbd42afc9521f915af1,NLat=37.68699645996094,SLat=33.51578140258789,WLon=-79.08301544189453,ELon=-71.74879455566406,format=HDF-5
 class TestProcessHiwrapimpacts(TestCase):
     """
     Test processing.
     This will test if metadata will be extracted correctly
     """
-    granule_name = "IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5"
+    granule_name = "IMPACTS_HIWRAP_L1B_RevC_20200201_subset.h5"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -33,7 +32,7 @@ class TestProcessHiwrapimpacts(TestCase):
         start_date = self.process_dataset.get_temporal()[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-02-07T12:22:21Z")
+        self.assertEqual(start_date, "2020-02-01T11:33:16Z")
 
     def test_2_get_stop_date(self):
         """
@@ -43,7 +42,7 @@ class TestProcessHiwrapimpacts(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-02-07T18:00:45Z")
+        self.assertEqual(stop_date, "2020-02-01T15:52:57Z")
 
     def test_3_get_file_size(self):
         """
@@ -52,7 +51,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         file_size = float(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 0.66)
+        self.assertEqual(file_size, 0.51)
 
     def get_wnes(self, index):
         """
@@ -63,8 +62,7 @@ class TestProcessHiwrapimpacts(TestCase):
         wnes = process_geos.get_wnes_geometry()
         return str(round(float(wnes[index]), 3))
 
-    #NLat=43.15413284301758,SLat=33.09546661376953,WLon=-79.89248657226562,ELon=-73.18217468261719
-
+    #NLat=37.68699645996094,SLat=33.51578140258789,WLon=-79.08301544189453,ELon=-71.74879455566406
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -72,7 +70,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '43.154')
+        self.assertEqual(north, '37.687')
 
     def test_5_get_west(self):
         """
@@ -81,7 +79,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-79.892')
+        self.assertEqual(west, '-79.083')
 
     def test_6_get_south(self):
         """
@@ -90,7 +88,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '33.095')
+        self.assertEqual(south, '33.516')
 
     def test_7_get_east(self):
         """
@@ -99,7 +97,7 @@ class TestProcessHiwrapimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-73.182')
+        self.assertEqual(east, '-71.749')
 
     def test_8_get_checksum(self):
         """
@@ -110,7 +108,7 @@ class TestProcessHiwrapimpacts(TestCase):
         # checksum = self.process_goesrpltavirisng.get_checksum()
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '6455dfdb1d1eb73f3cccd01416464837')
+        self.assertEqual(checksum, '75d46a66eb8e7211aeb5a796156829f4')
 
     def test_9_generate_metadata(self):
         """
