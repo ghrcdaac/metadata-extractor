@@ -1,18 +1,18 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/hiwrapimpacts__1/IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/hiwrapimpacts__1/IMPACTS_HIWRAP_L1B_RevC_20200201.h5"
    ],
    "config":{
       "files_config":[
          {
             "bucket":"public",
-            "regex":"^IMPACTS_HIWRAP_(.*).*\\.cmr.xml$",
-            "sampleFileName":"IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5.cmr.xml"
+            "regex":"^IMPACTS_HIWRAP_(.*).*\\.cmr.(xml|json)$",
+            "sampleFileName":"IMPACTS_HIWRAP_L1B_RevC_20200201.h5.cmr.xml"
          },
          {
             "bucket":"protected",
             "regex":"^IMPACTS_HIWRAP_(.*).*(h5)$",
-            "sampleFileName":"IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5"
+            "sampleFileName":"IMPACTS_HIWRAP_L1B_RevC_20200201.h5"
          }
       ],
       "buckets":{
@@ -43,7 +43,7 @@
          "granuleId":"^IMPACTS_HIWRAP_.*\\.(h5)$", 
          "granuleIdExtraction":"^((IMPACTS_HIWRAP_).*)", 
          "reportToEms":true, 
-         "sampleFileName":"IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5", 
+         "sampleFileName":"IMPACTS_HIWRAP_L1B_RevC_20200201.h5", 
          "meta":{
             "provider_path":"hiwrapimpacts/fieldCampaigns/impacts/HIWRAP/data/",
             "hyrax_processing":"false",
@@ -57,13 +57,13 @@
          "files":[
             {
                "bucket":"public", 
-               "regex":"^IMPACTS_HIWRAP_(.*).*\\.cmr.xml$", 
-               "sampleFileName":"IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5.cmr.xml"
+               "regex":"^IMPACTS_HIWRAP_(.*).*\\.cmr.(xml|json)$", 
+               "sampleFileName":"IMPACTS_HIWRAP_L1B_RevC_20200201.h5.cmr.xml"
             },
             {
                "bucket":"protected", 
                "regex":"^IMPACTS_HIWRAP_(.*).*(h5)$", 
-               "sampleFileName":"IMPACTS_HIWRAP_L1B_RevA_20200207T122221_to_20200207T180045.h5"
+               "sampleFileName":"IMPACTS_HIWRAP_L1B_RevC_20200201.h5"
             }
          ]
       },
