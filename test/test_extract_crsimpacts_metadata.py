@@ -4,15 +4,13 @@ from granule_metadata_extractor.processing.process_crsimpacts import ExtractCrsi
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
-#host=thor,env=ops,project=IMPACTS,ds=crsimpacts,inv=inventory,file=IMPACTS_CRS_L1B_RevA_20200207T122227_to_20200207T180109.h5,path=IMPACTS_CRS_L1B_RevA_20200207T122227_to_20200207T180109.h5,size=1273998851,start=2020-02-07T12:22:27Z,end=2020-02-07T18:01:09Z,browse=N,checksum=aa45afc47198af3c2507931fd8dd961fe4bee024,NLat=43.15413284301758,SLat=33.06058883666992,WLon=-79.9180679321289,ELon=-73.18217468261719,format=HDF-5
-
+#host=thor,env=ops,project=IMPACTS,ds=crsimpacts,inv=inventory,file=IMPACTS_CRS_L1B_RevB_20200201.h5,path=IMPACTS_CRS_L1B_RevB_20200201.h5,size=1850101276,start=2020-02-01T11:33:22Z,end=2020-02-01T15:55:05Z,browse=N,checksum=6a1392ab18bbd1ff1fc40cfb8ca50fa5f80ade4e,NLat=37.68699645996094,SLat=33.523826599121094,WLon=-79.0716323852539,ELon=-71.74879455566406,format=HDF-5
 class TestProcessCrsimpacts(TestCase):
     """
     Test processing.
     This will test if metadata will be extracted correctly
     """
-    #granule_name = "IMPACTS_CRS_L1B_RevA_20200207T122227_to_20200207T180109.h5"
-    granule_name = "IMPACTS_CRS_L1B_RevA_20200207T122227_to_20200207T180109_subset.h5"
+    granule_name = "IMPACTS_CRS_L1B_RevB_20200201_subset.h5"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -34,7 +32,7 @@ class TestProcessCrsimpacts(TestCase):
         start_date = self.process_dataset.get_temporal()[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-02-07T12:22:27Z")
+        self.assertEqual(start_date, "2020-02-01T11:33:22Z")
 
     def test_2_get_stop_date(self):
         """
@@ -44,7 +42,7 @@ class TestProcessCrsimpacts(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-02-07T18:01:09Z")
+        self.assertEqual(stop_date, "2020-02-01T15:55:05Z")
 
     def test_3_get_file_size(self):
         """
@@ -53,8 +51,7 @@ class TestProcessCrsimpacts(TestCase):
         """
         file_size = float(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        #self.assertEqual(file_size, 1274.00)
-        self.assertEqual(file_size, 1.31)
+        self.assertEqual(file_size, 1.01)
 
     def get_wnes(self, index):
         """
@@ -65,7 +62,7 @@ class TestProcessCrsimpacts(TestCase):
         wnes = process_geos.get_wnes_geometry()
         return str(round(float(wnes[index]), 3))
 
-
+    #NLat=37.68699645996094,SLat=33.523826599121094,WLon=-79.0716323852539,ELon=-71.74879455566406
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -73,7 +70,7 @@ class TestProcessCrsimpacts(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '43.154')
+        self.assertEqual(north, '37.687')
 
     def test_5_get_west(self):
         """
@@ -82,7 +79,7 @@ class TestProcessCrsimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-79.918')
+        self.assertEqual(west, '-79.072')
 
     def test_6_get_south(self):
         """
@@ -91,7 +88,7 @@ class TestProcessCrsimpacts(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '33.061')
+        self.assertEqual(south, '33.524')
 
     def test_7_get_east(self):
         """
@@ -100,7 +97,7 @@ class TestProcessCrsimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-73.182')
+        self.assertEqual(east, '-71.749')
 
     def test_8_get_checksum(self):
         """
@@ -111,8 +108,7 @@ class TestProcessCrsimpacts(TestCase):
         # checksum = self.process_goesrpltavirisng.get_checksum()
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        #self.assertEqual(checksum, '160097b5c20660cb0e0bebfceda5936a')
-        self.assertEqual(checksum, '71af631d70391f3f67a52dc87b97a93e')
+        self.assertEqual(checksum, '1b6faf869a375fc564aa3aa3ebdf6254')
 
     def test_9_generate_metadata(self):
         """
