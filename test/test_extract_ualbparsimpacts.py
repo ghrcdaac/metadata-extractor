@@ -4,13 +4,13 @@ from granule_metadata_extractor.processing.process_ualbparsimpacts import Extrac
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
-#host=thor,env=ops,project=IMPACTS,ds=ualbparsimpacts,inv=inventory,file=IMPACTS_UALB_parsivel_20200228.nc,path=IMPACTS_UALB_parsivel_20200228.nc,size=59991,start=2020-02-28T00:00:00Z,end=2020-02-28T23:59:50Z,browse=N,checksum=4221f8bb1d4780c25dd3f084a13a862caa76c5ea,NLat=42.695699999999995,SLat=42.6757,WLon=-73.84190000000001,ELon=-73.8219,format=netCDF-4
+#host=thor,env=ops,project=IMPACTS,ds=ualbparsimpacts,inv=inventory,file=IMPACTS_UALB_parsivel_20220110.nc,path=IMPACTS_UALB_parsivel_20220110.nc,size=12376981,start=2022-01-10T16:19:20Z,end=2022-01-10T23:57:30Z,browse=N,checksum=c1504bb0cfe13b5bf86618a4539de884105fd405,NLat=42.69091583251953,SLat=42.67091583251953,WLon=-73.82444549560547,ELon=-73.80444549560546,format=netCDF-4
 class TestProcessParprbimpacts(TestCase):
     """
     Test processing.
     This will test if metadata will be extracted correctly
     """
-    granule_name = "IMPACTS_UALB_parsivel_20200228.nc"
+    granule_name = "IMPACTS_UALB_parsivel_20220110.nc"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -32,7 +32,7 @@ class TestProcessParprbimpacts(TestCase):
         start_date = self.process_dataset.get_temporal()[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-02-28T00:00:00Z")
+        self.assertEqual(start_date, "2022-01-10T16:19:20Z")
 
     def test_2_get_stop_date(self):
         """
@@ -42,7 +42,7 @@ class TestProcessParprbimpacts(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-02-28T23:59:50Z")
+        self.assertEqual(stop_date, "2022-01-10T23:57:30Z")
 
     def test_3_get_file_size(self):
         """
@@ -51,7 +51,7 @@ class TestProcessParprbimpacts(TestCase):
         """
         file_size = float(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 0.06)
+        self.assertEqual(file_size, 12.38)
 
     def get_wnes(self, index):
         """
@@ -62,8 +62,7 @@ class TestProcessParprbimpacts(TestCase):
         wnes = process_geos.get_wnes_geometry()
         return str(round(float(wnes[index]), 3))
 
-    #NLat=42.695699999999995,SLat=42.6757,WLon=-73.84190000000001,ELon=-73.8219
-
+    #NLat=42.69091583251953,SLat=42.67091583251953,WLon=-73.82444549560547,ELon=-73.80444549560546
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -71,7 +70,7 @@ class TestProcessParprbimpacts(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '42.696')
+        self.assertEqual(north, '42.691')
 
     def test_5_get_west(self):
         """
@@ -80,7 +79,7 @@ class TestProcessParprbimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-73.842')
+        self.assertEqual(west, '-73.824')
 
     def test_6_get_south(self):
         """
@@ -89,7 +88,7 @@ class TestProcessParprbimpacts(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '42.676')
+        self.assertEqual(south, '42.671')
 
     def test_7_get_east(self):
         """
@@ -98,7 +97,7 @@ class TestProcessParprbimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-73.822')
+        self.assertEqual(east, '-73.804')
 
     def test_8_get_checksum(self):
         """
@@ -109,7 +108,7 @@ class TestProcessParprbimpacts(TestCase):
         # checksum = self.process_goesrpltavirisng.get_checksum()
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '5f1b62977411234d2bc435ea55cea560')
+        self.assertEqual(checksum, '4fa11e56fc23959fe4a23b0cbebc1024')
 
     def test_9_generate_metadata(self):
         """
