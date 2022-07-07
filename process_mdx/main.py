@@ -1,5 +1,3 @@
-import re
-
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
 from cumulus_process import Process, s3
@@ -563,8 +561,8 @@ class MDX(Process):
         cumulus_granules_meta = copy.deepcopy(granules[0])
         [cumulus_granules_meta.pop(ele, False) for ele in ['granuleId', 'files']]
         self.input = []
-        for granule_dict in granules:
-            for _file in granule_dict['files']:
+        for granule in granules:
+            for _file in granule['files']:
                 self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
 
         collection = self.config.get('collection')
@@ -621,10 +619,10 @@ class MDX(Process):
                     }
                 )
         granule_data_temp = copy.deepcopy(granule_data)
-        for granule_dict in granules:
+        for granule in granules:
             for granule_ in granule_data_temp:
-                if granule_dict['granuleId'] == granule_:
-                    granule_dict['files'] += granule_data[granule_]['files']
+                if granule['granuleId'] == granule_:
+                    granule['files'] += granule_data[granule_]['files']
                     granule_data.pop(granule_)
 
         for granule_ in granule_data:
@@ -644,9 +642,9 @@ class MDX(Process):
 
     def delete_file(self, filename):
         path = f'{self.path.rstrip("/")}/{filename}'
-        logger.info(f'Deleting: {path}')
         if os.path.exists(path):
             os.remove(path)
+            logger.info(f'Deleted: {path}')
 
     def default_switch(self, *args):
         """
