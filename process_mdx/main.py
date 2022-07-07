@@ -563,8 +563,8 @@ class MDX(Process):
         cumulus_granules_meta = copy.deepcopy(granules[0])
         [cumulus_granules_meta.pop(ele, False) for ele in ['granuleId', 'files']]
         self.input = []
-        for granule in granules:
-            for _file in granule['files']:
+        for granule_dict in granules:
+            for _file in granule_dict['files']:
                 self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
 
         collection = self.config.get('collection')
@@ -621,18 +621,19 @@ class MDX(Process):
                     }
                 )
         granule_data_temp = copy.deepcopy(granule_data)
-        for granule in granules:
+        for granule_dict in granules:
             for granule_ in granule_data_temp:
-                if granule['granuleId'] == granule_:
-                    granule['files'] += granule_data[granule_]['files']
+                if granule_dict['granuleId'] == granule_:
+                    granule_dict['files'] += granule_data[granule_]['files']
                     granule_data.pop(granule_)
 
         for granule_ in granule_data:
             granules.append(granule_data[granule_])
 
         # Clean up
-        for file_config in self.config.get('collection', {}).get('files'):
-            self.purge(self.path, re.compile(file_config.get('regex')))
+        for granule_dict in granules:
+            for file_dict in granule_dict.get('files'):
+                self.delete_file(file_dict.get('fileName'))
 
         # Workaround for local file since system bucket shouldn't matter locally
         system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
@@ -641,15 +642,11 @@ class MDX(Process):
         return {"granules": granules, "input": uploaded_files,
                 "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
 
-    @staticmethod
-    def purge(directory, pattern):
-        for file in os.listdir(directory):
-            if re.search(pattern, file):
-                try:
-                    os.remove(os.path.join(directory, file))
-                    logger.info(f'Removed: {file}')
-                except FileNotFoundError as e:
-                    logger.warn(f'FileNotFoundError: {file}. A parallel execution may have removed it.')
+    def delete_file(self, filename):
+        path = f'{self.path.rstrip("/")}/{filename}'
+        logger.info(f'Deleting: {path}')
+        if os.path.exists(path):
+            os.remove(path)
 
     def default_switch(self, *args):
         """
