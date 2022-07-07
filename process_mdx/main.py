@@ -591,9 +591,7 @@ class MDX(Process):
                                          output_folder=self.path)
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
-                updated_output_path = self.get_output_files(os.path.join(self.path,
-                                                                         data['UpdatedGranuleUR']),
-                                                            excluded)
+                updated_output_path = self.get_output_files(os.path.join(self.path, data['UpdatedGranuleUR']), excluded)
                 generated_files.extend(updated_output_path)
             for generated_file in generated_files:
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
@@ -631,9 +629,9 @@ class MDX(Process):
             granules.append(granule_data[granule_])
 
         # Clean up
-        for generated_file in self.output:
-            if os.path.exists(generated_file):
-                os.remove(generated_file)
+        for granule_dict in granules:
+            for file_dict in granule_dict.get('files'):
+                self.delete_file(file_dict.get('fileName'))
 
         # Workaround for local file since system bucket shouldn't matter locally
         system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
@@ -641,6 +639,12 @@ class MDX(Process):
         logger.info('MDX processing completed.')
         return {"granules": granules, "input": uploaded_files,
                 "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
+
+    def delete_file(self, filename):
+        path = f'{self.path.rstrip("/")}/{filename}'
+        if os.path.exists(path):
+            os.remove(path)
+            logger.info(f'Deleted: {path}')
 
     def default_switch(self, *args):
         """
