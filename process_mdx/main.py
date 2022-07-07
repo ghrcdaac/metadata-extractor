@@ -556,6 +556,7 @@ class MDX(Process):
         #     logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
         #     logger = CumulusLogger(name='MDX-Process', level=logging_level)
         logger.info('MDX processing started.')
+        self.path = os.getenv('efs_mount_path', self.path)
         granules = self.input['granules']
         cumulus_granules_meta = copy.deepcopy(granules[0])
         [cumulus_granules_meta.pop(ele, False) for ele in ['granuleId', 'files']]
