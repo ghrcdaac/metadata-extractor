@@ -1,3 +1,5 @@
+import re
+
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
 from cumulus_process import Process, s3
@@ -591,9 +593,7 @@ class MDX(Process):
                                          output_folder=self.path)
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
-                updated_output_path = self.get_output_files(os.path.join(self.path,
-                                                                         data['UpdatedGranuleUR']),
-                                                            excluded)
+                updated_output_path = self.get_output_files(os.path.join(self.path, data['UpdatedGranuleUR']), excluded)
                 generated_files.extend(updated_output_path)
             for generated_file in generated_files:
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
@@ -631,9 +631,8 @@ class MDX(Process):
             granules.append(granule_data[granule_])
 
         # Clean up
-        for generated_file in self.output:
-            if os.path.exists(generated_file):
-                os.remove(generated_file)
+        for file_config in self.config.get('collection', {}).get('files'):
+            self.purge(self.path, re.compile(file_config.get('regex')))
 
         # Workaround for local file since system bucket shouldn't matter locally
         system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
@@ -641,6 +640,16 @@ class MDX(Process):
         logger.info('MDX processing completed.')
         return {"granules": granules, "input": uploaded_files,
                 "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
+
+    @staticmethod
+    def purge(directory, pattern):
+        for file in os.listdir(directory):
+            if re.search(pattern, file):
+                try:
+                    os.remove(os.path.join(directory, file))
+                    logger.info(f'Removed: {file}')
+                except FileNotFoundError as e:
+                    logger.warn(f'FileNotFoundError: {file}. A parallel execution may have removed it.')
 
     def default_switch(self, *args):
         """
