@@ -4,7 +4,7 @@ from granule_metadata_extractor.processing.process_pmhailclim import ExtractPmha
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
-#host=thor,env=ops,project=NOT APPLICABLE,ds=pmhailclim,inv=inventory,file=COMBO_HailClimatology_BC2019_2deg.nc,path=COMBO_HailClimatology_BC2019_2deg.nc,size=66500,start=1998-01-01T00:00:00Z,end=2021-03-31T23:59:59Z,browse=N,checksum=ba67ada43a037411a6a838af813ff2ecb93eee18,NLat=89.0,SLat=-89.0,WLon=-179.0,ELon=179.0,format=netCDF-3
+#host=thor,env=ops,project=NOT APPLICABLE,ds=pmhailclim,inv=inventory,file=COMBO_HailClimatology_BC2019_2deg.nc,path=COMBO_HailClimatology_BC2019_2deg.nc,size=66500,start=1998-01-01T00:00:00Z,end=2022-03-31T23:59:59Z,browse=N,checksum=ba67ada43a037411a6a838af813ff2ecb93eee18,NLat=89.0,SLat=-89.0,WLon=-179.0,ELon=179.0,format=netCDF-3
 class TestProcessPmhailclim(TestCase):
     """
     Test processing.
@@ -42,7 +42,7 @@ class TestProcessPmhailclim(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2021-03-31T23:59:59Z")
+        self.assertEqual(stop_date, "2022-03-31T23:59:59Z")
 
     def test_3_get_file_size(self):
         """
