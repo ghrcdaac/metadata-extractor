@@ -30,8 +30,21 @@ class ExtractPmhailclimMetadata(ExtractNetCDFMetadata):
         lat = nc.variables['latitude'][:]
         lon = nc.variables['longitude'][:]
         maxlat, minlat, maxlon, minlon = [lat.max(),lat.min(),lon.max(),lon.min()]
-        minTime = datetime(1998,1,1)
-        maxTime = datetime.strptime('03/31/2021 23:59:59', '%m/%d/%Y %H:%M:%S')
+
+        sat_obs = self.file_path.split('/')[-1].split('_')[0] #TRMM,COMBO,GPM
+
+        #TRMM: Jan 1998 – Sept 2014
+        #GPM: Apr 2014-March 2022
+        #Combo: Jan 1998 – March 2022
+        if sat_obs == 'TRMM':
+           minTime = datetime(1998,1,1)
+           maxTime = datetime.strptime('09/30/2014 23:59:59', '%m/%d/%Y %H:%M:%S')
+        elif sat_obs == 'GPM':
+           minTime = datetime(2014,4,1)
+           maxTime = datetime.strptime('03/31/2022 23:59:59', '%m/%d/%Y %H:%M:%S')
+        elif sat_obs == 'COMBO':
+           minTime = datetime(1998,1,1)
+           maxTime = datetime.strptime('03/31/2022 23:59:59', '%m/%d/%Y %H:%M:%S')
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
