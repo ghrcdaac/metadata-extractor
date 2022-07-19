@@ -16,20 +16,13 @@
         run: |
           apt-get --allow-releaseinfo-change update
           apt-get install -y libxml2-utils
-
-      - name: install python dependencies
-        run: |
           bash conda-requirements.sh
           pip install twine
-          python setup.py install
           pip install -r requirements-dev.txt
-          python setup.py sdist
-          nosetests -sx
-          pytest --junitxml=test_metadata_extractor.xml test
-          nosetests -c .noserc -q --cover-html-dir=build --cover-html
+          python -m pytest --junitxml=test_metadata_extractor.xml test
           coverage run -m pytest
           coverage lcov -o ./coverage/lcov.info
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Coveralls
+      #   uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
