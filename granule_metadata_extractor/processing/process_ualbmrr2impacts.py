@@ -5,7 +5,7 @@ import numpy as np
 
 class ExtractUalbmrr2impactsMetadata(ExtractNetCDFMetadata):
     """
-    A class to extract Ualbmrr2impacts netCDF-3
+    A class to extract Ualbmrr2impacts netCDF-3/netCDF-4
     """
     start_time = None
     end_time = None
@@ -18,7 +18,10 @@ class ExtractUalbmrr2impactsMetadata(ExtractNetCDFMetadata):
     def __init__(self, file_path):
         # super().__init__(file_path)
         self.file_path = file_path
-        self.format = 'netCDF-3'
+        if '_mrr2_2020' in file_path:
+           self.format = 'netCDF-3'
+        elif '_mrr2_2022' in file_path:
+           self.format = 'netCDF-4'
 
         self.get_variables_min_max()
 
@@ -96,7 +99,3 @@ class ExtractUalbmrr2impactsMetadata(ExtractNetCDFMetadata):
         data['DataFormat'] = self.format
         data['VersionId'] = version
         return data
-
-
-if __name__ == '__main__':
-    print('Extracting ualbparsimpacts Metadata')
