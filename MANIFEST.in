@@ -23,7 +23,7 @@ include granule_metadata_extractor/src/helpers/kboximpactsRefData.json
 include granule_metadata_extractor/src/helpers/kbufimpactsRefData.json
 include granule_metadata_extractor/src/helpers/GPS.nc
 include granule_metadata_extractor/src/helpers/nalmarawRefData.json
-include granule_metadata_extractor/src/helpers/P3_Nav_impacts.json
+include granule_metadata_extractor/src/helpers/P3_Nav_impacts.zip
 include granule_metadata_extractor/src/helpers/meta_nysm_latlon.csv
 include granule_metadata_extractor/src/helpers/meta_prof_latlon.csv
 include granule_metadata_extractor/src/helpers/gpmkarx2ifldRefData.json

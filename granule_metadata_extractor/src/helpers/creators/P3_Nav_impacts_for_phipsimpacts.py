@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
-import os
+from zipfile import ZipFile
 import json
+import os
 
 file_path = '/ftp/ops/public/pub/fieldCampaigns/impacts/P3_Nav/data'
 
@@ -28,3 +29,7 @@ P3_Nav = {'time':nav_time,'lat':nav_lat,'lon':nav_lon}
 
 with open('./P3_Nav_impacts.json', 'w') as fp:
     json.dump(P3_Nav, fp)
+
+# The below 2 line can also be substituted by the command line "zip P3_Nav_impacts.zip P3_Nav_impacts.json"
+with ZipFile('./P3_Nav_impacts.zip', 'w') as myzip:
+    myzip.write('P3_Nav_impacts.json')
