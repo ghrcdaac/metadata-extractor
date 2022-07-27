@@ -1,8 +1,9 @@
 from ..src.extract_ascii_metadata import ExtractASCIIMetadata
-import os
-import numpy as np
 from datetime import datetime, timedelta
+from zipfile import ZipFile
+import numpy as np
 import json
+import os
 
 class ExtractCmimpactsMetadata(ExtractASCIIMetadata):
     """
@@ -14,9 +15,10 @@ class ExtractCmimpactsMetadata(ExtractASCIIMetadata):
         # these are needed to metadata extractor
         self.fileformat = 'ASCII'
 
-        gps_path = '../src/helpers/P3_Nav_impacts.json'
-        with open(os.path.join(os.path.dirname(__file__),gps_path), 'r') as fp:
-             P3_Nav = json.load(fp)
+        gps_path = '../src/helpers/P3_Nav_impacts.zip'
+        with ZipFile(os.path.join(os.path.dirname(__file__),gps_path), 'r') as p3zip:
+            with p3zip.open('P3_Nav_impacts.json') as p3object:
+                P3_Nav = json.load(p3object)
         self.nav_time = np.array([datetime.strptime(x,'%Y%m%d%H%M%S') for x in P3_Nav['time'][:]])
         self.nav_lat = np.array(P3_Nav['lat'][:])
         self.nav_lon = np.array(P3_Nav['lon'][:])
