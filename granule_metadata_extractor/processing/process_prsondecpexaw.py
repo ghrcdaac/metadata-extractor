@@ -1,0 +1,115 @@
+from ..src.extract_ascii_metadata import ExtractASCIIMetadata
+import os
+import numpy as np
+from datetime import datetime, timedelta
+
+class ExtractPrsondecpexawMetadata(ExtractASCIIMetadata):
+    """
+    A class to extract prsondecpexaw
+    """
+
+    def __init__(self, file_path):
+        self.file_path = file_path
+        # these are needed to metadata extractor
+        self.fileformat = 'CSV'
+
+        # extracting time and space metadata for ascii file
+        [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
+            self.get_variables_min_max()
+
+    def get_variables_min_max(self):
+        """
+        :return:
+        """
+        with open(self.file_path,'r') as f:
+             lines0 = f.readlines()
+             lines = [x[:-1] for x in lines0] #remove '\n' from end of string
+        for row in lines[1:7]:
+            tkn = row.split(',')
+            if tkn[0] == 'Year':
+               year0 = int(tkn[1])
+            elif tkn[0] == 'Month':
+               month0 = int(tkn[1])
+            elif tkn[0] == 'Day':
+               day0 = int(tkn[1])
+            elif tkn[0] == 'Hour':
+               hour0 = int(tkn[1])
+            elif tkn[0] == 'Minute':
+               minute0 = int(tkn[1])
+            elif tkn[0] == 'Second':
+               second0 = int(tkn[1])
+        ref_time = datetime(year0,month0,day0,hour0,minute0,second0)
+
+        sec = []
+        lat = []
+        lon = []
+        idx0 = lines.index('Fields,Time,Pressure,Temperature,RH,Speed,Direction,Latitude,Longitude,Altitude,GPS Altitude,Dewpoint,Uwnd,Vwnd,Ascent')
+        for row in lines[idx0+2:]:
+            if row.startswith('Data,'):
+               tkn = row.split(',')
+               if tkn[1] != '' and tkn[7] !='' and tkn[8] !='':
+                  sec.append(float(tkn[1]))
+                  lat.append(float(tkn[7]))
+                  lon.append(float(tkn[8]))
+
+        minTime = ref_time + timedelta(seconds = min(sec))
+        maxTime = ref_time + timedelta(seconds = max(sec))
+        maxlat, minlat, maxlon, minlon = [max(lat),
+                                          min(lat),
+                                          max(lon),
+                                          min(lon)]
+
+        return minTime, maxTime, minlat, maxlat, minlon, maxlon
+
+
+    def get_wnes_geometry(self, scale_factor=1.0, offset=0):
+        """
+        Extract the geometry from a GIF file
+        :param scale_factor: In case it is not CF compliant we will need scale factor
+        :param offset: data offset if the netCDF not CF compliant
+        :return: list of bounding box coordinates [west, north, east, south]
+        """
+        north, south, east, west = [round((x * scale_factor) + offset, 3) for x in
+                                    [self.NLat, self.SLat, self.ELon, self.WLon]]
+        return [self.convert_360_to_180(west), north, self.convert_360_to_180(east), south]
+
+    def get_temporal(self, time_variable_key='time', units_variable='units', scale_factor=1.0,
+                     offset=0,
+                     date_format='%Y-%m-%dT%H:%M:%SZ'):
+        """
+        :param time_variable_key: The NetCDF variable we need to target
+        :param units_variable: The NetCDF variable we need to target
+        :param scale_factor: In case it is not CF compliant we will need scale factor
+        :param offset: data offset if the netCDF not CF compliant
+        :param date_format IF specified the return type will be a string type
+        :return:
+        """
+        start_date = self.minTime.strftime(date_format)
+        stop_date = self.maxTime.strftime(date_format)
+        return start_date, stop_date
+
+    def get_metadata(self, ds_short_name, format='CSV', version='1', **kwargs):
+        """
+        :param ds_short_name:
+        :param time_variable_key:
+        :param lon_variable_key:
+        :param lat_variable_key:
+        :param time_units:
+        :param format:
+        :return:
+        """
+        data = dict()
+        data['GranuleUR'] = granule_name = os.path.basename(self.file_path)
+        start_date, stop_date = self.get_temporal()
+        data['ShortName'] = ds_short_name
+        data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
+
+        geometry_list = self.get_wnes_geometry()
+        data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
+        data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(
+            str(x) for x in geometry_list)
+        data['checksum'] = self.get_checksum()
+        data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
+        data['DataFormat'] = self.fileformat
+        data['VersionId'] = version
+        return data
