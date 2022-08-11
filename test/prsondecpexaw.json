@@ -1,6 +1,6 @@
 {
    "input":[
-      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/metnavcpexaw__1/PR_Radiosonde_CPEXAW_qc_uprm034_20210928.csv"
+      "s3://ghrcsbxw-internal/file-staging/ghrcsbxw/prsondecpexaw__1/PR_Radiosonde_CPEXAW_qc_uprm034_20210928.csv"
    ],
    "config":{
       "files_config":[

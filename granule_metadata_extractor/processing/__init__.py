@@ -121,3 +121,4 @@ from .process_misrepcpexaw import ExtractMisrepcpexawMetadata
 from .process_mrmsimpacts import ExtractMrmsimpactsMetadata
 from .process_prsondecpexaw import ExtractPrsondecpexawMetadata
 from .process_apr3cpex import ExtractApr3cpexMetadata
+from .process_scrxsondecpexaw import ExtractScrxsondecpexawMetadata
