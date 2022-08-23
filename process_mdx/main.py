@@ -148,7 +148,8 @@ class MDX(Process):
             "apr3cpexaw": mdx.ExtractApr3cpexawMetadata,
             "mrmsimpacts": mdx.ExtractMrmsimpactsMetadata,
             "apr3cpex": mdx.ExtractApr3cpexMetadata,
-            "scrxsondecpexaw": mdx.ExtractScrxsondecpexawMetadata
+            "scrxsondecpexaw": mdx.ExtractScrxsondecpexawMetadata,
+            "ascatcpex": mdx.ExtractAscatcpexMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
