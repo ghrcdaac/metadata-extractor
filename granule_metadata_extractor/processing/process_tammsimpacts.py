@@ -73,7 +73,7 @@ class ExtractTammsimpactsMetadata(ExtractASCIIMetadata):
         stop_date = self.end_time.strftime(date_format)
         return start_date, stop_date
 
-    def get_metadata(self, ds_short_name, format='ASCII-ict', version='01', **kwargs):
+    def get_metadata(self, ds_short_name, format='ASCII', version='01', **kwargs):
         """
 
         :param ds_short_name:

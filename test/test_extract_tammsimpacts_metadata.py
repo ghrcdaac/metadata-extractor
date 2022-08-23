@@ -19,7 +19,7 @@ class TestProcessTammsimpacts(TestCase):
     process_tammsimpacts = ExtractTammsimpactsMetadata(input_file)
     expected_metadata = {'ShortName': 'tammsimpacts',
                          'GranuleUR': granule_name,
-                         'VersionId': '1', 'DataFormat': 'ASCII-ict',
+                         'VersionId': '1', 'DataFormat': 'ASCII',
                          }
 
     def test_1_get_start_date(self):
@@ -113,7 +113,7 @@ class TestProcessTammsimpacts(TestCase):
         """
 
         metadata = self.process_tammsimpacts.get_metadata(ds_short_name='tammsimpacts',
-                                                          format='ASCII-ict', version='1')
+                                                          format='ASCII', version='1')
         # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
