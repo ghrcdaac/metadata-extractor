@@ -1,4 +1,4 @@
-FROM    continuumio/miniconda3:4.8.2
+FROM    continuumio/miniconda3:4.10.3
 
 LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu>"
 RUN     apt-get --allow-releaseinfo-change update && \
