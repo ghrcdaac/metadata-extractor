@@ -40,7 +40,8 @@ class ExtractCplimpactsMetadata(ExtractNetCDFMetadata):
         #extract metadata for *_ATB_* files
         lats = datafile['Latitude'][:].flatten()
         lons = datafile['Longitude'][:].flatten()
-        ref_time = datetime(datetime.strptime(datafile['Date'][:].replace(' ',''),'%d%b%Y').year-1,12,31) 
+        obs_date = self.file_path.split('/')[-1].split('_')[4][0:8] #i.e., 20220208
+        ref_time = datetime(datetime.strptime(obs_date,'%Y%m%d').year-1,12,31)
 
         minTime, maxTime = [ref_time+timedelta(days=datafile['Start_JDay'][:].item()),
                             ref_time+timedelta(days=datafile['End_JDay'][:].item())]
