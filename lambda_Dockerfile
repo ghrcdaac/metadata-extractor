@@ -1,0 +1,54 @@
+ARG FUNCTION_DIR="/build"
+
+FROM    continuumio/miniconda3:4.8.2 as build-image
+
+RUN     apt-get --allow-releaseinfo-change update && \
+        apt-get install -y libxml2-utils
+
+RUN apt-get update && \
+  apt-get install -y \
+  g++ \
+  make \
+  cmake \
+  unzip \
+  libcurl4-openssl-dev
+
+ARG FUNCTION_DIR
+
+RUN mkdir -p ${FUNCTION_DIR}
+
+COPY . ${FUNCTION_DIR}
+
+RUN pip install \
+        --target ${FUNCTION_DIR} \
+        awslambdaric
+
+FROM    continuumio/miniconda3:4.8.2
+
+RUN conda install python=3.8
+
+ARG FUNCTION_DIR
+
+LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu>"
+
+WORKDIR ${FUNCTION_DIR}
+
+ENV BUILD="/build"
+
+COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
+
+RUN     bash conda-requirements.sh && \
+        pip install -r requirements.txt
+
+# For development
+RUN     pip install ipython && \
+        pip install -r requirements-dev.txt
+
+RUN     python setup.py install
+
+ADD aws-lambda-rie /usr/local/bin/aws-lambda-rie
+RUN mkdir /opt/extensions
+RUN chmod +x entry_script.sh
+ENTRYPOINT [ "/build/entry_script.sh" ]
+
+CMD [ "app.handler" ]
