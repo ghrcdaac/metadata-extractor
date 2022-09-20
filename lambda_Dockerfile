@@ -25,4 +25,8 @@ RUN     pip install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
 RUN     python setup.py install
 
+RUN     pip install pytest
+RUN     python -m pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
+        rm -rf test
+
 CMD [ "app.handler" ]
