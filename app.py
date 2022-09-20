@@ -685,7 +685,7 @@ def handler(event, context):
                     invocation, function, and execution environment
     """
     print("I MADE IT !!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    return {"hello docker"}
+    return {"hello":  "docker"}
     
     #return run_cumulus_task(task, event, context)
 

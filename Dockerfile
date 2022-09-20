@@ -1,27 +1,29 @@
-FROM    continuumio/miniconda3:4.8.2
+FROM public.ecr.aws/lambda/python:3.8
 
-LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu>"
-RUN     apt-get --allow-releaseinfo-change update && \
-        apt-get install -y libxml2-utils
 
-WORKDIR /build
+RUN yum install -y gcc && \
+        yum install -y git
 
-ENV     BUILD=/build
 
-COPY ["./conda-requirements.sh", "requirements.txt", "/build/"]
+RUN pip3 install git+https://github.com/ARM-DOE/pyart.git#egg=arm-pyart --target "${LAMBDA_TASK_ROOT}"
 
-RUN     bash conda-requirements.sh && \
-        pip install -r requirements.txt
+RUN pip3 install pyhdf --target "${LAMBDA_TASK_ROOT}"
 
+RUN yum install -y libxml2
 # For development
-COPY ["./requirements-dev.txt", "/build/"]
-RUN     pip install ipython && \
-        pip install -r requirements-dev.txt
+RUN     pip3 install ipython
+
+# 1 - Clean up extra files
+# 2 - Install MDX 
+# 3 - Create an env variable to add dev dependencies 
+# 4 - Create src folder with all mdx files? COPY src ${LAMBDA_TASK_ROOT}
+# 5 - Run pytest in the env is !prod  and mount the test report 
+# 6 - delete all test folders 
+COPY . ${LAMBDA_TASK_ROOT}
+
+RUN     pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
 
-COPY    . $BUILD/
+CMD [ "app.handler" ]
+#ENTRYPOINT [ "/bin/bash" ]
 
-RUN     python setup.py install
-
-RUN     pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
-        rm -rf test
