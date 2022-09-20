@@ -1,54 +1,28 @@
-ARG FUNCTION_DIR="/build"
+FROM public.ecr.aws/lambda/python:3.8
 
-FROM    continuumio/miniconda3:4.8.2 as build-image
 
-RUN     apt-get --allow-releaseinfo-change update && \
-        apt-get install -y libxml2-utils
+RUN yum install -y gcc && \
+        yum install -y git
 
-RUN apt-get update && \
-  apt-get install -y \
-  g++ \
-  make \
-  cmake \
-  unzip \
-  libcurl4-openssl-dev
 
-ARG FUNCTION_DIR
+RUN pip install git+https://github.com/ARM-DOE/pyart.git#egg=arm-pyart --target "${LAMBDA_TASK_ROOT}"
 
-RUN mkdir -p ${FUNCTION_DIR}
+RUN pip install pyhdf --target "${LAMBDA_TASK_ROOT}"
 
-COPY . ${FUNCTION_DIR}
-
-RUN pip install \
-        --target ${FUNCTION_DIR} \
-        awslambdaric
-
-FROM    continuumio/miniconda3:4.8.2
-
-RUN conda install python=3.8
-
-ARG FUNCTION_DIR
-
-LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu>"
-
-WORKDIR ${FUNCTION_DIR}
-
-ENV BUILD="/build"
-
-COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
-
-RUN     bash conda-requirements.sh && \
-        pip install -r requirements.txt
-
+RUN yum install -y libxml2
 # For development
-RUN     pip install ipython && \
-        pip install -r requirements-dev.txt
+RUN     pip install ipython
+
+# 1 - Clean up extra files
+# 2 - Install MDX 
+# 3 - Create an env variable to add dev dependencies 
+# 4 - Create src folder with all mdx files? COPY src ${LAMBDA_TASK_ROOT}
+# 5 - Run pytest in the env is !prod  and mount the test report 
+# 6 - delete all test folders 
+COPY . ${LAMBDA_TASK_ROOT}
+
+RUN     pip install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
 RUN     python setup.py install
-
-ADD aws-lambda-rie /usr/local/bin/aws-lambda-rie
-RUN mkdir /opt/extensions
-RUN chmod +x entry_script.sh
-ENTRYPOINT [ "/build/entry_script.sh" ]
 
 CMD [ "app.handler" ]

@@ -684,10 +684,8 @@ def handler(event, context):
     :param context: object provides methods and properties that provide information about the
                     invocation, function, and execution environment
     """
-    print("I MADE IT !!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    return {"hello docker"}
     
-    #return run_cumulus_task(task, event, context)
+    return run_cumulus_task(task, event, context)
 
 
 if __name__ == '__main__':
