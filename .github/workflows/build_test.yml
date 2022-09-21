@@ -20,6 +20,7 @@
            docker build . --file Dockerfile_base_image --tag ghcr.io/ghrcdaac/mdx:base
            docker push ghcr.io/ghrcdaac/mdx:base
   build:
+    needs: base_image_change
     runs-on: ubuntu-latest
     name: Build & Test
     steps:
