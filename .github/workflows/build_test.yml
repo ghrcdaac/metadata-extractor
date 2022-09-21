@@ -16,7 +16,7 @@
                - 'Dockerfile_base_image'
        - if: steps.changes.outputs.dockerbasepath == 'true'
          run: |
-           echo steps.changes.outputs.dockerbasepath
+           echo ${{ steps.changes.outputs.dockerbasepath }}
 #           export CR_PAT=${{secrets.GITHUB_TOKEN}} ; echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
 #           docker build . --file Dockerfile_base_image --tag ghcr.io/ghrcdaac/mdx:base
 #           docker push ghcr.io/ghrcdaac/mdx:base
