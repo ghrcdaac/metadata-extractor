@@ -1,0 +1,13 @@
+FROM public.ecr.aws/lambda/python:3.8
+
+LABEL maintainer="Abdelhak Marouane <am0089@uah.edu>"
+
+RUN yum install -y gcc && \
+        yum install -y git
+
+
+RUN pip install git+https://github.com/ARM-DOE/pyart.git#egg=arm-pyart --target "${LAMBDA_TASK_ROOT}"
+
+RUN pip install pyhdf --target "${LAMBDA_TASK_ROOT}"
+
+RUN yum install -y libxml2
