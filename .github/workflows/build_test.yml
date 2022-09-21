@@ -16,9 +16,10 @@
                - 'Dockerfile_base_image'
        - if: steps.changes.outputs.dockerbasepath == 'true'
          run: |
-           export CR_PAT=${{secrets.GITHUB_TOKEN}} ; echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
-           docker build . --file Dockerfile_base_image --tag ghcr.io/ghrcdaac/mdx:base
-           docker push ghcr.io/ghrcdaac/mdx:base
+           echo steps.changes.outputs.dockerbasepath
+#           export CR_PAT=${{secrets.GITHUB_TOKEN}} ; echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+#           docker build . --file Dockerfile_base_image --tag ghcr.io/ghrcdaac/mdx:base
+#           docker push ghcr.io/ghrcdaac/mdx:base
   build:
     needs: base_image_change
     runs-on: ubuntu-latest
@@ -29,6 +30,7 @@
         - name: Login to github registrey
           uses: docker/login-action@v2
           with:
+            registry: ghcr.io
             username: USERNAME
             password: ${{secrets.GITHUB_TOKEN}}
         - uses: docker/build-push-action@v3
