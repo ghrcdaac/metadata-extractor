@@ -1,7 +1,5 @@
 import os
 import sys
-if os.environ.get('CUMULUS_LAYER'):
-    sys.path.insert(0, os.environ.get('CUMULUS_LAYER'))
 from run_cumulus_task import run_cumulus_task
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
@@ -12,9 +10,7 @@ import boto3
 from process_mdx.helpers import get_logger
 import copy
 
-
 logger = get_logger()
-
 
 class MDX(Process):
     """
@@ -684,7 +680,7 @@ def handler(event, context):
     :param context: object provides methods and properties that provide information about the
                     invocation, function, and execution environment
     """
-    
+
     return run_cumulus_task(task, event, context)
 
 

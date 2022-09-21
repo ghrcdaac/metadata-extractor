@@ -7,18 +7,11 @@
   build:
     runs-on: ubuntu-latest
     name: Build & Test
-    container:
-      image: continuumio/miniconda3:4.8.2
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Install 3rd party packages and dependencies
-        run: |
-          apt-get --allow-releaseinfo-change update
-          apt-get install -y libxml2-utils
-          bash conda-requirements.sh
-          pip install twine
-          python setup.py install
-          pip install -r requirements-dev.txt
-          python setup.py sdist
-          pytest --junitxml=test_metadata_extractor.xml test
+        - uses: actions/checkout@v2
+          name: checkout
+        - uses: docker/build-push-action@v3
+          name: Build docker
+          with:
+            context: .
+            tags: mdx:latest
