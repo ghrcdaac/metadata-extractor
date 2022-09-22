@@ -14,11 +14,13 @@ jobs:
         with:
           filters: |
             mdx_base:
-              - './mdx_base/**'
-      - name: check variable
+              - 'mdx_base/**'
+      - if: steps.filter.outputs.mdx_base
+        name: foobar
         run: |
-           echo ${{steps.filter.outputs.mdx_base}}
-           ls -al
+          echo "I am here"
+          echo ${{steps.filter.outputs.mdx_base}}
+          ls -al
       - name: check logic
         if: steps.filter.outputs.mdx_base
         run: |
