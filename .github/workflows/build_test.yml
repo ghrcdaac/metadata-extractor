@@ -8,6 +8,7 @@
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v2
+         name: checkout source code
        - uses: dorny/paths-filter@v2
          id: changes
          with:
@@ -24,6 +25,9 @@
            registry: ghcr.io
            username: USERNAME
            password: ${{secrets.GITHUB_TOKEN}}
+       - uses: actions/checkout@v2
+         name: checkout source code
+         if: needs.base_image_change.steps.changes.outputs.dockerbasepath
        - uses: docker/build-push-action@v3
          if: needs.base_image_change.steps.changes.outputs.dockerbasepath
          name: Build docker
@@ -36,9 +40,11 @@
     runs-on: ubuntu-latest
     name: Build & Test
     steps:
-        - uses: docker/build-push-action@v3
-          name: Build docker
-          with:
+       - uses: actions/checkout@v2
+         name: checkout source code
+       - uses: docker/build-push-action@v3
+         name: Build docker
+         with:
             context: .
             tags: mdx:latest
 
