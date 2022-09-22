@@ -14,7 +14,7 @@ jobs:
         with:
           filters: |
             mdx_base:
-              - 'mdx_base_docker/**'
+              - 'mdx_base/**'
       - if: steps.filter.outputs.mdx_base
         name: foobar
         run: |
