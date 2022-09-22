@@ -29,6 +29,7 @@
            password: ${{secrets.GITHUB_TOKEN}}
        - uses: actions/checkout@v2
          name: checkout source code
+       - name: check variable
          run: |
            echo ${{ needs.base_image_change.steps.changes.outputs.dockerbasepath }}
        - uses: docker/build-push-action@v3
