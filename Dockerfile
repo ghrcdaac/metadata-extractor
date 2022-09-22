@@ -9,7 +9,7 @@ ARG stage
 # Only if stage is other than dev
 ADD mdx ${LAMBDA_TASK_ROOT}
 
-COPY requirements*.txt /tmp/.
+COPY requirements*.txt /tmp/
 
 RUN     pip install -r /tmp/requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
