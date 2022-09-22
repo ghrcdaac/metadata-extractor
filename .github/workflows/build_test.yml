@@ -4,20 +4,8 @@
    push:
 
  jobs:
-  base_image_change:
-     runs-on: ubuntu-latest
-     steps:
-       - uses: actions/checkout@v2
-         name: checkout source code
-       - uses: dorny/paths-filter@v2
-         id: changes
-         with:
-           filters: |
-             dockerbasepath:
-               - 'Dockerfile_base_image'
 
   build_mdx:
-    needs: base_image_change
     runs-on: ubuntu-latest
     name: Build & Test
     steps:
@@ -29,11 +17,18 @@
            password: ${{secrets.GITHUB_TOKEN}}
        - uses: actions/checkout@v2
          name: checkout source code
+
+       - uses: dorny/paths-filter@v2
+         id: changes
+         with:
+           filters: |
+             dockerbasepath:
+               - 'Dockerfile_base_image'
        - name: check variable
          run: |
-           echo ${{ needs.base_image_change.steps.changes.outputs.dockerbasepath }}
+           echo ${{steps.changes.outputs.dockerbasepath}}
        - uses: docker/build-push-action@v3
-         if: needs.base_image_change.steps.changes.outputs.dockerbasepath == true
+         if: steps.changes.outputs.dockerbasepath
          name: Build MDX base docker
          with:
             context: Dockerfile_base_image

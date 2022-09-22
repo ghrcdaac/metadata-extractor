@@ -15,4 +15,4 @@ RUN yum install -y libxml2
 
 RUN yum install -y nano
 
-RUN echo "Hello World"
+RUN echo "Hello World!"
