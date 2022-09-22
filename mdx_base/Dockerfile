@@ -14,6 +14,3 @@ COPY requirements.txt /tmp/requirements.txt
 
 RUN pip install -r /tmp/requirements.txt  --target "${LAMBDA_TASK_ROOT}"
 
-
-
-RUN echo "Hello World!#"

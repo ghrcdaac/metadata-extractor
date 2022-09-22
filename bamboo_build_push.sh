@@ -71,7 +71,7 @@ done
 build_docker mdx
 
 # Copy test results
-docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /build/test_results/test_metadata_extractor.xml  /opt/mount/test_metadata_extractor.xml
+docker run --rm -v $PWD/test_results:/opt/mount --entrypoint cp  mdx  /var/task/test_results/test_metadata_extractor.xml  /opt/mount/test_metadata_extractor.xml
 
 for (( i=0; i<$len; i++ ))
 do

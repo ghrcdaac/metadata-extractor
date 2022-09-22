@@ -41,5 +41,4 @@ jobs:
         with:
           context: .
           tags: ghcr.io/ghrcdaac/mdx:latest
-          push: true
 

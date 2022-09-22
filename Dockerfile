@@ -21,5 +21,5 @@ RUN if [ "$stage" != "prod" ] ; then  \
 
 RUN rm -rf test
 
-#CMD [ "app.handler" ]
-ENTRYPOINT ["/bin/bash"]
+CMD [ "app.handler" ]
+#ENTRYPOINT ["/bin/bash"]
