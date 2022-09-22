@@ -2,7 +2,7 @@
 
 set -o nounset
 set -o pipefail
-export REPO_NAME=mdx_lamdba
+export REPO_NAME=mdx_lambda
 export AWS_REGION=$bamboo_AWS_REGION
 #access_keys=( $bamboo_AWS_SBX_ACCESS_KEY $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY )
 #secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
