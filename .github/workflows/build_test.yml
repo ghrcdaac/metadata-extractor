@@ -24,10 +24,10 @@
            registry: ghcr.io
            username: USERNAME
            password: ${{secrets.GITHUB_TOKEN}}
-        - uses: docker/build-push-action@v3
-          if: needs.base_image_change.steps.changes.outputs.dockerbasepath
-          name: Build docker
-          with:
+       - uses: docker/build-push-action@v3
+         if: needs.base_image_change.steps.changes.outputs.dockerbasepath
+         name: Build docker
+         with:
             context: Dockerfile_base_image
             tags: mdx:base
             push: true
