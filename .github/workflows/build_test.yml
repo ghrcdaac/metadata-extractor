@@ -30,7 +30,7 @@
        - name: check logic
          if: steps.changes.outputs.mdxbasepath == 'true'
          run: |
-           echo ${{steps.changes.outputs.dockerbasepath}}
+           echo ${{steps.changes.outputs.mdxbasepath}}
            ls -al
 #       - uses: docker/build-push-action@v3
 #         if: steps.changes.outputs.dockerbasepath
