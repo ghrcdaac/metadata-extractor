@@ -14,3 +14,4 @@ RUN pip install pyhdf --target "${LAMBDA_TASK_ROOT}"
 RUN yum install -y libxml2
 
 RUN yum install -y nano
+RUN echo "Hello"
