@@ -29,7 +29,6 @@
            password: ${{secrets.GITHUB_TOKEN}}
        - uses: actions/checkout@v2
          name: checkout source code
-
        - uses: docker/build-push-action@v3
          if: needs.base_image_change.steps.changes.outputs.dockerbasepath
          name: Build MDX base docker
