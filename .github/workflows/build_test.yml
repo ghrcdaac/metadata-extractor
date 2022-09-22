@@ -21,14 +21,14 @@
          id: changes
          with:
            filters: |
-             dockerbasepath:
-               - './Dockerfile_base_image'
+             mdxbasepath:
+               - 'mdx_base/**'
        - name: check variable
          run: |
-           echo ${{steps.changes.outputs.dockerbasepath}}
+           echo ${{steps.changes.outputs.mdxbasepath}}
            ls -al
        - name: check logic
-         if: steps.changes.outputs.dockerbasepath == 'true'
+         if: steps.changes.outputs.mdxbasepath == 'true'
          run: |
            echo ${{steps.changes.outputs.dockerbasepath}}
            ls -al
@@ -36,7 +36,7 @@
 #         if: steps.changes.outputs.dockerbasepath
 #         name: Build MDX base docker
 #         with:
-#            context: ./Dockerfile_base_image
+#            context: ./mdx_base
 #            tags: mdx:base
 #            push: true
 #       - uses: docker/build-push-action@v3

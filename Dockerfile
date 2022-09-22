@@ -6,7 +6,6 @@ LABEL maintainer="Abdelhak Marouane <am0089@uah.edu>"
 ARG stage
 
 
-ENV LAMBDA_TASK_ROOT /var/task
 # Only if stage is other than dev
 ADD mdx ${LAMBDA_TASK_ROOT}
 
