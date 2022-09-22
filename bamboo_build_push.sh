@@ -19,7 +19,7 @@ function create_ecr_repo_or_skip() {
   check_repo_exist=$(aws ecr describe-repositories --repository-names $REPO_NAME 2> /dev/null)
   if [[ ! -n "${check_repo_exist}" ]]; then
     echo "we need to create ${REPO_NAME}"
-    aws ecr create-repository --repository-name $REPO_NAME
+    aws ecr create-repository --repository-name $REPO_NAME --region $AWS_REGION
     echo "${REPO_NAME} was created"
   fi
 
