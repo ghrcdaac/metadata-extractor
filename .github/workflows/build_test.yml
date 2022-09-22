@@ -18,14 +18,15 @@ jobs:
       - if: steps.filter.outputs.mdx_base
         name: foobar
         run: |
-          echo "I am here"
+          echo "I am foobar"
           echo ${{steps.filter.outputs.mdx_base}}
           ls -al
       - name: check logic
-        if: steps.filter.outputs.mdx_base
+        if: steps.filter.outputs.mdx_base == 'true'
         run: |
-           echo ${{steps.filter.outputs.mdx_base}}
-           ls -al
+          echo "I am check logic"
+          echo ${{steps.filter.outputs.mdx_base}}
+          ls -al
 
 #      - uses: docker/login-action@v2
 #        name: docker login
