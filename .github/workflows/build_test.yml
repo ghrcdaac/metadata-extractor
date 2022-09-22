@@ -20,16 +20,16 @@ jobs:
         id: filter
         with:
           filters: |
-            mdxbasepath:
+            mdx_base:
               - 'mdx_base/**'
       - name: check variable
         run: |
-           echo ${{steps.filter.outputs.mdxbasepath}}
+           echo ${{steps.filter.outputs.mdx_base}}
            ls -al
       - name: check logic
-        if: ${{ steps.filter.outputs.mdxbasepath == 'true' }}
+        if: ${{ steps.filter.outputs.mdx_base == 'true' }}
         run: |
-           echo ${{steps.filter.outputs.mdxbasepath}}
+           echo ${{steps.filter.outputs.mdx_base}}
            ls -al
 #       - uses: docker/build-push-action@v3
 #         if: steps.changes.outputs.dockerbasepath
