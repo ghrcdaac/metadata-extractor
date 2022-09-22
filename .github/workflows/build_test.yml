@@ -17,7 +17,6 @@
            password: ${{secrets.GITHUB_TOKEN}}
        - uses: actions/checkout@v2
          name: checkout source code
-
        - uses: dorny/paths-filter@v2
          id: changes
          with:
@@ -27,6 +26,7 @@
        - name: check variable
          run: |
            echo ${{steps.changes.outputs.dockerbasepath}}
+           ls -al
        - uses: docker/build-push-action@v3
          if: steps.changes.outputs.dockerbasepath
          name: Build MDX base docker
@@ -37,6 +37,6 @@
        - uses: docker/build-push-action@v3
          name: Build docker
          with:
-            context: .
+            context: d
             tags: mdx:latest
 
