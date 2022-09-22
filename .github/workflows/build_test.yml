@@ -9,19 +9,18 @@ jobs:
     name: Build & Test
     steps:
       - uses: actions/checkout@v2
-        name: checkout source code
       - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
             mdx_base:
-              - 'mdx_base/**'
+              - './mdx_base/**'
       - name: check variable
         run: |
            echo ${{steps.filter.outputs.mdx_base}}
            ls -al
       - name: check logic
-        if: ${{ steps.filter.outputs.mdx_base == 'true' }}
+        if: steps.filter.outputs.mdx_base
         run: |
            echo ${{steps.filter.outputs.mdx_base}}
            ls -al
