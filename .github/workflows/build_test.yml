@@ -22,13 +22,13 @@
          with:
            filters: |
              dockerbasepath:
-               - 'Dockerfile_base_image'
+               - './Dockerfile_base_image'
        - name: check variable
          run: |
            echo ${{steps.changes.outputs.dockerbasepath}}
            ls -al
        - name: check logic
-         if: steps.changes.outputs.dockerbasepath
+         if: steps.changes.outputs.dockerbasepath == 'true'
          run: |
            echo ${{steps.changes.outputs.dockerbasepath}}
            ls -al
