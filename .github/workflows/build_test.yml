@@ -33,6 +33,7 @@ jobs:
         if: steps.filter.outputs.mdx_base == 'true'
         name: Build MDX base docker
         with:
+          registry: ghcr.io
           context: ./mdx_base
           tags: mdx:base
           push: true
@@ -40,5 +41,7 @@ jobs:
         name: Build docker
         with:
           context: .
+          registry: ghcr.io
           tags: mdx:latest
+          push: true
 
