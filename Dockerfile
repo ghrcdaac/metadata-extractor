@@ -1,27 +1,25 @@
-FROM    continuumio/miniconda3:4.8.2
+FROM ghcr.io/ghrcdaac/mdx:base
 
-LABEL   maintainer="Abdelhak Marouane <am0089@uah.edu>"
-RUN     apt-get --allow-releaseinfo-change update && \
-        apt-get install -y libxml2-utils
-
-WORKDIR /build
-
-ENV     BUILD=/build
-
-COPY ["./conda-requirements.sh", "requirements.txt", "/build/"]
-
-RUN     bash conda-requirements.sh && \
-        pip install -r requirements.txt
-
-# For development
-COPY ["./requirements-dev.txt", "/build/"]
-RUN     pip install ipython && \
-        pip install -r requirements-dev.txt
+LABEL maintainer="Abdelhak Marouane <am0089@uah.edu>"
 
 
-COPY    . $BUILD/
+ARG stage
 
-RUN     python setup.py install
 
-RUN     pytest --junitxml=./test_results/test_metadata_extractor.xml test && \
-        rm -rf test
+# Only if stage is other than dev
+ADD mdx ${LAMBDA_TASK_ROOT}
+
+COPY requirements*.txt /tmp/.
+
+RUN     pip install -r /tmp/requirements.txt --target "${LAMBDA_TASK_ROOT}"
+
+RUN if [ "$stage" != "prod" ] ; then  \
+    pip install -r /tmp/requirements-dev.txt && \
+    python -m pytest --junitxml=./test_results/test_metadata_extractor.xml test; \
+
+  fi
+
+RUN rm -rf test
+
+CMD [ "app.handler" ]
+#ENTRYPOINT ["/bin/bash"]
