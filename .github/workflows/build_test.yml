@@ -31,7 +31,7 @@
          if: steps.changes.outputs.dockerbasepath
          name: Build MDX base docker
          with:
-            context: Dockerfile_base_image
+            context: ./Dockerfile_base_image
             tags: mdx:base
             push: true
        - uses: docker/build-push-action@v3
