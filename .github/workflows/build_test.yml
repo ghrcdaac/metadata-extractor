@@ -28,7 +28,7 @@
            echo ${{steps.changes.outputs.mdxbasepath}}
            ls -al
        - name: check logic
-         if: ${{ steps.changes.outputs.mdxbasepath == 'true' }}
+         if: ${{ steps.changes.outputs.mdxbasepath == 'tprue' }}
          run: |
            echo ${{steps.changes.outputs.mdxbasepath}}
            ls -al
