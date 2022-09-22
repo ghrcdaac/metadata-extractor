@@ -1,35 +1,34 @@
- name: Build & Test
- on:
-   pull_request:
-   push:
+name: Build & Test
+on:
+  pull_request:
+  push:
 
- jobs:
-
+jobs:
   build_mdx:
     runs-on: ubuntu-latest
     name: Build & Test
     steps:
-       - uses: docker/login-action@v2
-         name: docker login
-         with:
-           registry: ghcr.io
-           username: USERNAME
-           password: ${{secrets.GITHUB_TOKEN}}
-       - uses: actions/checkout@v2
-         name: checkout source code
-       - uses: dorny/paths-filter@v2
-         id: changes
-         with:
-           filters: |
-             mdxbasepath:
-               - 'mdx_base/**'
-       - name: check variable
-         run: |
-           echo ${{steps.changes.outputs.mdxbasepath}}
+      - uses: docker/login-action@v2
+        name: docker login
+        with:
+          registry: ghcr.io
+          username: USERNAME
+          password: ${{secrets.GITHUB_TOKEN}}
+      - uses: actions/checkout@v2
+        name: checkout source code
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            mdxbasepath:
+              - 'mdx_base/**'
+      - name: check variable
+        run: |
+           echo ${{steps.filter.outputs.mdxbasepath}}
            ls -al
-       - name: check logic
-         if: ${{ steps.changes.outputs.mdxbasepath == 'tprue' }}
-         run: |
+      - name: check logic
+        if: ${{ steps.changes.outputs.mdxbasepath == 'tprue' }}
+        run: |
            echo ${{steps.changes.outputs.mdxbasepath}}
            ls -al
 #       - uses: docker/build-push-action@v3
