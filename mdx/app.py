@@ -668,12 +668,7 @@ def task(event, context):
                     invocation, function, and execution environment
     :return: mdx processing output
     """
-    # print(event)
-    with open('/mnt/data2efs/test.txt', 'w') as file:
-        file.write("Hello world")
-
-    dir_list = os.listdir('/mnt/data2efs/')
-    print(dir_list)
+    logger.info(event)
 
     mdx_instance = MDX(input=event['input'], config=event['config'])
     return mdx_instance.process()
