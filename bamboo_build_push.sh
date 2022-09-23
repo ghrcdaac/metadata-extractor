@@ -58,6 +58,14 @@ ${docker_build} $1 .
 
 }
 
+function update_lambda {
+docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
+aws lambda update-function-code \
+--function-name $2-mdx_lambda \
+--image-uri ${docker_image_name}:latest \
+--region ${AWS_REGION}
+}
+
 len=${#access_keys[@]}
 
 # Check keys
@@ -83,6 +91,7 @@ do
   create_ecr_repo_or_skip
   # Push mdx to all account's ecr
   push_to_ecr $ACCOUNT_NUMBER $prefix
+  update_lambda $ACCOUNT_NUMBER $prefix
 
 
 
