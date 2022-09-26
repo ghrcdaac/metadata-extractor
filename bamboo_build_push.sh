@@ -9,10 +9,10 @@ export AWS_REGION=$bamboo_AWS_REGION
 #prefixes=( $bamboo_PREFIX_SBX $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
 #account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
 
-access_keys=( $bamboo_AWS_SBX_ACCESS_KEY  )
-secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY  )
-prefixes=( $bamboo_PREFIX_SBX  )
-account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX )
+access_keys=( $bamboo_AWS_SBX_ACCESS_KEY  $bamboo_AWS_SIT_ACCESS_KEY )
+secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY $bamboo_AWS_SIT_SECRET_ACCESS_KEY )
+prefixes=( $bamboo_PREFIX_SBX $bamboo_PREFIX_SIT )
+account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT )
 
 
 function create_ecr_repo_or_skip() {
