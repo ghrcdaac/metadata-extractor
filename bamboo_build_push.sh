@@ -16,10 +16,10 @@ account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT $bamboo_
 
 
 function create_ecr_repo_or_skip() {
-  check_repo_exist=$(aws ecr describe-repositories --repository-names $REPO_NAME 2> /dev/null)
+  check_repo_exist=$(aws ecr describe-repositories --region $AWS_REGION --repository-names $REPO_NAME 2> /dev/null)
   if [[ ! -n "${check_repo_exist}" ]]; then
     echo "we need to create ${REPO_NAME}"
-    aws ecr create-repository --repository-name $REPO_NAME --region $REPO_NAME
+    aws ecr create-repository --repository-name $REPO_NAME --region $AWS_REGION
     echo "${REPO_NAME} was created"
   fi
 
@@ -28,7 +28,7 @@ function create_ecr_repo_or_skip() {
 function update_lambda_or_skip() {
   check_lambda_exist=$(aws lambda get-function --region $AWS_REGION --function-name $2-$REPO_NAME 2> /dev/null)
     if [[ ! -n "${check_lambda_exist}" ]]; then
-    echo "NO lambda found ${REPO_NAME} SKIPPING"
+    echo "NO lambda found $2-${REPO_NAME} SKIPPING"
     else
       update_lambda $1 $2
   fi
