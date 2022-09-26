@@ -7,7 +7,7 @@ if [ $EXIT_STATUS -ne 0 ]; then
 fi
 }
 
-export REPO_NAME=mdx_lambda
+export REPO_NAME=mdx_docker_lambda
 export AWS_REGION=us-west-2
 read -rp 'AWS_PROFILE: ' AWS_PROFILE
 read -rp 'Stack Prefix: ' STACK_PREFIX
@@ -27,7 +27,7 @@ check_exit
 aws ecr create-repository --repository-name $REPO_NAME --profile $AWS_PROFILE --region ${AWS_REGION} 2> /dev/null
 docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME
 aws lambda update-function-code \
---function-name $STACK_PREFIX-mdx_lambda \
+--function-name $STACK_PREFIX-$REPO_NAME \
 --image-uri ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME:latest \
 --region ${AWS_REGION} \
 --profile $AWS_PROFILE
