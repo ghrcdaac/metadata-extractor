@@ -9,20 +9,29 @@ export AWS_REGION=$bamboo_AWS_REGION
 #prefixes=( $bamboo_PREFIX_SBX $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD )
 #account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD )
 
-access_keys=( $bamboo_AWS_SBX_ACCESS_KEY  $bamboo_AWS_SIT_ACCESS_KEY )
-secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY $bamboo_AWS_SIT_SECRET_ACCESS_KEY )
-prefixes=( $bamboo_PREFIX_SBX $bamboo_PREFIX_SIT )
-account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT )
+access_keys=( $bamboo_AWS_SBX_ACCESS_KEY $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY )
+secret_keys=( $bamboo_AWS_SBX_SECRET_ACCESS_KEY $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY )
+prefixes=( $bamboo_PREFIX_SBX $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT )
+account_numbers=( $bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT )
 
 
 function create_ecr_repo_or_skip() {
   check_repo_exist=$(aws ecr describe-repositories --repository-names $REPO_NAME 2> /dev/null)
   if [[ ! -n "${check_repo_exist}" ]]; then
     echo "we need to create ${REPO_NAME}"
-    aws ecr create-repository --repository-name $REPO_NAME --region $AWS_REGION
+    aws ecr create-repository --repository-name $REPO_NAME --region $REPO_NAME
     echo "${REPO_NAME} was created"
   fi
 
+}
+
+function update_lambda_or_skip() {
+  check_lambda_exist=$(aws lambda get-function --region $AWS_REGION --function-name $2-$REPO_NAME 2> /dev/null)
+    if [[ ! -n "${check_lambda_exist}" ]]; then
+    echo "NO lambda found ${REPO_NAME} SKIPPING"
+    else
+      update_lambda $1 $2
+  fi
 }
 
 function push_to_ecr() {
@@ -91,7 +100,7 @@ do
   create_ecr_repo_or_skip
   # Push mdx to all account's ecr
   push_to_ecr $ACCOUNT_NUMBER $prefix
-  update_lambda $ACCOUNT_NUMBER $prefix
+  update_lambda_or_skip $ACCOUNT_NUMBER $prefix
 
 
 
