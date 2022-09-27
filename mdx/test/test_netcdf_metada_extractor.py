@@ -5,7 +5,7 @@ from granule_metadata_extractor.processing.process_goesrpltcrs import ExtractGeo
 import sys
 
 sys.path.insert(0, path.join(path.dirname(__file__), '..'))
-from process_mdx.main import MDX
+from main import MDX
 
 
 class TestProcessGeoER(TestCase):

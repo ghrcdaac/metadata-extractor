@@ -1,15 +1,14 @@
+from run_cumulus_task import run_cumulus_task
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
 from cumulus_process import Process, s3
 from re import match
 import os
 import boto3
-from .helpers import get_logger
+from helpers import get_logger
 import copy
 
-
 logger = get_logger()
-
 
 class MDX(Process):
     """
@@ -274,7 +273,8 @@ class MDX(Process):
             "fltrepepoch": mdx.ExtractFltrepepochMetadata,
             "navghepoch": mdx.ExtractNavghepochMetadata,
             "metnavcpexaw": mdx.ExtractMetnavcpexawMetadata,
-            "prsondecpexaw": mdx.ExtractPrsondecpexawMetadata
+            "prsondecpexaw": mdx.ExtractPrsondecpexawMetadata,
+            "musondeimpacts": mdx.ExtractMusondeimpactsMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
@@ -657,6 +657,31 @@ class MDX(Process):
         :return:
         """
         pass
+
+
+def task(event, context):
+    """
+    Intermediate task to parse event and initialize MDX
+    :param event: AWS event passed into lambda
+    :param context: object provides methods and properties that provide information about the
+                    invocation, function, and execution environment
+    :return: mdx processing output
+    """
+    logger.info(event)
+
+    mdx_instance = MDX(input=event['input'], config=event['config'])
+    return mdx_instance.process()
+
+
+def handler(event, context):
+    """
+    Lambda handler entry point which will run the mdx_task
+    :param event: AWS event passed into lambda
+    :param context: object provides methods and properties that provide information about the
+                    invocation, function, and execution environment
+    """
+
+    return run_cumulus_task(task, event, context)
 
 
 if __name__ == '__main__':

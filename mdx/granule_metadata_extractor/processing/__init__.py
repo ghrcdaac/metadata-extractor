@@ -123,3 +123,4 @@ from .process_prsondecpexaw import ExtractPrsondecpexawMetadata
 from .process_apr3cpex import ExtractApr3cpexMetadata
 from .process_scrxsondecpexaw import ExtractScrxsondecpexawMetadata
 from .process_ascatcpex import ExtractAscatcpexMetadata
+from .process_musondeimpacts import ExtractMusondeimpactsMetadata
