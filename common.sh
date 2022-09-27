@@ -9,14 +9,14 @@ function update_lambda_or_skip() {
     if [[ ! -n "${check_lambda_exist}" ]]; then
     echo "NO lambda found ${REPO_NAME} SKIPPING"
     else
-      update_lambda $1 $2
+      update_lambda $1 $2 2> /dev/null
   fi
 }
 
 function update_lambda {
 docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
 aws lambda update-function-code \
---function-name $2-mdx_lambda \
+--function-name $2-$REPO_NAME \
 --image-uri ${docker_image_name}:latest \
 --region ${AWS_REGION} \
 --profile ${AWS_PROFILE}
