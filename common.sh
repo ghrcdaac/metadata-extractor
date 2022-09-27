@@ -4,8 +4,14 @@ export REPO_NAME=mdx_docker_lambda
 export AWS_REGION=${bamboo_AWS_REGION:-us-west-2}
 
 
+if [[ -z "${AWS_PROFILE}" ]]; then
+  ADD_PROFILE=""
+else
+  ADD_PROFILE="--profile $AWS_PROFILE"
+fi
+
 function update_lambda_or_skip() {
-  check_lambda_exist=$(aws lambda get-function --region $AWS_REGION --profile $AWS_PROFILE --function-name $2-$REPO_NAME 2> /dev/null)
+  check_lambda_exist=$(aws lambda get-function --region $AWS_REGION $ADD_PROFILE --function-name $2-$REPO_NAME 2> /dev/null)
     if [[ ! -n "${check_lambda_exist}" ]]; then
     echo "NO lambda found ${REPO_NAME} SKIPPING"
     else
@@ -19,7 +25,7 @@ aws lambda update-function-code \
 --function-name $2-$REPO_NAME \
 --image-uri ${docker_image_name}:latest \
 --region ${AWS_REGION} \
---profile ${AWS_PROFILE}
+$ADD_PROFILE
 }
 
 
