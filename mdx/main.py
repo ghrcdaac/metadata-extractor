@@ -1,5 +1,3 @@
-import os
-import sys
 from run_cumulus_task import run_cumulus_task
 import granule_metadata_extractor.processing as mdx
 import granule_metadata_extractor.src as src
