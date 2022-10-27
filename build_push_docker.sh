@@ -19,6 +19,11 @@ docker build -t ghcr.io/ghrcdaac/mdx:base ./mdx_base
 docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME .
 check_exit
 
-update_lambda_or_skip $AWS_ACCOUNT_ID $STACK_PREFIX
+create_ecr_repo_or_skip $AWS_ACCOUNT_ID $STACK_PREFIX
+check_exit
 
+push_to_ecr $AWS_ACCOUNT_ID $STACK_PREFIX
+check_exit
+
+update_lambda_or_skip $AWS_ACCOUNT_ID $STACK_PREFIX
 check_exit
