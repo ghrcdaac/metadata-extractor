@@ -2,6 +2,7 @@ from ..src.extract_ascii_metadata import ExtractASCIIMetadata
 from datetime import datetime, timedelta
 import os
 import re
+from netCDF4 import Dataset
 
 
 class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
@@ -19,28 +20,54 @@ class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
         super().__init__(file_path)
         self.file_path = file_path
         self.filename = os.path.basename(self.file_path)
+        if file_path.endswith('.ict'):
+            self.fileformat = "ASCII"
+        else: #.nc
+            self.fileformat = "netCDF-3"
         self.get_variables_min_max()
 
     def get_variables_min_max(self, **kwargs):
         """
         Extracts temporal metadata and assign spatial metadata for avapsimpacts granules
         """
-        lat = []
-        lon = []
-        dt = []
-        dt_base = datetime.strptime(self.filename.split('/')[-1].split('_')[3][0:8], '%Y%m%d')
+        if self.file_path.endswith('.ict'): #ASCII file
+           lat = []
+           lon = []
+           dt = []
+           dt_base = datetime.strptime(self.filename.split('/')[-1].split('_')[3][0:8], '%Y%m%d')
 
-        with open(self.file_path, 'r') as f:
-            for line in f.readlines():
-                matches = re.search(r'^([\d.-]*),(([\d.-]*),){7}([\d.-]*),.*$', line)
-                if matches and all([(x != "-9999") for x in [matches[3], matches[4]]]):
-                    lat.append(float(matches[3]))
-                    lon.append(float(matches[4]))
-                    dt.append(float(matches[1]))
+           with open(self.file_path, 'rb') as fp:
+                lines = fp.readlines()
 
-        self.start_time = dt_base + timedelta(seconds=min(dt))
-        self.end_time = dt_base + timedelta(seconds=max(dt))
-        self.north, self.south, self.east, self.west = [max(lat), min(lat), max(lon), min(lon)]
+           for line in lines:
+               #decoding
+               line = line.decode('utf-8',errors='ignore')
+               matches = re.search(r'^([\d.-]*),(([\d.-]*),){7}([\d.-]*),.*$', line)
+               if matches and all([(x != "-9999") for x in [matches[3], matches[4]]]):
+                  lat.append(float(matches[3]))
+                  lon.append(float(matches[4]))
+                  dt.append(float(matches[1]))
+
+           self.start_time = dt_base + timedelta(seconds=min(dt))
+           self.end_time = dt_base + timedelta(seconds=max(dt))
+           self.north, self.south, self.east, self.west = [max(lat), min(lat), max(lon), min(lon)]
+        else: #netCDF-3 file
+           data = Dataset(self.file_path)
+           reftime_str = 'T'.join(data['time'].units.split()[2:4]) #i.e., '2022-01-06T17:05:09'
+           dt_base = datetime.strptime(reftime_str,'%Y-%m-%dT%H:%M:%S')
+           dt0 = data['time'][:].flatten() #seconds since reftime
+           lat0 = data['lat'][:].flatten()
+           lon0 = data['lon'][:].flatten()
+
+           #get indices for vaid lat and lon values
+           idx = [i for i in range(0,len(lat0)) if lat0.mask[i] == False and lon0.mask[i] == False]
+           dt = dt0[idx]
+           lat = lat0[idx]
+           lon = lon0[idx]
+
+           self.start_time = dt_base+timedelta(seconds=dt.min())
+           self.end_time = dt_base+timedelta(seconds=dt.max())
+           self.north, self.south, self.east, self.west = [lat.max(), lat.min(), lon.max(), lon.min()]
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
@@ -96,7 +123,7 @@ class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
             str(x) for x in gemetry_list)
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
-        data['DataFormat'] = format
+        data['DataFormat'] = self.fileformat
         data['VersionId'] = version
         return data
 
