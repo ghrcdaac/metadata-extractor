@@ -35,14 +35,7 @@ class ExtractUalbparsimpactsMetadata(ExtractNetCDFMetadata):
         #             or
         #             units: seconds since 2022-01-10T16:19:20 
         tkn = datafile['time'].units.split(' ')
-        if len(tkn) == 4: #2020
-           ref_time_str = 'T'.join(tkn[-2:]) #i.e., '2020-01-30T00:00:00'
-        elif len(tkn) == 3: #2022
-           if 'T' in tkn[2]:
-              ref_time_str = tkn[2] #i.e., 2020-02-28T16:19:20
-           else:
-              ref_time_str = tkn[2] + 'T00:00:00'
-
+        ref_time_str = 'T'.join(tkn[-2:]) #i.e., '2020-01-30T00:00:00'
         ref_time = datetime.strptime(ref_time_str,'%Y-%m-%dT%H:%M:%S')
 
         self.start_time, self.end_time = [ref_time+timedelta(seconds=sec.min().item()),
