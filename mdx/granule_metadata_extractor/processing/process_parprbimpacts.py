@@ -2,6 +2,7 @@ from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
 import numpy as np
+import os, pathlib, json
 
 class ExtractParprbimpactsMetadata(ExtractNetCDFMetadata):
     """
@@ -18,11 +19,19 @@ class ExtractParprbimpactsMetadata(ExtractNetCDFMetadata):
     def __init__(self, file_path):
         # super().__init__(file_path)
         self.file_path = file_path
-        self.format = 'netCDF-4'
 
-        self.get_variables_min_max()
+        if file_path.endswith('.nc'):
+           self.format = 'netCDF-4'
+           self.get_variables_min_max_nc()
 
-    def get_variables_min_max(self):
+        else:
+           self.format = 'PNG'
+           with open(os.path.join(pathlib.Path(__file__).parent.absolute(),
+                               '../src/helpers/parprbimpactsRefData.json'), 'r') as fp:
+                self.dataset_loc = json.load(fp)
+           self.get_variables_min_max_png()
+
+    def get_variables_min_max_nc(self):
         """
         Extract metadata information from netcdf file
         """
@@ -38,6 +47,19 @@ class ExtractParprbimpactsMetadata(ExtractNetCDFMetadata):
                                                         np.nanmin(lats),
                                                         np.nanmax(lons),
                                                         np.nanmin(lons)]
+
+    def get_variables_min_max_png(self):
+        """
+        Extract PNG metadata information from look up table 
+        """
+        key = self.file_path.split('/')[-1].split('_')[2] #i.e., 20200108
+        self.start_time, self.end_time = [datetime.strptime(self.dataset_loc[key]['start'],'%Y-%m-%dT%H:%M:%SZ'),
+                                          datetime.strptime(self.dataset_loc[key]['end'],'%Y-%m-%dT%H:%M:%SZ')]
+        self.north, self.south, self.east, self.west = [self.dataset_loc[key]['NLat'],
+                                                        self.dataset_loc[key]['SLat'],
+                                                        self.dataset_loc[key]['ELon'],
+                                                        self.dataset_loc[key]['WLon']]
+
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0):
         """
