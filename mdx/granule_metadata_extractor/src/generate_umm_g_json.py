@@ -65,12 +65,18 @@ class GenerateUmmGJson:
         # Add format only if it is in cmr's enum value list for format validation
         if data_format in self.cmr_enum_values:
             umm_json['DataGranule']['ArchiveAndDistributionInformation'][0]['Format'] = data_format
-        umm_json['TemporalExtent'] = {
-            "RangeDateTime": {
-                "BeginningDateTime": self.data['BeginningDateTime'],
-                "EndingDateTime": self.data['EndingDateTime']
+        # Determine if single datetime or has beginning/start time
+        if self.data['BeginningDateTime'] == self.data['EndingDateTime']:
+            umm_json['TemporalExtent'] = {
+                "SingleDateTime": self.data['BeginningDateTime']
             }
-        }
+        else:
+            umm_json['TemporalExtent'] = {
+                "RangeDateTime": {
+                    "BeginningDateTime": self.data['BeginningDateTime'],
+                    "EndingDateTime": self.data['EndingDateTime']
+                }
+            }
         umm_json['SpatialExtent'] = {
             "HorizontalSpatialDomain": {
                 "Geometry": {
