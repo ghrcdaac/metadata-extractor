@@ -7,6 +7,7 @@ import os
 import boto3
 from helpers import get_logger
 import copy
+import shutil
 
 logger = get_logger()
 
@@ -660,6 +661,17 @@ class MDX(Process):
         """
         pass
 
+def preclean_lambda(tmp_dirs):
+    """
+    OS memory error in /tmp due to too large of file can persist in lambda. This method will
+    wipe tmp directory subdirectories created by MDX before processing to ensure os memory error does not lock
+    MDX processing lambda
+    :param tmp_dirs: Set of MDX created subdirectories within the /tmp directory
+    :return:
+    """
+    for dir in tmp_dirs:
+        shutil.rmtree(f'/tmp/{dir}')
+
 
 def task(event, context):
     """
@@ -670,7 +682,7 @@ def task(event, context):
     :return: mdx processing output
     """
     logger.info(event)
-
+    preclean_lambda([x for x in os.listdir('/tmp/') if x.startswith('tmp')])
     mdx_instance = MDX(input=event['input'], config=event['config'])
     return mdx_instance.process()
 
