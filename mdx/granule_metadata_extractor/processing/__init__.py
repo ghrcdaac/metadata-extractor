@@ -126,3 +126,4 @@ from .process_ascatcpex import ExtractAscatcpexMetadata
 from .process_musondeimpacts import ExtractMusondeimpactsMetadata
 from .process_navdc8cpex import ExtractNavdc8cpexMetadata
 from .process_gfscpex import ExtractGfscpexMetadata
+from .process_goescpex import ExtractGoescpexMetadata
