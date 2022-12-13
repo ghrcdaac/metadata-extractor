@@ -3,11 +3,13 @@ from unittest import TestCase
 from granule_metadata_extractor.processing.process_parprbimpacts import ExtractParprbimpactsMetadata
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
-#prem metadata for sample file:
+##prem metadata for sample file:
+##prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=parprbimpacts,inv=inventory,file=IMPACTS_HVPS3B-P3_20220213_images_v01.tar,path=images/IMPACTS_HVPS3B-P3_20220213_images_v01.tar,size=4515840,start=2022-02-13T11:50:00Z,end=2022-02-13T15:11:00Z,browse=N,checksum=d5c4af1095c9507517afa5c650cd2bda20f52fa0,NLat=42.472938537597656,SLat=37.88542175292969,WLon=-75.57456970214844,ELon=-70.25347900390625,format=PNG
+
 class TestProcessParprbimpacts(TestCase):
     """
-    Test processing.
+    Test processing dataset metadata.
     This will test if metadata will be extracted correctly
     """
     granule_name = "IMPACTS_HVPS3B-P3_20220213_images_v01.tar"
@@ -29,17 +31,17 @@ class TestProcessParprbimpacts(TestCase):
         Testing get correct start date
         :return:
         """
-        start_date = self.process_dataset.get_temporal()[0]
+        start_date = self.process_dataset.get_temporal_lookup(self.granule_name)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
         self.assertEqual(start_date, "2022-02-13T11:50:00Z")
 
     def test_2_get_stop_date(self):
         """
-        Testing get correct end date
+        Testing get correct start date
         :return:
         """
-        stop_date = self.process_dataset.get_temporal()[1]
+        stop_date = self.process_dataset.get_temporal_lookup(self.granule_name)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
         self.assertEqual(stop_date, "2022-02-13T15:11:00Z")
@@ -58,8 +60,8 @@ class TestProcessParprbimpacts(TestCase):
         A function helper to get North, West, Souh, East
         :return: wnes[index] where index: west = 0 - north = 1 - east = 2 - south = 3
         """
-        process_geos = self.process_dataset
-        wnes = process_geos.get_wnes_geometry()
+        process_gpm = self.process_dataset
+        wnes = process_gpm.get_wnes_geometry_lookup(self.granule_name)
         return str(round(float(wnes[index]), 3))
 
     #NLat=42.472938537597656,SLat=37.88542175292969,WLon=-75.57456970214844,ELon=-70.25347900390625
@@ -73,7 +75,7 @@ class TestProcessParprbimpacts(TestCase):
         self.assertEqual(north, '42.473')
 
     def test_5_get_west(self):
-        """
+        """29.864
         Test geometry metadata
         :return:
         """
@@ -105,7 +107,6 @@ class TestProcessParprbimpacts(TestCase):
         :return: the MD5 string
         """
 
-        # checksum = self.process_goesrpltavirisng.get_checksum()
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
         self.assertEqual(checksum, 'c073a4c85f8c0d8842f21134a610ebfa')

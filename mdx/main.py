@@ -502,7 +502,7 @@ class MDX(Process):
         return ["tcspecmwf", "gpmwrflpvex", "relampagolma", "goesrpltavirisng", "gpmvanlpvex",
                 "gpmikalpvex", "gpmkorlpvex", "gpmkerlpvex", "gpmkumlpvex", "gpmseafluxicepop",
                 "kakqimpacts", "kccximpacts", "kbgmimpacts", "kboximpacts", "kbufimpacts",
-                "gpmkarx2ifld", "gpmkdmx2ifld", "gpmkdvn2ifld", "gpmkmpx2ifld"]
+                "gpmkarx2ifld", "gpmkdmx2ifld", "gpmkdvn2ifld", "gpmkmpx2ifld", "parprbimpacts"]
 
     def mutate_input(self, output_folder, input_file):
         """
