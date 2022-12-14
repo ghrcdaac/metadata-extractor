@@ -7,6 +7,7 @@ import os
 import boto3
 from helpers import get_logger
 import copy
+import shutil
 
 logger = get_logger()
 
@@ -14,6 +15,10 @@ class MDX(Process):
     """
     Class to extract spatial and temporal metadata
     """
+    def __init__(self, input, config, path='/tmp/mdx'):
+        super().__init__(input, config=config, path=path)
+        shutil.rmtree(path, ignore_errors=True)
+        os.makedirs(path)
 
     def generate_json_data(self, data, access_url, output_folder):
         """
@@ -671,7 +676,6 @@ def task(event, context):
     :return: mdx processing output
     """
     logger.info(event)
-
     mdx_instance = MDX(input=event['input'], config=event['config'])
     return mdx_instance.process()
 
