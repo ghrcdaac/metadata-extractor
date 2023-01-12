@@ -1,3 +1,5 @@
+import logging
+
 from ..src.extract_ascii_metadata import ExtractASCIIMetadata
 from datetime import datetime, timedelta
 import os
@@ -52,8 +54,7 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
         """
         self.file_path = f'{self.file_path}.gz'
         self.file_name = os.path.basename(self.file_path)
-        with open(self.file_path.rstrip('.gz'), 'rb') as f_in, gzip.open(self.file_path,
-                                                                         'wb') as f_out:
+        with open(self.file_path.rstrip('.gz'), 'rb') as f_in, gzip.open(self.file_path, 'wb') as f_out:
             shutil.copyfileobj(f_in, f_out)
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
@@ -86,7 +87,6 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
 
     def get_metadata(self, ds_short_name, format='Binary', version='01', **kwargs):
         """
-
         :param ds_short_name:
         :param time_variable_key:
         :param lon_variable_key:
@@ -95,17 +95,20 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
         :param format:
         :return:
         """
-        start_date, stop_date = self.get_temporal(time_variable_key='lon',
-                                                  units_variable='time',
-                                                  date_format='%Y-%m-%dT%H:%M:%SZ')
+        start_date, stop_date = self.get_temporal(
+            time_variable_key='lon',
+            units_variable='time',
+            date_format='%Y-%m-%dT%H:%M:%SZ'
+        )
         data = dict()
         data['ShortName'] = ds_short_name
-        data['GranuleUR'] = self.file_name
-        data['UpdatedGranuleUR'] = self.file_name
+
+        res = re.search(r'(^.*_NALMA_.*)(?=\.dat)', self.file_name)
+        logging.info(f'res: {res}')
+        data['GranuleUR'] = res.group(1)
+        logging.info(f'GranuleUR: {data["GranuleUR"]}')
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
-
         gemetry_list = self.get_wnes_geometry()
-
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(
             str(x) for x in gemetry_list)
@@ -118,3 +121,4 @@ class ExtractNalmarawMetadata(ExtractASCIIMetadata):
 
 if __name__ == '__main__':
     print('Extracting Nalmaraw Metadata')
+

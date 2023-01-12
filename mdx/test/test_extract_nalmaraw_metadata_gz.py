@@ -118,9 +118,7 @@ class TestProcessNalmaraw(TestCase):
         Test generating metadata of nalmaraw
         :return: metadata object
         """
-
-        metadata = self.process_nalmaraw.get_metadata(ds_short_name='nalmaraw',
-                                                      format='Binary', version='1')
+        metadata = self.process_nalmaraw.get_metadata(ds_short_name='nalmaraw', format='Binary', version='1')
         # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])

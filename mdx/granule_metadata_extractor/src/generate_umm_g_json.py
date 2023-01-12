@@ -116,14 +116,14 @@ class GenerateUmmGJson:
                 "Date": age_off_date
             })
 
-        return [umm_json, self.data['GranuleUR']]
+        return umm_json
 
-    def generate_umm_json_file(self, output_folder='/tmp/'):
+    def generate_umm_json_file(self, filename, output_folder='/tmp/'):
         """
         Genrate a local UMM-G json file at the provided location
         :param output_folder: the folder where the json file will reside
         :return:
         """
-        xml_data, filename = self.generate_umm_json_data()
+        xml_data = self.generate_umm_json_data()
         with open(f"{os.path.join(output_folder.rstrip('/'), filename)}.cmr.json", 'w+') as f:
             json.dump(xml_data, f, indent=4)
