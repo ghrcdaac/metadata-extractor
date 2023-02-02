@@ -128,3 +128,4 @@ from .process_navdc8cpex import ExtractNavdc8cpexMetadata
 from .process_gfscpex import ExtractGfscpexMetadata
 from .process_goescpex import ExtractGoescpexMetadata
 from .process_imergcpex import ExtractImergcpexMetadata
+from .process_hamsrcpex import ExtractHamsrcpexMetadata
