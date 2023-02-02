@@ -23,11 +23,13 @@ function update_lambda_or_skip() {
 function update_lambda() {
   echo "Updating Lambda ${2}-${REPO_NAME}"
   docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
-  aws lambda update-function-code \
+  export cmd="aws lambda update-function-code \
     --function-name $2-$REPO_NAME \
     --image-uri ${docker_image_name}:latest \
     --region ${AWS_REGION} \
-    $ADD_PROFILE
+    $ADD_PROFILE"
+  echo $cmd
+  echo `$cmd`
   echo "Lambda ${2}-${REPO_NAME} Updated"
 }
 
