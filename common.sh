@@ -23,13 +23,17 @@ function update_lambda_or_skip() {
 function update_lambda() {
   echo "Updating Lambda ${2}-${REPO_NAME}"
   docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
-  export cmd="aws lambda update-function-code \
-    --function-name $2-$REPO_NAME \
-    --image-uri ${docker_image_name}:latest \
-    --region ${AWS_REGION} \
-    $ADD_PROFILE"
-  echo $cmd
-  echo `$cmd`
+  cmd="lambda update-function-code \
+	    --function-name $2-$REPO_NAME \
+	    --image-uri ${docker_image_name}:latest \
+	    --region ${AWS_REGION} \
+	    $ADD_PROFILE"
+  # TODO - Update all AWS commands to use aws cli docker since bamboo agent doesn't officially support aws cli
+  docker run --rm \
+	-e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+	-e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+	amazon/aws-cli:2.9.20 \
+	$cmd
   echo "Lambda ${2}-${REPO_NAME} Updated"
 }
 
@@ -58,9 +62,9 @@ function create_ecr_repo_or_skip() {
   if [[ ! -n "${check_repo_exist}" ]]; then
     echo "Repo creation needed for ${REPO_NAME}"
     aws ecr create-repository --repository-name $REPO_NAME --region $AWS_REGION
-    echo "${REPO_NAME} was created"
+    echo "Repo ${REPO_NAME} was created"
   else
-    echo "${REPO_NAME} already exists"
+    echo "Repo ${REPO_NAME} already exists"
   fi
 
 }
