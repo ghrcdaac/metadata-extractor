@@ -32,6 +32,7 @@ function update_lambda() {
   docker run --rm \
 	-e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
 	-e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+	-e AWS_REGION=$AWS_REGION \
 	amazon/aws-cli:2.9.20 \
 	$cmd
   echo "Lambda ${2}-${REPO_NAME} Updated"
