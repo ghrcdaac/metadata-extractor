@@ -577,8 +577,8 @@ class MDX(Process):
         self.input = []
         for granule in granules:
             for _file in granule['files']:
-                self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
-
+                if 'metadata' not in _file.get('type', ""):
+                    self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
@@ -614,7 +614,6 @@ class MDX(Process):
         for ele in temp_output:
             if os.path.basename(ele) in [os.path.basename(base_name) for base_name in self.input]:
                 self.output.remove(ele)
-
         uploaded_files = self.upload_output_files()
         granule_data = {}
         for uploaded_file in uploaded_files:
