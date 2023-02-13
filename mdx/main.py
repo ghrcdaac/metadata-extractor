@@ -157,7 +157,8 @@ class MDX(Process):
             "gfscpex": mdx.ExtractGfscpexMetadata,
             "goescpex": mdx.ExtractGoescpexMetadata,
             "imergcpex": mdx.ExtractImergcpexMetadata,
-            "hamsrcpex": mdx.ExtractHamsrcpexMetadata
+            "hamsrcpex": mdx.ExtractHamsrcpexMetadata,
+            "masccpex": mdx.ExtractMasccpexMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -548,7 +549,7 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat)$',
+                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat|he5)$',
             'legacy_key': r'^(.*).*$'
         }
 
