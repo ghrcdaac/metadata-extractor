@@ -33,15 +33,16 @@ class ExtractP3metnavimpactsMetadata(ExtractASCIIMetadata):
         year = int(self.file_path.split('/')[-1].split('_')[3][0:4])
         for i in range(len(lines)):
             tkn = lines[i].split(',')
-            sec, doy, lat, lon = [int(tkn[0]), int(tkn[1]), float(tkn[2]), float(tkn[3])]
-            dt = datetime(year,1,1) + timedelta(seconds=sec) + timedelta(days=doy-1)
-            minTime = min(minTime, dt)
-            maxTime = max(maxTime, dt)
-            if lat != -9999.0 and lon != -9999.0:
-                maxlat = max(maxlat, lat)
-                minlat = min(minlat, lat)
-                maxlon = max(maxlon, lon)
-                minlon = min(minlon, lon)
+            if len(tkn) > 1:
+               sec, doy, lat, lon = [int(tkn[0]), int(tkn[1]), float(tkn[2]), float(tkn[3])]
+               dt = datetime(year,1,1) + timedelta(seconds=sec) + timedelta(days=doy-1)
+               minTime = min(minTime, dt)
+               maxTime = max(maxTime, dt)
+               if lat != -9999.0 and lon != -9999.0:
+                  maxlat = max(maxlat, lat)
+                  minlat = min(minlat, lat)
+                  maxlon = max(maxlon, lon)
+                  minlon = min(minlon, lon)
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
