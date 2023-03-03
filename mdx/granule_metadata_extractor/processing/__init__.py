@@ -130,3 +130,4 @@ from .process_goescpex import ExtractGoescpexMetadata
 from .process_imergcpex import ExtractImergcpexMetadata
 from .process_hamsrcpex import ExtractHamsrcpexMetadata
 from .process_masccpex import ExtractMasccpexMetadata
+from .process_modiscpex import ExtractModiscpexMetadata
