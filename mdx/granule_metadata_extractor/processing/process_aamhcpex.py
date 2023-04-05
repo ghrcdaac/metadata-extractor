@@ -27,6 +27,12 @@ class ExtractAamhcpexMetadata(ExtractNetCDFMetadata):
         minTime = datetime.strptime(''.join([tkn[8],tkn[9]]),'D%y%jS%H%M')
         maxTime = datetime.strptime(''.join([tkn[8],tkn[10]]),'D%y%jE%H%M')
 
+        #CPEX_NOAA18_NPR_MIRS_V7_SND_AAMH_NN_D17193_S2333_E0128_B6258991_NS.nc
+        #CPEX_METOPA_NPR_MIRS_V7_SND_AAMH_M2_D17196_S2240_E0023_B5572324_NS.nc
+        if maxTime < minTime:
+           maxTime = maxTime + timedelta(days = 1)
+
+
         fp = Dataset(self.file_path)
         lat = np.array(fp['Latitude'])
         lon = np.array(fp['Longitude'])
