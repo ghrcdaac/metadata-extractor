@@ -33,6 +33,10 @@ class ExtractExrad3dimpactsMetadata(ExtractNetCDFMetadata):
         minTime, maxTime = [datetime.strptime(''.join([tkn[1],tkn[2]]),'%Y%m%d%H%M%S'),
                             datetime.strptime(''.join([tkn[1],tkn[3]]),'%Y%m%d%H%M%S')]
 
+        #IMPACTS_20200205_234357_004639_EXRAD_3dwinds.nc
+        if maxTime < minTime:
+           maxTime = maxTime + timedelta(days = 1)
+
         datafile.close()
         return minTime, maxTime, slat, nlat, wlon, elon
 
