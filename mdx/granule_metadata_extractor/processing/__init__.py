@@ -133,3 +133,4 @@ from .process_masccpex import ExtractMasccpexMetadata
 from .process_modiscpex import ExtractModiscpexMetadata
 from .process_exrad3dimpacts import ExtractExrad3dimpactsMetadata
 from .process_aamhcpex import ExtractAamhcpexMetadata
+from .process_airscpex import ExtractAirscpexMetadata
