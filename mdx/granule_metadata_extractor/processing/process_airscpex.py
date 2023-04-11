@@ -3,6 +3,7 @@ import os
 from datetime import datetime, timedelta
 import numpy as np
 from netCDF4 import Dataset
+from pyhdf.SD import SD, SDC
 import math
 
 class ExtractAirscpexMetadata(ExtractNetCDFMetadata):
@@ -22,10 +23,15 @@ class ExtractAirscpexMetadata(ExtractNetCDFMetadata):
 
     def get_variables_min_max(self):
 
-        fp = Dataset(self.file_path)
-        utc_sec0 = np.array(fp['Time']).ravel() #Seconds since 1,1,1993
-        lat0 = np.array(fp['Latitude']).ravel()  #missing/fill value = -9999
-        lon0 = np.array(fp['Longitude']).ravel() #missing/fill value = -9999
+        #fp = Dataset(self.file_path)
+        #utc_sec0 = np.array(fp['Time']).ravel() #Seconds since 1,1,1993
+        #lat0 = np.array(fp['Latitude']).ravel()  #missing/fill value = -9999
+        #lon0 = np.array(fp['Longitude']).ravel() #missing/fill value = -9999
+
+        hdf = SD(self.file_path, SDC.READ)
+        utc_sec0 = hdf.select('Time').get().ravel()
+        lat0 = hdf.select('Latitude').get().ravel()
+        lon0 = hdf.select('Longitude').get().ravel() 
 
         utc_sec = [x for x in utc_sec0 if x != -9999]
         lat = [x for x in lat0 if x != -9999]
@@ -40,7 +46,7 @@ class ExtractAirscpexMetadata(ExtractNetCDFMetadata):
         maxlon = np.nanmax(lon)
         minlon = np.nanmin(lon)
 
-        fp.close()
+        #fp.close()
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
