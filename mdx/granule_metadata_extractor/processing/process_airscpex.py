@@ -23,11 +23,6 @@ class ExtractAirscpexMetadata(ExtractNetCDFMetadata):
 
     def get_variables_min_max(self):
 
-        #fp = Dataset(self.file_path)
-        #utc_sec0 = np.array(fp['Time']).ravel() #Seconds since 1,1,1993
-        #lat0 = np.array(fp['Latitude']).ravel()  #missing/fill value = -9999
-        #lon0 = np.array(fp['Longitude']).ravel() #missing/fill value = -9999
-
         hdf = SD(self.file_path, SDC.READ)
         utc_sec0 = hdf.select('Time').get().ravel()
         lat0 = hdf.select('Latitude').get().ravel()
