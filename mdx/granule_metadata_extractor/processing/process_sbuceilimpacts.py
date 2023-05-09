@@ -41,14 +41,15 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_BNL_metadata(nc)
         elif '_MAN.nc' in file_path:
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_metadata(nc)
+        elif '_cl51k.nc' in file_path:
+            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_SB_metadata(nc)
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
     def get_RT_metadata(self, nc):
-        minTime, maxTime, minlat, maxlat, minlon, maxlon = [datetime(2100, 1, 1),
-                                                            datetime(1900, 1, 1),
-                                                            90.0, -90.0, 180.0, -180.0]
+        minlat, maxlat, minlon, maxlon = [90.0, -90.0, 180.0, -180.0]
         # load GPS.nc file for lat and lon info
+
         gpsnc = Dataset(os.path.join(os.path.dirname(__file__), self.gps_path))
         ctime = np.array(gpsnc.variables['time'][:])
         lat = np.array(gpsnc.variables['lat'][:])
@@ -72,9 +73,15 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
 
         # load data file
         timefield = np.array(nc.variables['time'][:])
+        tt_units = nc['time'].units #   units: seconds since 1904-01-01 00:00:00.000 00:00 
+        tkn = tt_units.split()
+        dt0 = datetime.strptime(f"{tkn[2]}{tkn[3]}",'%Y-%m-%d%H:%M:%S.%f')
+
+        minTime = dt0 + timedelta(seconds=int(min(timefield)))
+        maxTime = dt0 + timedelta(seconds=int(max(timefield)))
 
         for i in range(timefield.shape[0]):
-            ltime = datetime(1904, 1, 1) + timedelta(seconds=int(timefield[i]))
+            ltime = dt0 + timedelta(seconds=int(timefield[i]))
             ltime_str = ltime.strftime('%Y-%m-%d-%H-%M')
             if ltime_str in loc:
                 [mnlat, mxlat, mnlon, mxlon] = [loc[ltime_str][0], loc[ltime_str][1],
@@ -94,21 +101,18 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
             minlat = mnlat if mnlat < minlat else minlat
             maxlon = mxlon if mxlon > maxlon else maxlon
             minlon = mnlon if mnlon < maxlon else maxlon
-            minTime = ltime if ltime < minTime else minTime
-            maxTime = ltime if ltime > maxTime else maxTime
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
     def get_BNL_metadata(self, nc):
-        minTime, maxTime = [datetime(2100, 1, 1), datetime(1900, 1, 1)]
-        ctime = np.array(nc.variables['time'][:])
-        timeunit = nc.variables['time'].getncattr('units')
-        reftime_str = timeunit.split()[2] + 'T' + timeunit.split()[3]
-        refTime = datetime.strptime(reftime_str, '%Y-%m-%dT%H:%M:%S')
-        for i in range(ctime.shape[0]):
-            cTime = refTime + timedelta(hours=float(ctime[i]))
-            minTime = cTime if cTime < minTime else minTime
-            maxTime = cTime if cTime > maxTime else maxTime
+
+        tt = np.array(nc['time'][:])
+        tt_units = nc['time'].units #    Units: hours since 2020-01-01 00:00:00 00:00 
+        tkn = tt_units.split()
+        dt0 = datetime.strptime(f"{tkn[2]}{tkn[3]}",'%Y-%m-%d%H:%M:%S')
+
+        minTime = dt0 + timedelta(hours=float(min(tt)))
+        maxTime = dt0 + timedelta(hours=float(max(tt)))
 
         lat = float(nc.variables['latitude'][:])
         lon = float(nc.variables['longitude'][:])
@@ -119,13 +123,32 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
     def get_MAN_metadata(self, nc):
-        minTime, maxTime = [datetime(2100, 1, 1), datetime(1900, 1, 1)]
-        ctime = np.array(nc.variables['time'][:])
-        refTime = datetime(1970, 1, 1)
-        for i in range(ctime.shape[0]):
-            cTime = refTime + timedelta(seconds=float(ctime[i]))
-            minTime = cTime if cTime < minTime else minTime
-            maxTime = cTime if cTime > maxTime else maxTime
+        tt = np.array(nc['time'][:])
+        tt_units = nc['time'].Units #    Units: days since 1970-01-01 00:00:00.000
+        tkn = tt_units.split()
+        dt0 = datetime.strptime(f"{tkn[2]}{tkn[3]}",'%Y-%m-%d%H:%M:%S.%f')
+        minTime = dt0 + timedelta(seconds=int(min(tt))) #note: Units says 'days' but actually 'seconds'
+        maxTime = dt0 + timedelta(seconds=int(max(tt)))
+
+        lat = nc.variables['Location_latitude'][:]
+        lon = nc.variables['Location_longitude'][:]
+
+        maxlat, minlat, maxlon, minlon = [float(max(lat)) + (0.03 / 111.325),
+                                          float(max(lat)) - (0.03 / 111.325),
+                                          float(max(lon)) + (0.03 / 111.325),
+                                          float(max(lon)) - (0.03 / 111.325)]
+        self.fileformat = 'netCDF-4'
+
+        return minTime, maxTime, minlat, maxlat, minlon, maxlon
+
+
+    def get_SB_metadata(self, nc):
+        tt = np.array(nc['time'][:])
+        tt_units = nc['time'].Units #   Units: seconds since 1970-01-01 00:00:00.000 
+        tkn = tt_units.split()
+        dt0 = datetime.strptime(f"{tkn[2]}{tkn[3]}",'%Y-%m-%d%H:%M:%S.%f')
+        minTime = dt0 + timedelta(seconds=int(min(tt))) #note: Units says 'days' but actually 'seconds'
+        maxTime = dt0 + timedelta(seconds=int(max(tt)))
 
         lat = nc.variables['Location_latitude'][:]
         lon = nc.variables['Location_longitude'][:]
