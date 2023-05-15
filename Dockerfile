@@ -1,7 +1,5 @@
 FROM ghcr.io/ghrcdaac/mdx:base
 
-LABEL maintainer="Abdelhak Marouane <am0089@uah.edu>"
-
 ARG stage
 
 COPY requirements*.txt /tmp/

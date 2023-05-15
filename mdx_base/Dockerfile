@@ -1,7 +1,5 @@
 FROM public.ecr.aws/lambda/python:3.10
 
-LABEL maintainer="Abdelhak Marouane <am0089@uah.edu>"
-
 RUN yum install -y gcc && \
         yum install -y git
 
