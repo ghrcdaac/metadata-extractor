@@ -1,9 +1,10 @@
 from ..src.extract_ascii_metadata import ExtractASCIIMetadata
 from datetime import datetime
-import os
-import requests
-import urllib
+from zipfile import ZipFile
 import secrets
+import pathlib
+import json
+import os
 
 
 class ExtractLegacyMetadata(ExtractASCIIMetadata):
@@ -25,31 +26,34 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
 
         self.file_path = file_path
         self.file_name = os.path.basename(self.file_path)
+        self.lookup_zip_path = os.path.join(pathlib.Path(__file__).parent.absolute(),
+                               '../src/helpers/legacy_lookups.zip')
 
-        self.get_variables_min_max(self.file_name)
-
-    def get_variables_min_max(self, filename):
+    def get_variables_min_max(self, collection_name):
         """
-        Get legacy dataset's metadata attributes from Hydro
-        :param filename: file name
-        :return: list longitude coordinates
+        Get legacy dataset's metadata attributes from lookup zip
+        :param collection_name: collection shortname used for lookup json
         """
-        hydro_base_url = "https://ghrc.nsstc.nasa.gov/hydro/es_proxy.php?esurl=_sql?sql="
-        # These are seperated because we only want to encode the sql like query of the url
-        hydro_query = f"SELECT * from ghrc_inv where granule_name='{self.file_name}'"
-        re = requests.get(f"{hydro_base_url}{urllib.parse.quote(hydro_query)}")
-        granule_info = re.json().get('hits', {}).get('hits', {})[0].get('_source', {})
+        granule_info = None
+        with ZipFile(self.lookup_zip_path) as lookup_zip:
+            with lookup_zip.open(f'lookups/{collection_name}.json') as collection_lookup:
+                lookup_json = json.load(collection_lookup)
+                granule_info = lookup_json.get(self.file_name, {})
+                print(granule_info)
 
-        self.north = max(self.north, granule_info.get('north'))
-        self.south = min(self. south, granule_info.get('south'))
-        self.east = max(self.east, granule_info.get('east'))
-        self.west = min(self.west, granule_info.get('west'))
+        granule_wnes = granule_info.get('wnes_geometry', {})
 
-        self.start_time = min(self.start_time, datetime.strptime(granule_info.get('start_date'), '%Y-%m-%d %H:%M:%S'))
-        self.end_time = max(self.end_time, datetime.strptime(granule_info.get('stop_date'), '%Y-%m-%d %H:%M:%S'))
+        self.north = max(self.north, granule_wnes.get('northBoundingCoordinate'))
+        self.south = min(self. south, granule_wnes.get('southBoundingCoordinate'))
+        self.east = max(self.east, granule_wnes.get('eastBoundingCoordinate'))
+        self.west = min(self.west, granule_wnes.get('westBoundingCoordinate'))
+
+        temporal = [datetime.strptime(x,'%Y-%m-%dT%H:%M:%S.000Z') for x in granule_info.get('temporal', [])]
+        self.start_time = min(self.start_time, min(temporal))
+        self.end_time = max(self.end_time, max(temporal))
 
         self.format = granule_info.get('format')
-        self.file_size = granule_info.get('byte_size')
+        self.file_size = granule_info.get('sizeMB')
         # If granule doesn't have a checksum, we fake it. If legacy dataset needs checksum, we will create
         # dedicated MDX for it.
         self.checksum = granule_info.get('checksum') if granule_info.get('checksum') is not None else \
@@ -91,6 +95,7 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
         :param version: collection version number
         :return:
         """
+        self.get_variables_min_max(ds_short_name)
         start_date, stop_date = self.get_temporal(time_variable_key='lon',
                                                   units_variable='time',
                                                   date_format='%Y-%m-%dT%H:%M:%SZ')
