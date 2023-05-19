@@ -135,3 +135,4 @@ from .process_exrad3dimpacts import ExtractExrad3dimpactsMetadata
 from .process_aamhcpex import ExtractAamhcpexMetadata
 from .process_airscpex import ExtractAirscpexMetadata
 from .process_sbuskylerimpacts import ExtractSbuskylerimpactsMetadata
+from .process_gpmpal import ExtractGpmpalMetadata
