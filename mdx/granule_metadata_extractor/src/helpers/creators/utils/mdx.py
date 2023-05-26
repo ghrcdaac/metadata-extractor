@@ -152,7 +152,7 @@ class MDX:
             # Extract temporal and spatial metadata
             metadata = self.process(uri.filename, file_obj_stream)
             for elem in ["north", "south", "east", "west"]:
-                metadata[elem] = round(metadata[elem], 3)
+                metadata[elem] = str(round(metadata[elem], 3))
             metadata["sizeMB"] = 1E-6 * response["ContentLength"]
             # Compare to collection metadata summary
             collection_metadata_summary = self.update_collection_metadata_summary(

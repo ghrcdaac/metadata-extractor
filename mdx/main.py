@@ -420,8 +420,7 @@ class MDX(Process):
         return {}
 
     def extract_legacy_metadata(self, ds_short_name, version, access_url, legacy_file,
-                                legacy_vars={},
-                                output_folder='/tmp', format='ASCII'):
+                                legacy_vars={}, output_folder='/tmp', format='ASCII'):
         """
         Function to extract metadata from legacy dataset files
         :param ds_short_name: collection shortname
@@ -437,6 +436,29 @@ class MDX(Process):
 
         if match(regex, os.path.basename(legacy_file)):
             metadata = mdx.ExtractLegacyMetadata(legacy_file)
+            data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
+                                         version=version)
+            return MDX.generate_json_data(self, data=data, access_url=access_url,
+                                          output_folder=output_folder)
+        return {}
+
+    def extract_lookup_metadata(self, ds_short_name, version, access_url, source_file,
+                                source_vars={}, output_folder='/tmp', format='Not Provided'):
+        """
+        Function to extract metadata from source dataset files
+        :param ds_short_name: collection shortname
+        :param version: version
+        :param access_url: The access URL to the granule
+        :param source_file: Path to source file
+        :param source_vars: source variables
+        :param output_folder: Location to output created echo10xml file
+        :param format: data type of input file
+        :return:
+        """
+        regex = source_vars.get('regex', '.*')
+
+        if match(regex, os.path.basename(source_file)):
+            metadata = mdx.ExtractLookupMetadata(source_file)
             data = metadata.get_metadata(ds_short_name=ds_short_name, format=format,
                                          version=version)
             return MDX.generate_json_data(self, data=data, access_url=access_url,
@@ -481,7 +503,8 @@ class MDX(Process):
             "browse": self.extract_browse_metadata,
             "kml": self.extract_kml_metadata,
             "avi": self.extract_avi_metadata,
-            "legacy": self.extract_legacy_metadata
+            "legacy": self.extract_legacy_metadata,
+            "lookup": self.extract_lookup_metadata
         }
 
         return_data_dict = {}
@@ -556,7 +579,8 @@ class MDX(Process):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
                          r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat|he5)$',
-            'legacy_key': r'^(.*).*$'
+            'lookup_key': r'^(.*).*$'
+            # 'legacy_key': r'^(.*).*$'
         }
 
     @staticmethod
@@ -589,16 +613,20 @@ class MDX(Process):
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
-        is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
-            'module') == 'legacy'
-        key = 'legacy_key' if is_legacy else 'input_key'
+        has_lookup = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
+            'module') in ["legacy", "lookup"]
+        # is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
+        #     'module') == 'legacy'
+        key = 'lookup_key' if has_lookup else 'input_key'
+        # key = 'legacy_key' if is_legacy else 'input_key'
 
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
 
-        excluded = collection_name in self.exclude_fetch() or is_legacy
+        # excluded = collection_name in self.exclude_fetch() or is_legacy
+        excluded = collection_name in self.exclude_fetch() or has_lookup
         if excluded:
             self.output.append(self.input[0])
             output = {key: self.mutate_input(self.path, self.input[0])}

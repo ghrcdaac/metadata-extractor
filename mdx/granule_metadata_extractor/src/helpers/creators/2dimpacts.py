@@ -129,10 +129,10 @@ class MDXProcessing(MDX):
         }
 
     def main(self):
-        start_time = time.time()
+        # start_time = time.time()
         self.process_collection(short_name, provider_path)
-        elapsed_time = time.time() - start_time
-        print(f"Elapsed time in seconds: {elapsed_time}")
+        # elapsed_time = time.time() - start_time
+        # print(f"Elapsed time in seconds: {elapsed_time}")
 
 
 if __name__ == '__main__':
