@@ -2,7 +2,9 @@
 # for all future collections
 from datetime import datetime, timedelta
 from utils.mdx import MDX
+import cProfile
 import time
+import math
 import re
 import os
 
@@ -38,10 +40,8 @@ class MDXProcessing(MDX):
         """
         Extracts temporal and spatial metadata from diameter020 files
         """
-        start_time = datetime.strptime(
-            '2020-01-15T01:37:06Z', '%Y-%m-%dT%H:%M:%SZ')
-        end_time = datetime.strptime(
-            '2020-02-28T20:41:44Z', '%Y-%m-%dT%H:%M:%SZ')
+        start_time = datetime(2020, 1, 15, 1, 37, 6)
+        end_time = datetime(2020,2,28,20,41,44)
         north, south, east, west = [37.954319999999996, 37.919380000000004,
                                     -75.44618, -75.49116000000001]
         return {
@@ -65,10 +65,10 @@ class MDXProcessing(MDX):
         for encoded_line in file_obj_stream.iter_lines():
             line = encoded_line.decode("utf-8")
             tkn = line.split()
-            granule_start = datetime.strptime(
-                f"{tkn[0]},{tkn[1]},{tkn[2]}", '%Y,%j,%H:%M')
-            granule_end = datetime.strptime(
-                f"{tkn[0]},{tkn[3]},{tkn[4]}", '%Y,%j,%H:%M')
+            start_time_split=tkn[2].split(':')
+            end_time_split=tkn[4].split(':')
+            granule_start = datetime(int(tkn[0]), 1, 1, int(start_time_split[0]), int(start_time_split[1])) + timedelta(int(tkn[1]) - 1)
+            granule_end = datetime(int(tkn[0]), 1, 1, int(end_time_split[0]), int(end_time_split[1])) + timedelta(int(tkn[3]) - 1)
 
             start_time = min(start_time, granule_start)
             end_time = max(end_time, granule_end)
@@ -99,11 +99,12 @@ class MDXProcessing(MDX):
             line = encoded_line.decode("utf-8")
             tkn = line.split()
             if 'eachdrop' in filename or 'largedrop' in filename:
-                dt = datetime.strptime(f"{tkn[0]},{tkn[1]},{tkn[2]},{tkn[3]},{tkn[4]}",
-                                       "%Y,%j,%H,%M,%S.%f")
+                seconds_fraction, seconds = math.modf(float(tkn[4]))
+                microseconds = int(seconds_fraction*1000000)
+                dt = datetime(int(tkn[0]), 1, 1, int(tkn[2]), int(tkn[3]),
+                                int(seconds), microseconds) + timedelta(int(tkn[1]) - 1)
             else:
-                dt = datetime.strptime(
-                    f"{tkn[0]},{tkn[1]},{tkn[2]},{tkn[3]}", "%Y,%j,%H,%M")
+                dt = datetime(int(tkn[0]), 1, 1, int(tkn[2]), int(tkn[3])) + timedelta(int(tkn[1]) -1)
 
             start_time = min(start_time, dt)
             end_time = max(end_time, dt)
@@ -114,10 +115,8 @@ class MDXProcessing(MDX):
                                         self.loc[stn_id][1] - 0.01]
 
         if start_time == datetime(2100, 1, 1) or end_time == datetime(1900, 1, 1):
-            start_time = datetime.strptime(
-                '2020-01-15T01:37:06Z', '%Y-%m-%dT%H:%M:%SZ')
-            end_time = datetime.strptime(
-                '2020-02-28T20:41:44Z', '%Y-%m-%dT%H:%M:%SZ')
+            start_time = datetime(2020, 1, 15, 1, 37, 6)
+            end_time = dateitme(2020, 2, 28, 20, 41, 44)
 
         return {
             "start": start_time,
@@ -138,3 +137,6 @@ class MDXProcessing(MDX):
 
 if __name__ == '__main__':
     MDXProcessing().main()
+    # The below can be use to run a profiler and see which functions are
+    # taking the most time to process
+    # cProfile.run('MDXProcessing().main()', sort='tottime')
