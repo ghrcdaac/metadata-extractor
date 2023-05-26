@@ -1,5 +1,6 @@
 from datetime import datetime
 from urllib.parse import urlparse
+import subprocess
 import hashlib
 import zipfile
 import boto3
@@ -151,14 +152,14 @@ class MDX:
             file_obj_stream = response["Body"]
             # Extract temporal and spatial metadata
             metadata = self.process(uri.filename, file_obj_stream)
-            for elem in ["north", "south", "east", "west"]:
-                metadata[elem] = str(round(metadata[elem], 3))
             metadata["sizeMB"] = 1E-6 * response["ContentLength"]
             # Compare to collection metadata summary
             collection_metadata_summary = self.update_collection_metadata_summary(
                 collection_metadata_summary, metadata)
             # Format time outputs
             metadata = self.format_dict_times(metadata)
+            for elem in ["north", "south", "east", "west"]:
+                metadata[elem] = str(round(metadata[elem], 3))
             metadata["sizeMB"] = round(metadata["sizeMB"], 2)
             # Add checksum, size, and format to metadata
             metadata["checksum"] = self.get_checksum(file_obj_stream)
@@ -168,3 +169,12 @@ class MDX:
         
         # Write lookup and summary to zip
         self.write_to_lookup(short_name, collection_lookup, collection_metadata_summary)
+
+    def shutdown_ec2(self):
+        """
+        Shutdown ec2 (or local) after script finishes execution. Esepcially
+        useful for cost savings when deployed to AWS
+        """
+        # This conditional to avoid accidental local shutdowns.
+        if 'us-west-2' in os.getenv('HOSTNAME', ""):
+            subprocess.call(["sudo", "shutdown", "now"])
