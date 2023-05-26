@@ -116,7 +116,7 @@ class MDXProcessing(MDX):
 
         if start_time == datetime(2100, 1, 1) or end_time == datetime(1900, 1, 1):
             start_time = datetime(2020, 1, 15, 1, 37, 6)
-            end_time = dateitme(2020, 2, 28, 20, 41, 44)
+            end_time = datetime(2020, 2, 28, 20, 41, 44)
 
         return {
             "start": start_time,

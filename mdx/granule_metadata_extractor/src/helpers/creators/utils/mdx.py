@@ -71,6 +71,9 @@ class MDX:
         :return: checksum of stream
         :rtype: 
         """
+        # TODO - determine if checksum is necessary; stream is consumed, so if
+        # checksum is needed, we'll either need to get another download stream
+        # or store the file in memory
         md5 = hashlib.md5()
         for chunk in file_obj_stream.iter_chunks(chunk_size=(128 * md5.block_size)):
             md5.update(chunk)
