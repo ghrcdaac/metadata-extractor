@@ -177,4 +177,4 @@ class MDX:
         """
         # This conditional to avoid accidental local shutdowns.
         if 'us-west-2' in os.getenv('HOSTNAME', ""):
-            subprocess.call(["sudo", "shutdown", "now"])
+            subprocess.call(["sudo", "shutdown", "1"])
