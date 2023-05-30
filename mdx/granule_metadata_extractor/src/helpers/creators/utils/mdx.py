@@ -134,6 +134,22 @@ class MDX:
         :type file_obj_stream: botocore.response.StreamingBody
         """
         pass
+
+    def validate_spatial_coordinates(self, metadata: dict) -> bool:
+        """
+        Checks whether or not spatial coordinates fall within standard bounds
+        i.e. -90 < north/south < 90 & -180 < east/west < 180
+        :param metadata: dictionary of granule metadata
+        :type metadata: dict
+        :return: bool describing whether or not coordinates are valid
+        :rtype: bool
+        """
+        for elem in ["north", "south", "east", "west"]:
+            value = metadata[elem]
+            if (value > 180 or value < -180) or \
+               (elem in ["north", "south"] and (value < -90 or value > 90)):
+                return False
+        return True
         
     def process_collection(self, short_name, provider_path):
         collection_lookup = {}
@@ -146,27 +162,36 @@ class MDX:
         # Get s3uri of all objects at s3 prefix
         s3uri_list = self.get_object_list(prefix=provider_path)
         for s3uri in s3uri_list:
-            print(s3uri)
-            # TODO - Wrap this section and add error handling so that if granule
-            # encounters error, is logged and continues processing
-            uri = self.parse_s3_uri(s3uri)
-            # Download file object stream and size
-            response = self.download_stream(bucket=uri.bucket, prefix=uri.prefix)
-            file_obj_stream = response["Body"]
-            # Extract temporal and spatial metadata
-            metadata = self.process(uri.filename, file_obj_stream)
-            metadata["sizeMB"] = 1E-6 * response["ContentLength"]
-            # Compare to collection metadata summary
-            collection_metadata_summary = self.update_collection_metadata_summary(
-                collection_metadata_summary, metadata)
-            # Format time outputs
-            metadata = self.format_dict_times(metadata)
-            for elem in ["north", "south", "east", "west"]:
-                metadata[elem] = str(round(metadata[elem], 3))
-            metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-            # Add checksum, size, and format to metadata
-            metadata["checksum"] = self.get_checksum(file_obj_stream)
-            collection_lookup[uri.filename] = metadata
+            try:
+                # TODO - Wrap this section and add error handling so that if granule
+                # encounters error, is logged and continues processing
+                uri = self.parse_s3_uri(s3uri)
+                # Download file object stream and size
+                response = self.download_stream(bucket=uri.bucket, prefix=uri.prefix)
+                file_obj_stream = response["Body"]
+                # Extract temporal and spatial metadata
+                metadata = self.process(uri.filename, file_obj_stream)
+                if not self.validate_spatial_coordinates(metadata):
+                    print(f"Invalid spatial coordinate system:\n"
+                        f"\tnorth: {metadata['north']}\n"
+                        f"\tsouth: {metadata['south']}\n"
+                        f"\teast: {metadata['east']}\n"
+                        f"\twest: {metadata['west']}\n")
+                    os.sys.exit(1)
+                metadata["sizeMB"] = 1E-6 * response["ContentLength"]
+                # Compare to collection metadata summary
+                collection_metadata_summary = self.update_collection_metadata_summary(
+                    collection_metadata_summary, metadata)
+                # Format time outputs
+                metadata = self.format_dict_times(metadata)
+                for elem in ["north", "south", "east", "west"]:
+                    metadata[elem] = str(round(metadata[elem], 3))
+                metadata["sizeMB"] = round(metadata["sizeMB"], 2)
+                # Add checksum, size, and format to metadata
+                metadata["checksum"] = self.get_checksum(file_obj_stream)
+                collection_lookup[uri.filename] = metadata
+            except Exception as e:
+                print(f"Problem processing {s3uri}:\n{e}\n")
 
         collection_metadata_summary = self.format_dict_times(collection_metadata_summary)
         
