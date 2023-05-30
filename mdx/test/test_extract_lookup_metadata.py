@@ -95,17 +95,7 @@ class TestProcessLookup(TestCase):
         self.expected_metadata['EastBoundingCoordinate'] = east
         self.assertEqual(east, '-75.463')
 
-    def test_8_get_checksum(self):
-        """
-        Test geting the checksom of the input file
-        :return: the MD5 string
-        """
-
-        checksum = self.md['checksum']
-        self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '41fc3b95b97316865a0d3d107dc3f6d4')
-
-    def test_9_generate_metadata(self):
+    def test_8_generate_metadata(self):
         """
         Test generating metadata of legacy collection
         :return: metadata object 
@@ -115,7 +105,7 @@ class TestProcessLookup(TestCase):
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
 
-    def test_a1_generate_umm_json(self):
+    def test_9_generate_umm_json(self):
         """
         Test generate the umm json in tmp folder
         """

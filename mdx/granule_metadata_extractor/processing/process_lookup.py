@@ -61,10 +61,9 @@ class ExtractLookupMetadata(MetadataExtractor):
                 "EastBoundingCoordinate": metadata.get("east", ""),
                 "SouthBoundingCoordinate": metadata.get("south", ""),
                 "SizeMBDataGranule": str(metadata.get("size", 0)),
-                "checksum": metadata.get("checksum", ""),
                 "DataFormat": metadata.get("format", "Not Provided"),
                 "VersionId": version
             }
-        raise (f"Granule {self.filename} not found in collection lookup "
+        print(f"Granule {self.filename} not found in collection lookup "
                 f"{ds_short_name}.zip")
         return {}

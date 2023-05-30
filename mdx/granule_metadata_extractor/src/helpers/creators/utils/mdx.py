@@ -71,9 +71,10 @@ class MDX:
         :return: checksum of stream
         :rtype: 
         """
-        # TODO - determine if checksum is necessary; stream is consumed, so if
-        # checksum is needed, we'll either need to get another download stream
-        # or store the file in memory
+        # Checksum not currently included as part of lookup due to nature of
+        # object stream. i.e. consumed when processed. If checksum is needed
+        # in the future, downloading another stream or storing file object in
+        # memory will be necessary
         md5 = hashlib.md5()
         for chunk in file_obj_stream.iter_chunks(chunk_size=(128 * md5.block_size)):
             md5.update(chunk)
@@ -187,8 +188,6 @@ class MDX:
                 for elem in ["north", "south", "east", "west"]:
                     metadata[elem] = str(round(metadata[elem], 3))
                 metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-                # Add checksum, size, and format to metadata
-                metadata["checksum"] = self.get_checksum(file_obj_stream)
                 collection_lookup[uri.filename] = metadata
             except Exception as e:
                 print(f"Problem processing {s3uri}:\n{e}\n")
