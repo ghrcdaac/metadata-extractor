@@ -136,4 +136,5 @@ from .process_aamhcpex import ExtractAamhcpexMetadata
 from .process_airscpex import ExtractAirscpexMetadata
 from .process_sbuskylerimpacts import ExtractSbuskylerimpactsMetadata
 from .process_gpmpal import ExtractGpmpalMetadata
+from .process_hamsrcpexcv import ExtractHamsrcpexcvMetadata
 from .process_lookup import ExtractLookupMetadata
