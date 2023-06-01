@@ -62,3 +62,5 @@ granule_metadata_extractor/src/scratch1.py
 granule_metadata_extractor/src/scratch.py
 env.sh
 mdx_lambda_artifact.zip
+
+*outfile.txt
