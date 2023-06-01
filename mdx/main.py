@@ -581,7 +581,6 @@ class MDX(Process):
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
                          r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat|he5)$',
             'lookup_key': r'^(.*).*$'
-            # 'legacy_key': r'^(.*).*$'
         }
 
     @staticmethod
@@ -598,9 +597,6 @@ class MDX(Process):
         Override the processing wrapper
         :return:
         """
-        # def __init__(self):
-        #     logging_level = logging.INFO if os.getenv('enable_logging', 'false').lower() == 'true' else logging.WARNING
-        #     logger = CumulusLogger(name='MDX-Process', level=logging_level)
         logger.info('MDX processing started.')
         self.path = os.getenv('efs_mount_path', self.path)
         granules = self.input['granules']
@@ -616,17 +612,13 @@ class MDX(Process):
         collection_version = collection.get('version')
         has_lookup = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
             'module') in ["legacy", "lookup"]
-        # is_legacy = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
-        #     'module') == 'legacy'
         key = 'lookup_key' if has_lookup else 'input_key'
-        # key = 'legacy_key' if is_legacy else 'input_key'
-
+        
         self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
             self.config['fileStagingDir']
         self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
             self.config['fileStagingDir'] is None else self.config['fileStagingDir']
 
-        # excluded = collection_name in self.exclude_fetch() or is_legacy
         excluded = collection_name in self.exclude_fetch() or has_lookup
         if excluded:
             self.output.append(self.input[0])
