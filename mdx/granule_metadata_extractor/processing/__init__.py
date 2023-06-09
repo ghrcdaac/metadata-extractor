@@ -138,3 +138,4 @@ from .process_sbuskylerimpacts import ExtractSbuskylerimpactsMetadata
 from .process_gpmpal import ExtractGpmpalMetadata
 from .process_hamsrcpexcv import ExtractHamsrcpexcvMetadata
 from .process_metnavcpexcv import ExtractMetnavcpexcvMetadata
+from .process_apr3cpexcv import ExtractApr3cpexcvMetadata
