@@ -294,7 +294,8 @@ class MDX(Process):
             "prsondecpexaw": mdx.ExtractPrsondecpexawMetadata,
             "musondeimpacts": mdx.ExtractMusondeimpactsMetadata,
             "navdc8cpex": mdx.ExtractNavdc8cpexMetadata,
-            "metnavcpexcv": mdx.ExtractMetnavcpexcvMetadata
+            "metnavcpexcv": mdx.ExtractMetnavcpexcvMetadata,
+            "gpmkcxxgcpex": mdx.ExtractGpmkcxxgcpexMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')
@@ -558,7 +559,8 @@ class MDX(Process):
     def input_keys(self):
         return {
             'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
-                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat|he5)$',
+                         r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat'
+                         r'|he5|raw|bz2)$',
             'legacy_key': r'^(.*).*$'
         }
 
