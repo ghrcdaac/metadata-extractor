@@ -30,6 +30,9 @@ class ExtractMetnavcpexcvMetadata(ExtractASCIIMetadata):
         lat = []
         lon = []
         for line in lines[num_header_lines:]:
+            # filter empty lines
+            if not line.strip():
+                continue
             #Time_Start,Day_Of_Year,Latitude,Longitude,......
             #51118,229,34.6327332,-118.0740712,......
 
