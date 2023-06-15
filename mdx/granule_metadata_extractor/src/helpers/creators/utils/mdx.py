@@ -7,20 +7,24 @@ import boto3
 import json
 import os
 
+
 class S3URI:
     def __init__(self, bucket, prefix, filename):
-        self.bucket=bucket
-        self.prefix=prefix
-        self.filename=filename
+        self.bucket = bucket
+        self.prefix = prefix
+        self.filename = filename
+
 
 class MDX:
     """
     Class to wrap standard MDX processing
     """
+
     def __init__(self):
         """
         Used to define instance variables
         """
+        self.in_AWS = 'us-west-2' in os.getenv('HOSTNAME', "")
 
     def parse_s3_uri(self, s3uri: str) -> dict:
         """
@@ -31,8 +35,8 @@ class MDX:
         :rtype: dict
         """
         parsed_s3uri = urlparse(s3uri, allow_fragments=False)
-        return S3URI(parsed_s3uri.netloc, parsed_s3uri.path.lstrip('/'), 
-            os.path.basename(s3uri))
+        return S3URI(parsed_s3uri.netloc, parsed_s3uri.path.lstrip('/'),
+                     os.path.basename(s3uri))
 
     def get_object_list(self, prefix: str, bucket: str = "ghrcw-private") -> list:
         """
@@ -93,9 +97,11 @@ class MDX:
         min_keys = ["south", "west", "start"]
         max_keys = ["north", "east", "end"]
         for key in min_keys:
-            collection_metadata[key] = min(collection_metadata[key], granule_metadata[key])
+            collection_metadata[key] = min(
+                collection_metadata[key], granule_metadata[key])
         for key in max_keys:
-            collection_metadata[key] = max(collection_metadata[key], granule_metadata[key])
+            collection_metadata[key] = max(
+                collection_metadata[key], granule_metadata[key])
         collection_metadata["sizeMB"] += granule_metadata["sizeMB"]
         collection_metadata["num_of_files"] += 1
         return collection_metadata
@@ -109,9 +115,9 @@ class MDX:
         :return: updated dict with start/end times in string format
         :rtype: dict
         """
-        time_format='%Y-%m-%dT%H:%M:%SZ'
+        time_format = '%Y-%m-%dT%H:%M:%SZ'
         for elem in ["start", "end"]:
-            input_dict[elem]=datetime.strftime(input_dict[elem], time_format)
+            input_dict[elem] = datetime.strftime(input_dict[elem], time_format)
         return input_dict
 
     def write_to_lookup(self, short_name: str, lookup_dict: dict, collection_summary: dict, path: str = '../'):
@@ -119,7 +125,7 @@ class MDX:
         Write lookup file and collection summary to zip file
         """
         os.makedirs(path, exist_ok=True)
-        zip_path=os.path.join(f"{path.rstrip('/')}", f"{short_name}.zip")
+        zip_path = os.path.join(f"{path.rstrip('/')}", f"{short_name}.zip")
 
         with zipfile.ZipFile(zip_path, 'w') as zip_f:
             zip_f.writestr("lookup.json", json.dumps(lookup_dict))
@@ -151,10 +157,10 @@ class MDX:
                (elem in ["north", "south"] and (value < -90 or value > 90)):
                 return False
         return True
-        
+
     def process_collection(self, short_name, provider_path):
         collection_lookup = {}
-        collection_metadata_summary={
+        collection_metadata_summary = {
             "start": datetime(2100, 1, 1),
             "end": datetime(1900, 1, 1),
             "north": -90.0, "south": 90.0, "east": -180.0, "west": 180.0,
@@ -162,22 +168,25 @@ class MDX:
         }
         # Get s3uri of all objects at s3 prefix
         s3uri_list = self.get_object_list(prefix=provider_path)
+        # Only process first file if run outside AWS
+        s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
         for s3uri in s3uri_list:
             try:
                 # TODO - Wrap this section and add error handling so that if granule
                 # encounters error, is logged and continues processing
                 uri = self.parse_s3_uri(s3uri)
                 # Download file object stream and size
-                response = self.download_stream(bucket=uri.bucket, prefix=uri.prefix)
+                response = self.download_stream(
+                    bucket=uri.bucket, prefix=uri.prefix)
                 file_obj_stream = response["Body"]
                 # Extract temporal and spatial metadata
                 metadata = self.process(uri.filename, file_obj_stream)
                 if not self.validate_spatial_coordinates(metadata):
                     print(f"Invalid spatial coordinate system:\n"
-                        f"\tnorth: {metadata['north']}\n"
-                        f"\tsouth: {metadata['south']}\n"
-                        f"\teast: {metadata['east']}\n"
-                        f"\twest: {metadata['west']}\n")
+                          f"\tnorth: {metadata['north']}\n"
+                          f"\tsouth: {metadata['south']}\n"
+                          f"\teast: {metadata['east']}\n"
+                          f"\twest: {metadata['west']}\n")
                     os.sys.exit(1)
                 metadata["sizeMB"] = 1E-6 * response["ContentLength"]
                 # Compare to collection metadata summary
@@ -192,10 +201,12 @@ class MDX:
             except Exception as e:
                 print(f"Problem processing {s3uri}:\n{e}\n")
 
-        collection_metadata_summary = self.format_dict_times(collection_metadata_summary)
-        
+        collection_metadata_summary = self.format_dict_times(
+            collection_metadata_summary)
+
         # Write lookup and summary to zip
-        self.write_to_lookup(short_name, collection_lookup, collection_metadata_summary)
+        self.write_to_lookup(short_name, collection_lookup,
+                             collection_metadata_summary)
 
     def shutdown_ec2(self):
         """
@@ -203,5 +214,5 @@ class MDX:
         useful for cost savings when deployed to AWS
         """
         # This conditional to avoid accidental local shutdowns.
-        if 'us-west-2' in os.getenv('HOSTNAME', ""):
+        if self.in_AWS:
             subprocess.call(["sudo", "shutdown", "1"])
