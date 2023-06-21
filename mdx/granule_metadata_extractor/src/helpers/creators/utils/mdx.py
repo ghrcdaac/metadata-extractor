@@ -152,11 +152,18 @@ class MDX:
         :rtype: bool
         """
         for elem in ["north", "south", "east", "west"]:
+            # Elem value may be float-like types such as float32 which may
+            # cause issue in json parsing, so we type cast here to python type
+            metadata[elem] = float(metadata[elem])
             value = metadata[elem]
             if (value > 180 or value < -180) or \
                (elem in ["north", "south"] and (value < -90 or value > 90)):
-                return False
-        return True
+                raise Exception(f"Invalid spatial coordinate system:\n"
+                                    f"\tnorth: {metadata['north']}\n"
+                                    f"\tsouth: {metadata['south']}\n"
+                                    f"\teast: {metadata['east']}\n"
+                                    f"\twest: {metadata['west']}\n")
+        return metadata
 
     def process_collection(self, short_name, provider_path):
         collection_lookup = {}
@@ -172,22 +179,14 @@ class MDX:
         s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
         for s3uri in s3uri_list:
             try:
-                # TODO - Wrap this section and add error handling so that if granule
-                # encounters error, is logged and continues processing
                 uri = self.parse_s3_uri(s3uri)
                 # Download file object stream and size
                 response = self.download_stream(
                     bucket=uri.bucket, prefix=uri.prefix)
                 file_obj_stream = response["Body"]
                 # Extract temporal and spatial metadata
-                metadata = self.process(uri.filename, file_obj_stream)
-                if not self.validate_spatial_coordinates(metadata):
-                    print(f"Invalid spatial coordinate system:\n"
-                          f"\tnorth: {metadata['north']}\n"
-                          f"\tsouth: {metadata['south']}\n"
-                          f"\teast: {metadata['east']}\n"
-                          f"\twest: {metadata['west']}\n")
-                    os.sys.exit(1)
+                initial_metadata = self.process(uri.filename, file_obj_stream)
+                metadata = self.validate_spatial_coordinates(initial_metadata)
                 metadata["sizeMB"] = 1E-6 * response["ContentLength"]
                 # Compare to collection metadata summary
                 collection_metadata_summary = self.update_collection_metadata_summary(
