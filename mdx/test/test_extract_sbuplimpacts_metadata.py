@@ -4,7 +4,7 @@ from granule_metadata_extractor.processing.process_sbuplimpacts import ExtractSb
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
-#host=thor,env=ops,project=IMPACTS,ds=sbuplimpacts,inv=inventory,file=IMPACTS_SBU_pluvio_20200114.csv,path=IMPACTS_SBU_pluvio_20200114.csv,size=167249,start=2020-01-14T00:00:00Z,end=2020-01-14T23:59:01Z,browse=N,checksum=41b06f53c013a81c3a9f383d622cf3ad616029be,NLat=40.9,SLat=40.88,WLon=-73.138,ELon=-73.118,format=ASCII-csv
+#host=thor,env=ops,project=IMPACTS,ds=sbuplimpacts,inv=inventory,file=IMPACTS_SBU_pluvio_20200114.csv,path=IMPACTS_SBU_pluvio_20200114.csv,size=167249,start=2020-01-14T00:00:00Z,end=2020-01-14T23:59:01Z,browse=N,checksum=41b06f53c013a81c3a9f383d622cf3ad616029be,NLat=40.9,SLat=40.88,WLon=-73.138,ELon=-73.118,format=CSV
 
 class TestProcessSbuplimpacts(TestCase):
     """
@@ -22,7 +22,7 @@ class TestProcessSbuplimpacts(TestCase):
     md = process_dataset.get_metadata(ds_short_name= 'sbuplimpacts')
     expected_metadata = {'ShortName': 'sbuplimpacts',
                          'GranuleUR': granule_name,
-                         'VersionId': '1', 'DataFormat': 'ASCII-csv',
+                         'VersionId': '1', 'DataFormat': 'CSV',
                          }
 
     def test_1_get_start_date(self):
