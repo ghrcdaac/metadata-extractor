@@ -41,14 +41,32 @@ class ExtractSbuparsimpactsMetadata(ExtractNetCDFMetadata):
         :param file_path: file path
         :return:
         """
-        if '_RT.nc' in file_path:
-            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_RT_metadata(nc)
-        elif '_MAN.nc' in file_path:
-            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_SB_metadata(nc)
-        elif '_SB.nc' in file_path:
-            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_SB_metadata(nc)
+        if 'parsivel_2022' in file_path:
+            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_2022_metadata(nc)
+        else: # 2020 data files
+            if '_RT.nc' in file_path:
+                minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_RT_metadata(nc)
+            elif '_MAN.nc' in file_path:
+                minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_SB_metadata(nc)
+            elif '_SB.nc' in file_path:
+                minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_SB_metadata(nc)
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
+
+    def get_2022_metadata(self, nc):
+        #2022 SBU fixed site (Pavlos's email): 40.89712, -73.12771.
+        sb_loc_2022 = [-73.12771, 40.89712] #lon, lat
+
+        timefield = np.array(nc.variables['UNIX_TIME'][:])
+        minTime = datetime(1970,1,1) + timedelta(seconds=int(timefield.min()))
+        maxTime = datetime(1970,1,1) + timedelta(seconds=int(timefield.max()))
+        minlat, maxlat, minlon, maxlon = [sb_loc_2022[1]-(0.03/111.325),
+                                          sb_loc_2022[1]+(0.03/111.325),
+                                          sb_loc_2022[0]-(0.03/111.325),
+                                          sb_loc_2022[0]+(0.03/111.325)]
+
+        return minTime, maxTime, minlat, maxlat, minlon, maxlon
+
 
     def get_RT_metadata(self, nc):
         minTime, maxTime, minlat, maxlat, minlon, maxlon = [datetime(2100, 1, 1),
