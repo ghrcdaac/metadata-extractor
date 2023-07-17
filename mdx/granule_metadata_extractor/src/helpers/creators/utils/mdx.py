@@ -84,27 +84,42 @@ class MDX:
             md5.update(chunk)
         return md5.hexdigest()
 
-    def update_collection_metadata_summary(self, collection_metadata: dict, granule_metadata: dict) -> dict:
+    def generate_collection_metadata_summary(self, collection_lookup: dict) -> dict:
         """
-        Compare collection metadata summary to granule metadata and update if needed
-        :param collection_metadata: collection metadata summary
-        :type collection_metadata: dict
-        :param granule_metadata: individual granule metadata to compare
-        :type granule_metadata: dict
-        :return: updated collection_metadata summary dict
+        Generate collection metadata summary from collection lookup dict
+        :param collection_lookup: collection lookup dictionary containing all files metadata
+        :type collection_lookup: dict
+        :return: collection_metadata summary dict
         :rtype: dict
         """
-        min_keys = ["south", "west", "start"]
-        max_keys = ["north", "east", "end"]
-        for key in min_keys:
-            collection_metadata[key] = min(
-                collection_metadata[key], granule_metadata[key])
-        for key in max_keys:
-            collection_metadata[key] = max(
-                collection_metadata[key], granule_metadata[key])
-        collection_metadata["sizeMB"] += granule_metadata["sizeMB"]
-        collection_metadata["num_of_files"] += 1
-        return collection_metadata
+        # Initialize vars
+        start, end = ["2100-01-01T00:00:00Z",  "1900-01-15T00:00:00Z"]
+        north, south, east, west = [-90.0, 90.0, -180.0, 180.0]
+        size = 0
+        file_count = len(collection_lookup)
+
+        for granule in collection_lookup.values():
+            # ISO8601 Format is comparable directly as strings, so no
+            # conversion to datetime object is necessary:
+            # https://fits.gsfc.nasa.gov/iso-time.html
+            start = min(start, granule['start'])
+            end = max(end, granule['end'])
+            north = max(north, float(granule['north']))
+            south = min(south, float(granule['south']))
+            east = max(east, float(granule['east']))
+            west = min(west, float(granule['west']))
+            size += float(granule['sizeMB'])
+
+        return {
+            "start": start,
+            "end": end,
+            "north": north,
+            "south": south,
+            "east": east,
+            "west": west,
+            "sizeMB": size,
+            "num_of_files": file_count
+        }
 
     def format_dict_times(self, input_dict: dict) -> dict:
         """
@@ -167,12 +182,6 @@ class MDX:
 
     def process_collection(self, short_name, provider_path):
         collection_lookup = {}
-        collection_metadata_summary = {
-            "start": datetime(2100, 1, 1),
-            "end": datetime(1900, 1, 1),
-            "north": -90.0, "south": 90.0, "east": -180.0, "west": 180.0,
-            "sizeMB": 0, "num_of_files": 0
-        }
         # Get s3uri of all objects at s3 prefix
         s3uri_list = self.get_object_list(prefix=provider_path)
         # Only process first file if run outside AWS
@@ -188,9 +197,6 @@ class MDX:
                 initial_metadata = self.process(uri.filename, file_obj_stream)
                 metadata = self.validate_spatial_coordinates(initial_metadata)
                 metadata["sizeMB"] = 1E-6 * response["ContentLength"]
-                # Compare to collection metadata summary
-                collection_metadata_summary = self.update_collection_metadata_summary(
-                    collection_metadata_summary, metadata)
                 # Format time outputs
                 metadata = self.format_dict_times(metadata)
                 for elem in ["north", "south", "east", "west"]:
@@ -200,8 +206,7 @@ class MDX:
             except Exception as e:
                 print(f"Problem processing {s3uri}:\n{e}\n")
 
-        collection_metadata_summary = self.format_dict_times(
-            collection_metadata_summary)
+        collection_metadata_summary = self.generate_collection_metadata_summary(collection_lookup)
 
         # Write lookup and summary to zip
         self.write_to_lookup(short_name, collection_lookup,
