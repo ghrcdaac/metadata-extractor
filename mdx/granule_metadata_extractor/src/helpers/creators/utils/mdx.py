@@ -1,5 +1,6 @@
-from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse
+from datetime import datetime
 import subprocess
 import hashlib
 import zipfile
@@ -186,21 +187,24 @@ class MDX:
         :param s3uri: s3uri of file to process
         :type s3uri: string
         """
-        uri = self.parse_s3_uri(s3uri)
-        # Download file object stream and size
-        response = self.download_stream(
-            bucket=uri.bucket, prefix=uri.prefix)
-        file_obj_stream = response["Body"]
-        # Extract temporal and spatial metadata
-        initial_metadata = self.process(uri.filename, file_obj_stream)
-        metadata = self.validate_spatial_coordinates(initial_metadata)
-        metadata["sizeMB"] = 1E-6 * response["ContentLength"]
-        # Format time outputs
-        metadata = self.format_dict_times(metadata)
-        for elem in ["north", "south", "east", "west"]:
-            metadata[elem] = str(round(metadata[elem], 3))
-        metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-        self.collection_lookup[uri.filename] = metadata
+        try:
+            uri = self.parse_s3_uri(s3uri)
+            # Download file object stream and size
+            response = self.download_stream(
+                bucket=uri.bucket, prefix=uri.prefix)
+            file_obj_stream = response["Body"]
+            # Extract temporal and spatial metadata
+            initial_metadata = self.process(uri.filename, file_obj_stream)
+            metadata = self.validate_spatial_coordinates(initial_metadata)
+            metadata["sizeMB"] = 1E-6 * response["ContentLength"]
+            # Format time outputs
+            metadata = self.format_dict_times(metadata)
+            for elem in ["north", "south", "east", "west"]:
+                metadata[elem] = str(round(metadata[elem], 3))
+            metadata["sizeMB"] = round(metadata["sizeMB"], 2)
+            self.collection_lookup[uri.filename] = metadata
+        except Exception as e:
+                print(f"Problem processing {s3uri}:\n{e}\n")
 
     def process_collection(self, short_name, provider_path):
         self.collection_lookup = {}
@@ -208,11 +212,8 @@ class MDX:
         s3uri_list = self.get_object_list(prefix=provider_path)
         # Only process first file if run outside AWS
         s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
-        for s3uri in s3uri_list:
-            try:
-                self.process_file(s3uri)
-            except Exception as e:
-                print(f"Problem processing {s3uri}:\n{e}\n")
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            result = executor.map(self.process_file, s3uri_list)
 
         collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
 
