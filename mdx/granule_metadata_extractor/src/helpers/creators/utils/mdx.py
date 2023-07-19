@@ -180,36 +180,44 @@ class MDX:
                                     f"\twest: {metadata['west']}\n")
         return metadata
 
+    def process_file(self, s3uri):
+        """
+        Process metadata for file
+        :param s3uri: s3uri of file to process
+        :type s3uri: string
+        """
+        uri = self.parse_s3_uri(s3uri)
+        # Download file object stream and size
+        response = self.download_stream(
+            bucket=uri.bucket, prefix=uri.prefix)
+        file_obj_stream = response["Body"]
+        # Extract temporal and spatial metadata
+        initial_metadata = self.process(uri.filename, file_obj_stream)
+        metadata = self.validate_spatial_coordinates(initial_metadata)
+        metadata["sizeMB"] = 1E-6 * response["ContentLength"]
+        # Format time outputs
+        metadata = self.format_dict_times(metadata)
+        for elem in ["north", "south", "east", "west"]:
+            metadata[elem] = str(round(metadata[elem], 3))
+        metadata["sizeMB"] = round(metadata["sizeMB"], 2)
+        self.collection_lookup[uri.filename] = metadata
+
     def process_collection(self, short_name, provider_path):
-        collection_lookup = {}
+        self.collection_lookup = {}
         # Get s3uri of all objects at s3 prefix
         s3uri_list = self.get_object_list(prefix=provider_path)
         # Only process first file if run outside AWS
         s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
         for s3uri in s3uri_list:
             try:
-                uri = self.parse_s3_uri(s3uri)
-                # Download file object stream and size
-                response = self.download_stream(
-                    bucket=uri.bucket, prefix=uri.prefix)
-                file_obj_stream = response["Body"]
-                # Extract temporal and spatial metadata
-                initial_metadata = self.process(uri.filename, file_obj_stream)
-                metadata = self.validate_spatial_coordinates(initial_metadata)
-                metadata["sizeMB"] = 1E-6 * response["ContentLength"]
-                # Format time outputs
-                metadata = self.format_dict_times(metadata)
-                for elem in ["north", "south", "east", "west"]:
-                    metadata[elem] = str(round(metadata[elem], 3))
-                metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-                collection_lookup[uri.filename] = metadata
+                self.process_file(s3uri)
             except Exception as e:
                 print(f"Problem processing {s3uri}:\n{e}\n")
 
-        collection_metadata_summary = self.generate_collection_metadata_summary(collection_lookup)
+        collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
 
         # Write lookup and summary to zip
-        self.write_to_lookup(short_name, collection_lookup,
+        self.write_to_lookup(short_name, self.collection_lookup,
                              collection_metadata_summary)
 
     def shutdown_ec2(self):
