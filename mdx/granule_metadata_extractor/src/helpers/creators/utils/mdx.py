@@ -1,4 +1,3 @@
-from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse
 from datetime import datetime
 import subprocess
@@ -211,9 +210,9 @@ class MDX:
         # Get s3uri of all objects at s3 prefix
         s3uri_list = self.get_object_list(prefix=provider_path)
         # Only process first file if run outside AWS
-        s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            result = executor.map(self.process_file, s3uri_list)
+        # s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
+        for uri in s3uri_list:
+            self.process_file(uri)
 
         collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
 
