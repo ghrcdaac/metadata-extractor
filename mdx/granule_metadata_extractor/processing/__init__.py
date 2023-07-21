@@ -141,3 +141,4 @@ from .process_metnavcpexcv import ExtractMetnavcpexcvMetadata
 from .process_apr3cpexcv import ExtractApr3cpexcvMetadata
 from .process_gpmkcxxgcpex import ExtractGpmkcxxgcpexMetadata
 from .process_goescpexcv import ExtractGoescpexcvMetadata
+from .process_sondecpexcv import ExtractSondecpexcvMetadata
