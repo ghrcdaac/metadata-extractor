@@ -20,10 +20,8 @@ class ExtractSbumrr2impactsMetadata(ExtractNetCDFMetadata):
         #super().__init__(file_path)
         self.file_path = file_path
         #these are needed to metadata extractor
-        self.file_format = {'BNL':'netCDF-3','RT':'netCDF-4/CF',
-                            'MAN':'netCDF-4/CF'}
-        self.gloc = {'BNL':[40.879,-72.874],'MAN':[40.7282,-74.0068]} #lat,lon
-        #RT default site: SBU (40.897N, -73.127E)
+        self.fileformat = 'netCDF-4' 
+
         #RT periods (if not within any of the three periods, it's at SBU site)
         self.RT_period = [{'Smith Point':[datetime(2019,12,13,16,53),
                            datetime(2019,12,13,19,53)]},
@@ -47,27 +45,41 @@ class ExtractSbumrr2impactsMetadata(ExtractNetCDFMetadata):
         :param file_path: file path
         :return:
         """
-        #BNL, RT and MAN files
-        site_id = file_path.split('/')[-1].split('_')[-1].split('.')[0] #BNL, RT, or MAN
-        self.fileformat = self.file_format[site_id]
-        if site_id == 'BNL':
-            dt0 = datetime.strptime(nc.variables['time'].getncattr('units').split()[-1],'%Y-%m-%d')
-        else: #RT and MAN
-            dt0 = datetime.strptime(nc.variables['time'].getncattr('units').split()[-1],'%Y-%m-%dT%H:%M:%SZ')
-
         sec = nc.variables['time'][:] #seconds since 1970-1-1
+        site_id = file_path.split('/')[-1].split('_')[-1].split('.')[0] #BNL, RT, or MAN
+        if site_id == 'BNL':
+           #Sample files:
+           #IMPACTS_SBU_mrrpro2_20230120_030000_BNL.nc
+           #IMPACTS_SBU_mrr2_20200101_BNL.nc
+           if '_mrr2_2020' in self.file_path:
+              site_lat = 40.879
+              site_lon = -72.874
+              self.fileformat = 'netCDF-3'
+              dt0 = datetime.strptime(nc.variables['time'].getncattr('units').split()[-1],'%Y-%m-%d')
+           elif '_mrrpro2_2023' in self.file_path:
+              site_lat = 40.8656
+              site_lon = -72.8814
+              dt0 = datetime.strptime(nc.variables['time'].getncattr('units').split()[-1],'%Y-%m-%dT%H:%M:%SZ')
+        elif site_id == 'RT':
+           dt0 = datetime.strptime(nc.variables['time'].getncattr('units').split()[-1],'%Y-%m-%dT%H:%M:%SZ')
+           t0 = dt0 + timedelta(seconds=int(min(sec).item()))
+           t1 = dt0 + timedelta(seconds=int(max(sec).item()))
+           site_lat, site_lon = self.get_RT_lat_lon(t0, t1)
+        elif site_id == 'MAN':
+           site_lat = 40.7282
+           site_lon = -74.0068
+           dt0 = datetime.strptime(nc.variables['time'].getncattr('units').split()[-1],'%Y-%m-%dT%H:%M:%SZ')
+        else: #MRR2Pro_SBU
+           #IMPACTS_SBU_mrrpro2_20220228_000000.nc
+           #Those SBU data (2022) were collected at the SBU South P site: 40.897N, -73.127E
+           site_lat = 40.897
+           site_lon = -73.127
+           dt0 = datetime.strptime(nc.variables['time'].getncattr('units').split()[-1],'%Y-%m-%dT%H:%M:%SZ')
+
         minTime = dt0 + timedelta(seconds=int(min(sec).item()))
         maxTime = dt0 + timedelta(seconds=int(max(sec).item()))
-
-        if site_id == 'RT':
-            site_lat, site_lon = self.get_RT_lat_lon(minTime, maxTime)
-        else: #MAN or BNL
-            site_lat = self.gloc[site_id][0]
-            site_lon = self.gloc[site_id][1]
-
         maxlat, minlat, maxlon, minlon = [site_lat+0.01, site_lat-0.01, 
                                           site_lon+0.01, site_lon-0.01]
-
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
