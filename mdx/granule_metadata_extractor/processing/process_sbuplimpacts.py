@@ -12,22 +12,29 @@ class ExtractSbuplimpactsMetadata(ExtractASCIIMetadata):
         #super().__init__(file_path)
         self.file_path = file_path
 
-        self.fileformat = 'ASCII-csv'
-        self.site_lat = 40.89
-        self.site_lon = -73.128
+        self.fileformat = 'CSV'
+        self.site_lat_2020 = 40.89
+        self.site_lon_2020 = -73.128
+        self.site_lat_2022 = 40.89712
+        self.site_lon_2022 = -73.12771
 
         with open(self.file_path,'r') as f:
              self.file_lines = f.readlines()
         f.close()
+
+        filename = self.file_path.split('/')[-1]
+        if 'pluvio_2020' in filename:
+           site_lat = self.site_lat_2020 
+           site_lon = self.site_lon_2020 
+        else: #pluvio_2022
+           site_lat = self.site_lat_2022 
+           site_lon = self.site_lon_2022 
  
-        #lat and lon for *MAN.csv file is provided in datainfo sheet
-        #(40.7282N, 74.0068W) 
-#        self.SLat, self.NLat, self.WLon, self.ELon = [40.7182, 40.7382, -74.0168, -73.9968]
-        self.SLat, self.NLat, self.WLon, self.ELon = [self.site_lat-0.01,
-                                                      self.site_lat+0.01,
-                                                      self.site_lon-0.01,
-                                                      self.site_lon+0.01]
-        #extracting time from ascii-csv file
+        self.SLat, self.NLat, self.WLon, self.ELon = [site_lat-0.01,
+                                                      site_lat+0.01,
+                                                      site_lon-0.01,
+                                                      site_lon+0.01]
+        #extracting time from csv file
         [self.minTime, self.maxTime] = \
                         self.get_variables_min_max()
 
@@ -73,7 +80,7 @@ class ExtractSbuplimpactsMetadata(ExtractASCIIMetadata):
         stop_date = self.maxTime.strftime(date_format)
         return start_date, stop_date
 
-    def get_metadata(self, ds_short_name, format='ASCII-csv', version='1', **kwargs):
+    def get_metadata(self, ds_short_name, format='CSV', version='1', **kwargs):
         """
         :param ds_short_name:
         :param time_variable_key:
