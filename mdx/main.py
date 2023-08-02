@@ -168,7 +168,8 @@ class MDX(Process):
             "hamsrcpexcv": mdx.ExtractHamsrcpexcvMetadata,
             "apr3cpexcv": mdx.ExtractApr3cpexcvMetadata,
             "goescpexcv": mdx.ExtractGoescpexcvMetadata,
-            "sondecpexcv": mdx.ExtractSondecpexcvMetadata
+            "sondecpexcv": mdx.ExtractSondecpexcvMetadata,
+            "hiwat": mdx.ExtractHiwatMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -583,9 +584,9 @@ class MDX(Process):
     @property
     def input_keys(self):
         return {
-            'input_key': r'^(.*)\.(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
+            'input_key': r'^(.*)\.?(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
                          r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat'
-                         r'|he5|raw|bz2)$',
+                         r'|he5|raw|bz2|grb2f\d{4}|_\d{2}-00-00)$',
             'lookup_key': r'^(.*).*$'
         }
 
