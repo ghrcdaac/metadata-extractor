@@ -143,3 +143,4 @@ from .process_gpmkcxxgcpex import ExtractGpmkcxxgcpexMetadata
 from .process_lookup import ExtractLookupMetadata
 from .process_goescpexcv import ExtractGoescpexcvMetadata
 from .process_sondecpexcv import ExtractSondecpexcvMetadata
+from .process_hiwat import ExtractHiwatMetadata
