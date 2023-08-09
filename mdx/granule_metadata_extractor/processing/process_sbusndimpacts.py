@@ -19,6 +19,7 @@ class ExtractSbusndimpactsMetadata(ExtractNetCDFMetadata):
     def __init__(self, file_path):
         #super().__init__(file_path)
         self.file_path = file_path
+        self.fileformat = 'netCDF-3'
 
         # extracting time and space metadata from nc.gz file
         dataset = Dataset(file_path)
@@ -101,7 +102,7 @@ class ExtractSbusndimpactsMetadata(ExtractNetCDFMetadata):
             str(x) for x in geometry_list)
         data['checksum'] = self.get_checksum()
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
-        data['DataFormat'] = 'netCDF-3'
+        data['DataFormat'] = self.fileformat 
         data['VersionId'] = version
         return data
 
