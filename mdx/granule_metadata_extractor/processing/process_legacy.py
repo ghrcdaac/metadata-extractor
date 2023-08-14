@@ -3,7 +3,7 @@ from datetime import datetime
 from zipfile import ZipFile
 import secrets
 import pathlib
-import json
+import ijson
 import os
 
 
@@ -29,18 +29,28 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
         self.lookup_zip_path = os.path.join(pathlib.Path(__file__).parent.absolute(),
                                '../src/helpers/legacy_lookups.zip')
 
+    def get_file_lookup(self, collection_name):
+        """
+        Get file's lookup from lookup json file
+        :param collection_name: collection shortname used for lookup json
+        """
+        with ZipFile(self.lookup_zip_path) as lookup_zip:
+            with lookup_zip.open(f'lookups/{collection_name}.json') as collection_lookup:
+                index_match = ijson.items(collection_lookup, f'{self.file_name}')
+                for elem in index_match:
+                    print(elem)
+                    # ijson uses a prefix lookup; however, we only expect the prefix to
+                    # return 1 element when using the filename as the prefix; this may
+                    # cause issues if a collection has granules like test.txt and
+                    # test.txt.nc who have different metadata values
+                    return elem
+
     def get_variables_min_max(self, collection_name):
         """
         Get legacy dataset's metadata attributes from lookup zip
         :param collection_name: collection shortname used for lookup json
         """
-        granule_info = None
-        with ZipFile(self.lookup_zip_path) as lookup_zip:
-            with lookup_zip.open(f'lookups/{collection_name}.json') as collection_lookup:
-                lookup_json = json.load(collection_lookup)
-                granule_info = lookup_json.get(self.file_name, {})
-                print(granule_info)
-
+        granule_info = self.get_file_lookup(collection_name)
         granule_wnes = granule_info.get('wnes_geometry', {})
 
         self.north = max(self.north, granule_wnes.get('northBoundingCoordinate'))
