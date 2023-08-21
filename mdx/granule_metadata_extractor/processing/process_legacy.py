@@ -52,6 +52,7 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
         """
         granule_info = self.get_file_lookup(collection_name)
         granule_wnes = granule_info.get('wnes_geometry', {})
+        granule_wnes = {key: float(granule_wnes[key]) for key in granule_wnes.keys()}
 
         self.north = max(self.north, granule_wnes.get('northBoundingCoordinate'))
         self.south = min(self. south, granule_wnes.get('southBoundingCoordinate'))
@@ -63,7 +64,7 @@ class ExtractLegacyMetadata(ExtractASCIIMetadata):
         self.end_time = max(self.end_time, max(temporal))
 
         self.format = granule_info.get('format')
-        self.file_size = granule_info.get('sizeMB')
+        self.file_size = float(granule_info.get('sizeMB'))
         # If granule doesn't have a checksum, we fake it. If legacy dataset needs checksum, we will create
         # dedicated MDX for it.
         self.checksum = granule_info.get('checksum') if granule_info.get('checksum') is not None else \
