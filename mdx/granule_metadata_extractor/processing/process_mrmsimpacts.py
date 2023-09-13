@@ -24,6 +24,9 @@ class ExtractMrmsimpactsMetadata(ExtractNetCDFMetadata):
     def get_variables_min_max(self):
 
         datafile = Dataset(self.file_path)
+        if 'NETCDF3' in datafile.file_format:
+           self.fileformat = 'netCDF-3'
+ 
         if 'latitude' in datafile.variables.keys():
            lats = np.array(datafile['latitude'][:])
            lons = np.array(datafile['longitude'][:])
