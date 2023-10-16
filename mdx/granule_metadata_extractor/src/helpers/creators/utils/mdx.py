@@ -174,10 +174,10 @@ class MDX:
             if (value > 180 or value < -180) or \
                (elem in ["north", "south"] and (value < -90 or value > 90)):
                 raise Exception(f"Invalid spatial coordinate system:\n"
-                                    f"\tnorth: {metadata['north']}\n"
-                                    f"\tsouth: {metadata['south']}\n"
-                                    f"\teast: {metadata['east']}\n"
-                                    f"\twest: {metadata['west']}\n")
+                                f"\tnorth: {metadata['north']}\n"
+                                f"\tsouth: {metadata['south']}\n"
+                                f"\teast: {metadata['east']}\n"
+                                f"\twest: {metadata['west']}\n")
         return metadata
 
     def process_file(self, s3uri):
@@ -203,7 +203,7 @@ class MDX:
             metadata["sizeMB"] = round(metadata["sizeMB"], 2)
             self.collection_lookup[uri.filename] = metadata
         except Exception as e:
-                print(f"Problem processing {s3uri}:\n{e}\n")
+            print(f"Problem processing {s3uri}:\n{e}\n")
 
     def process_collection(self, short_name, provider_path):
         self.collection_lookup = {}
