@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
 from datetime import datetime
+import concurrent.futures
 import subprocess
 import hashlib
 import zipfile
@@ -210,9 +211,18 @@ class MDX:
         # Get s3uri of all objects at s3 prefix
         s3uri_list = self.get_object_list(prefix=provider_path)
         # Only process first file if run outside AWS
-        # s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
-        for uri in s3uri_list:
-            self.process_file(uri)
+        s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            # Start the process operations and mark each future with its uri
+            future_to_uri = {executor.submit(self.process_file, uri): uri for uri in s3uri_list}
+            for future in concurrent.futures.as_completed(future_to_uri):
+                uri = future_to_uri[future]
+                try:
+                    data = future.result()
+                except Exception as e:
+                    print(f'{uri} generated an exception: {e}')
+        # for uri in s3uri_list:
+        #     self.process_file(uri)
 
         collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
 
