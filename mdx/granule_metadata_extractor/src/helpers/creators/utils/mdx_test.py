@@ -173,7 +173,7 @@ class MDX:
     def process_collection(self, short_name, provider_path):
         self.collection_lookup = {}
         files_list = self.get_files_list(provider_path)
-        with concurrent.futures.ProcessPoolExecutor(max_workers=8) as executor:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=4) as executor:
             # Start the process operations and mark each future with its uri
             future_to_uri = {executor.submit(self.process_file, filepath): filepath for filepath in files_list}
             for future in concurrent.futures.as_completed(future_to_uri):
