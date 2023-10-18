@@ -202,7 +202,7 @@ class MDX:
             for elem in ["north", "south", "east", "west"]:
                 metadata[elem] = str(round(metadata[elem], 3))
             metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-            self.collection_lookup[uri.filename] = metadata
+            return metadata
         except Exception as e:
             print(f"Problem processing {s3uri}:\n{e}\n")
 
@@ -211,18 +211,17 @@ class MDX:
         # Get s3uri of all objects at s3 prefix
         s3uri_list = self.get_object_list(prefix=provider_path)
         # Only process first file if run outside AWS
-        s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
-        with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executor:
+        # s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
+        with concurrent.futures.ProcessPoolExecutor() as executor:
             # Start the process operations and mark each future with its uri
             future_to_uri = {executor.submit(self.process_file, uri): uri for uri in s3uri_list}
             for future in concurrent.futures.as_completed(future_to_uri):
                 uri = future_to_uri[future]
                 try:
                     data = future.result()
+                    self.collection_lookup[os.path.basename(uri)] = data
                 except Exception as e:
                     print(f'{uri} generated an exception: {e}')
-        # for uri in s3uri_list:
-        #     self.process_file(uri)
 
         collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
 

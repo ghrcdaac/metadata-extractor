@@ -61,7 +61,6 @@ class MDXProcessing(MDX):
         start_time, end_time = [datetime(2100, 1, 1), datetime(1900, 1, 1)]
         stn_id = re.search(
             '^impacts_2dvd_(sn.*)_raintotalhour.txt$', filename)[1]
-
         for line in file_lines:
             tkn = line.split()
             start_time_split = tkn[2].split(':')

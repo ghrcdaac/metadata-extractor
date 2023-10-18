@@ -166,24 +166,23 @@ class MDX:
             for elem in ["north", "south", "east", "west"]:
                 metadata[elem] = str(round(metadata[elem], 3))
             metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-            self.collection_lookup[os.path.basename(filepath)] = metadata
+            return metadata
         except Exception as e:
             print(f"Problem processing {os.path.basename(filepath)}:\n{e}\n")
 
     def process_collection(self, short_name, provider_path):
         self.collection_lookup = {}
         files_list = self.get_files_list(provider_path)
-        with concurrent.futures.ProcessPoolExecutor(max_workers=4) as executor:
+        with concurrent.futures.ProcessPoolExecutor() as executor:
             # Start the process operations and mark each future with its uri
             future_to_uri = {executor.submit(self.process_file, filepath): filepath for filepath in files_list}
             for future in concurrent.futures.as_completed(future_to_uri):
                 uri = future_to_uri[future]
                 try:
                     data = future.result()
+                    self.collection_lookup[os.path.basename(uri)] = data
                 except Exception as e:
                     print(f'{uri} generated an exception: {e}')
-        # for filepath in files_list:
-        #     self.process_file(filepath)
 
         collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
 
