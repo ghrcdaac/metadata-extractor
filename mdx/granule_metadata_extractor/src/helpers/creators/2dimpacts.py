@@ -6,7 +6,6 @@ import cProfile
 import time
 import math
 import re
-import os
 
 short_name = "2dimpacts"
 provider_path = "2dimpacts/fieldCampaigns/impacts/2DVD/data/"
@@ -66,8 +65,8 @@ class MDXProcessing(MDX):
         for encoded_line in file_obj_stream.iter_lines():
             line = encoded_line.decode("utf-8")
             tkn = line.split()
-            start_time_split=tkn[2].split(':')
-            end_time_split=tkn[4].split(':')
+            start_time_split = tkn[2].split(':')
+            end_time_split = tkn[4].split(':')
             granule_start = datetime(int(tkn[0]), 1, 1, int(start_time_split[0]), int(start_time_split[1])) + timedelta(int(tkn[1]) - 1)
             granule_end = datetime(int(tkn[0]), 1, 1, int(end_time_split[0]), int(end_time_split[1])) + timedelta(int(tkn[3]) - 1)
 
