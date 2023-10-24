@@ -20,7 +20,7 @@ class ExtractUalbmrr2impactsMetadata(ExtractNetCDFMetadata):
         self.file_path = file_path
         if '_mrr2_2020' in file_path:
            self.format = 'netCDF-3'
-        elif '_mrr2_2022' in file_path:
+        else: # '_mrr2_2022' or 'mrr2_2023'
            self.format = 'netCDF-4'
 
         self.get_variables_min_max()
