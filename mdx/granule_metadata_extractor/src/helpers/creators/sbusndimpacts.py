@@ -12,7 +12,7 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "sbusndimpacts"
-provider_path = "wrfimpacts/fieldCampaigns/impacts/SBU_Mobile_Soundings/data/"
+provider_path = "sbusndimpacts/fieldCampaigns/impacts/SBU_Mobile_Soundings/data/"
 file_type = "netCDF-3"
 
 
