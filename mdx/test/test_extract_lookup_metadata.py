@@ -7,7 +7,7 @@ class TestProcessLookup(TestCase):
     """
     Test lookup collection metadata extraction
     """
-    granule_name = "impacts_2dvd_largedrop_sn38_50pct.txt"
+    granule_name = "IMPACTS_sounding_20200119_0041_SBU_Mobile.nc"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -15,10 +15,10 @@ class TestProcessLookup(TestCase):
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
     process_instance = ExtractLookupMetadata(input_file)
-    md = process_instance.get_metadata(ds_short_name= '2dimpacts', format="Not Provided")
-    expected_metadata = {'ShortName': '2dimpacts',
+    md = process_instance.get_metadata(ds_short_name= 'sbusndimpacts', format="Not Provided")
+    expected_metadata = {'ShortName': 'sbusndimpacts',
                          'GranuleUR': granule_name,
-                         'VersionId': '1', 'DataFormat': 'ASCII',
+                         'VersionId': '1', 'DataFormat': 'netCDF-3',
                          }
 
     def test_1_get_start_date(self):
@@ -29,7 +29,7 @@ class TestProcessLookup(TestCase):
         start_date = self.md['BeginningDateTime']
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-02-07T07:10:25Z")
+        self.assertEqual(start_date, "2020-01-19T00:41:58Z")
 
     def test_2_get_stop_date(self):
         """
@@ -39,7 +39,7 @@ class TestProcessLookup(TestCase):
         stop_date = self.md['EndingDateTime']
         self.expected_metadata['EndingDateTime'] = stop_date
       
-        self.assertEqual(stop_date, "2020-02-21T01:31:55Z")
+        self.assertEqual(stop_date, "2020-01-19T01:56:47Z")
 
     def str_to_num(self, s):
         """
@@ -66,7 +66,7 @@ class TestProcessLookup(TestCase):
         """
         north = self.md['NorthBoundingCoordinate']
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '37.939')
+        self.assertEqual(north, '41.529')
 
     def test_5_get_west(self):
         """
@@ -75,7 +75,7 @@ class TestProcessLookup(TestCase):
         """
         west = self.md['WestBoundingCoordinate']
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-75.483')
+        self.assertEqual(west, '-73.03')
 
     def test_6_get_south(self):
         """
@@ -84,7 +84,7 @@ class TestProcessLookup(TestCase):
         """
         south = self.md['SouthBoundingCoordinate']
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '37.919')
+        self.assertEqual(south, '40.965')
 
     def test_7_get_east(self):
         """
@@ -93,14 +93,14 @@ class TestProcessLookup(TestCase):
         """
         east = self.md['EastBoundingCoordinate']
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-75.463')
+        self.assertEqual(east, '-70.869')
 
     def test_8_generate_metadata(self):
         """
         Test generating metadata of legacy collection
         :return: metadata object 
         """
-        metadata = self.process_instance.get_metadata(ds_short_name='2dimpacts',
+        metadata = self.process_instance.get_metadata(ds_short_name='sbusndimpacts',
                                                      format='Not provided', version='1')
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
