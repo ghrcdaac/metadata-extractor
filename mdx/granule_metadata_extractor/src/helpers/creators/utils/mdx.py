@@ -52,7 +52,7 @@ class MDX:
             Bucket=bucket, Prefix=f"{prefix.rstrip('/')}/")
         for page in page_iterator:
             if page["KeyCount"] < 1:
-                print(f"No objects found at s3://{bucket}/{prefix}/")
+                print(f"No objects found at s3://{bucket}/{prefix.rstrip('/')}/")
                 return obj_list
             for obj in page["Contents"]:
                 obj_list.append(f"s3://{bucket}/{obj['Key']}")
