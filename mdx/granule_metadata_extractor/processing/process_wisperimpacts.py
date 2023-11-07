@@ -32,8 +32,8 @@ class ExtractWisperimpactsMetadata(ExtractASCIIMetadata):
         :return:
         """
         #sample file:
-        #IMPACTS-WISPER-CWC_P3_20200118_R0_SF01.ict
-        date_str = self.file_path.split('/')[-1].split('_')[2] #i.e., 20200118
+        #IMPACTS_WISPER_CWC_P3_20200118_R0_SF01.ict
+        date_str = self.file_path.split('/')[-1].split('_')[4] #i.e., 20200118
         flight_date = datetime.strptime(date_str,'%Y%m%d')  
 
         with open(self.file_path,'rb') as f:
