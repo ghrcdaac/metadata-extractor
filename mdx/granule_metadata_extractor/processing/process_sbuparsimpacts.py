@@ -27,43 +27,49 @@ class ExtractSbuparsimpactsMetadata(ExtractNetCDFMetadata):
                        [datetime(2020,1,18,16,8), datetime(2020,1,19,1,23)],
                        [datetime(2020,2,13,2,38), datetime(2020,2,13,11,8)]]
         self.site_loc = ['Smith Point', 'Cedar Beach', 'Cedar Beach']
+
+        #2022 SBU fixed site (Pavlos's email): 40.89712, -73.12771.
+        self.sb_loc_2022 = [-73.12771, 40.89712] #lon, lat
+        #2023 SBU fixed site (Mariko's email): 40.866N, -72.881
+        self.sb_loc_2023 = [-72.881, 40.866] #lon, lat
+
         self.fileformat = 'netCDF-3'
 
         # extracting time and space metadata from nc.gz file
         dataset = Dataset(file_path)
         [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
-            self.get_variables_min_max(dataset, file_path)
+            self.get_variables_min_max(dataset)
         dataset.close()
 
-    def get_variables_min_max(self, nc, file_path):
+    def get_variables_min_max(self, nc):
         """
         :param nc: Dataset opened
-        :param file_path: file path
         :return:
         """
-        if 'parsivel_2022' in file_path:
-            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_2022_metadata(nc)
+        if 'parsivel_2022' in self.file_path:
+            sb_loc = self.sb_loc_2022
+            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_2022_2023_metadata(nc,sb_loc)
+        elif 'parsivel_2023' in self.file_path:
+            sb_loc = self.sb_loc_2023
+            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_2022_2023_metadata(nc,sb_loc)
         else: # 2020 data files
-            if '_RT.nc' in file_path:
+            if '_RT.nc' in self.file_path:
                 minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_RT_metadata(nc)
-            elif '_MAN.nc' in file_path:
+            elif '_MAN.nc' in self.file_path:
                 minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_SB_metadata(nc)
-            elif '_SB.nc' in file_path:
+            else: #/data/Parsivel_SBU/IMPACTS_SBU_parsivel_20200212.nc ......
                 minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_SB_metadata(nc)
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
-    def get_2022_metadata(self, nc):
-        #2022 SBU fixed site (Pavlos's email): 40.89712, -73.12771.
-        sb_loc_2022 = [-73.12771, 40.89712] #lon, lat
-
+    def get_2022_2023_metadata(self, nc, sb_loc):
         timefield = np.array(nc.variables['UNIX_TIME'][:])
         minTime = datetime(1970,1,1) + timedelta(seconds=int(timefield.min()))
         maxTime = datetime(1970,1,1) + timedelta(seconds=int(timefield.max()))
-        minlat, maxlat, minlon, maxlon = [sb_loc_2022[1]-(0.03/111.325),
-                                          sb_loc_2022[1]+(0.03/111.325),
-                                          sb_loc_2022[0]-(0.03/111.325),
-                                          sb_loc_2022[0]+(0.03/111.325)]
+        minlat, maxlat, minlon, maxlon = [sb_loc[1]-(0.03/111.325),
+                                          sb_loc[1]+(0.03/111.325),
+                                          sb_loc[0]-(0.03/111.325),
+                                          sb_loc[0]+(0.03/111.325)]
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
 
@@ -139,7 +145,10 @@ class ExtractSbuparsimpactsMetadata(ExtractNetCDFMetadata):
             minTime = min(minTime, ltime)
             maxTime = max(maxTime, ltime)
 
-        site = self.file_path.split('/')[-1].split('_')[-1].split('.')[0]
+        if '_MAN.nc' not in self.file_path and '_SB.nc' not in self.file_path:
+           site = 'SB'
+        else:
+           site = self.file_path.split('/')[-1].split('_')[-1].split('.')[0]
 
         minlat, maxlat, minlon, maxlon = [man_sb_loc[site][1]-(0.03/111.325),
                                           man_sb_loc[site][1]+(0.03/111.325),
