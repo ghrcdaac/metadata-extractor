@@ -17,6 +17,8 @@ class ExtractSbuplimpactsMetadata(ExtractASCIIMetadata):
         self.site_lon_2020 = -73.128
         self.site_lat_2022 = 40.89712
         self.site_lon_2022 = -73.12771
+        self.site_lat_2023 = 40.8656
+        self.site_lon_2023 = -72.8814
 
         with open(self.file_path,'r') as f:
              self.file_lines = f.readlines()
@@ -26,9 +28,12 @@ class ExtractSbuplimpactsMetadata(ExtractASCIIMetadata):
         if 'pluvio_2020' in filename:
            site_lat = self.site_lat_2020 
            site_lon = self.site_lon_2020 
-        else: #pluvio_2022
+        elif 'pluvio_2022' in filename:
            site_lat = self.site_lat_2022 
            site_lon = self.site_lon_2022 
+        else: #pluvio_2023
+           site_lat = self.site_lat_2023
+           site_lon = self.site_lon_2023
  
         self.SLat, self.NLat, self.WLon, self.ELon = [site_lat-0.01,
                                                       site_lat+0.01,
