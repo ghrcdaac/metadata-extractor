@@ -37,8 +37,10 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
         """
         if '_RT.nc' in file_path:
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_RT_metadata(nc)
-        elif '_BNL.nc' in file_path:
+        elif '_ct25k_BNL.nc' in file_path:
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_BNL_metadata(nc)
+        elif '_cl15k_BNL.nc' in file_path:
+            minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_BNL_2023_metadata(nc)
         elif '_MAN.nc' in file_path:
             minTime, maxTime, minlat, maxlat, minlon, maxlon = self.get_MAN_metadata(nc)
         elif '_cl51k.nc' in file_path:
@@ -121,6 +123,25 @@ class ExtractSbuceilimpactsMetadata(ExtractNetCDFMetadata):
                                           lon + (0.03 / 111.325), lon - (0.03 / 111.325)]
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon
+
+
+    def get_BNL_2023_metadata(self, nc):
+        tt = np.array(nc['time'][:])
+        tt_units = nc['time'].Units #    Units: seconds since 1970-01-01 00:00:00.000 
+        tkn = tt_units.split()
+        dt0 = datetime.strptime(f"{tkn[2]}{tkn[3]}",'%Y-%m-%d%H:%M:%S.%f')
+
+        minTime = dt0 + timedelta(seconds=float(min(tt)))
+        maxTime = dt0 + timedelta(seconds=float(max(tt)))
+
+        lat = float(nc.variables['Location_latitude'][0,0])
+        lon = float(nc.variables['Location_longitude'][0,0])
+
+        maxlat, minlat, maxlon, minlon = [lat + (0.03 / 111.325), lat - (0.03 / 111.325),
+                                          lon + (0.03 / 111.325), lon - (0.03 / 111.325)]
+        self.fileformat = 'netCDF-4'
+        return minTime, maxTime, minlat, maxlat, minlon, maxlon
+
 
     def get_MAN_metadata(self, nc):
         tt = np.array(nc['time'][:])
