@@ -30,7 +30,7 @@ class TestProcessMisrepimpacts(TestCase):
         start_date = self.process_misrepimpacts.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-01-17T00:00:00Z")
+        self.assertEqual(start_date, "2020-01-08T00:00:00Z")
 
     def test_2_get_stop_date(self):
         """
@@ -40,7 +40,7 @@ class TestProcessMisrepimpacts(TestCase):
         stop_date = self.process_misrepimpacts.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-03-01T00:00:00Z")
+        self.assertEqual(stop_date, "2023-03-01T23:59:59Z")
 
     def test_3_get_file_size(self):
         """
@@ -67,7 +67,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '45.0')
+        self.assertEqual(north, '49.0')
 
     def test_5_get_west(self):
         """29.864
@@ -76,7 +76,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-81.0')
+        self.assertEqual(west, '-119.0')
 
     def test_6_get_south(self):
         """
@@ -85,7 +85,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '35.0')
+        self.assertEqual(south, '31.0')
 
     def test_7_get_east(self):
         """
@@ -94,7 +94,7 @@ class TestProcessMisrepimpacts(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-66.0')
+        self.assertEqual(east, '-64.0')
 
     def test_8_get_checksum(self):
         """
