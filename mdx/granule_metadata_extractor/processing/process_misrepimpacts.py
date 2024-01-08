@@ -27,13 +27,13 @@ class ExtractMisrepimpactsMetadata(ExtractASCIIMetadata):
         :return:
         """
 
-        self.start_time = datetime(2020, 1, 17)
-        self.end_time = datetime(2020, 3, 1)
+        self.start_time = datetime(2020, 1, 8)
+        self.end_time = datetime(2023, 3, 1, 23, 59, 59)
 
-        self.north = 45.
-        self.south = 35.
-        self.west = -81.
-        self.east = -66.
+        self.north = 49.
+        self.south = 31.
+        self.west = -119.
+        self.east = -64.
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
