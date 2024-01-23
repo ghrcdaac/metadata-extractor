@@ -87,8 +87,11 @@ class ExtractGlobalirMetadata(ExtractBinaryMetadata):
         start_date, stop_date = self.get_temporal(date_format='%Y-%m-%dT%H:%M:%SZ')
         data = dict()
         data['ShortName'] = ds_short_name
-        data['GranuleUR'] = self.new_filename
-        data['UpdatedGranuleUR'] = self.new_filename
+        if self.new_filename:
+           data['GranuleUR'] = self.new_filename
+           data['UpdatedGranuleUR'] = self.new_filename
+        else: #netCDF-4
+           data['GranuleUR'] = self.file_path.split('/')[-1]
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
 
         gemetry_list = self.get_wnes_geometry()
