@@ -24,15 +24,27 @@ class ExtractGlobalirMetadata(ExtractBinaryMetadata):
         self.north, self.south, self.east, self.west = [66., -61., 180., -180.]
 
         self.get_variables_min_max()
-        self.new_filename = self.rename_file(mv=False)
+        if file_path.endswith('.nc'):
+           self.format='netCDF-4'
+        else: #binary format, filename ending with '-mrest'
+           self.format='Binary'
+           self.new_filename = self.rename_file(mv=False)
 
     def get_variables_min_max(self, variable_key=None):
         """
-        #self.file_path: globalir raw file name of format yyyymmdd_HHMM.wrld-ir4km-mrest
+        self.file_path: either binary file or netCDF-4 file 
         """
         filename = self.file_path.split('/')[-1]
-        self.end_time = datetime.strptime(filename.split('.')[0], '%Y%m%d_%H%M')
-        self.start_time = self.end_time - timedelta(minutes=15)
+
+        if filename.endswith('-mrest'): #binary 
+           #i.e., globalir raw file name of format yyyymmdd_HHMM.wrld-ir4km-mrest
+           self.end_time = datetime.strptime(filename.split('.')[0], '%Y%m%d_%H%M')
+           self.start_time = self.end_time - timedelta(minutes=15)
+        else: #netCDF-4
+           #i.e.,globsat_s202401100010_ir.nc
+           self.start_time = datetime.strptime(filename.split('_')[1],'s%Y%m%d%H%M')
+           self.end_time = self.start_time + timedelta(minutes=10)
+
 
     def rename_file(self, mv):
         """
@@ -75,8 +87,11 @@ class ExtractGlobalirMetadata(ExtractBinaryMetadata):
         start_date, stop_date = self.get_temporal(date_format='%Y-%m-%dT%H:%M:%SZ')
         data = dict()
         data['ShortName'] = ds_short_name
-        data['GranuleUR'] = self.new_filename
-        data['UpdatedGranuleUR'] = self.new_filename
+        if self.new_filename:
+           data['GranuleUR'] = self.new_filename
+           data['UpdatedGranuleUR'] = self.new_filename
+        else: #netCDF-4
+           data['GranuleUR'] = self.file_path.split('/')[-1]
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
 
         gemetry_list = self.get_wnes_geometry()
@@ -86,7 +101,7 @@ class ExtractGlobalirMetadata(ExtractBinaryMetadata):
             str(x) for x in gemetry_list)
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
-        data['DataFormat'] = format
+        data['DataFormat'] = self.format
         data['VersionId'] = version
         return data
 
