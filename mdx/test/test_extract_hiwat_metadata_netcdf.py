@@ -4,13 +4,12 @@ from granule_metadata_extractor.processing.process_hiwat import ExtractHiwatMeta
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
-#19.958542 31.679443 79.31348 94.70499 2017-04-04 06:00:00 2017-04-04 06:00:00
 class TestProcessHiwat_netcdf(TestCase):
     """
     Test processing.
     This will test if metadata will be extracted correctly
     """
-    granule_name = "wrfout_d02_2017-04-04_06-00-00"
+    granule_name = "wrfout_d01_ens1_2022_09_30_2022-10-02_18-00-00-subset.nc"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -32,7 +31,7 @@ class TestProcessHiwat_netcdf(TestCase):
         start_date = self.process_dataset.get_temporal()[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2017-04-04T06:00:00Z")
+        self.assertEqual(start_date, "2022-10-02T18:00:00Z")
 
     def test_2_get_stop_date(self):
         """
@@ -42,7 +41,7 @@ class TestProcessHiwat_netcdf(TestCase):
         stop_date = self.process_dataset.get_temporal()[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2017-04-04T06:00:00Z")
+        self.assertEqual(stop_date, "2022-10-02T18:00:00Z")
 
     def test_3_get_file_size(self):
         """
@@ -51,7 +50,7 @@ class TestProcessHiwat_netcdf(TestCase):
         """
         file_size = float(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 0.98)
+        self.assertEqual(file_size, 0.94)
 
     def get_wnes(self, index):
         """
@@ -70,7 +69,7 @@ class TestProcessHiwat_netcdf(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '31.679')
+        self.assertEqual(north, '45.951')
 
     def test_5_get_west(self):
         """
@@ -79,7 +78,7 @@ class TestProcessHiwat_netcdf(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '79.313')
+        self.assertEqual(west, '60.562')
 
     def test_6_get_south(self):
         """
@@ -88,7 +87,7 @@ class TestProcessHiwat_netcdf(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '19.959')
+        self.assertEqual(south, '10.632')
 
     def test_7_get_east(self):
         """
@@ -97,7 +96,7 @@ class TestProcessHiwat_netcdf(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '94.705')
+        self.assertEqual(east, '111.438')
 
     def test_8_get_checksum(self):
         """
@@ -107,7 +106,7 @@ class TestProcessHiwat_netcdf(TestCase):
 
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, 'bf03773c424ccd02a68addf223bb1683')
+        self.assertEqual(checksum, '7fb5f46644bdf823133398c313146c11')
 
     def test_9_generate_metadata(self):
         """
