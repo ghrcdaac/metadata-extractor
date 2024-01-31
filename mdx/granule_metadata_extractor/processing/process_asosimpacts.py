@@ -31,10 +31,10 @@ class ExtractAsosimpactsMetadata(ExtractNetCDFMetadata):
         """
         lat = float(nc.getncattr('site_latitude'))
         lon = float(nc.getncattr('site_longitude'))
-        sec = nc.variables['time'][:]
+        sec = nc['time'][:]
         ref_ymd = nc.variables['time'].getncattr('long_name').split()[2]
-        minTime = datetime.strptime(ref_ymd, "%Y-%m-%d") + timedelta(seconds=min(sec))
-        maxTime = datetime.strptime(ref_ymd, "%Y-%m-%d") + timedelta(seconds=max(sec))
+        minTime = datetime.strptime(ref_ymd, "%Y-%m-%d") + timedelta(seconds=float(min(sec)))
+        maxTime = datetime.strptime(ref_ymd, "%Y-%m-%d") + timedelta(seconds=float(max(sec)))
         maxlat, minlat, maxlon, minlon = [round(lat+0.001, 3), round(lat-0.001, 3),
                                           round(lon+0.001, 3), round(lon-0.001, 3)]
 
