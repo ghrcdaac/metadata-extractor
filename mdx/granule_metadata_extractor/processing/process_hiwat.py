@@ -14,7 +14,7 @@ class ExtractHiwatMetadata(ExtractNetCDFMetadata):
         self.file_path = file_path
 
         filename = file_path.split('/')[-1]
-        if '_d02.grb2' in filename:
+        if '.grb2' in filename:
            self.fileformat = 'GRIB2'
            # extracting time and space metadata for GRIB2 file
            [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
