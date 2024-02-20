@@ -618,15 +618,11 @@ class MDX(Process):
                     self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
         collection = self.config.get('collection')
         collection_name = collection.get('name')
-        collection_version = collection.get('version')
         has_lookup = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
             'module') in ["legacy", "lookup"]
         key = 'lookup_key' if has_lookup else 'input_key'
         
-        self.config['fileStagingDir'] = None if 'fileStagingDir' not in self.config.keys() else \
-            self.config['fileStagingDir']
-        self.config['fileStagingDir'] = f"{collection_name}__{collection_version}" if \
-            self.config['fileStagingDir'] is None else self.config['fileStagingDir']
+        self.config['fileStagingDir'] = collection['url_path']
 
         excluded = collection_name in self.exclude_fetch() or has_lookup
         if excluded:
