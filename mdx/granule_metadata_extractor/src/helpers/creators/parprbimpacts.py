@@ -62,26 +62,6 @@ class MDXProcessing(MDX):
         }
 
 
-
-    def read_metadata_diameter020(self):
-        """
-        Extracts temporal and spatial metadata from diameter020 files
-        """
-        start_time = datetime(2020, 1, 15, 1, 37, 6)
-        end_time = datetime(2020,2,28,20,41,44)
-        north, south, east, west = [37.954319999999996, 37.919380000000004,
-                                    -75.44618, -75.49116000000001]
-        return {
-            "start": start_time,
-            "end": end_time,
-            "north": north,
-            "south": south,
-            "east": east,
-            "west": west,
-            "format": file_type
-        }
-
-
     def main(self):
         # start_time = time.time()
         self.process_collection(short_name, provider_path)
