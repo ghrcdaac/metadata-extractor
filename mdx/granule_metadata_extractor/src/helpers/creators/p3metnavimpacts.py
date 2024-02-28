@@ -33,8 +33,8 @@ class MDXProcessing(MDX):
         Extract temporal and spatial metadata from ascii files
         """
         file_lines = []
-        for line in file_obj_stream.iter_lines():
-            file_lines.append(line)
+        for encoded_line in file_obj_stream.iter_lines():
+            file_lines.append(encoded_line.decode("utf-8"))
 
         num_header_lines = int(file_lines[0].split(',')[0])
         lines = file_lines[num_header_lines:]
