@@ -60,7 +60,7 @@ class ExtractLookupMetadata(MetadataExtractor):
                 "NorthBoundingCoordinate": metadata.get("north", ""),
                 "EastBoundingCoordinate": metadata.get("east", ""),
                 "SouthBoundingCoordinate": metadata.get("south", ""),
-                "SizeMBDataGranule": str(metadata.get("size", 0)),
+                "SizeMBDataGranule": str(metadata.get("sizeMB", 0)),
                 "DataFormat": metadata.get("format", "Not Provided"),
                 "VersionId": version
             }
