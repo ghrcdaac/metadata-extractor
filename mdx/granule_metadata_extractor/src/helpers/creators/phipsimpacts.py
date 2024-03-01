@@ -7,6 +7,11 @@ import time
 import math
 import re
 
+from zipfile import ZipFile
+import os
+import json
+import numpy as np
+
 short_name = "phipsimpacts"
 provider_path = "phipsimpacts/fieldCampaigns/impacts/PHIPS/browse/"
 file_type = "PNG"
@@ -53,7 +58,7 @@ class MDXProcessing(MDX):
                                           self.nav_lon[idx].min()]
         return {
             "start": minTime,
-            "end": maxtime,
+            "end": maxTime,
             "north": maxlat,
             "south": minlat,
             "east": maxlon,
