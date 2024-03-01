@@ -12,7 +12,7 @@ import numpy as np
 
 short_name = "parprbimpacts"
 provider_path = "parprbimpacts/fieldCampaigns/impacts/NCAR_Particle_Probes/data/nc/"
-file_type = "netÇDF-4"
+file_type = "netCDF-4"
 
 
 class MDXProcessing(MDX):
