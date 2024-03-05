@@ -30,7 +30,7 @@ class TestProcessParprbimpacts(TestCase):
         Testing get correct start date
         :return:
         """
-        start_date = self.process_dataset.get_temporal_lookup(self.granule_name)[0]
+        start_date = self.process_dataset.get_temporal(self.granule_name)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
         self.assertEqual(start_date, "2020-02-18T17:22:00Z")
@@ -40,7 +40,7 @@ class TestProcessParprbimpacts(TestCase):
         Testing get correct start date
         :return:
         """
-        stop_date = self.process_dataset.get_temporal_lookup(self.granule_name)[1]
+        stop_date = self.process_dataset.get_temporal(self.granule_name)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
         self.assertEqual(stop_date, "2020-02-18T22:13:00Z")
@@ -60,7 +60,8 @@ class TestProcessParprbimpacts(TestCase):
         :return: wnes[index] where index: west = 0 - north = 1 - east = 2 - south = 3
         """
         process_gpm = self.process_dataset
-        wnes = process_gpm.get_wnes_geometry_lookup(self.granule_name)
+        wnes = process_gpm.get_wnes_geometry(self.granule_name)
+        print('wnes ',wnes)
         return str(round(float(wnes[index]), 3))
 
     #NLat=45.249881744384766,SLat=37.910213470458984,WLon=-75.5810317993164,ELon=-70.19293975830078
@@ -127,5 +128,6 @@ class TestProcessParprbimpacts(TestCase):
         """
         self.expected_metadata['OnlineAccessURL'] = "http://localhost.com"
         umm_json = GenerateUmmGJson(self.expected_metadata)
+        print(umm_json)
         umm_json.generate_umm_json_file()
         self.assertTrue(path.exists(f'/tmp/{self.granule_name}.cmr.json'))
