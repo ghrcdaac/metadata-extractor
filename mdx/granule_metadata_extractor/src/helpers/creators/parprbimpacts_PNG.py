@@ -21,11 +21,10 @@ class MDXProcessing(MDX):
 
     def __init__(self):
         super().__init__()
-        self.file_path = file_path
 
         #Get lookup dataset's metadata attributes from lookup zip
         lookup_zip_path = os.path.join(pathlib.Path(__file__).parent.absolute(),
-                               f"../src/helpers/parprbimpacts.zip")
+                               f"../parprbimpacts_nc.zip")
         with ZipFile(lookup_zip_path) as lookup_zip:
             with lookup_zip.open("lookup.json") as collection_lookup:
                 self.lookup_json = json.load(collection_lookup)
