@@ -11,7 +11,7 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "nymesoimpacts"
-provider_path = "parprbimpacts/fieldCampaigns/impacts/NY_Mesonet/images/"
+provider_path = "nymesoimpacts/fieldCampaigns/impacts/NY_Mesonet/browse/"
 file_type = "PNG"
 
 
@@ -75,7 +75,7 @@ class MDXProcessing(MDX):
         #IMPACTS_NYS_mwr_cloud_202001032300_redh.png
         tkn = fn.split('.')[0].split('_')
         start_time = datetime.strptime(tkn[-2],'%Y%m%d%H%M')
-        end_time = minTime + timedelta(hours=24)
+        end_time = start_time + timedelta(hours=24)
 
         if 'mwr' in tkn or 'ground' in tkn: #MESONET ground observation
            if tkn[-1] in self.nysm.keys():
