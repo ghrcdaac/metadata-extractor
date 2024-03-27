@@ -31,31 +31,29 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from ascii files
         """
-        sec_start = float('inf')
-        sec_end = float('-inf')
-        north = -90.0
-        south = 90.0
-        east = -180.0
-        west = 180.0
-
         file_lines = []
         for encoded_line in file_obj_stream.iter_lines():
             file_lines.append(encoded_line.decode("utf-8"))
 
-        for line in file_lines[47:]:
+        sec0 = []
+        lat0 = []
+        lon0 = []
+        num_header_lines = int(file_lines[0].split(',')[0])
+        for line in file_lines[num_header_lines:]:
             tkn = line.split(',')
-            sec, lat, lon = [float(tkn[0]), float(tkn[1]), float(tkn[2])]
-            sec_start = min(sec_start, sec)
-            sec_end = max(sec_end, sec)
-            north = max(north, lat)
-            south = min(south, lat)
-            east = max(east, lon)
-            west = min(west, lon)
-
-        utc_date = datetime.strptime(re.search(r'^IMPACTS_TAMMS_P3_(\d{8})_R0.ict$',
-                                         filename.split('/')[-1])[1], '%Y%m%d')
-        minTime = utc_date+timedelta(seconds=sec_start)
-        maxTime = utc_date+timedelta(seconds=sec_end)
+            if tkn[1] != '-9999.000000' and tkn[2] != '-9999.000000':
+               sec, lat, lon = [float(tkn[0]), float(tkn[1]), float(tkn[2])]
+               sec0.append(sec)
+               lat0.append(lat)
+               lon0.append(lon)
+        
+        utc_date = datetime.strptime(filename.split('/')[-1].split('_')[-2],'%Y%m%d')
+        minTime = utc_date+timedelta(seconds=min(sec0))
+        maxTime = utc_date+timedelta(seconds=max(sec0))
+        north = max(lat0)
+        south = min(lat0)
+        west = min(lon0)
+        east = max(lon0)
 
         return {
             "start": minTime,
