@@ -29,8 +29,6 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
-        return self.get_nc_metadata(filename, file_obj_stream)
-
         if '_ATB_' in filename:
             return self.get_ATB_metadata(filename, file_obj_stream)
         else:
