@@ -1,4 +1,4 @@
-# create lookup zip for parprbimpacts
+# create lookup zip for sbuskylerimpacts 2023 data 
 # for all future collections
 from datetime import datetime, timedelta
 from utils.mdx import MDX
@@ -9,12 +9,16 @@ import re
 
 from netCDF4 import Dataset
 import numpy as np
-import pyart
+from math import radians, degrees, sin, cos, asin, acos, sqrt
+
+try:
+    import pyart
+except ImportError:
+    pyart = None
 
 short_name = "sbuskylerimpacts"
-provider_path = "sbuskylerimpacts/fieldCampaigns/impacts/SBU_SKYLER/data/"
-file_type = "netCDF-4"
-
+provider_path = "sbuskylerimpacts/fieldCampaigns/impacts/SBU_SKYLER/data/2023/"
+file_type = "netCDF-3"
 
 class MDXProcessing(MDX):
 
@@ -37,21 +41,24 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from netCDF-3 files
         """
-        radar = pyart.io.read_cfradial("in-mem-file", mode='r', memory=file_obj_stream.read())
+        data = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
 
-        lat = radar.gate_latitude['data'][:]
-        lon = radar.gate_longitude['data'][:]
-        sec = radar.time['data'][:]
+        #SBU SKYLER radar range ~ 50 km
+        #Earth radius ~ 6371 km
+        mlat = radians(data.Latitude)
+        mlon = radians(data.Longitude)
+        plat = mlat
+        dlon = degrees(acos((cos(50./6371)-sin(mlat)*sin(plat))/cos(mlat)/cos(plat)))
+        dlat = degrees(50./6371.)
+        north, south, east, west = [data.Latitude+dlat, data.Latitude-dlat,
+                                    data.Longitude+dlon, data.Longitude-dlon]
 
+        #Time: unit: seconds since 1970-01-01 00:00:00
+        sec = np.array(data['Time'][:])
+        start_time = datetime(1970,1,1) + timedelta(seconds=int(min(sec)))
+        end_time = datetime(1970,1,1) + timedelta(seconds=int(max(sec)))
 
-        tkn = filename.split('/')[-1].split('_')
-        dt0 = datetime.strptime(f"{tkn[3]}{tkn[4]}",'%Y%m%d%H%M%S')
-
-
-        minTime = dt0 + timedelta(seconds=int(min(sec)))
-        maxTime = dt0 + timedelta(seconds=int(max(sec)))
-        north, south, east, west = [lat.max(), lat.min(), lon.max(), lon.min()]
-
+        data.close()
         return {
             "start": start_time,
             "end": end_time,
