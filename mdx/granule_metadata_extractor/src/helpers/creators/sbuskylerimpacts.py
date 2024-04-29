@@ -11,10 +11,10 @@ from netCDF4 import Dataset
 import numpy as np
 from math import radians, degrees, sin, cos, asin, acos, sqrt
 
-try:
-    import pyart
-except ImportError:
-    pyart = None
+#try:
+#    import pyart
+#except ImportError:
+#    pyart = None
 
 short_name = "sbuskylerimpacts"
 provider_path = "sbuskylerimpacts/fieldCampaigns/impacts/SBU_SKYLER/data/2023/"
