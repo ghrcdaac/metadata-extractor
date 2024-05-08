@@ -1,6 +1,7 @@
 # Create lookup zip for avapsimpacts
 # for all future collections
 from datetime import datetime, timedelta
+from netCDF4 import Dataset
 from utils.mdx import MDX
 import cProfile
 import time
@@ -10,37 +11,11 @@ import re
 short_name = "avapsimpacts"
 provider_path = "avapsimpacts/fieldCampaigns/impacts/AVAPS/data/"
 
-class ExtractAvapsimpactsMetadata(ExtractASCIIMetadata):
-    """
-    A class to extract Avapsimpacts granule metadata
-    """
-    def get_variables_min_max(self, **kwargs):
-        """
-        Extracts temporal metadata and assign spatial metadata for avapsimpacts granules
-        """
-        else: #netCDF-3 file
-           data = Dataset(self.file_path)
-           reftime_str = 'T'.join(data['time'].units.split()[2:4]) #i.e., '2022-01-06T17:05:09'
-           dt_base = datetime.strptime(reftime_str,'%Y-%m-%dT%H:%M:%S')
-           dt0 = data['time'][:].flatten() #seconds since reftime
-           lat0 = data['lat'][:].flatten()
-           lon0 = data['lon'][:].flatten()
-
-           #get indices for vaid lat and lon values
-           idx = [i for i in range(0,len(lat0)) if lat0.mask[i] == False and lon0.mask[i] == False]
-           dt = dt0[idx]
-           lat = lat0[idx]
-           lon = lon0[idx]
-
-           self.start_time = dt_base+timedelta(seconds=dt.min())
-           self.end_time = dt_base+timedelta(seconds=dt.max())
-           self.north, self.south, self.east, self.west = [lat.max(), lat.min(), lon.max(), lon.min()]
-
-
 class MDXProcessing(MDX):
 
     def __init__(self):
         super().__init__()
+        self.file_type = "ASCII"
 
     def process(self, filename, file_obj_stream) -> dict:
         """
@@ -52,13 +27,13 @@ class MDXProcessing(MDX):
         :type file_obj_stream: botocore.response.StreamingBody
         """
         if filename.endswith('.ict'):
-           file_type = "ASCII"
+           self.file_type = "ASCII"
            return self.read_metadata_ascii(filename, file_obj_stream)
         else: #netCDF-3
-           file_type = "netCDF-3"
+           self. file_type = "netCDF-3"
            return self.read_metadata_nc(filename, file_obj_stream)
 
-    def get_nc_metadata(self, filename, file_obj_stream):
+    def read_metadata_nc(self, filename, file_obj_stream):
         """
         Extract temporal and spatial metadata from netCDF-3 files
         """
@@ -87,7 +62,7 @@ class MDXProcessing(MDX):
             "south": south,
             "east": east,
             "west": west,
-            "format": file_type
+            "format": self.file_type
         }
 
 
@@ -97,7 +72,14 @@ class MDXProcessing(MDX):
         """
         file_lines = []
         for encoded_line in file_obj_stream.iter_lines():
-            file_lines.append(encoded_line.decode("utf-8"))
+            err_flag = 0
+            try:
+                decoded_line = encoded_line.decode("utf-8")
+            except:
+                err_flag = 1
+
+            if err_flag == 0:
+               file_lines.append(decoded_line) 
 
         sec0 = []
         lat0 = []
@@ -123,7 +105,7 @@ class MDXProcessing(MDX):
             "south": south,
             "east": east,
             "west": west,
-            "format": file_type
+            "format":self. file_type
         }
 
     def main(self):
