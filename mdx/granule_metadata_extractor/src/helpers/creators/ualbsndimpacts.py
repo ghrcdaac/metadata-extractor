@@ -11,7 +11,7 @@ short_name = "ualbsndimpacts"
 provider_path = "ualbsndimpacts/"
 file_type = "ASCII"
 
- with open('IMPACTS_UAlb_Soundings_UAETEC_20230119_1713_TSPOTINT.txt','r',encoding = 'ISO-8859-1') as fp:
+# with open('IMPACTS_UAlb_Soundings_UAETEC_20230119_1713_TSPOTINT.txt','r',encoding = 'ISO-8859-1') as fp:
 class MDXProcessing(MDX):
 
     def __init__(self):
@@ -34,6 +34,7 @@ class MDXProcessing(MDX):
         """
         file_lines = []
         for encoded_line in file_obj_stream.iter_lines():
+            #print(encoded_line.decode("ISO-8859-1"))
             file_lines.append(encoded_line.decode("ISO-8859-1"))
 
         utc = []
@@ -56,14 +57,31 @@ class MDXProcessing(MDX):
             utc0 = datetime.strptime(''.join(utc_str),'%m%d%Y%H%M%S')
             if tkn[2] == 'PM':
                utc0 = utc0 + timedelta(hours=12)
-
             utc.append(utc0)
-            lat.append(float(tkn[9]))
-            lon.append(float(tkn[10]))
+
+            a=tkn[13] #longitude
+            b=a.split('°')
+            c=b[1].split('\'')
+            d=c[1].split('"')
+            lon0=float(b[0])+(float(c[0])+float(d[0])/60.)/60.
+            if d[1] == 'W':
+               lon0 = -1.*lon0
+
+            a=tkn[14] #latitude
+            b= a.split('°')
+            c=b[1].split('\'')
+            d=c[1].split('"')
+            lat0=float(b[0])+(float(c[0])+float(d[0])/60.)/60.
+            if d[1] == 'S':
+               lat0 = -1.*lat0    
+               
+            lat.append(lat0)
+            lon.append(lon0)
+
         minTime = min(utc)
         maxTime = max(utc)
         minlat = min(lat)
-        maxlat - max(lat)
+        maxlat = max(lat)
         minlon = min(lon)
         maxlon = max(lon)
 
