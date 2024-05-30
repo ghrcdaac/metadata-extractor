@@ -30,7 +30,7 @@ class MDXProcessing(MDX):
            self.file_type = "ASCII"
            return self.read_metadata_ascii(filename, file_obj_stream)
         else: #netCDF-3
-           self. file_type = "netCDF-3"
+           self.file_type = "netCDF-3"
            return self.read_metadata_nc(filename, file_obj_stream)
 
     def read_metadata_nc(self, filename, file_obj_stream):
