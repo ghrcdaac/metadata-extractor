@@ -20,4 +20,4 @@ ADD mdx ${LAMBDA_TASK_ROOT}
 #ENTRYPOINT ["/bin/bash"]
 #ENTRYPOINT ["python", "main.handler"]
 #WORKDIR /var
-ENTRYPOINT ["python", "main.py", "payload"]
+ENTRYPOINT ["python", "main.py"]

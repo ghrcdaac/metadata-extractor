@@ -1,6 +1,8 @@
 import json
 import re
+import signal
 import sys
+import time
 
 from run_cumulus_task import run_cumulus_task
 import granule_metadata_extractor.processing as mdx
@@ -10,6 +12,7 @@ from re import match
 import os
 import boto3
 from helpers import get_logger
+import concurrent.futures
 import copy
 import shutil
 
@@ -605,25 +608,47 @@ class MDX(Process):
             output_files += [f"{output_file_path}.cmr.json"]
         return output_files
 
+    def size_temp(self, filename):
+        print(f'size_temp: {filename}')
+        return {filename: os.path.getsize(filename)}
+
     def process(self):
         """
         Override the processing wrapper
         :return:
         """
+        local_store = os.getenv('EBS_MNT', os.getenv('efs_mount_path'))
+        collection_id = f'{self.collection.get("name")}__{self.collection.get("version")}'
+        collection_store = f'{local_store}/{collection_id}'
         print(f'PATH EXISTS: {self.path} {os.path.exists(self.path)}')
         logger.info('MDX processing started.')
-        self.path = os.getenv('efs_mount_path', self.path)
+        # self.path = os.getenv('efs_mount_path', self.path)
+        self.path = collection_store
+
+        input_file = f'{collection_store}/{collection_id}.json'
+        print(f'Opening Input File: {input_file}')
+        with open(input_file, 'r') as output:
+            contents = json.load(output)
+            self.input = {'granules': contents.get('granules')}
+
         granules = self.input['granules']
-        print(f'self.input: {granules}')
+        # print(f'self.input: {granules}')
         cumulus_granules_meta = copy.deepcopy(granules[0])
         for ele in ['granuleId', 'files']:
             cumulus_granules_meta.pop(ele, False)
         self.input = []
+        # for granule in granules:
+        #     for _file in granule['files']:
+        #         if 'metadata' not in _file.get('type', ""):
+        #             # self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
+        #             # self.input.append(_file['key'])
+        #             self.input.append(f'{local_store}/{_file.get("name").replace(".gz", ".nc")}')
+        # for file in os.listdir(collection_store):
         for granule in granules:
-            for _file in granule['files']:
-                if 'metadata' not in _file.get('type', ""):
-                    # self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
-                    self.input.append(_file['key'])
+            for file in granule.get('files'):
+                self.input.append(f'{collection_store}/{file.get("name")}')
+        print('directory scanned...')
+        # print(f'self.input: {self.input}')
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         collection_version = collection.get('version')
@@ -642,20 +667,24 @@ class MDX(Process):
             output = {key: self.mutate_input(self.path, self.input[0])}
         else:
             output = self.fetch_all()
+            # for granule in
         # Assert we have inputs to process
-        assert output[key], "fetched files list should not be empty"
+        # assert output[key], "fetched files list should not be empty"
         files_sizes = {}
         for output_file_path in output.get(key):
+            print(f'processing output_file_path: {output_file_path}')
             data = self.extract_metadata(file_path=output_file_path, config=self.config,
                                          output_folder=self.path)
+            # print(f'Generating for: {}')
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
                 updated_output_path = self.get_output_files(os.path.join(self.path, data['UpdatedGranuleUR']), excluded)
                 generated_files.extend(updated_output_path)
             for generated_file in generated_files:
+                print(f'Getting size for: {generated_file}')
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
             self.output += generated_files
-        print(f'SELF.OUTPUT: {self.output}')
+        # print(f'SELF.OUTPUT: {self.output}')
         # temp_output = copy.deepcopy(self.output)
         # for ele in temp_output:
         #     if os.path.basename(ele) in [os.path.basename(base_name) for base_name in self.input]:
@@ -721,12 +750,19 @@ class MDX(Process):
             raise Exception('No files matching %s' % regex)
         outfiles = []
         for f in self.input:
-            print(f'f in self.input: {f}')
-            m = re.match(regex, os.path.basename(f))
+            # print(f'f in self.input: {f} vs regex {regex}')
+            m = re.search(regex, os.path.basename(f))
             if m is not None:
                 # if remote desired, or input is already local
+                # print(f'exists: {os.path.exists(f)}')
                 if remote or os.path.exists(f):
                     outfiles.append(f)
+                    # print(f'appended: {outfiles[-1]}')
+                else:
+                    raise Exception(f'Missing file: {f}')
+            else:
+                # print('m was none')
+                pass
 
         return outfiles
 
@@ -739,8 +775,9 @@ def task(event, context):
                     invocation, function, and execution environment
     :return: mdx processing output
     """
+    event = json.loads(event)
     logger.info(event)
-    mdx_instance = MDX(input=event['input'], config=event['config'])
+    mdx_instance = MDX(input=event.get('input'), config=event.get('config'))
     return mdx_instance.process()
 
 
@@ -762,7 +799,27 @@ def handler(event, context=None):
     # return run_cumulus_task(task, event, context)
 
 
+class GracefulKiller:
+    kill_now = False
+
+    def __init__(self):
+        signal.signal(signal.SIGINT, self.exit_gracefully)
+        signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+    def exit_gracefully(self, signum, frame):
+        print('Exiting gracefully')
+        self.kill_now = True
+
+
 if __name__ == '__main__':
+    print(f'MDX __main__: {sys.argv}')
     # MDX.cli()
-    print(handler(*sys.argv[1:]))
+    if len(sys.argv) <= 1:
+        killer = GracefulKiller()
+        print('MDX Task is running...')
+        while not killer.kill_now:
+            time.sleep(1)
+    else:
+        print('MDX Task processing...')
+        task(*sys.argv[1:], {})
 
