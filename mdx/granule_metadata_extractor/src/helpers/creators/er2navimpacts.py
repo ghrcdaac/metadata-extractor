@@ -33,6 +33,7 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from ascii files
         """
+        print(filename)
         file_lines = []
         for encoded_line in file_obj_stream.iter_lines():
             file_lines.append(encoded_line.decode("utf-8"))
@@ -42,7 +43,7 @@ class MDXProcessing(MDX):
         minTime, maxTime, minlat, maxlat, minlon, maxlon = [datetime(2100,1,1),
                                                             datetime(1900,1,1),
                                                             90.0,-90.0,180.0,-180.0]
-        year = int(self.file_path.split('/')[-1].split('_')[3][0:4])
+        year = int(filename.split('/')[-1].split('_')[3][0:4])
         for i in range(len(databuf)):
             tkn = databuf[i].split(',')
             sec, doy, lat, lon = [int(tkn[0]), int(tkn[1]), float(tkn[2]), float(tkn[3])]
