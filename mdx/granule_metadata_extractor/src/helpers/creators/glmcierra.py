@@ -11,7 +11,8 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "glmcierra"
-provider_path = "glmcierra/GOES16/GLM/CIERRA/2023/20230331/"
+#provider_path = "glmcierra/GOES16/GLM/CIERRA/2018/20181104/"
+provider_path = "glmcierra/"
 file_type = "netCDF-4"
 
 
@@ -35,7 +36,14 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from netCDF-4 files
         """
+        print(filename)
         datafile = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
+        ftype = datafile.file_format
+        if ftype.startswith('NETCDF3'):
+            file_type = "netCDF-3"
+        else:
+            file_type = "netCDF-4"
+
         lats = np.array(datafile['FLASH_LAT'][:])
         lons = np.array(datafile['FLASH_LON'][:])
 
