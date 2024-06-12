@@ -37,14 +37,14 @@ class MDXProcessing(MDX):
         Extract temporal and spatial metadata from netCDF-3 files
         """
         nc = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
-        lat = nc.variables['Latitude'][:]
-        lon = nc.variables['Longitude'][:]
-        year = nc.variables['Year'][:]
-        mon = nc.variables['Month'][:]
-        day = nc.variables['DayOfMonth'][:]
-        hr = nc.variables['Hour'][:]
-        mn = nc.variables['Minute'][:]
-        sec = nc.variables['Second'][:]
+        lat = np.array(nc['Latitude'])
+        lon = np.array(nc['Longitude'])
+        year = np.array(nc['Year'])
+        mon = np.array(nc['Month'])
+        day = np.array(nc['DayOfMonth'])
+        hr = np.array(nc['Hour'])
+        mn = np.array(nc['Minute'])
+        sec = np.array(nc['Second'])
 
         #set missing values in lat and lon to np.nan
         lat[lat==-999.0] = np.nan
