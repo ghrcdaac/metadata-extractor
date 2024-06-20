@@ -1,6 +1,6 @@
 # create lookup zip for nymesoimpacts images
 # for all future collections
-from datetime import datetime
+from datetime import datetime,timedelta
 from utils.mdx import MDX
 import cProfile
 import time
