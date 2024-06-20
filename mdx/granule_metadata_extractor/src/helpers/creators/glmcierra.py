@@ -11,10 +11,15 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "glmcierra"
-#provider_path = "glmcierra/GOES16/GLM/CIERRA/2018/20181104/"
-provider_path = "glmcierra/"
+provider_path = "glmcierra/GOES17/GLM/CIERRA/2020/20201224/" #96 files
+#provider_path = "glmcierra/"
 file_type = "netCDF-4"
 
+file_excluded = ['OR_GLM-L2-CIERRA-DB_GOES-EAST_s20192931845000.nc',
+                 'OR_GLM-L2-CIERRA-DB_GOES-EAST_s20193132345000.nc',
+                 'OR_GLM-L2-CIERRA-DB_GOES-WEST_s20203590215000.nc',
+                 'OR_GLM-L2-CIERRA-DB_GOES-WEST_s20203591600000.nc',
+                 'OR_GLM-L2-CIERRA-DB_GOES-WEST_s20210122000000.nc']
 
 class MDXProcessing(MDX):
 
@@ -51,6 +56,10 @@ class MDXProcessing(MDX):
                                     np.nanmin(lats),
                                     np.nanmax(lons),
                                     np.nanmin(lons)]
+        if filename.split('/')[-1] in file_excluded:
+            #assign fake bounding box values; will fix in lookup.json later
+            #"north": "36.57", "south": "-51.002", "east": "-21.478", "west": "-133.993"
+            north, south, east, west = [36.57, -51.002, -21.478, -133.993]
 
         start_time = datetime.strptime(datafile.TIME_COVERAGE_START,'%Y-%m-%d %H:%M:%SZ')
         end_time = datetime.strptime(datafile.TIME_COVERAGE_END,'%Y-%m-%d %H:%M:%SZ')
