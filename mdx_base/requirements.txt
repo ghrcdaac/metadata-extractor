@@ -1,2 +1,2 @@
 git+https://github.com/ARM-DOE/pyart.git#egg=arm-pyart
-pyhdf==0.10.5
+pyhdf==0.11.3
