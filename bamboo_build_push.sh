@@ -27,12 +27,13 @@ for ((i = 0; i < $len; i++)); do
   export AWS_ACCESS_KEY_ID=${access_keys[$i]}
   export AWS_SECRET_ACCESS_KEY=${secret_keys[$i]}
   echo `aws sts get-caller-identity`
-  exit 1
   (($? != 0)) && {
     printf '%s\n' "Command exited with non-zero. AWS keys invalid"
     exit 1
   }
 done
+
+exit 1
 
 build_docker mdx
 
