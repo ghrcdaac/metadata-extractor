@@ -172,7 +172,8 @@ class MDX(Process):
             "hiwat": mdx.ExtractHiwatMetadata,
             "sbuairmarimpacts": mdx.ExtractSbuairmarimpactsMetadata,
             "sbumwrimpacts": mdx.ExtractSbumwrimpactsMetadata,
-            "glmcierra": mdx.ExtractGlmcierraMetadata
+            "glmcierra": mdx.ExtractGlmcierraMetadata,
+            "raxpolimpacts": mdx.ExtractRaxpolimpactsMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
