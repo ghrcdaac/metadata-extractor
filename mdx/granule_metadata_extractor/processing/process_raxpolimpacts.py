@@ -3,10 +3,12 @@ import os, re
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
 
-try:
-    import pyart
-except ImportError:
-    pyart = None
+#try:
+#    import pyart
+#except ImportError:
+#    pyart = None
+
+import pyart
 
 class ExtractRaxpolimpactsMetadata(ExtractNetCDFMetadata):
     """
@@ -28,12 +30,12 @@ class ExtractRaxpolimpactsMetadata(ExtractNetCDFMetadata):
         :param radar: Dataset opened
         :return:
         """
-        #radar = pyart.io.read_cfradial(self.file_path)
+        radar = pyart.io.read_cfradial(self.file_path)
 
-        #lat = radar.gate_latitude['data'][:]
-        #lon = radar.gate_longitude['data'][:]
-        #maxlat, minlat, maxlon, minlon = [lat.max(), lat.min(), lon.max(), lon.min()]
-        maxlat, minlat, maxlon, minlon = [90.,-90.,180., -180.]
+        lat = radar.gate_latitude['data'][:]
+        lon = radar.gate_longitude['data'][:]
+        maxlat, minlat, maxlon, minlon = [lat.max(), lat.min(), lon.max(), lon.min()]
+        #maxlat, minlat, maxlon, minlon = [90.,-90.,180., -180.]
 
         nc = Dataset(self.file_path)
         minTime = datetime.strptime(nc.start_time,'%Y-%m-%d %H:%M:%S.%f') #'start_time: 2022-01-29 17:22:25.000'
