@@ -34,21 +34,22 @@ class MDXProcessing(MDX):
 
     def get_nc_metadata(self, filename, file_obj_stream):
         """
-        Extract temporal and spatial metadata from netCDF-3 files
+        Extract temporal and spatial metadata from netCDF-4 files
         """
         data = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
 
         #Raxpol radar range ~ 75 km
         radar_range = 75.
         #Earth radius ~ 6371 km
-        mlat = radians(float(data['latitude'][0]))
-        mlon = radians(float(data['longitude'][0]))
+        radar_lat = float(data['latitude'][0])
+        radar_lon = float(data['longitude'][0])
+        mlat = radians(radar_lat)
+        mlon = radians(radar_lon)
         plat = mlat
         dlon = degrees(acos((cos(radar_range/6371)-sin(mlat)*sin(plat))/cos(mlat)/cos(plat)))
         dlat = degrees(radar_range/6371.)
-        north, south, east, west = [data.Latitude+dlat, data.Latitude-dlat,
-                                    data.Longitude+dlon, data.Longitude-dlon]
-
+        north, south, east, west = [radar_lat+dlat, radar_lat-dlat,
+                                    radar_lon+dlon, radar_lon-dlon]
         start_time = datetime.strptime(data.start_time,'%Y-%m-%d %H:%M:%S.%f') #'start_time: 2022-01-29 17:22:25.000'
         end_time = datetime.strptime(data.end_time,'%Y-%m-%d %H:%M:%S.%f') #'end_time: 2022-01-29 17:22:25.006'
 
