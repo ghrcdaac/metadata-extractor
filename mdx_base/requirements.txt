@@ -1,2 +1,5 @@
+# Numpy and xarray are explicitly defined due to dependency issues with numpy v2 which occur if not defined
+numpy==1.26.4
+xarray==v2023.08.0
 git+https://github.com/ARM-DOE/pyart.git#egg=arm-pyart
-pyhdf==0.11.3
+pyhdf==0.11.4
