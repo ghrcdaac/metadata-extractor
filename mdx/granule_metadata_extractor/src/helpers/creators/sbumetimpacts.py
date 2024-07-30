@@ -109,7 +109,6 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from CSV files
         """
-
         #lat and lon for *MAN.csv file is provided in datainfo sheet
         #(40.7282N, 74.0068W)
         south, north, west, east = [40.7182, 40.7382, -74.0168, -73.9968]
@@ -129,8 +128,8 @@ class MDXProcessing(MDX):
             maxTime = max(maxTime, cTime)
 
         return {
-            "start": start_time,
-            "end": end_time,
+            "start": minTime, 
+            "end": maxTime,
             "north": north,
             "south": south,
             "east": east,
