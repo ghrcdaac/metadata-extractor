@@ -36,6 +36,7 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from HDF-5 files
         """
+        print(filename)
         h5 = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         navgrp = h5.groups['Navigation']
         navdatagroup = navgrp.groups['Data']
