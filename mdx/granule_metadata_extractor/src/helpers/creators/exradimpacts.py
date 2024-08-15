@@ -36,7 +36,8 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from HDF-5 files
         """
-        datafile = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
+        print(filename)
+        h5 = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         lat = h5.groups['Navigation'].groups['Data'].variables['Latitude'][:]
         lon = h5.groups['Navigation'].groups['Data'].variables['Longitude'][:]
         tm = h5.groups['Time'].groups['Data'].variables['TimeUTC'][:]
@@ -48,7 +49,7 @@ class MDXProcessing(MDX):
         end_time = datetime(1970,1,1) + timedelta(seconds=float(np.max(tm)))
 
 
-        datafile.close()
+        h5.close()
         return {
             "start": start_time,
             "end": end_time,
