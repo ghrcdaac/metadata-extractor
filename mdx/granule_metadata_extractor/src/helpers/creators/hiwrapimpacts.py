@@ -10,8 +10,8 @@ import re
 from netCDF4 import Dataset
 import numpy as np
 
-short_name = "exradimpacts"
-provider_path = "exradimpacts/fieldCampaigns/impacts/EXRAD/data/"
+short_name = "hiwrapimpacts"
+provider_path = "hiwrapimpacts/fieldCampaigns/impacts/HIWRAP/data/"
 file_type = "HDF-5"
 
 
@@ -36,17 +36,21 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from HDF-5 files
         """
+        print(filename)
         h5 = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
-        lat = h5.groups['Navigation'].groups['Data'].variables['Latitude'][:]
-        lon = h5.groups['Navigation'].groups['Data'].variables['Longitude'][:]
-        tm = h5.groups['Time'].groups['Data'].variables['TimeUTC'][:]
+        navgrp = h5.groups['Navigation']
+        navdatagroup = navgrp.groups['Data']
+        lat = navdatagroup.variables['Latitude'][:]
+        lon = navdatagroup.variables['Longitude'][:]
+        tgrp = h5.groups['Time']
+        tdatagrp = tgrp.groups['Data']
+        tm = tdatagrp.variables['TimeUTC'][:]
 
         north, south, east, west = [np.max(lat), np.min(lat),
                                     np.max(lon), np.min(lon)]
 
         start_time = datetime(1970,1,1) + timedelta(seconds=float(np.min(tm)))
         end_time = datetime(1970,1,1) + timedelta(seconds=float(np.max(tm)))
-
 
         h5.close()
         return {
