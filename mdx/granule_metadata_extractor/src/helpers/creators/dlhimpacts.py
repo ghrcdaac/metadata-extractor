@@ -12,7 +12,7 @@ import json
 import os
 
 short_name = "dlhimpacts"
-provider_path = "dlhimpacts__1/data/"
+provider_path = "dlhimpacts__1/"
 file_type = "ASCII"
 
 class MDXProcessing(MDX):
@@ -42,6 +42,7 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from ascii files
         """
+        print(filename)
         file_lines = []
         for encoded_line in file_obj_stream.iter_lines():
             file_lines.append(encoded_line.decode("utf-8"))
@@ -57,7 +58,7 @@ class MDXProcessing(MDX):
         for i in range(len(lines)):
             tkn = lines[i].split(',')
             if len(tkn) > 1:
-               sec.append(int(tkn[0]))
+               sec.append(float(tkn[0]))
 
         minTime = dt0 + timedelta(seconds=min(sec))
         maxTime = dt0 + timedelta(seconds=max(sec))
