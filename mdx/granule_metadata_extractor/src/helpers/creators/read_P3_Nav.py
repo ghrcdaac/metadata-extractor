@@ -3,7 +3,8 @@ from zipfile import ZipFile
 import json
 import os
 
-file_path = '/ftp/ops/public/pub/fieldCampaigns/impacts/P3_Nav/data'
+#file_path = '/ftp/ops/public/pub/fieldCampaigns/impacts/P3_Nav/data'
+file_path = '../P3_Nav/'
 
 nav_time = []
 nav_lat = []
