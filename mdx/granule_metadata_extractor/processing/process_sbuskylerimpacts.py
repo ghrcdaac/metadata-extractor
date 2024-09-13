@@ -1,6 +1,10 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
 import os, re
 from datetime import datetime, timedelta
+from math import radians, degrees, sin, cos, asin, acos, sqrt
+from netCDF4 import Dataset
+import numpy as np
+
 try:
     import pyart
 except ImportError:
@@ -14,15 +18,40 @@ class ExtractSbuskylerimpactsMetadata(ExtractNetCDFMetadata):
     def __init__(self, file_path):
         #super().__init__(file_path)
         self.file_path = file_path
-        #these are needed to metadata extractor
-        self.fileformat = 'netCDF-4'
 
         # extracting time and space metadata from .nc file
+        nc = Dataset(self.file_path)
+        if nc.file_format == 'NETCDF3_CLASSIC':
+           self.fileformat = 'netCDF-3'
+           [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
+                           self.get_variables_min_max_nc3(nc)
+        else:#netCDF-4, read data via pyart
+           self.fileformat = 'netCDF-4'
+           [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
+                           self.get_variables_min_max_pyart()
+        nc.close()
 
-        [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
-                        self.get_variables_min_max()
 
-    def get_variables_min_max(self):
+    def get_variables_min_max_nc3(self,data):
+        #SBU SKYLER radar range ~ 50 km
+        #Earth radius ~ 6371 km
+        mlat = radians(data.Latitude)
+        mlon = radians(data.Longitude)
+        plat = mlat
+        dlon = degrees(acos((cos(50./6371)-sin(mlat)*sin(plat))/cos(mlat)/cos(plat)))
+        dlat = degrees(50./6371.)
+        maxlat, minlat, maxlon, minlon = [data.Latitude+dlat, data.Latitude-dlat, 
+                                          data.Longitude+dlon, data.Longitude-dlon]
+
+        #Time: unit: seconds since 1970-01-01 00:00:00
+        sec = np.array(data['Time'][:])
+        minTime = datetime(1970,1,1) + timedelta(seconds=int(min(sec)))
+        maxTime = datetime(1970,1,1) + timedelta(seconds=int(max(sec)))
+
+        return minTime, maxTime, minlat, maxlat, minlon, maxlon
+
+
+    def get_variables_min_max_pyart(self):
         """
         :param radar: Dataset opened
         :return:

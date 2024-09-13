@@ -145,3 +145,5 @@ from .process_goescpexcv import ExtractGoescpexcvMetadata
 from .process_sondecpexcv import ExtractSondecpexcvMetadata
 from .process_hiwat import ExtractHiwatMetadata
 from .process_sbuairmarimpacts import ExtractSbuairmarimpactsMetadata
+from .process_sbumwrimpacts import ExtractSbumwrimpactsMetadata
+from .process_glmcierra import ExtractGlmcierraMetadata

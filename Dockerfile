@@ -4,7 +4,7 @@ ARG stage
 
 COPY requirements*.txt /tmp/
 
-RUN     pip install -r /tmp/requirements.txt --target "${LAMBDA_TASK_ROOT}"
+RUN     pip install --upgrade --force-reinstall -r /tmp/requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
 # Only if stage is other than dev
 ADD mdx ${LAMBDA_TASK_ROOT}

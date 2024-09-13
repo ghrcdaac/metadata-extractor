@@ -19,7 +19,7 @@ class ExtractHiwatMetadata(ExtractNetCDFMetadata):
            # extracting time and space metadata for GRIB2 file
            [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
                self.get_variables_min_max_grib2()
-        else: #netCDF-4
+        else: #netCDF-3
            self.fileformat = 'netCDF-3'
            # extracting time and space metadata for netCDF-3 file
            [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
@@ -76,7 +76,11 @@ class ExtractHiwatMetadata(ExtractNetCDFMetadata):
 
         tkn = self.file_path.split('/')[-1].split('_')
         hour = int(tkn[-1][-4:])/100.
-        minTime = datetime.strptime('20'+tkn[1],'%Y%m%d%H%M')+timedelta(hours=hour)
+        if tkn[0] == 'variant': #i.e.,variant_HKH9_1803291800_wrfout_ens9_arw_d02.grb2f4800
+           utc_ref = tkn[2]
+        else: #i.e., HKH9_1803291800_wrfout_ens9_arw_d02.grb2f4800
+           utc_ref = tkn[1]
+        minTime = datetime.strptime('20'+utc_ref,'%Y%m%d%H%M')+timedelta(hours=hour)
         maxTime = minTime
 
         return minTime, maxTime, minlat, maxlat, minlon, maxlon

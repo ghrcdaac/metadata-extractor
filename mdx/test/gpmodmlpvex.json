@@ -46,6 +46,7 @@
       },
       "collection":{
          "name":"gpmodmlpvex",
+         "url_path": "gpmodmlpvex__1",
          "version":"1",
          "dataType":"gpmodmlpvex",
          "process":"metadataextractor",
