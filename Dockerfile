@@ -16,7 +16,7 @@ ADD mdx ${LAMBDA_TASK_ROOT}
 
 #RUN rm -rf test
 
-#CMD [ "main.handler" ]
+# CMD [ "main.handler" ]
 #ENTRYPOINT ["/bin/bash"]
 #ENTRYPOINT ["python", "main.handler"]
 #WORKDIR /var

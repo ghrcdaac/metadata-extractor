@@ -613,44 +613,71 @@ class MDX(Process):
     def size_temp(self, filename):
         print(f'size_temp: {filename}')
         return {filename: os.path.getsize(filename)}
-
+    
     def process(self):
+        if 'EBS_MNT' in os.environ:
+            print('Using DAAC Split Processing')
+            ret = self.process_mdx_ebs()
+        else:
+            print('Using Cumulus Processing')
+            ret = self.process_mdx_cumulus()
+
+        return ret
+
+    def process_mdx_ebs(self):
+        collection = self.config.get('collection')
+        c_id = f'{collection.get("name")}__{collection.get("version")}'
+        local_store = os.getenv('EBS_MNT')
+        collection_store = f'{local_store}/{c_id}'
+        self.path = collection_store
+        self.config['fileStagingDir'] = collection_store
+        event_file = f'{collection_store}/{c_id}.json'
+        with open(event_file, 'r') as output:
+            contents = json.load(output)
+            print(f'Granule Count: {len(contents.get("granules"))}')
+            granules = contents.get('granules')
+
+        for granule in granules:
+            mdata_file_paths = []
+            for file in granule.get('files'):
+                filename = file.get("name")
+                if not re.search('.nc',filename):
+                    continue
+                file_path = f'{collection_store}/{filename}'     
+                data = self.extract_metadata(file_path=file_path, config=self.config, output_folder=self.path)
+                mdata_filename = f'{data.get("UpdatedGranuleUR", filename)}.cmr.json'
+                mdata_file_paths.append(f'{collection_store}/{mdata_filename}')
+
+            for mdata_file_path in mdata_file_paths:
+                print(f'metadata file created: {mdata_file_path}')
+                granule.get('files').append({
+                    'name': os.path.basename(mdata_file_path),
+                    'path': os.path.dirname(mdata_file_path),
+                    'size': os.path.getsize(mdata_file_path)
+                })
+
+        shutil.move(event_file, f'{event_file}.mdx.in')
+        with open(event_file, 'w+') as file:
+            file.write(json.dumps({'granules': granules}))
+
+        logger.info('MDX processing completed.')
+        return {"granules": granules, "input": self.output}
+
+    def process_mdx_cumulus(self):
         """
         Override the processing wrapper
         :return:
         """
-        local_store = os.getenv('EBS_MNT', os.getenv('efs_mount_path'))
-        collection_id = f'{self.collection.get("name")}__{self.collection.get("version")}'
-        collection_store = f'{local_store}/{collection_id}'
-        print(f'PATH EXISTS: {self.path} {os.path.exists(self.path)}')
         logger.info('MDX processing started.')
-        # self.path = os.getenv('efs_mount_path', self.path)
-        self.path = collection_store
-
-        input_file = f'{collection_store}/{collection_id}.json'
-        print(f'Opening Input File: {input_file}')
-        with open(input_file, 'r') as output:
-            contents = json.load(output)
-            self.input = {'granules': contents.get('granules')}
-
+        self.path = os.getenv('efs_mount_path', self.path)
         granules = self.input['granules']
-        # print(f'self.input: {granules}')
         cumulus_granules_meta = copy.deepcopy(granules[0])
-        for ele in ['granuleId', 'files']:
-            cumulus_granules_meta.pop(ele, False)
+        [cumulus_granules_meta.pop(ele, False) for ele in ['granuleId', 'files']]
         self.input = []
-        # for granule in granules:
-        #     for _file in granule['files']:
-        #         if 'metadata' not in _file.get('type', ""):
-        #             # self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
-        #             # self.input.append(_file['key'])
-        #             self.input.append(f'{local_store}/{_file.get("name").replace(".gz", ".nc")}')
-        # for file in os.listdir(collection_store):
         for granule in granules:
-            for file in granule.get('files'):
-                self.input.append(f'{collection_store}/{file.get("name")}')
-        print('directory scanned...')
-        # print(f'self.input: {self.input}')
+            for _file in granule['files']:
+                if 'metadata' not in _file.get('type', ""):
+                    self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         has_lookup = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
@@ -665,67 +692,61 @@ class MDX(Process):
             output = {key: self.mutate_input(self.path, self.input[0])}
         else:
             output = self.fetch_all()
-            # for granule in
         # Assert we have inputs to process
-        # assert output[key], "fetched files list should not be empty"
+        assert output[key], "fetched files list should not be empty"
         files_sizes = {}
         for output_file_path in output.get(key):
-            print(f'processing output_file_path: {output_file_path}')
-            data = self.extract_metadata(file_path=output_file_path, config=self.config,
-                                         output_folder=self.path)
-            # print(f'Generating for: {}')
+            data = self.extract_metadata(file_path=output_file_path, config=self.config, output_folder=self.path)
+            self.logger.info(f'data: {data}')
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
                 updated_output_path = self.get_output_files(os.path.join(self.path, data['UpdatedGranuleUR']), excluded)
                 generated_files.extend(updated_output_path)
             for generated_file in generated_files:
-                print(f'Getting size for: {generated_file}')
                 files_sizes[generated_file.split('/')[-1]] = os.path.getsize(generated_file)
             self.output += generated_files
-        # print(f'SELF.OUTPUT: {self.output}')
-        # temp_output = copy.deepcopy(self.output)
-        # for ele in temp_output:
-        #     if os.path.basename(ele) in [os.path.basename(base_name) for base_name in self.input]:
-        #         self.output.remove(ele)
-        # uploaded_files = self.upload_output_files()
-        # granule_data = {}
-        # for uploaded_file in uploaded_files:
-        #     if uploaded_file is None or not uploaded_file.startswith('s3'):
-        #         continue
-        #     granule_id = os.path.basename(uploaded_file).split('.cmr.json')[0]
-        #     if granule_id not in granule_data.keys():
-        #         granule_data[granule_id] = {'granuleId': granule_id, 'files': [], **cumulus_granules_meta}
-        #     parsed_uri = s3.uri_parser(uploaded_file)
-        #     granule_data[granule_id]['files'].append(
-        #             {
-        #             'bucket': parsed_uri['bucket'],
-        #             "fileName": os.path.basename(uploaded_file),  # Cumulus changed the key name to be camelCase
-        #             "key": parsed_uri['key'],
-        #             "size": files_sizes.get(os.path.basename(uploaded_file), 1983),
-        #             }
-        #         )
-        # granule_data_temp = copy.deepcopy(granule_data)
-        # for granule in granules:
-        #     for granule_ in granule_data_temp:
-        #         if granule['granuleId'] == granule_:
-        #             granule['files'] += granule_data[granule_]['files']
-        #             granule_data.pop(granule_)
-        #
-        # for granule_ in granule_data:
-        #     granules.append(granule_data[granule_])
-        #
-        # # Clean up
-        # for granule_dict in granules:
-        #     for file_dict in granule_dict.get('files'):
-        #         self.delete_file(file_dict.get('fileName'))
-        #
-        # # Workaround for local file since system bucket shouldn't matter locally
-        # system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
-        #     f"s3://{os.path.basename(self.input[0])}"
-        # logger.info('MDX processing completed.')
-        # return {"granules": granules, "input": uploaded_files,
-        #         "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
-        return {}
+        temp_output = copy.deepcopy(self.output)
+        for ele in temp_output:
+            if os.path.basename(ele) in [os.path.basename(base_name) for base_name in self.input]:
+                self.output.remove(ele)
+        uploaded_files = self.upload_output_files()
+        granule_data = {}
+        for uploaded_file in uploaded_files:
+            if uploaded_file is None or not uploaded_file.startswith('s3'):
+                continue
+            granule_id = os.path.basename(uploaded_file).split('.cmr.json')[0]
+            if granule_id not in granule_data.keys():
+                granule_data[granule_id] = {'granuleId': granule_id, 'files': [], **cumulus_granules_meta}
+            parsed_uri = s3.uri_parser(uploaded_file)
+            granule_data[granule_id]['files'].append(
+                    {
+                    'bucket': parsed_uri['bucket'],
+                    "fileName": os.path.basename(uploaded_file),  # Cumulus changed the key name to be camelCase
+                    "key": parsed_uri['key'],
+                    "size": files_sizes.get(os.path.basename(uploaded_file), 1983),
+                    }
+                )
+        granule_data_temp = copy.deepcopy(granule_data)
+        for granule in granules:
+            for granule_ in granule_data_temp:
+                if granule['granuleId'] == granule_:
+                    granule['files'] += granule_data[granule_]['files']
+                    granule_data.pop(granule_)
+
+        for granule_ in granule_data:
+            granules.append(granule_data[granule_])
+
+        # Clean up
+        for granule_dict in granules:
+            for file_dict in granule_dict.get('files'):
+                self.delete_file(file_dict.get('fileName'))
+
+        # Workaround for local file since system bucket shouldn't matter locally
+        system_bucket_path = uploaded_files[0] if len(uploaded_files) > 0 else \
+            f"s3://{os.path.basename(self.input[0])}"
+        logger.info('MDX processing completed.')
+        return {"granules": granules, "input": uploaded_files,
+                "system_bucket": s3.uri_parser(system_bucket_path)['bucket']}
 
     def delete_file(self, filename):
         path = f'{self.path.rstrip("/")}/{filename}'
@@ -786,38 +807,13 @@ def handler(event, context=None):
     :param context: object provides methods and properties that provide information about the
                     invocation, function, and execution environment
     """
-    env_temp = os.getenv('EVENT', '{}').strip('b')
-    env_path = os.getenv('IN_DIR')
-    env_event = json.loads(env_temp)
-    print(f'env_event_config: {env_event}')
-    print(f'ENV_PATH: {env_path}')
-    mdx_instance = MDX(input=env_event['input'], config=env_event['config'], path=env_path)
-    return mdx_instance.process()
-    # return task_function(cumulus_message, context, **taskargs)
-    # return run_cumulus_task(task, event, context)
+    return run_cumulus_task(task, event, context)
 
 
-class GracefulKiller:
-    kill_now = False
-
-    def __init__(self):
-        signal.signal(signal.SIGINT, self.exit_gracefully)
-        signal.signal(signal.SIGTERM, self.exit_gracefully)
-
-    def exit_gracefully(self, signum, frame):
-        print('Exiting gracefully')
-        self.kill_now = True
+def main(event, context):
+    # print(f'MDX main event: {event}')
+    return MDX(input=event.get('input'), config=event.get('config')).process()
 
 
 if __name__ == '__main__':
-    print(f'MDX __main__: {sys.argv}')
-    # MDX.cli()
-    if len(sys.argv) <= 1:
-        killer = GracefulKiller()
-        print('MDX Task is running...')
-        while not killer.kill_now:
-            time.sleep(1)
-    else:
-        print('MDX Task processing...')
-        task(*sys.argv[1:], {})
-
+    MDX.cli()
