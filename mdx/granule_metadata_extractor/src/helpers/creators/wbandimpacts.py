@@ -36,6 +36,23 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from netCDF-3 files
         """
+        #if 'IMPACTS_ACHV_WBAND_RHI_UCONN20230217_014003Z_to_20230217_014205Z_dR50m.nc' in filename:
+        #    start_time = datetime(2100,1,1)
+        #    end_time = datetime(1900,1,1)
+        #    north = -90.
+        #    south = 90.
+        #    east = -180.
+        #    west = 180.
+        #    return {
+        #    "start": start_time,
+        #    "end": end_time,
+        #    "north": north,
+        #    "south": south,
+        #    "east": east,
+        #    "west": west,
+        #    "format": file_type
+        #     }
+
         data = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
 
         #Raxpol radar range ~ 50 km
