@@ -24,9 +24,8 @@ class MDXProcessing(MDX):
         self.utf8_list = ['IMPACTS_upperair_UMILL_radiosonde_202201291800_QCMiller.txt',
                           'IMPACTS_upperair_UMILL_radiosonde_202201292000_QCMiller.txt',
                           'IMPACTS_upperair_UMILL_radiosonde_202201292200_QCMiller.txt',
-                          'IMPACTS_upperair_UMILL_radiosonde_202202191800_QC.txt',
-                          'IMPACTS_upperair_UMILL_radiosonde_202202191500_QC.txt']
-
+                          'IMPACTS_upperair_UMILL_radiosonde_202202191500_QC.txt',
+                          'IMPACTS_upperair_UMILL_radiosonde_202202191800_QC.txt']
 
     def process(self, filename, file_obj_stream) -> dict:
         """
@@ -50,19 +49,27 @@ class MDXProcessing(MDX):
         Extract temporal and spatial metadata from HDF-5 files
         """
         datafile = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
-        lats = datafile['lat'][:].flatten()
-        lons = datafile['lon'][:].flatten()
-        sec = datafile['time'][:].flatten()
-        ref_time_str = datafile['time'].units #'seconds since 2023-01-25 20:16:35'
-        ref_time = datetime.strptime(ref_time_str, 'seconds since %Y-%m-%d %H:%M:%S')
+        if '_windsonde_' in filename:
+            lat = float(datafile.latitude)
+            lon = float(datafile.longitude)
+            north, south, east, west = [lat+0.01, lat-0.01, lon+0.01, lon-0.01]
+            tkn = filename.split('.cdf')[0].split('_')
+            start_time = datetime.strptime(tkn[-2]+tkn[-1],'%Y%m%d%H%M%S')
+            end_time = start_time
+        else:
+            lats = datafile['lat'][:].flatten()
+            lons = datafile['lon'][:].flatten()
+            sec = datafile['time'][:].flatten()
+            ref_time_str = datafile['time'].units #'seconds since 2023-01-25 20:16:35'
+            ref_time = datetime.strptime(ref_time_str, 'seconds since %Y-%m-%d %H:%M:%S')
 
-        start_time, end_time = [ref_time+timedelta(seconds=min(sec)),
-                                ref_time+timedelta(seconds=max(sec))]
+            start_time, end_time = [ref_time+timedelta(seconds=sec.min().item()),
+                                    ref_time+timedelta(seconds=sec.max().item())]
 
-        north, south, east, west = [lats.max(),
-                                    lats.min(),
-                                    lons.max(),
-                                    lons.min()]
+            north, south, east, west = [lats.max(),
+                                        lats.min(),
+                                        lons.max(),
+                                        lons.min()]
         datafile.close()
         return {
             "start": start_time,
@@ -79,7 +86,6 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from ascii files
         """
-########
         file_lines = []
         fn = filename.split('/')[-1]
         if '_windsonde1_' in fn: #wind sonde file
@@ -105,21 +111,23 @@ class MDXProcessing(MDX):
                   maxTime = datetime.strptime(line,'Saved by user: User on %Y%m%d/%H%M UTC')
                   break
         else: #radio sonde file, either utf-8 or utf-16-be (big endian)
+           print('fn=',fn)
+           endian_type = 'utf-16-be'
            if fn in self.utf8_list:
-              endian_type = 'utf_8'
-           else: #utf_16-be
-              endian_type = 'utf_16-be'
+              endian_type = 'utf-8'
 
-           count = 0  #account number of header lines for later use
+           #read lines and save into 'file_lines' list 
            for encoded_line in file_obj_stream.iter_lines():
-               count = count + 1
                line = encoded_line.decode(endian_type,errors='ignore').strip()
                file_lines.append(line)
-
+          
+           count = 0 #account number of header lines for later use
+           for line in file_lines:
+               count = count + 1
                if line.startswith('Balloon release date and time'):
-                  minTime = datetime.strptime(line.split()[-1].strip(),'%Y-%m-%dT%H:%M:%S') #i.e.,2022-01-29T13:07:23
-               elif 'n Elapsed time  TimeUTC' in line:
-                  num_header_lines = count + 1
+                  minTime = datetime.strptime(line.split()[-1],'%Y-%m-%dT%H:%M:%S') #i.e.,2022-01-29T13:07:23
+               elif line.startswith('s hh:mm:ss'):
+                  num_header_lines = count
                   break
 
            elap_sec = []
@@ -134,9 +142,6 @@ class MDXProcessing(MDX):
                lon.append(float(tkn[-1]))
            maxTime = minTime + timedelta(seconds = max(elap_sec))
            maxlat, minlat, maxlon, minlon = [max(lat),min(lat),max(lon),min(lon)]
-
-########
-
 
         return {
             "start": minTime,
