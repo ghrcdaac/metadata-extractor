@@ -1,8 +1,5 @@
 import json
 import re
-import signal
-import sys
-import time
 
 from run_cumulus_task import run_cumulus_task
 import granule_metadata_extractor.processing as mdx
@@ -12,7 +9,6 @@ from re import match
 import os
 import boto3
 from helpers import get_logger
-import concurrent.futures
 import copy
 import shutil
 
@@ -23,10 +19,9 @@ class MDX(Process):
     Class to extract spatial and temporal metadata
     """
     def __init__(self, input, config, path='/tmp/mdx'):
-        print(f'INPUT: {input}')
         super().__init__(input, config=config, path=path)
-        # shutil.rmtree(path, ignore_errors=True)
-        # os.makedirs(path)
+        shutil.rmtree(path, ignore_errors=True)
+        os.makedirs(path)
 
     def generate_json_data(self, data, access_url, output_folder):
         """
@@ -510,9 +505,11 @@ class MDX(Process):
         ds_short_name = collection.get('name')
         version = collection.get('version')
         metadata_extractor_vars = collection.get('meta', {}).get('metadata_extractor', [])
-        access_url = os.path.join(config.get('distribution_endpoint'), protected_bucket,
-                                  config['fileStagingDir'],
-                                  os.path.basename(file_path))
+        access_url = os.path.join(
+            config.get('distribution_endpoint'), protected_bucket,
+            config['fileStagingDir'],
+            os.path.basename(file_path)
+        )
         processing_switcher = {
             "netcdf": self.extract_netcdf_metadata,
             "csv": self.extract_csv_metadata,
@@ -609,10 +606,6 @@ class MDX(Process):
         if os.path.isfile(f"{output_file_path}.cmr.json"):
             output_files += [f"{output_file_path}.cmr.json"]
         return output_files
-
-    def size_temp(self, filename):
-        print(f'size_temp: {filename}')
-        return {filename: os.path.getsize(filename)}
     
     def process(self):
         if 'EBS_MNT' in os.environ:
@@ -640,10 +633,10 @@ class MDX(Process):
         for granule in granules:
             mdata_file_paths = []
             for file in granule.get('files'):
-                filename = file.get("name")
+                filename = file.get('fileName')
                 if not re.search('.nc',filename):
                     continue
-                file_path = f'{collection_store}/{filename}'     
+                file_path = file.get('key')
                 data = self.extract_metadata(file_path=file_path, config=self.config, output_folder=self.path)
                 mdata_filename = f'{data.get("UpdatedGranuleUR", filename)}.cmr.json'
                 mdata_file_paths.append(f'{collection_store}/{mdata_filename}')
@@ -651,8 +644,8 @@ class MDX(Process):
             for mdata_file_path in mdata_file_paths:
                 print(f'metadata file created: {mdata_file_path}')
                 granule.get('files').append({
-                    'name': os.path.basename(mdata_file_path),
-                    'path': os.path.dirname(mdata_file_path),
+                    'fileName': os.path.basename(mdata_file_path),
+                    'key': mdata_file_path,
                     'size': os.path.getsize(mdata_file_path)
                 })
 
@@ -697,7 +690,6 @@ class MDX(Process):
         files_sizes = {}
         for output_file_path in output.get(key):
             data = self.extract_metadata(file_path=output_file_path, config=self.config, output_folder=self.path)
-            self.logger.info(f'data: {data}')
             generated_files = self.get_output_files(output_file_path, excluded)
             if data.get('UpdatedGranuleUR', False):
                 updated_output_path = self.get_output_files(os.path.join(self.path, data['UpdatedGranuleUR']), excluded)
@@ -762,29 +754,6 @@ class MDX(Process):
         """
         pass
 
-    def fetch(self, key, remote=False):
-        """ Get local (default) or remote input filename """
-        regex = self.input_keys.get(key, None)
-        if regex is None:
-            raise Exception('No files matching %s' % regex)
-        outfiles = []
-        for f in self.input:
-            # print(f'f in self.input: {f} vs regex {regex}')
-            m = re.search(regex, os.path.basename(f))
-            if m is not None:
-                # if remote desired, or input is already local
-                # print(f'exists: {os.path.exists(f)}')
-                if remote or os.path.exists(f):
-                    outfiles.append(f)
-                    # print(f'appended: {outfiles[-1]}')
-                else:
-                    raise Exception(f'Missing file: {f}')
-            else:
-                # print('m was none')
-                pass
-
-        return outfiles
-
 
 def task(event, context):
     """
@@ -794,9 +763,9 @@ def task(event, context):
                     invocation, function, and execution environment
     :return: mdx processing output
     """
-    event = json.loads(event)
+    # event = json.loads(event)
     logger.info(event)
-    mdx_instance = MDX(input=event.get('input'), config=event.get('config'))
+    mdx_instance = MDX(input=event['input'], config=event['config'])
     return mdx_instance.process()
 
 
@@ -816,4 +785,5 @@ def main(event, context):
 
 
 if __name__ == '__main__':
+    print('calling CLI')
     MDX.cli()
