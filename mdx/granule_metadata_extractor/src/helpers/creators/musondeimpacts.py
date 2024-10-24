@@ -12,7 +12,7 @@ import numpy as np
 
 short_name = "musondeimpacts"
 provider_path = "musondeimpacts/fieldCampaigns/impacts/MU_sondes/data/"
-file_type = "HDF-5"
+file_type = "netCDF-4"
 
 
 class MDXProcessing(MDX):
@@ -36,8 +36,8 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
-        if filename.endswith('.cdf'): #HDF-5
-            file_type = 'HDF-5'
+        if filename.endswith('.cdf'): #netCDF-4
+            file_type = 'netCDF-4'
             return self.get_hdf_metadata(filename, file_obj_stream)
         else: #ASCII
             file_type = 'ASCII'
@@ -46,7 +46,7 @@ class MDXProcessing(MDX):
 
     def get_hdf_metadata(self, filename, file_obj_stream):
         """
-        Extract temporal and spatial metadata from HDF-5 files
+        Extract temporal and spatial metadata from netCDF-4 files
         """
         datafile = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         if '_windsonde_' in filename:
