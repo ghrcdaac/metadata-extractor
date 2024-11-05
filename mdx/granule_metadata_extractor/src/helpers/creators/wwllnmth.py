@@ -35,6 +35,7 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from netCDF-4 files
         """
+        print(filename)
         data = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         lats = np.array(data['lat'][:])
         lons = np.array(data['lon'][:])
