@@ -32,17 +32,20 @@ class MDXProcessing(MDX):
         """
         Extracts temporal and spatial metadata from the following files:
         """
-
+        print(filename)
         utc = []
         lats = []
         lons = []
         for encoded_line in file_obj_stream.iter_lines():
+            #print(encoded_line)
             line = encoded_line.decode("utf-8")
+            #print(line)
             #Sample: IWG110hz,2017-06-01T13:46:32.101, 26.078796, -80.154362,,
             tkn = line.split(',')
-            utc.append(datetime.strptime(tkn[1],'%Y-%m-%dT%H:%M:%S.f'))
-            lats.append(float(tkn[2]))
-            lons.append(float(tkn[3]))
+            if len(tkn[2]) != 0 and len(tkn[3]) != 0:
+               utc.append(datetime.strptime(tkn[1],'%Y-%m-%dT%H:%M:%S.%f'))
+               lats.append(float(tkn[2]))
+               lons.append(float(tkn[3]))
 
         start_time, end_time = [min(utc), max(utc)]
         north, south, east, west = [max(lats),min(lats),max(lons),min(lons)]  
