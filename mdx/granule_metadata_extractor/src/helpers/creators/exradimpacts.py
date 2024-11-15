@@ -31,12 +31,10 @@ class MDXProcessing(MDX):
         """
         return self.get_nc_metadata(filename, file_obj_stream)
 
-
     def get_nc_metadata(self, filename, file_obj_stream):
         """
         Extract temporal and spatial metadata from HDF-5 files
         """
-        print(filename)
         h5 = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         lat = h5.groups['Navigation'].groups['Data'].variables['Latitude'][:]
         lon = h5.groups['Navigation'].groups['Data'].variables['Longitude'][:]
