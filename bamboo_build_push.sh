@@ -3,10 +3,10 @@ source ./common.sh
 set -o nounset
 set -o pipefail
 
-access_keys=($bamboo_AWS_SBX_ACCESS_KEY $bamboo_AWS_SIT_ACCESS_KEY $bamboo_AWS_UAT_ACCESS_KEY $bamboo_AWS_PROD_ACCESS_KEY)
-secret_keys=($bamboo_AWS_SBX_SECRET_ACCESS_KEY $bamboo_AWS_SIT_SECRET_ACCESS_KEY $bamboo_AWS_UAT_SECRET_ACCESS_KEY $bamboo_AWS_PROD_SECRET_ACCESS_KEY)
-prefixes=($bamboo_PREFIX_SBX $bamboo_PREFIX_SIT $bamboo_PREFIX_UAT $bamboo_PREFIX_PROD)
-account_numbers=($bamboo_ACCOUNT_NUMBER_SBX $bamboo_ACCOUNT_NUMBER_SIT $bamboo_ACCOUNT_NUMBER_UAT $bamboo_ACCOUNT_NUMBER_PROD)
+access_keys=( $bamboo_AWS_PROD_ACCESS_KEY )
+secret_keys=( $bamboo_AWS_PROD_SECRET_ACCESS_KEY )
+prefixes=( $bamboo_PREFIX_PROD )
+account_numbers=( $bamboo_ACCOUNT_NUMBER_PROD )
 
 function build_docker {
   echo "Building Docker"
