@@ -634,10 +634,10 @@ class MDX(Process):
             mdata_file_paths = []
             for file in granule.get('files'):
                 filename = file.get('fileName')
-                if not re.search('.nc',filename):
-                    continue
                 file_path = file.get('key')
                 data = self.extract_metadata(file_path=file_path, config=self.config, output_folder=self.path)
+                if not data:
+                    continue
                 mdata_filename = f'{data.get("UpdatedGranuleUR", filename)}.cmr.json'
                 mdata_file_paths.append(f'{collection_store}/{mdata_filename}')
 
