@@ -47,9 +47,11 @@ class MDXProcessing(MDX):
         #stop_date: 2017-07-15
         #stop_time: 09:00:00 UTC
 
-        tkn = ''.join([data['start_date'],'T',data['start_time']])
+        tkn = ''.join([datafile.start_date,'T',datafile.start_time])
+        print(tkn)
         start_time = datetime.strptime(tkn,'%Y-%m-%dT%H:%M:%S UTC')
-        tkn = ''.join([data['stop_date'],'T',data['stop_time']])
+        tkn = ''.join([datafile.stop_date,'T',datafile.stop_time])
+        print(tkn)
         end_time = datetime.strptime(tkn,'%Y-%m-%dT%H:%M:%S UTC')
 
         datafile.close()
