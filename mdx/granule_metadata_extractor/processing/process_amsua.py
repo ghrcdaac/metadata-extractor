@@ -115,11 +115,17 @@ class ExtractAMSUAMetadata(ExtractNetCDFMetadata):
         data['GranuleUR'] = self.file_path.split('/')[-1]
         data['BeginningDateTime'], data['EndingDateTime'] = start_date, stop_date
 
-        gemetry_list = self.get_wnes_geometry()
+        wnes_list = self.get_wnes_geometry()
+        # Invalid data values may occur. To avoid NRT interruptions, invalid values, result in the
+        # ENTIRE lat/lon metadata being overwritten to collection lat/lon values. This also allows
+        # DMG visibility to granules which may contain invalid values.
+        if (any( wnes_list[0] < -180, wnes_list[1] > 90, wnes_list[3] > 180, wnes_list[4] < -90 )):
+            wnes_list = [-180, 90, 180, -90]
 
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
         data['EastBoundingCoordinate'], data['SouthBoundingCoordinate'] = list(
-            str(x) for x in gemetry_list)
+            str(x) for x in wnes_list)
+
         data['SizeMBDataGranule'] = str(round(self.get_file_size_megabytes(), 2))
         data['checksum'] = self.get_checksum()
         data['DataFormat'] = self.format
