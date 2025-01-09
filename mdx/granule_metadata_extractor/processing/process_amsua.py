@@ -119,7 +119,7 @@ class ExtractAMSUAMetadata(ExtractNetCDFMetadata):
         # Invalid data values may occur. To avoid NRT interruptions, invalid values result in the
         # ENTIRE lat/lon metadata being overwritten to collection lat/lon values. This also allows
         # DMG visibility to granules which may contain invalid values.
-        if (any( wnes_list[0] < -180, wnes_list[1] > 90, wnes_list[3] > 180, wnes_list[4] < -90 )):
+        if (any( [wnes_list[0] < -180, wnes_list[1] > 90, wnes_list[2] > 180, wnes_list[3] < -90] )):
             wnes_list = [-180, 90, 180, -90]
 
         data['WestBoundingCoordinate'], data['NorthBoundingCoordinate'], \
