@@ -49,7 +49,7 @@ for ((i = 0; i < $access_keys_len; i++)); do
     create_ecr_repo_or_skip
     push_to_ecr ${account_numbers[0]} ${prefixes[0]}
   fi
-  update_lambda_or_skip ${account_numbers[i]} ${prefixes[i]}
+  update_lambda_or_skip ${account_numbers[0]} ${prefixes[i]}
 done
 
 docker rmi mdx
