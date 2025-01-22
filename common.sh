@@ -10,6 +10,8 @@ else
 fi
 
 function update_lambda_or_skip() {
+  # $1 ACCOUNT_NUMBER
+  # $2 PREFIX
   echo "Checking Lambda Update Status..."
   check_lambda_exist=$(aws lambda get-function --region $AWS_REGION $ADD_PROFILE --function-name $2-$REPO_NAME 2>/dev/null)
   if [[ ! -n "${check_lambda_exist}" ]]; then
@@ -21,6 +23,8 @@ function update_lambda_or_skip() {
 }
 
 function update_lambda() {
+  # $1 ACCOUNT_NUMBER
+  # $2 PREFIX
   echo "Updating Lambda ${2}-${REPO_NAME}"
   docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
   cmd="lambda update-function-code \
