@@ -35,22 +35,14 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from netCDF-3 files
         """
-        data = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
-        start_time = datetime.strptime(data.starting_date,'%Y/%m/%d %H:%M:%S') 
-        end_time = datetime.strptime(data.ending_date,'%Y/%m/%d %H:%M:%S') 
-        north = float(data.upper_middle_latitude)
-        south = float(data.lower_middle_latitude)
-        east = float(data.lower_middle_longitude)
-        west = float(data.upper_middle_longitude)
-
         nc = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         lat = np.array(nc['scLat'])
         lon = np.array(nc['scLon'])
         time = np.array(nc['time'])
         ref_datetime = datetime(1970,1,1)
         return {
-            "start": ref_datetime + timedelta(hours=float(min(time))),
-            "end": ref_datetime + timedelta(hours=float(max(time))),
+            "start": ref_datetime + timedelta(seconds=float(min(time))),
+            "end": ref_datetime + timedelta(seconds=float(max(time))),
             "north": max(lat),
             "south": min(lat),
             "east": max(lon),
@@ -59,7 +51,7 @@ class MDXProcessing(MDX):
         }
 
 
-        data.close()
+        nc.close()
         return {
             "start": start_time,
             "end": end_time,
