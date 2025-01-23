@@ -40,6 +40,8 @@ class MDXProcessing(MDX):
         lon = np.array(nc['scLon'])
         time = np.array(nc['time'])
         ref_datetime = datetime(1970,1,1)
+        nc.close()
+
         return {
             "start": ref_datetime + timedelta(seconds=float(min(time))),
             "end": ref_datetime + timedelta(seconds=float(max(time))),
@@ -47,18 +49,6 @@ class MDXProcessing(MDX):
             "south": min(lat),
             "east": max(lon),
             "west": min(lon),
-            "format": file_type
-        }
-
-
-        nc.close()
-        return {
-            "start": start_time,
-            "end": end_time,
-            "north": north,
-            "south": south,
-            "east": east,
-            "west": west,
             "format": file_type
         }
 
