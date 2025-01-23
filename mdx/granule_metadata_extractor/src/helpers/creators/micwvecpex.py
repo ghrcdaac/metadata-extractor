@@ -43,6 +43,22 @@ class MDXProcessing(MDX):
         east = float(data.lower_middle_longitude)
         west = float(data.upper_middle_longitude)
 
+        nc = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
+        lat = np.array(nc['scLat'])
+        lon = np.array(nc['scLon'])
+        time = np.array(nc['time'])
+        ref_datetime = datetime(1970,1,1)
+        return {
+            "start": ref_datetime + timedelta(hours=float(min(time))),
+            "end": ref_datetime + timedelta(hours=float(max(time))),
+            "north": max(lat),
+            "south": min(lat),
+            "east": max(lon),
+            "west": min(lon),
+            "format": file_type
+        }
+
+
         data.close()
         return {
             "start": start_time,
