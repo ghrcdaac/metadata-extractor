@@ -1,8 +1,11 @@
 from granule_metadata_extractor.src.metadata_extractor import MetadataExtractor
+from helpers import get_logger
 from zipfile import ZipFile
 import pathlib
 import json
 import os
+
+logger = get_logger()
 
 
 class ExtractLookupMetadata(MetadataExtractor):
@@ -64,6 +67,6 @@ class ExtractLookupMetadata(MetadataExtractor):
                 "DataFormat": metadata.get("format", "Not Provided"),
                 "VersionId": version
             }
-        print(f"Granule {self.file_name} not found in collection lookup "
-                f"{ds_short_name}.zip")
+        logger.error(f"Granule {self.file_name} not found in collection lookup "
+                     f"{ds_short_name}.zip")
         return {}
