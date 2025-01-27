@@ -64,6 +64,6 @@ class ExtractLookupMetadata(MetadataExtractor):
                 "DataFormat": metadata.get("format", "Not Provided"),
                 "VersionId": version
             }
-        print(f"Granule {self.filename} not found in collection lookup "
+        print(f"Granule {self.file_name} not found in collection lookup "
                 f"{ds_short_name}.zip")
         return {}
