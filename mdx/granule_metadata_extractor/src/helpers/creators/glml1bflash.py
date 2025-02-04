@@ -11,12 +11,13 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "glml1bflash"
-provider_path = "glml1bflash/raw/"
+provider_path = "glml1bflash/processed/"
 
 class MDXProcessing(MDX):
 
     def __init__(self):
         super().__init__()
+        self.file_type = "netCDF-4"
 
     def process(self, filename, file_obj_stream) -> dict:
         """
@@ -28,13 +29,11 @@ class MDXProcessing(MDX):
         :type file_obj_stream: botocore.response.StreamingBody
         """
         if filename.endswith('nc'):
-           file_type = "netCDF-4"
+           self.file_type = "netCDF-4"
            return self.get_nc_metadata(filename, file_obj_stream)
         else: #hdf5
-           file_type = "HDF-5"
+           self.file_type = "HDF-5"
            return self.get_h5_metadata(filename, file_obj_stream)
-
-
 
     def get_nc_metadata(self, filename, file_obj_stream):
         """
@@ -59,7 +58,37 @@ class MDXProcessing(MDX):
             "south": south,
             "east": east,
             "west": west,
-            "format": file_type
+            "format": self.file_type
+        }
+
+
+    def get_h5_metadata(self, filename, file_obj_stream):
+        """
+        Extract temporal and spatial metadata from HDF-5 files
+        """
+        tkn = filename.split('/')[-1].split('.h5')[0] #GLM16_flashes_3_18
+        group_name = ''.join([tkn,'_inc_SGFs']) #GLM16_flashes_3_18_inc_SGFs
+
+        nc = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
+        lat = np.array(nc[group_name]['lat'][:]).flatten()
+        lon = np.array(nc[group_name]['lon'][:]).flatten()
+        t0 = np.array(nc[group_name]['raw_start_time'][:]).flatten() #seconds since Jan. 1, 2000
+        t1 = np.array(nc[group_name]['raw_stop_time'][:]).flatten()  #seconds since Jan. 1, 2000
+        north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
+                                    np.nanmax(lon), np.nanmin(lon)]
+
+        start_time = datetime(2000,1,1) + timedelta(seconds=float(min(t0)))
+        end_time = datetime(2000,1,1) + timedelta(seconds=float(max(t1)))
+
+        nc.close()
+        return {
+            "start": start_time,
+            "end": end_time,
+            "north": north,
+            "south": south,
+            "east": east,
+            "west": west,
+            "format": self.file_type
         }
 
 
