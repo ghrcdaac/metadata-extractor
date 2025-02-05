@@ -39,6 +39,12 @@ class MDXProcessing(MDX):
         nc = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         lat = np.array(nc['Lat'][:])
         lon = np.array(nc['Lon'][:])
+
+        #2020/3/2 file contains incorrect lat/lon (89.996/-179.996)
+        #Set lon values < -175. to nan, and lat values > 85. to nan to avoild this error
+        lon = np.where(lon<-175.,np.nan,lon)
+        lat = np.where(lat>85.,np.nan,lat)
+
         tm = np.array(nc['Time'][:])
         tm_units = nc.variables['Time'].units
 
