@@ -11,7 +11,7 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "glml1bflash"
-provider_path = "glml1bflash/processed/"
+provider_path = "glml1bflash/"
 
 class MDXProcessing(MDX):
 
