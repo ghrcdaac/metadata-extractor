@@ -1,4 +1,3 @@
-#create lookup zip for gpmaio2uconn
 # for all future collections
 from datetime import datetime, timedelta
 from utils.mdx import MDX
@@ -7,14 +6,13 @@ import time
 import math
 import re
 
-import numpy as np
-
 short_name = "gpmaio2uconn"
 provider_path = "gpmaio2uconn/"
+file_type = "CSV"
 
-#In 2021-2022 the AIO2 at 41.80778, -72.29389 was 4m above ground level 
-#In 2022-2023 the AIO2 at 41.81778, -72.2575 (D3R file) was at 2m above ground level and the the AIO2 at 41.80778, -72.29389 (GAIL file) was 4m above ground level 
-#In 2023-2024 both AIO2 were at 41.80778, -72.29389 with one being at 2m (Ground file) and the other at 4m (Roof file). 
+#In 2021-2022 the AIO2 at 41.80778, -72.29389 was 4m above ground level
+#In 2022-2023 the AIO2 at 41.81778, -72.2575 (D3R file) was at 2m above ground level and the the AIO2 at 41.80778, -72.29389 (GAIL file) was 4m above ground level
+#In 2023-2024 both AIO2 were at 41.80778, -72.29389 with one being at 2m (Ground file) and the other at 4m (Roof file).
 site_loc = {'2122':[41.80778, -72.29389],
             '2223_D3R': [41.81778, -72.2575],
             '2223_GAIL': [41.80778, -72.29389],
@@ -25,7 +23,6 @@ class MDXProcessing(MDX):
 
     def __init__(self):
         super().__init__()
-        self.file_type = "CSV"
 
     def process(self, filename, file_obj_stream) -> dict:
         """
@@ -38,18 +35,17 @@ class MDXProcessing(MDX):
         """
         return self.get_csv_metadata(filename, file_obj_stream)
 
-
     def get_csv_metadata(self, filename, file_obj_stream):
         """
         Extract temporal and spatial metadata from CSV files
         """
-        tkn = filename.split('/')[-1].split('.CSV')[0] 
-        for site_name in site_loc.keys();
+        tkn = filename.split('/')[-1].split('.csv')[0]
+        for site_name in site_loc.keys():
             if tkn.endswith(site_name):
                lat = site_loc[site_name][0]
                lon = site_loc[site_name][1]
-               
-        south, north, west, east = [lat-0.01,lat+0.01,lon-0.01,lon+0.01]]
+
+        south, north, west, east = [lat-0.01,lat+0.01,lon-0.01,lon+0.01]
 
         file_lines = []
         for encoded_line in file_obj_stream.iter_lines():
@@ -66,16 +62,14 @@ class MDXProcessing(MDX):
         maxTime = max(utc)
 
         return {
-            "start": minTime, 
+            "start": minTime,
             "end": maxTime,
             "north": north,
             "south": south,
             "east": east,
             "west": west,
-            "format": self.file_type
+            "format": file_type
         }
-
-
 
     def main(self):
         # start_time = time.time()
