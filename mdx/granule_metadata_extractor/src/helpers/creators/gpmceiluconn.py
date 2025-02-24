@@ -44,8 +44,15 @@ class MDXProcessing(MDX):
 
         lat = np.array(datafile['Location_latitude'][:])
         lon = np.array(datafile['Location_longitude'][:])
+
         north, south, east, west = [np.max(lat), np.min(lat),
                                     np.max(lon), np.min(lon)]
+        if north == south:
+           north = north + 0.01
+           south = south - 0.01
+        if east == west:
+           east = east + 0.01
+           west = west - 0.01
 
         datafile.close()
         return {
