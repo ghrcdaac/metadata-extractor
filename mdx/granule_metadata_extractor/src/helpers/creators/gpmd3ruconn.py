@@ -54,7 +54,7 @@ class MDXProcessing(MDX):
         plat = mlat
         dlon = degrees(acos((cos(radar_range/6371)-sin(mlat)*sin(plat))/cos(mlat)/cos(plat)))
         dlat = degrees(radar_range/6371.)
-        print(radar_range,dlon,dlat)
+        print(filename)
         north, south, east, west = [data.Latitude+dlat, data.Latitude-dlat,
                                     data.Longitude+dlon, data.Longitude-dlon]
 
