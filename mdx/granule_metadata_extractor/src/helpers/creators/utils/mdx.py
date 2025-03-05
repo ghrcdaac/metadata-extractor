@@ -7,6 +7,7 @@ import zipfile
 import boto3
 import json
 import os
+import time
 
 
 class S3URI:
@@ -215,10 +216,11 @@ class MDX:
         s3uri_list = self.get_object_list(prefix=provider_path)
         # Only process first file if run outside AWS
         # s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
-        with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executor:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=4) as executor:
             # Start the process operations and mark each future with its uri
             future_to_uri = {executor.submit(self.process_file, uri): uri for uri in s3uri_list}
             for future in concurrent.futures.as_completed(future_to_uri):
+                time.sleep(1)
                 uri = future_to_uri[future]
                 try:
                     data = future.result()
