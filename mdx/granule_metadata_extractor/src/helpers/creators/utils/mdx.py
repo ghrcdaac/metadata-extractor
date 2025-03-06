@@ -40,17 +40,15 @@ class MDX:
         return S3URI(parsed_s3uri.netloc, parsed_s3uri.path.lstrip('/'),
                      os.path.basename(s3uri))
 
-    def get_object_list(self, prefix: str, bucket: str = "ghrcw-private") -> list:
+    def get_object_list(self, s3_client, prefix: str, bucket: str = "ghrcw-private") -> list:
         """
         Get all objects at a provided bucket prefix
         :param prefix: prefix key defining where s3 objects are stored
         :type prefix: str
         """
         obj_list = list()
-        s3_client = boto3.client("s3")
         paginator = s3_client.get_paginator("list_objects_v2")
-        page_iterator = paginator.paginate(
-            Bucket=bucket, Prefix=f"{prefix.rstrip('/')}/")
+        page_iterator = paginator.paginate(Bucket=bucket, Prefix=f"{prefix.rstrip('/')}/")
         for page in page_iterator:
             if page["KeyCount"] < 1:
                 print(f"No objects found at s3://{bucket}/{prefix.rstrip('/')}/")
@@ -59,7 +57,24 @@ class MDX:
                 obj_list.append(f"s3://{bucket}/{obj['Key']}")
         return obj_list
 
-    def download_stream(self, bucket: str, prefix: str):
+    def generate_s3_uris(self, s3_client, prefix: str, bucket: str = "ghrcw-private"):
+        """
+        Get all objects at a provided bucket prefix
+        :param prefix: prefix key defining where s3 objects are stored
+        :type prefix: str
+        """    
+        paginator = s3_client.get_paginator("list_objects_v2")
+        page_iterator = paginator.paginate(Bucket=bucket, Prefix=f"{prefix.rstrip('/')}/", PaginationConfig={'PageSize': 100})
+        # page_iterator = paginator.paginate(Bucket=bucket, Prefix=f"{prefix.rstrip('/')}/")
+        for page in page_iterator:
+            s3_uris = []
+            for obj in page["Contents"]:
+                s3_uris.append(f"s3://{bucket}/{obj['Key']}")
+
+            yield s3_uris
+            print(f'Fetched S3 URIs: {len(s3_uris)}')
+
+    def download_stream(self, bucket: str, prefix: str, s3_client):
         """
         Download s3 object as file oject stream for processing
         :param bucket: s3 bucket of file object
@@ -69,8 +84,7 @@ class MDX:
         :return: file object stream
         :rtype: botocore.response.StreamingBody
         """
-        s3 = boto3.client("s3")
-        return s3.get_object(Bucket=bucket, Key=prefix)
+        return s3_client.get_object(Bucket=bucket, Key=prefix)
 
     def get_checksum(self, file_obj_stream):
         """
@@ -192,13 +206,17 @@ class MDX:
         :type s3uri: string
         """
         try:
+            s3_client = boto3.client('s3')
+            # print(f'Parsing S3 URI: {s3uri}')
             uri = self.parse_s3_uri(s3uri)
             # Download file object stream and size
-            response = self.download_stream(
-                bucket=uri.bucket, prefix=uri.prefix)
+            # print(f'Downloading stream...')
+            response = self.download_stream(bucket=uri.bucket, prefix=uri.prefix, s3_client=s3_client)
             file_obj_stream = response["Body"]
             # Extract temporal and spatial metadata
+            # print(f'Processing file...')
             initial_metadata = self.process(uri.filename, file_obj_stream)
+            # print(f'Validating coordinates...')
             metadata = self.validate_spatial_coordinates(initial_metadata)
             metadata["sizeMB"] = 1E-6 * response["ContentLength"]
             # Format time outputs
@@ -206,33 +224,60 @@ class MDX:
             for elem in ["north", "south", "east", "west"]:
                 metadata[elem] = str(round(metadata[elem], 3))
             metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-            return metadata
+            # print(f'Returning metadata for {s3uri}')
+            path = f'/home/ssm-user/metadata-extractor/mdx/granule_metadata_extractor/src/helpers/creators/gpmd_stash/{os.path.basename(s3uri)}.json'
+            with open(path, 'w+') as json_file:
+                json.dump({'s3uri': s3uri, 'metadata': metadata}, json_file)
+            # return {'s3uri': s3uri, 'metadata': metadata}
         except Exception as e:
             print(f"Problem processing {s3uri}:\n{e}\n")
+            raise
 
     def process_collection(self, short_name, provider_path):
-        self.collection_lookup = {}
         # Get s3uri of all objects at s3 prefix
-        s3uri_list = self.get_object_list(prefix=provider_path)
-        # Only process first file if run outside AWS
-        # s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
-        with concurrent.futures.ProcessPoolExecutor(max_workers=2) as executor:
-            # Start the process operations and mark each future with its uri
-            future_to_uri = {executor.submit(self.process_file, uri): uri for uri in s3uri_list}
-            for future in concurrent.futures.as_completed(future_to_uri):
-                #time.sleep(0.1)
-                uri = future_to_uri[future]
-                try:
-                    data = future.result()
-                    self.collection_lookup[os.path.basename(uri)] = data
-                except Exception as e:
-                    print(f'{uri} generated an exception: {e}')
+        s3_client = boto3.client('s3')
+        # s3_uris = self.fetch_s3_uris_set(s3_client, provider_path)
+        # st = time.time()
+        self.collection_lookup = {}
+        # self.collection_lookup = dict.fromkeys([os.path.basename(s3_uri) for s3_uri in s3_uris])
+        # et = time.time() - st
+        # print(f'Dictionary creation time: {et}')
+        with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executor:
+            count = 0
+            st = time.time()
+            for s3_uris_batch in self.generate_s3_uris(s3_client, provider_path):
+                futures = []
+                for s3_uri in s3_uris_batch:
+                    futures.append(executor.submit(self.process_file, s3_uri))
+                    count += 1
+                    if count % 10 == 0:
+                        ct = time.time() - st
+                        # print(f'Submitting Files/s: {count/ct}')
+
+                st = time.time()
+                count = 0
+                print('Waiting on futures...')
+                for future in concurrent.futures.as_completed(futures):
+                    try:
+                        fst = time.time()
+                        res = future.result()
+                        fet = time.time() - fst
+                        print(f'Results retrieved: {fet}')
+                        # cst = time.time()
+                        # self.collection_lookup[os.path.basename(res.get('s3uri'))] = res.get('metadata')
+                        # cet = time.time() - cst
+                        # print(f'Collection lookup added for: {res.get("s3uri")} {cet}')
+                        count += 1
+                        if count % 10 == 0:
+                            ct = time.time() - st
+                            print(f'Files Compled/s: {count/ct}')
+                    except Exception as e:
+                        print(e)
 
         collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
 
         # Write lookup and summary to zip
-        self.write_to_lookup(short_name, self.collection_lookup,
-                             collection_metadata_summary)
+        self.write_to_lookup(short_name, self.collection_lookup, collection_metadata_summary)
 
     def shutdown_ec2(self):
         """
