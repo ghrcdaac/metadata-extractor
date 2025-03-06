@@ -63,6 +63,7 @@ class MDXProcessing(MDX):
         end_time = datetime(1970,1,1) + timedelta(seconds=int(max(sec)))
 
         data.close()
+        print(filename)
         return {
             "start": start_time,
             "end": end_time,

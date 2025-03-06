@@ -217,14 +217,9 @@ class MDX:
         # Only process first file if run outside AWS
         # s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
         #with concurrent.futures.ProcessPoolExecutor(max_workers=2) as executor:
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            # Start the process operations and mark each future with its uri
-            future_to_uri = {executor.submit(self.process_file, uri): uri for uri in s3uri_list}
-            for future in concurrent.futures.as_completed(future_to_uri):
-                #time.sleep(0.1)
-                uri = future_to_uri[future]
+        for uri in s3uri_list:
                 try:
-                    data = future.result()
+                    data = self.process_file(uri)
                     self.collection_lookup[os.path.basename(uri)] = data
                 except Exception as e:
                     print(f'{uri} generated an exception: {e}')
