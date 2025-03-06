@@ -1,3 +1,4 @@
+import tempfile
 from urllib.parse import urlparse
 from datetime import datetime
 import concurrent.futures
@@ -59,6 +60,19 @@ class MDX:
                 obj_list.append(f"s3://{bucket}/{obj['Key']}")
         return obj_list
 
+    def get_page_iterator(self,prefix: str, bucket: str = "ghrcw-private",  s3_client=None):
+        """
+        Return an S3 page iterator to list S3 objects in the provided bucket with the matching prefix
+        :param prefix: Thet key prefix to use for listing
+        :param bucket: The S3 bucket to target
+        :param s3_client: An optinal preconfigured S3 client
+        :return: An S3 page iterator
+        """
+        s3_client = boto3.client('s3') if not s3_client else s3_client
+        paginator = s3_client.get_paginator("list_objects_v2")
+        page_iterator = paginator.paginate(Bucket=bucket, Prefix=f"{prefix}", PaginationConfig={'PageSize': 1000})
+        return page_iterator
+
     def download_stream(self, bucket: str, prefix: str):
         """
         Download s3 object as file oject stream for processing
@@ -89,11 +103,10 @@ class MDX:
             md5.update(chunk)
         return md5.hexdigest()
 
-    def generate_collection_metadata_summary(self, collection_lookup: dict) -> dict:
+    def generate_collection_metadata_summary(self, collection_dir) -> dict:
         """
-        Generate collection metadata summary from collection lookup dict
-        :param collection_lookup: collection lookup dictionary containing all files metadata
-        :type collection_lookup: dict
+        Generate collection metadata summary from files in the collection directory
+        :param collection_dir: The directory containing granule metadata for the collection
         :return: collection_metadata summary dict
         :rtype: dict
         """
@@ -101,19 +114,23 @@ class MDX:
         start, end = ["2100-01-01T00:00:00Z",  "1900-01-15T00:00:00Z"]
         north, south, east, west = [-90.0, 90.0, -180.0, 180.0]
         size = 0
-        file_count = len(collection_lookup)
+        filenames = os.listdir(collection_dir)
+        file_count = len(filenames)
 
-        for granule in collection_lookup.values():
-            # ISO8601 Format is comparable directly as strings, so no
-            # conversion to datetime object is necessary:
-            # https://fits.gsfc.nasa.gov/iso-time.html
-            start = min(start, granule['start'])
-            end = max(end, granule['end'])
-            north = max(north, float(granule['north']))
-            south = min(south, float(granule['south']))
-            east = max(east, float(granule['east']))
-            west = min(west, float(granule['west']))
-            size += float(granule['sizeMB'])
+        # for granule in collection_lookup.values():
+        for filename in filenames:
+            with open(f'{collection_dir}/{filename}') as granule_json:
+                granule = json.load(granule_json).get('metadata')
+                # ISO8601 Format is comparable directly as strings, so no
+                # conversion to datetime object is necessary:
+                # https://fits.gsfc.nasa.gov/iso-time.html
+                start = min(start, granule['start'])
+                end = max(end, granule['end'])
+                north = max(north, float(granule['north']))
+                south = min(south, float(granule['south']))
+                east = max(east, float(granule['east']))
+                west = min(west, float(granule['west']))
+                size += float(granule['sizeMB'])
 
         return {
             "start": start,
@@ -185,54 +202,72 @@ class MDX:
                                 f"\twest: {metadata['west']}\n")
         return metadata
 
-    def process_file(self, s3uri):
+    def process_file(self, s3uri, collection_dir):
         """
         Process metadata for file
         :param s3uri: s3uri of file to process
         :type s3uri: string
+        :param collection_dir: The location to write the results to
         """
         try:
             uri = self.parse_s3_uri(s3uri)
             # Download file object stream and size
-            response = self.download_stream(
-                bucket=uri.bucket, prefix=uri.prefix)
+            response = self.download_stream(bucket=uri.bucket, prefix=uri.prefix)
             file_obj_stream = response["Body"]
+
             # Extract temporal and spatial metadata
             initial_metadata = self.process(uri.filename, file_obj_stream)
             metadata = self.validate_spatial_coordinates(initial_metadata)
             metadata["sizeMB"] = 1E-6 * response["ContentLength"]
+
             # Format time outputs
             metadata = self.format_dict_times(metadata)
             for elem in ["north", "south", "east", "west"]:
                 metadata[elem] = str(round(metadata[elem], 3))
             metadata["sizeMB"] = round(metadata["sizeMB"], 2)
-            return metadata
+            path = f'{collection_dir}/{os.path.basename(s3uri)}.json'
+            with open(path, 'w+') as json_file:
+                json.dump({'s3uri': s3uri, 'metadata': metadata}, json_file)
         except Exception as e:
             print(f"Problem processing {s3uri}:\n{e}\n")
+            raise
 
-    def process_collection(self, short_name, provider_path):
-        self.collection_lookup = {}
+    def process_collection(self, short_name, provider_path, bucket='ghrcw-private'):
+        collection_dir = f'{tempfile.gettempdir()}/{short_name}'
+        os.makedirs(collection_dir, exist_ok=True)
+        existing_files = os.listdir(collection_dir)
+        print(f'Skipping granule metadata generation for {len(existing_files)} files found at {collection_dir}')
+
         # Get s3uri of all objects at s3 prefix
-        s3uri_list = self.get_object_list(prefix=provider_path)
-        # Only process first file if run outside AWS
-        # s3uri_list = s3uri_list if self.in_AWS else s3uri_list[:1]
-        with concurrent.futures.ProcessPoolExecutor(max_workers=2) as executor:
-            # Start the process operations and mark each future with its uri
-            future_to_uri = {executor.submit(self.process_file, uri): uri for uri in s3uri_list}
-            for future in concurrent.futures.as_completed(future_to_uri):
-                #time.sleep(0.1)
-                uri = future_to_uri[future]
-                try:
-                    data = future.result()
-                    self.collection_lookup[os.path.basename(uri)] = data
-                except Exception as e:
-                    print(f'{uri} generated an exception: {e}')
+        self.collection_lookup = {}
+        count = 0
+        st = time.time()
+        for page in self.get_page_iterator(provider_path):
+            with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executor:
+                futures = []                
+                for obj in page["Contents"]:
+                    obj_key = obj['Key']
+                    if  f'{os.path.basename(obj_key)}.json' not in existing_files:
+                        s3_uri = f"s3://{bucket}/{obj_key}"
+                        futures.append(executor.submit(self.process_file, s3_uri, collection_dir))
 
-        collection_metadata_summary = self.generate_collection_metadata_summary(self.collection_lookup)
+                print(f'Processing {len(futures)} files out of {page["KeyCount"]} file batch...')
+                for future in concurrent.futures.as_completed(futures):
+                    try:
+                        _ = future.result()
+                        count += 1
+                        if count % 10 == 0:
+                            ct = time.time() - st
+                            print(f'Files Completed: {count}')
+                            print(f'Rate Completed/s: {count/ct}')
+                    except Exception as e:
+                        print(e)
+
+        collection_metadata_summary = self.generate_collection_metadata_summary(collection_dir)
+        print(collection_metadata_summary)
 
         # Write lookup and summary to zip
-        self.write_to_lookup(short_name, self.collection_lookup,
-                             collection_metadata_summary)
+        self.write_to_lookup(short_name, self.collection_lookup, collection_metadata_summary)
 
     def shutdown_ec2(self):
         """
