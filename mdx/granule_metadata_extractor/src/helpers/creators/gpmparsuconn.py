@@ -39,27 +39,23 @@ class MDXProcessing(MDX):
         """
         Extracts temporal and spatial metadata from the following files:
         """
-        print(filename)
+        #print(filename)
         #Sample file name: UConn_apu18_pluvio200_raintotal.impact2022
         utc = []
         for encoded_line in file_obj_stream.iter_lines():
-            #print(encoded_line)
-            #Sample: 2022    2   01:57    2   20:12
-            #or
-            #2023 349  0  0  0  10  20  30  40  50
             line = encoded_line.decode("utf-8")
-            #print(line)
             tkn = line.split()
             if ":" in tkn[2] and ":" in tkn[4]:
                #Sample: 2022    2   01:57    2   20:12
                utc0 = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2]]) #i.e., 2022-002-01:57
                utc1 = '-'.join([tkn[0],tkn[3].zfill(3),tkn[4]]) #i.e., 2022-002-20:12
-               utc.append(datetime.strptime(utc0,'%Y-%j-%H:%M))
-               utc.append(datetime.strptime(utc1,'%Y-%j-%H:%M))
+               utc.append(datetime.strptime(utc0,'%Y-%j-%H:%M'))
+               utc.append(datetime.strptime(utc1,'%Y-%j-%H:%M'))
             else: #Sample: 2023 349  0  0  ......
                utc0 = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2].zfill(2),tkn[3].zfill(2)])#i.e.,2023-349-00-00
-               utc.append(datetime.strptime(utc0,'%Y-%j-%H-%M')
+               utc.append(datetime.strptime(utc0,'%Y-%j-%H-%M'))
         start_time, end_time = [min(utc), max(utc)]
+        print(filename,start_time,end_time)
     
         fn = filename.split('/')[-1] #i.e., UConn_apu18_pluvio200_raintotal.impact2022
         period = fn.split('.')[-1] #i.e., impact2022
