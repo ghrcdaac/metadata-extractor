@@ -27,8 +27,15 @@ function update_lambda_or_skip_local() {
   fi
 }
 
-read -rp 'AWS_PROFILE: ' AWS_PROFILE
-read -rp 'Stack Prefix: ' STACK_PREFIX
+if [[ -z "${AWS_PROFILE}" ]]; then
+  echo $AWS_PROFILE
+  read -rp 'AWS_PROFILE: ' AWS_PROFILE
+fi
+
+if [[ -z "${STACK_PREFIX}" ]]; then
+  read -rp 'STACK_PREFIX: ' STACK_PREFIX
+fi
+
 AWS_ACCOUNT_ID=$(get_account_id $AWS_PROFILE)
 
 
