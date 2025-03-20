@@ -1,4 +1,4 @@
-import tempfile
+from pathlib import Path
 from urllib.parse import urlparse
 from datetime import datetime
 import concurrent.futures
@@ -103,7 +103,7 @@ class MDX:
             md5.update(chunk)
         return md5.hexdigest()
 
-    def generate_collection_metadata_summary(self, collection_dir) -> dict:
+    def generate_collection_metadata_summary(self, collection_dir, collection_lookup) -> dict:
         """
         Generate collection metadata summary from files in the collection directory
         :param collection_dir: The directory containing granule metadata for the collection
@@ -120,17 +120,18 @@ class MDX:
         # for granule in collection_lookup.values():
         for filename in filenames:
             with open(f'{collection_dir}/{filename}') as granule_json:
-                granule = json.load(granule_json).get('metadata')
+                granule_metadata = json.load(granule_json).get('metadata')
+                collection_lookup[filename.replace('.json', '')] = granule_metadata
                 # ISO8601 Format is comparable directly as strings, so no
                 # conversion to datetime object is necessary:
                 # https://fits.gsfc.nasa.gov/iso-time.html
-                start = min(start, granule['start'])
-                end = max(end, granule['end'])
-                north = max(north, float(granule['north']))
-                south = min(south, float(granule['south']))
-                east = max(east, float(granule['east']))
-                west = min(west, float(granule['west']))
-                size += float(granule['sizeMB'])
+                start = min(start, granule_metadata['start'])
+                end = max(end, granule_metadata['end'])
+                north = max(north, float(granule_metadata['north']))
+                south = min(south, float(granule_metadata['south']))
+                east = max(east, float(granule_metadata['east']))
+                west = min(west, float(granule_metadata['west']))
+                size += float(granule_metadata['sizeMB'])
 
         return {
             "start": start,
@@ -233,13 +234,13 @@ class MDX:
             raise
 
     def process_collection(self, short_name, provider_path, bucket='ghrcw-private'):
-        collection_dir = f'{tempfile.gettempdir()}/{short_name}'
+        collection_dir = f'{Path.home()}/{short_name}'
         os.makedirs(collection_dir, exist_ok=True)
         existing_files = os.listdir(collection_dir)
         print(f'Skipping granule metadata generation for {len(existing_files)} files found at {collection_dir}')
 
         # Get s3uri of all objects at s3 prefix
-        self.collection_lookup = {}
+        collection_lookup = {}
         count = 0
         st = time.time()
         for page in self.get_page_iterator(provider_path):
@@ -263,11 +264,11 @@ class MDX:
                     except Exception as e:
                         print(e)
 
-        collection_metadata_summary = self.generate_collection_metadata_summary(collection_dir)
+        collection_metadata_summary = self.generate_collection_metadata_summary(collection_dir, collection_lookup)
         print(collection_metadata_summary)
 
         # Write lookup and summary to zip
-        self.write_to_lookup(short_name, self.collection_lookup, collection_metadata_summary)
+        self.write_to_lookup(short_name, collection_lookup, collection_metadata_summary)
 
     def shutdown_ec2(self):
         """
