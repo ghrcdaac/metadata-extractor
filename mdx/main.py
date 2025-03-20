@@ -566,16 +566,23 @@ class MDX(Process):
         filename = os.path.basename(input_file)
         return [f"{output_folder.rstrip('/')}/{filename}"]
 
-    def upload_output_files(self):
+    def upload_output_files(self, published=False):
         """
         Uploads all self.output files to same location as input file
         :return: list of files uploaded to S3 (as well as input which should already be in S3)
         """
         upload_output_list = list()
-        source_path = os.path.dirname(self.input[0])
+        destination_path = os.path.dirname(self.input[0])
         for output_file in self.output:
             output_filename = os.path.basename(output_file)
-            uri_out = os.path.join(source_path, output_filename)
+            if published:
+                collection = self.config.get('collection', {})
+                for file in collection.get('files'):
+                    res = re.search(file.get('regex'), output_filename)
+                    if res:
+                        destination_path = f's3://{os.getenv("stack_prefix")}-{file.get("bucket")}/{collection.get("url_path")}'
+                        break
+            uri_out = os.path.join(destination_path, output_filename)
             upload_output_list.append(uri_out)
             if output_filename != os.path.basename(self.input[0]):
                 try:
@@ -668,9 +675,22 @@ class MDX(Process):
         [cumulus_granules_meta.pop(ele, False) for ele in ['granuleId', 'files']]
         self.input = []
         for granule in granules:
-            for _file in granule['files']:
-                if 'metadata' not in _file.get('type', ""):
-                    self.input.append(f"s3://{_file['bucket']}/{_file['key']}")
+            files = granule['files']
+            i = 0
+            while i < len(files):
+                file = files[i]
+                if file.get('fileName', '').endswith('.cmr.json'):
+                    logger.info(f'Removing old metadata file: {file.get("fileName", "")}')
+                    files.pop(i)
+                    continue
+
+                if 'metadata' not in file.get('type', ''):
+                    self.input.append(f's3://{file["bucket"]}/{file["key"]}')
+                else:
+                    # logger.info(f'File skipped: {file.get("fileName", "")}')
+                    pass
+                i += 1
+
         collection = self.config.get('collection')
         collection_name = collection.get('name')
         has_lookup = collection.get('meta', {}).get('metadata_extractor', [])[0].get(
@@ -701,7 +721,7 @@ class MDX(Process):
         for ele in temp_output:
             if os.path.basename(ele) in [os.path.basename(base_name) for base_name in self.input]:
                 self.output.remove(ele)
-        uploaded_files = self.upload_output_files()
+        uploaded_files = self.upload_output_files(published=cumulus_granules_meta.get('published', False))
         granule_data = {}
         for uploaded_file in uploaded_files:
             if uploaded_file is None or not uploaded_file.startswith('s3'):
@@ -710,14 +730,12 @@ class MDX(Process):
             if granule_id not in granule_data.keys():
                 granule_data[granule_id] = {'granuleId': granule_id, 'files': [], **cumulus_granules_meta}
             parsed_uri = s3.uri_parser(uploaded_file)
-            granule_data[granule_id]['files'].append(
-                    {
-                    'bucket': parsed_uri['bucket'],
-                    "fileName": os.path.basename(uploaded_file),  # Cumulus changed the key name to be camelCase
-                    "key": parsed_uri['key'],
-                    "size": files_sizes.get(os.path.basename(uploaded_file), 1983),
-                    }
-                )
+            granule_data[granule_id]['files'].append({
+                'bucket': parsed_uri['bucket'],
+                'fileName': os.path.basename(uploaded_file),  # Cumulus changed the key name to be camelCase
+                'key': parsed_uri['key'],
+                'size': files_sizes.get(os.path.basename(uploaded_file), 1983)
+            })
         granule_data_temp = copy.deepcopy(granule_data)
         for granule in granules:
             for granule_ in granule_data_temp:
