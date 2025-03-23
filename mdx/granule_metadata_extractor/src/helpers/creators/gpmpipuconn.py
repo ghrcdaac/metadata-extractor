@@ -17,7 +17,7 @@ short_name = "gpmpipuconn"
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_2_2_Velocity_Tables/00320211119/" #i.e.,UConn_PIP_0032021111902020_a_v_1.dat
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_2_3_0_Vel_Scat/00320211215/" #i.e.,UConn_PIP_0032021121523500_a_v_1_2.png
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_2_3_1_Vel_Ebar/00320211202/" #i.e.,UConn_PIP_0032021120213200_V_Ebar.png
-provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/"
+provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_2/a_Particle_Tables/00320210923/UConn_PIP_0032021092320200_a_p.dat"
 
 
 instr_site = {'003':{'lat':41.808,'lon':-72.294},
@@ -108,7 +108,15 @@ class MDXProcessing(MDX):
 
         lines = []
         for encoded_line in file_obj_stream.iter_lines():
-            lines.append(encoded_line.decode("utf-8"))
+            err_flag = 0
+            try:
+                decoded_line = encoded_line.decode("utf-8")
+            except:
+                err_flag = 1
+
+            if err_flag == 0:
+               lines.append(decoded_line)
+
         utc = []    
         for line in lines[10:]:
             tkn = line.split()
