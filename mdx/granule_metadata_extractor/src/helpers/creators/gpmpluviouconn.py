@@ -13,7 +13,7 @@ file_type = "ASCII"
 #2021-2022: apu18 located at 41.808, -72.294
 #2022-2023: apu27 located at  41.818, -72.258  and  apu28 located at: 41.808, -72.294
 #2023-2024: Both apu27 and apu28 located at 41.808, -72.294
-site_loc = {'impacts2022':{'apu18':{'lat':41.808,'lon':-72.294}},
+site_loc = {'impact2022':{'apu18':{'lat':41.808,'lon':-72.294}},
             'impacts2023':{'apu27':{'lat':41.818,'lon':-72.258},'apu28':{'lat':41.808,'lon':-72.294}},
             'uconn2024':{'apu27':{'lat':41.808,'lon':-72.294},'apu28':{'lat':41.808,'lon':-72.294}}
            }
@@ -47,13 +47,34 @@ class MDXProcessing(MDX):
             tkn = line.split()
             if ":" in tkn[2] and ":" in tkn[4]:
                #Sample: 2022    2   01:57    2   20:12
-               utc0 = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2]]) #i.e., 2022-002-01:57
-               utc1 = '-'.join([tkn[0],tkn[3].zfill(3),tkn[4]]) #i.e., 2022-002-20:12
-               utc.append(datetime.strptime(utc0,'%Y-%j-%H:%M'))
-               utc.append(datetime.strptime(utc1,'%Y-%j-%H:%M'))
+               if tkn[1] in ['0','00','000']:
+                  tkn[1] = '001'
+                  utc0_str = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2]]) #i.e., 2022-002-01:57
+                  utc0 = datetime.strptime(utc0_str,'%Y-%j-%H:%M')-timedelta(hours=24)
+               else:
+                  utc0_str = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2]]) #i.e., 2022-002-01:57
+                  utc0 = datetime.strptime(utc0_str,'%Y-%j-%H:%M')
+
+               if tkn[3] in ['0','00','000']:
+                  tkn[3] = '001'
+                  utc1_str = '-'.join([tkn[0],tkn[3].zfill(3),tkn[4]]) #i.e., 2022-002-01:57
+                  utc1 = datetime.strptime(utc1_str,'%Y-%j-%H:%M')-timedelta(hours=24)
+               else:
+                  utc1_str = '-'.join([tkn[0],tkn[3].zfill(3),tkn[4]]) #i.e., 2022-002-01:57
+                  utc1 = datetime.strptime(utc1_str,'%Y-%j-%H:%M')
+
+               utc.append(utc0)
+               utc.append(utc1)
             else: #Sample: 2023 349  0  0  ......
-               utc0 = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2].zfill(2),tkn[3].zfill(2)])#i.e.,2023-349-00-00
-               utc.append(datetime.strptime(utc0,'%Y-%j-%H-%M'))
+               if tkn[1] in ['0','00','000']: #i.e., 2022,000,0,0
+                  tkn[1] = '001'
+                  utc0_str = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2].zfill(2),tkn[3].zfill(2)])#i.e.,2023-001-00-00
+                  utc0 = datetime.strptime(utc0_str,'%Y-%j-%H-%M') - timedelta(hours=24)
+               else:   
+                  utc0_str = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2].zfill(2),tkn[3].zfill(2)])#i.e.,2023-349-00-00
+                  utc0 = datetime.strptime(utc0_str,'%Y-%j-%H-%M')
+               utc.append(utc0)
+
         start_time, end_time = [min(utc), max(utc)]
         print(filename,start_time,end_time)
     
