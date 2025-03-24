@@ -13,7 +13,7 @@ file_type = "ASCII"
 #2021-2022: apu18 located at 41.808, -72.294
 #2022-2023: apu27 located at  41.818, -72.258  and  apu28 located at: 41.808, -72.294
 #2023-2024: Both apu27 and apu28 located at 41.808, -72.294
-site_loc = {'impact2022':{'apu18':{'lat':41.808,'lon':-72.294}},
+site_loc = {'impacts2022':{'apu18':{'lat':41.808,'lon':-72.294}},
             'impacts2023':{'apu27':{'lat':41.818,'lon':-72.258},'apu28':{'lat':41.808,'lon':-72.294}},
             'uconn2024':{'apu27':{'lat':41.808,'lon':-72.294},'apu28':{'lat':41.808,'lon':-72.294}}
            }
@@ -76,7 +76,6 @@ class MDXProcessing(MDX):
                utc.append(utc0)
 
         start_time, end_time = [min(utc), max(utc)]
-        print(filename,start_time,end_time)
     
         fn = filename.split('/')[-1] 
         period = fn.split('.')[-1] #i.e., impact2022
