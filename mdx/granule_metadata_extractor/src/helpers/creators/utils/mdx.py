@@ -276,5 +276,6 @@ class MDX:
         useful for cost savings when deployed to AWS
         """
         # This conditional to avoid accidental local shutdowns.
-        if self.in_AWS:
-            subprocess.call(["sudo", "shutdown", "1"])
+        # if self.in_AWS:
+        #     subprocess.call(["sudo", "shutdown", "1"])
+        print(f'Automatic shutdown disabled. Be sure to include a shutdown command with the longest running or last collection.')
