@@ -17,7 +17,9 @@ short_name = "gpmpipuconn"
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_2_2_Velocity_Tables/00320211119/" #i.e.,UConn_PIP_0032021111902020_a_v_1.dat
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_2_3_0_Vel_Scat/00320211215/" #i.e.,UConn_PIP_0032021121523500_a_v_1_2.png
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_2_3_1_Vel_Ebar/00320211202/" #i.e.,UConn_PIP_0032021120213200_V_Ebar.png
-provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_2/a_Particle_Tables/00320210923/UConn_PIP_0032021092320200_a_p.dat"
+#provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_2/a_Particle_Tables/00320210923/UConn_PIP_0032021092320200_a_p.dat"
+#provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_1_2_Particle_Tables_ascii/00320210923/UConn_PIP_0032021092320200_a_p_60.dat"
+provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/"
 
 
 instr_site = {'003':{'lat':41.808,'lon':-72.294},
@@ -120,11 +122,16 @@ class MDXProcessing(MDX):
         utc = []    
         for line in lines[10:]:
             tkn = line.split()
-            print(filename,len(tkn))
             if tkn[0] != '-99' and len(tkn) >13:
                utc_char = [tkn[6].zfill(4),tkn[7].zfill(2),tkn[8].zfill(2),tkn[9].zfill(2),tkn[10].zfill(2),tkn[11].zfill(2)]
                utc_str = ''.join(utc_char)
-               utc.append(datetime.strptime(utc_str,'%Y%m%d%H%M%S'))
+               err_flag = 0
+               try:
+                   utc0 = datetime.strptime(utc_str,'%Y%m%d%H%M%S')
+               except:
+                   err_flag = 1
+               if err_flag == 0:
+                  utc.append(utc0) 
         if len(utc) == 0:
            if tmp[0].startswith('003'):
                start_time = datetime.strptime(tmp[0],'003%Y%m%d%H%M0')
