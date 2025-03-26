@@ -19,8 +19,8 @@ short_name = "gpmpipuconn"
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_2_3_1_Vel_Ebar/00320211202/" #i.e.,UConn_PIP_0032021120213200_V_Ebar.png
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_2/a_Particle_Tables/00320210923/UConn_PIP_0032021092320200_a_p.dat"
 #provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/PIP_3/f_1_2_Particle_Tables_ascii/00320210923/UConn_PIP_0032021092320200_a_p_60.dat"
-provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/"
-
+#provider_path = "gpmpipuconn/2021_2022/SN_PIP003/2021/"
+provider_path = "gpmpipuconn/"
 
 instr_site = {'003':{'lat':41.808,'lon':-72.294},
               '002A':{'lat':41.818,'lon':-72.258}, #PI002 before 20231101
