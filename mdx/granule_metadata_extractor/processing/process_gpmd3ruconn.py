@@ -18,7 +18,7 @@ class ExtractGpmd3ruconnMetadata(ExtractNetCDFMetadata):
         nc = Dataset(self.file_path)
         self.fileformat = 'netCDF-4'
         [self.minTime, self.maxTime, self.SLat, self.NLat, self.WLon, self.ELon] = \
-                        self.get_variables_min_max_nc()
+                        self.get_variables_min_max_nc(nc)
         nc.close()
 
 

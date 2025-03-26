@@ -17,7 +17,7 @@ class TestProcessGpmd3ruconn(TestCase):
     lat_var_key = 'lat'
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
-    process_dataset = ExtractSbuskylerimpactsMetadata(input_file)
+    process_dataset = ExtractGpmd3ruconnMetadata(input_file)
     md = process_dataset.get_metadata(ds_short_name= 'gpmd3ruconn')
     expected_metadata = {'ShortName': 'gpmd3ruconn',
                          'GranuleUR': granule_name,
@@ -107,7 +107,7 @@ class TestProcessGpmd3ruconn(TestCase):
 
         checksum = self.md['checksum']
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '41daff4138c69cbd6ecd59ed6a5e79c8')
+        self.assertEqual(checksum, 'edddc2864fe8d128f3069c76f53e3fab')
 
     def test_9_generate_metadata(self):
         """
