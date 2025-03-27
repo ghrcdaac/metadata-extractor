@@ -42,18 +42,17 @@ class MDXProcessing(MDX):
         start_time, end_time = [ref_time+timedelta(seconds=int(sec.min())),
                                 ref_time+timedelta(seconds=int(sec.max()))]
 
-        lat = np.array(datafile['Location_latitude'][:])
-        lon = np.array(datafile['Location_longitude'][:])
+        # the latitude and longitude values are swapped within the data.
+        # and incorrect values (-75, 37)
+        #lat = np.array(datafile['Location_latitude'][:])
+        #lon = np.array(datafile['Location_longitude'][:])
 
-        north, south, east, west = [np.max(lat), np.min(lat),
-                                    np.max(lon), np.min(lon)]
-        if north == south:
-           north = north + 0.01
-           south = south - 0.01
-        if east == west:
-           east = east + 0.01
-           west = west - 0.01
+        #north, south, east, west = [np.max(lat), np.min(lat),
+        #                            np.max(lon), np.min(lon)]
 
+        lat = 41.808
+        lon = -72.294
+        north, south, east, west = [lat+0.01, lat-0.01, lon+0.01, lon-0.01]
         datafile.close()
         return {
             "start": start_time,
