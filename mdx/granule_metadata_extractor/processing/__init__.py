@@ -147,3 +147,4 @@ from .process_hiwat import ExtractHiwatMetadata
 from .process_sbuairmarimpacts import ExtractSbuairmarimpactsMetadata
 from .process_sbumwrimpacts import ExtractSbumwrimpactsMetadata
 from .process_glmcierra import ExtractGlmcierraMetadata
+from .process_gpmd3ruconn import ExtractGpmd3ruconnMetadata
