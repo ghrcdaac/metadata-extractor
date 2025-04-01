@@ -10,6 +10,10 @@ class TestProcessNalma(TestCase):
     This will test if nalma metadata will be extracted correctly
     """
     granule_name = "NALMA_201016_142000_0600.dat.gz"
+    #granule_name = "nalma_lylout_20170630_23_3600.dat.gz"
+    #granule_name = "LYLOUT_131231_220000_3600.dat.gz"
+    #granule_name = "LMA_NA_6.2_080_2001-11-24_22-00-00.dat.gz"
+    #granule_name = "LMA_NA_6.1_080_2001-11-24_22-00-00.qua.gz"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'

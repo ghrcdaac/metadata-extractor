@@ -26,29 +26,54 @@ class ExtractNalmaMetadata(ExtractASCIIMetadata):
         """
         Extracts temporal and spatial metadata from nalma granules
         """
-        self.start_time = min(datetime.strptime(re.search(r'^.*(\d{6}_\d{6}).*$',
-                                                          self.file_name)[1], '%y%m%d_%H%M%S'),
-                              self.start_time)
-        self.end_time = max(self.end_time, self.start_time + timedelta(seconds=599))
+        #Sample: 
+        #NALMA_201016_142000_0600.dat.gz 
+        #LYLOUT_131231_220000_3600.dat.gz
+        if self.file_name.startswith('NALMA') or self.file_name.startswith('LYLOUT'):
+           tkn=re.search(r'^.*(\d{6}_\d{6}_\d{4}).*$',self.file_name)[1].split('_') #i.e., 201016,142000,0600
+           secs = int(tkn[-1]) #i.e., 600 seconds
+           self.start_time = min(datetime.strptime('_'.join(tkn[0:2]),'%y%m%d_%H%M%S'),
+                                 self.start_time)
+           self.end_time = max(self.end_time, self.start_time + timedelta(seconds=secs-1))
+        
+        elif self.file_name.startswith('LMA_NA'): #Sample: LMA_NA_6.1_080_2001-11-24_22-00-00.dat.gz
+           tkn=re.search(r'^.*(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}).*$',self.file_name)[1] #i.e.,2001-11-24_22-00-00
+           secs = 3600 #seconds
+           self.start_time = min(datetime.strptime(tkn,'%Y-%m-%d_%H-%M-%S'),
+                                 self.start_time)
+           self.end_time = max(self.end_time, self.start_time + timedelta(seconds=secs-1))
 
-        header_flag = False
-        with gzip.open(self.file_path, 'r') as f:
-            for line in f.readlines():
-                if header_flag:
-                    self.north, self.south = [max(self.north, float(line.split()[1])),
-                                              min(self.south, float(line.split()[1]))]
-                    self.east, self.west = [max(self.east, float(line.split()[2])),
-                                            min(self.west, float(line.split()[2]))]
-                if b'*** data ***' in line:
-                    header_flag = True
+        elif self.file_name.startswith('nalma_lylout'): #Sample:nalma_lylout_20170630_22_3600.dat.gz
+           tkn=re.search(r'^.*(\d{8}_\d{2}_\d{4}).*$',self.file_name)[1].split('_') #i.e.,20170630,22,3600
+           secs = int(tkn[-1]) #i.e., 3600 seconds
+           self.start_time = min(datetime.strptime('_'.join(tkn[0:2]),'%Y%m%d_%H'),
+                                 self.start_time)
+           self.end_time = max(self.end_time, self.start_time + timedelta(seconds=secs-1))
 
-        if self.north == self.south and self.east == self.west:
-            self.north, self.south, self.east, self.west = [self.north + 0.001, self.south - 0.001,
-                                                            self.east + 0.001, self.west - 0.001]
+        if self.file_name.endswith('.qua.gz'):
+           self.north, self.south, self.east, self.west = [36.72461000, 32.72461000, -84.64533000,
+                                                          -88.64533000]
+        else: #*.dat.gz
+           #Extract lat/lon from file lines:
+           header_flag = False
+           with gzip.open(self.file_path, 'r') as f:
+               for line in f.readlines():
+                   if header_flag:
+                      self.north, self.south = [max(self.north, float(line.split()[1])),
+                                                min(self.south, float(line.split()[1]))]
+                      self.east, self.west = [max(self.east, float(line.split()[2])),
+                                              min(self.west, float(line.split()[2]))]
+                   if b'*** data ***' in line:
+                      header_flag = True
 
-        if self.north == -90.0:
-            self.north, self.south, self.east, self.west = [36.72461000, 32.72461000, -84.64533000,
-                                                            -88.64533000]
+           if self.north == self.south and self.east == self.west:
+               self.north, self.south, self.east, self.west = [self.north + 0.001, self.south - 0.001,
+                                                               self.east + 0.001, self.west - 0.001]
+
+           #For *.dat.gz with no data
+           if self.north == -90.0:
+               self.north, self.south, self.east, self.west = [36.72461000, 32.72461000, -84.64533000,
+                                                               -88.64533000]
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
