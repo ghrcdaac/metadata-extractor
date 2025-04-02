@@ -50,30 +50,28 @@ class ExtractNalmaMetadata(ExtractASCIIMetadata):
                                  self.start_time)
            self.end_time = max(self.end_time, self.start_time + timedelta(seconds=secs-1))
 
-        if self.file_name.endswith('.qua.gz'):
-           self.north, self.south, self.east, self.west = [36.72461000, 32.72461000, -84.64533000,
-                                                          -88.64533000]
-        else: #*.dat.gz
-           #Extract lat/lon from file lines:
-           header_flag = False
-           with gzip.open(self.file_path, 'r') as f:
-               for line in f.readlines():
-                   if header_flag:
-                      self.north, self.south = [max(self.north, float(line.split()[1])),
-                                                min(self.south, float(line.split()[1]))]
-                      self.east, self.west = [max(self.east, float(line.split()[2])),
-                                              min(self.west, float(line.split()[2]))]
-                   if b'*** data ***' in line:
-                      header_flag = True
+        #Set to skip processing  *.qua.gz files in collection definition
+        #Process *.dat.gz files
+        #Extract lat/lon from file lines:
+        header_flag = False
+        with gzip.open(self.file_path, 'r') as f:
+            for line in f.readlines():
+                if header_flag:
+                   self.north, self.south = [max(self.north, float(line.split()[1])),
+                                             min(self.south, float(line.split()[1]))]
+                   self.east, self.west = [max(self.east, float(line.split()[2])),
+                                           min(self.west, float(line.split()[2]))]
+                if b'*** data ***' in line:
+                   header_flag = True
 
-           if self.north == self.south and self.east == self.west:
-               self.north, self.south, self.east, self.west = [self.north + 0.001, self.south - 0.001,
-                                                               self.east + 0.001, self.west - 0.001]
+        if self.north == self.south and self.east == self.west:
+            self.north, self.south, self.east, self.west = [self.north + 0.001, self.south - 0.001,
+                                                            self.east + 0.001, self.west - 0.001]
 
-           #For *.dat.gz with no data
-           if self.north == -90.0:
-               self.north, self.south, self.east, self.west = [36.72461000, 32.72461000, -84.64533000,
-                                                               -88.64533000]
+        #For *.dat.gz with no data
+        if self.north == -90.0:
+            self.north, self.south, self.east, self.west = [36.72461000, 32.72461000, -84.64533000,
+                                                            -88.64533000]
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
