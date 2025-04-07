@@ -1,4 +1,3 @@
-[![pipeline status](https://gitlab.com/ghrc-cloud/metadata-extractor/badges/master/pipeline.svg)](https://gitlab.com/ghrc-cloud/metadata-extractor/-/jobs) [![pipeline status](https://gitlab.com/ghrc-cloud/metadata-extractor/badges/master/coverage.svg)](https://gitlab.com/ghrc-cloud/metadata-extractor)
 <pre>
  __  __ ______  __
 |  \/  |  _ \ \/ /
@@ -8,8 +7,8 @@
 
 </pre>
 
+# Metadata Extractor (MDX)
+MDX is a python tool for extracting temporal and spatial metadata from various earth system science datasets and using those values to generate a [Unified Metadata Models - Granule (UMM-G)](https://wiki.earthdata.nasa.gov/display/CMR/UMM-G+Schema+Representation) file to be ingested to CMR later within the GHRC data publication process.
 
-# A python tool to extract granule metadata
-For the documentation refer to
-[MDX documentation](https://docs.google.com/document/d/1wQlfpdHOepR8mdfKfBMJwiUyqs5DOVJfjL42ePx6RDA)
-Naari
+# Contributing
+Refer to the [MDX documentation](https://docs.google.com/document/d/1elW4D9YtXaJ4Y-5NplMf3woUBWBXPNYuPG2HwBbMOAw) for guidance on how to contribute to the MDX repo.
