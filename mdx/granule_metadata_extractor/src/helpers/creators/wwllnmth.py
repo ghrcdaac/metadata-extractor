@@ -11,7 +11,7 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "wwllnmth"
-provider_path = "wwllnmth__1/"
+provider_path = "wwllnmth/"
 file_type = "netCDF-4"
 
 class MDXProcessing(MDX):
