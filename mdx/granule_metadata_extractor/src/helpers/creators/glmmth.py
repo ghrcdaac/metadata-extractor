@@ -27,8 +27,8 @@ class MDXProcessing(MDX):
         return self.get_nc_metadata(filename)
 
     def get_nc_metadata(self,filename):
-        #Sample file: GLMc_th_2019.nc.zip
-        utc_year_str = filename.split('/')[-1].split('.nc.zip')[0].split('_')[2]
+        #Sample file: GLMc_th_2019.nc
+        utc_year_str = filename.split('/')[-1].split('.nc')[0].split('_')[2]
         utc_year = int(utc_year_str)
         start_time = datetime(utc_year,1,1)
         end_time = datetime(utc_year,12,31,23,59,59)
