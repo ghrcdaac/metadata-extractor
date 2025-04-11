@@ -1,23 +1,19 @@
-# create lookup zip for wwllnmth
+# create lookup zip for glmmth 
 # for all future collections
 from datetime import datetime, timedelta
 from utils.mdx import MDX
 import cProfile
 import time
-import math
 import re
 
-from netCDF4 import Dataset
-import numpy as np
-
-short_name = "wwllnmth"
-provider_path = "wwllnmth/"
-file_type = "netCDF-4"
+short_name = "glmmth"
+provider_path = "glmmth/"
 
 class MDXProcessing(MDX):
 
     def __init__(self):
         super().__init__()
+        self.file_type = "netCDF-4"
 
     def process(self, filename, file_obj_stream) -> dict:
         """
@@ -28,28 +24,17 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
-        return self.get_nc_metadata(filename, file_obj_stream)
+        return self.get_nc_metadata(filename)
 
+    def get_nc_metadata(self,filename):
+        #Sample file: GLMc_th_2019.nc
+        utc_year_str = filename.split('/')[-1].split('.nc')[0].split('_')[2]
+        utc_year = int(utc_year_str)
+        start_time = datetime(utc_year,1,1)
+        end_time = datetime(utc_year,12,31,23,59,59)
 
-    def get_nc_metadata(self, filename, file_obj_stream):
-        """
-        Extract temporal and spatial metadata from netCDF-4 files
-        """
-        print(filename)
-        data = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
-        lats = np.array(data['lat'][:])
-        lons = np.array(data['lon'][:])
-        north, south, east, west = [np.nanmax(lats),
-                                    np.nanmin(lats),
-                                    np.nanmax(lons),
-                                    np.nanmin(lons)]
+        north, south, east, west = [90., -90., 180., -180.]
 
-        #filename example: WWLLN_th_2013.nc
-        data_year = int(filename.split('/')[-1].split('.nc')[0].split('_')[-1])
-        start_time = datetime(data_year,1,1)
-        end_time = datetime(data_year,12,31,23,59,59)
-
-        data.close()
         return {
             "start": start_time,
             "end": end_time,
@@ -57,7 +42,7 @@ class MDXProcessing(MDX):
             "south": south,
             "east": east,
             "west": west,
-            "format": file_type
+            "format": self.file_type
         }
 
 
