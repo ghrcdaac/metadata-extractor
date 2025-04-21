@@ -39,7 +39,7 @@ class MDXProcessing(MDX):
         ref_time = datetime(1970,1,1)
         start_time = min([ref_time + timedelta(seconds=x) for x in data['Products/TimeUTC'][:]])
         end_time = max([ref_time + timedelta(seconds=x) for x in data['Products/TimeUTC'][:]])
-        lats = np.array(data['Navigation/Latitude''][:])
+        lats = np.array(data['Navigation/Latitude'][:])
         lons = np.array(data['Navigation/Longitude'][:])
         north, south, east, west = [np.nanmax(lats),
                                     np.nanmin(lats),
