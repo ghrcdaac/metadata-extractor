@@ -43,9 +43,19 @@ class MDXProcessing(MDX):
             #Year Mon Day Jday  Hr Min Rain[mm/h]  Lat        Lon
             #2024  01  01  001  00  00   0.000  37.93452  -75.47104
             tkn = line.split()
-            utc.append(datetime.strptime(''.join([tkn[0],tkn[1],tkn[2],tkn[4],tkn[5]]),'%Y%m%d%H%M'))
-            lats.append(float(tkn[-2]))
-            lons.append(float(tkn[-1]))
+            lat = float(tkn[-2])
+            lon = float(tkn[-1])
+            if lat >= -90. and lat <= 90. and lon >=-180. and lon <= 180.:
+                lats.append(lat)
+                lons.append(lon)
+                utc.append(datetime.strptime(''.join([tkn[0],tkn[1],tkn[2],tkn[4],tkn[5]]),'%Y%m%d%H%M'))
+
+        #x0 = [x for x in lats if x < -90.]
+        #y0 = [y for y in lons if y < -180.]
+        #if len(x0) > 0:
+        #    print(filename, x0)
+        #if len(y0) > 0:
+        #    print(filename, y0)
 
         start_time, end_time = [min(utc), max(utc)]
         north, south, east, west = [max(lats),min(lats),max(lons),min(lons)]  
