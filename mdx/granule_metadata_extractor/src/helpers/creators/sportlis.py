@@ -6,14 +6,19 @@ import cProfile
 import time
 import re
 
+import json
+
 short_name = "sportlis"
-provider_path = "sportlis/climatologies/gridded/"#sportlis_SM_0_40cm_CLIMO_1981_2013_2013364.dat
+#provider_path = "sportlis/climatologies/gridded/"#sportlis_SM_0_40cm_CLIMO_1981_2013_2013364.dat
+provider_path = "sportlis/climatologies/county/" #sportlis_Yuma_County_CO_percentileSoil_1230.out
 
 class MDXProcessing(MDX):
 
     def __init__(self):
         super().__init__()
         self.file_type = "netCDF-4"
+        with open('sportlis_county_bounding_box.json','r') as fp:
+            self.county_latlon = json.load(fp)
 
     def process(self, filename, file_obj_stream) -> dict:
         """
@@ -28,7 +33,6 @@ class MDXProcessing(MDX):
 
 
     def get_sportlis_metadata(self, filename, file_obj_stream):
-        """
         #assign bounding box
         north, south, east, west = [52.915,25.075,-67.085,-124.925]
         #extract time info from file name
@@ -36,6 +40,16 @@ class MDXProcessing(MDX):
            self.file_type = "Binary"
            start_time = datetime.strptime(filename.split('.dat')[0].split('_')[-1],'%Y%j') 
            end_time = start_time + timedelta(seconds=86399)
+        if filename.endswith('.out'): #sportlis_Yuma_County_CO_percentileSoil_1230.out
+           self.file_type = "ASCII"
+           countyName = '_'.join(filename..split('_')[1:-2]) #i.e., Yuma_County_CO
+           utc_date = filename.split('_')[-1].split('.out')[0] #i.e., 1230
+           north = self.county_latlon[countyName]['north']
+           south = self.county_latlon[countyName]['south']
+           east = self.county_latlon[countyName]['east']
+           west = self.county_latlon[countyName]['west']
+           start_time = datetime.strptime('1981'+utc_date,'%Y%m%d')
+           end_time = datetime.strptime('2013'+utc_date+'235959','%Y%m%d%H%M%S')
 
         return {
             "start": start_time,
