@@ -12,12 +12,15 @@ short_name = "sportlis"
 #provider_path = "sportlis/climatologies/gridded/"#sportlis_SM_0_40cm_CLIMO_1981_2013_2013364.dat
 provider_path = "sportlis/climatologies/county/" #sportlis_Yuma_County_CO_percentileSoil_1230.out
 
+fn_err = ['sportlis_Acadia_Parish_LA_sportlis_Acadia_Parish_LA','sportlis_Abbeville_County_SC_sportlis_Abbeville_County_SC']
+fn_cor = ['Acadia_Parish_LA','Abbeville_County_SC']
+
 class MDXProcessing(MDX):
 
     def __init__(self):
         super().__init__()
         self.file_type = "netCDF-4"
-        with open('sportlis_county_bounding_box.json','r') as fp:
+        with open('../sportlis_county_bounding_box.json','r') as fp:
             self.county_latlon = json.load(fp)
 
     def process(self, filename, file_obj_stream) -> dict:
@@ -42,7 +45,11 @@ class MDXProcessing(MDX):
            end_time = start_time + timedelta(seconds=86399)
         if filename.endswith('.out'): #sportlis_Yuma_County_CO_percentileSoil_1230.out
            self.file_type = "ASCII"
-           countyName = '_'.join(filename..split('_')[1:-2]) #i.e., Yuma_County_CO
+           countyName = '_'.join(filename.split('_')[1:-2]) #i.e., Yuma_County_CO
+
+           for i in range(0,len(fn_err)):
+               if fn_err[i] in filename:
+                   countyName = fn_cor[i]
            utc_date = filename.split('_')[-1].split('.out')[0] #i.e., 1230
            north = self.county_latlon[countyName]['north']
            south = self.county_latlon[countyName]['south']
