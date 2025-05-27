@@ -9,11 +9,12 @@ import re
 import json
 
 short_name = "sportlis"
-#provider_path = "sportlis/climatologies/gridded/"#sportlis_SM_0_40cm_CLIMO_1981_2013_2013364.dat
-provider_path = "sportlis/climatologies/county/" #sportlis_Yuma_County_CO_percentileSoil_1230.out
-
-fn_err = ['sportlis_Acadia_Parish_LA_sportlis_Acadia_Parish_LA','sportlis_Abbeville_County_SC_sportlis_Abbeville_County_SC']
-fn_cor = ['Acadia_Parish_LA','Abbeville_County_SC']
+provider_path = "sportlis/climatologies/gridded/"#sportlis_SM_0_40cm_CLIMO_1981_2013_2013364.dat
+#provider_path = "sportlis/climatologies/county/" #sportlis_Yuma_County_CO_percentileSoil_1230.out
+#provider_path = "sportlis/percentiles/" #sportlis_percentile_2023123112.grb2 or
+                                         #sportlis_vsm_percentile_20231230.grb2
+#provider_path = "sportlis/rawoutput/" #sportlis_RST_NOAH33_202212010000_d01.nc or
+                                      #sportlis_HIST_202212300300_d01.grb
 
 class MDXProcessing(MDX):
 
@@ -32,10 +33,10 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
-        return self.get_sportlis_metadata(filename, file_obj_stream)
+        return self.get_sportlis_metadata(filename)
 
 
-    def get_sportlis_metadata(self, filename, file_obj_stream):
+    def get_sportlis_metadata(self, filename):
         #assign bounding box
         north, south, east, west = [52.915,25.075,-67.085,-124.925]
         #extract time info from file name
@@ -43,13 +44,10 @@ class MDXProcessing(MDX):
            self.file_type = "Binary"
            start_time = datetime.strptime(filename.split('.dat')[0].split('_')[-1],'%Y%j') 
            end_time = start_time + timedelta(seconds=86399)
-        if filename.endswith('.out'): #sportlis_Yuma_County_CO_percentileSoil_1230.out
+        elif filename.endswith('.out'): #sportlis_Yuma_County_CO_percentileSoil_1230.out
            self.file_type = "ASCII"
            countyName = '_'.join(filename.split('_')[1:-2]) #i.e., Yuma_County_CO
 
-           for i in range(0,len(fn_err)):
-               if fn_err[i] in filename:
-                   countyName = fn_cor[i]
            utc_date = filename.split('_')[-1].split('.out')[0] #i.e., 1230
            north = self.county_latlon[countyName]['north']
            south = self.county_latlon[countyName]['south']
@@ -57,6 +55,25 @@ class MDXProcessing(MDX):
            west = self.county_latlon[countyName]['west']
            start_time = datetime.strptime('1981'+utc_date,'%Y%m%d')
            end_time = datetime.strptime('2013'+utc_date+'235959','%Y%m%d%H%M%S')
+        elif filename.endswith('.grb2'):
+           self.file_type = "GRIB2"
+           utc_str = filename.split('.grb2')[0].split('_')[-1]
+           if len(utc_str) == 10: #i.e., sportlis_percentile_2023123112.grb2
+              start_time = datetime.strptime(utc_str,'%Y%m%d%H')
+           else: #i.e., sportlis_vsm_percentile_20231230.grb2
+              start_time = datetime.strptime(utc_str,'%Y%m%d')
+           end_time = start_time                    
+        elif filename.endswith('grb'):#i.e., sportlis_HIST_202212300300_d01.grb
+           self.file_type = "GRIB1"
+           utc_str = filename.split('_')[-2] 
+           start_time = datetime.strptime(utc_str,'%Y%m%d%H%M')
+           end_time = start_time
+
+        elif filename.endswith('.nc'): #i.e., sportlis_RST_NOAH33_202212010000_d01.nc
+           self.file_type = "netCDF-4"
+           utc_str = filename.split('_')[-2] #i.e., 202212010000
+           start_time = datetime.strptime(utc_str,'%Y%m%dYHYM')
+           end_time = start_time + timedelta(seconds = 86399)
 
         return {
             "start": start_time,
