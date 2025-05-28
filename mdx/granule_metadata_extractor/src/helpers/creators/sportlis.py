@@ -9,13 +9,12 @@ import re
 import json
 
 short_name = "sportlis"
-provider_path = "sportlis/climatologies/gridded/"#sportlis_SM_0_40cm_CLIMO_1981_2013_2013364.dat
+#provider_path = "sportlis/climatologies/gridded/"#sportlis_SM_0_40cm_CLIMO_1981_2013_2013364.dat
 #provider_path = "sportlis/climatologies/county/" #sportlis_Yuma_County_CO_percentileSoil_1230.out
 #provider_path = "sportlis/percentiles/" #sportlis_percentile_2023123112.grb2 or
                                          #sportlis_vsm_percentile_20231230.grb2
 #provider_path = "sportlis/rawoutput/" #sportlis_RST_NOAH33_202212010000_d01.nc or
                                       #sportlis_HIST_202212300300_d01.grb
-
 class MDXProcessing(MDX):
 
     def __init__(self):
