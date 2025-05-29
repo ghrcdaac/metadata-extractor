@@ -40,7 +40,7 @@ class MDXProcessing(MDX):
         Extracts temporal and spatial metadata from the following files:
         """
         #print(filename)
-        #Sample file name: UConn_apu18_pluvio200_raintotal.impact2022
+        #Sample file name: UConn_apu18_pluvio200_raintotal_impact2022.txt
         utc = []
         for encoded_line in file_obj_stream.iter_lines():
             line = encoded_line.decode("utf-8")
@@ -78,8 +78,8 @@ class MDXProcessing(MDX):
         start_time, end_time = [min(utc), max(utc)]
     
         fn = filename.split('/')[-1] 
-        period = fn.split('.')[-1] #i.e., impact2022
-        site = fn.split('.')[0].split('_')[1] #i.e., apu18
+        period = fn.split('_')[-1].split('.')[0] #i.e., impact2022
+        site = fn.split('_')[1] #i.e., apu18
         lat = site_loc[period][site]['lat']
         lon = site_loc[period][site]['lon']
         north, south, east, west = [lat+0.01,lat-0.01,lon+0.01,lon-0.01]  
