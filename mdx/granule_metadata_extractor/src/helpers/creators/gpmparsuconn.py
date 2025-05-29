@@ -32,15 +32,30 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
-        return self.read_metadata_ascii(filename, file_obj_stream)
+        if 'UConn_parsivel_diameter.txt' in filename or 'UConn_parsivel_matrix.txt' in filename:
+           return self.read_metadata_special()
+        else: 
+           return self.read_metadata_ascii(filename, file_obj_stream)
 
+    def read_metadata_special(self):
+        #Assign collection metadata to these files
+        start_time = datetime(2021,12,8,21,44)
+        end_time = datetime(2024,5,19,10,5)
+        north,south,east,west = [41.828,41.798,-72.248,-72.304]
+        return {
+            "start": start_time,
+            "end": end_time,
+            "north": north,
+            "south": south,
+            "east": east,
+            "west": west,
+            "format": file_type
+        }
 
     def read_metadata_ascii(self, filename, file_obj_stream):
         """
         Extracts temporal and spatial metadata from the following files:
         """
-        #print(filename)
-        #Sample file name: UConn_apu18_pluvio200_raintotal.impact2022
         utc = []
         for encoded_line in file_obj_stream.iter_lines():
             line = encoded_line.decode("utf-8")
@@ -55,11 +70,10 @@ class MDXProcessing(MDX):
                utc0 = '-'.join([tkn[0],tkn[1].zfill(3),tkn[2].zfill(2),tkn[3].zfill(2)])#i.e.,2023-349-00-00
                utc.append(datetime.strptime(utc0,'%Y-%j-%H-%M'))
         start_time, end_time = [min(utc), max(utc)]
-        print(filename,start_time,end_time)
-    
-        fn = filename.split('/')[-1] #i.e., UConn_apu18_pluvio200_raintotal.impact2022
-        period = fn.split('.')[-1] #i.e., impact2022
-        site = fn.split('.')[0].split('_')[1] #i.e., apu18
+   
+        fn = filename.split('/')[-1] #i.e., UConn_apu18_pluvio200_202204_precip_impacts2022.txt 
+        period = fn.split('_')[-1].split('.')[0] #i.e., impact2022
+        site = fn.split('_')[1] #i.e., apu18
         lat = site_loc[period][site]['lat']
         lon = site_loc[period][site]['lon']
         north, south, east, west = [lat+0.01,lat-0.01,lon+0.01,lon-0.01]  
