@@ -177,7 +177,8 @@ class MDX(Process):
             "sbumwrimpacts": mdx.ExtractSbumwrimpactsMetadata,
             "glmcierra": mdx.ExtractGlmcierraMetadata,
             "gpmd3ruconn": mdx.ExtractGpmd3ruconnMetadata,
-            "gpmpipuconn": mdx.ExtractGpmpipuconnMetadata
+            "gpmpipuconn": mdx.ExtractGpmpipuconnMetadata,
+            "sportlis": mdx.ExtractSportlisMetadata
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')
@@ -603,7 +604,7 @@ class MDX(Process):
         return {
             'input_key': r'^(.*)\.?(nc|tsv|txt|gif|tar|zip|png|kml|dat|gz|pdf|docx|kmz|xlsx|eos|csv'
                          r'|hdf5|hdf|nc4|ict|xls|.*rest|h5|xlsx|1Hz|impacts_archive|\d{5}|ar2v|mat'
-                         r'|he5|raw|bz2|grb2f\d{4}|_\d{2}-00-00|cdf|piv|pv2|log)$',
+                         r'|he5|raw|bz2|grb2f\d{4}|_\d{2}-00-00|cdf|piv|pv2|log|grb|grb2|out)$',
             'lookup_key': r'^(.*).*$'
         }
 

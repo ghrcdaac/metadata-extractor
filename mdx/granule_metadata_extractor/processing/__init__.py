@@ -149,3 +149,4 @@ from .process_sbumwrimpacts import ExtractSbumwrimpactsMetadata
 from .process_glmcierra import ExtractGlmcierraMetadata
 from .process_gpmd3ruconn import ExtractGpmd3ruconnMetadata
 from .process_gpmpipuconn import ExtractGpmpipuconnMetadata
+from .process_sportlis import ExtractSportlisMetadata
