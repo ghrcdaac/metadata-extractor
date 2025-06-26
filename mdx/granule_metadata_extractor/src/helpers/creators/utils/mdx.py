@@ -233,7 +233,7 @@ class MDX:
             print(f"Problem processing {s3uri}:\n{e}\n")
             raise
 
-    def process_collection(self, short_name, provider_path, bucket='ghrcw-private'):
+    def process_collection(self, short_name, provider_path, bucket='ghrcw-private', max_concurrent=10):
         collection_dir = f'{Path.home()}/{short_name}'
         os.makedirs(collection_dir, exist_ok=True)
         existing_files = os.listdir(collection_dir)
@@ -244,7 +244,7 @@ class MDX:
         count = 0
         st = time.time()
         for page in self.get_page_iterator(provider_path):
-            with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executor:
+            with concurrent.futures.ProcessPoolExecutor(max_workers=max_concurrent) as executor:
                 futures = []                
                 for obj in page["Contents"]:
                     obj_key = obj['Key']
