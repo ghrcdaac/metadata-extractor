@@ -36,25 +36,20 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from HDF-5 files
         """
-        print(filename)
         h5 = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
-        print('1')
         navgrp = h5.groups['Navigation']
-        print('2')
         navdatagroup = navgrp.groups['Data']
         lat = navdatagroup.variables['Latitude'][:]
         lon = navdatagroup.variables['Longitude'][:]
         tgrp = h5.groups['Time']
         tdatagrp = tgrp.groups['Data']
         tm = tdatagrp.variables['TimeUTC'][:]
-        print(np.nanmin(tm),np.nanmax(tm))
 
-        #north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
-        #                            np.nanmax(lon), np.nanmin(lon)]
-        north, south, east, west = [90.,-90.,180.,-180.]
+        north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
+                                    np.nanmax(lon), np.nanmin(lon)]
 
-        start_time = datetime.strptime('19700101','%Y%m%d')# + timedelta(seconds=int(np.nanmin(tm)))
-        end_time = datetime.strptime('19700101','%Y%m%d')# + timedelta(seconds=int(np.nanmax(tm)))
+        start_time = datetime(1970,1,1) + timedelta(seconds=int(np.nanmin(tm)))
+        end_time = datetime(1970,1,1) + timedelta(seconds=int(np.nanmax(tm)))
 
         h5.close()
         return {
