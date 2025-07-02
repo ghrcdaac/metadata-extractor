@@ -61,7 +61,7 @@ class MDXProcessing(MDX):
 
     def main(self):
         # start_time = time.time()
-        self.process_collection(short_name, provider_path)
+        self.process_collection(short_name, provider_path, max_concurrent=2)
         # elapsed_time = time.time() - start_time
         # print(f"Elapsed time in seconds: {elapsed_time}")
         self.shutdown_ec2()
