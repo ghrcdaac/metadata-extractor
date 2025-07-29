@@ -12,23 +12,25 @@ fi
 function update_lambda_or_skip() {
   # $1 ACCOUNT_NUMBER
   # $2 PREFIX
+  # $3 LAMBDA_NAME
   echo "Checking Lambda Update Status..."
-  check_lambda_exist=$(aws lambda get-function --region $AWS_REGION $ADD_PROFILE --function-name $2-$REPO_NAME 2>/dev/null)
+  check_lambda_exist=$(aws lambda get-function --region $AWS_REGION $ADD_PROFILE --function-name $2-$3 2>/dev/null)
   if [[ ! -n "${check_lambda_exist}" ]]; then
-    echo "Lambda ${2}-${REPO_NAME} Does Not Exist SKIPPING UPDATE"
+    echo "Lambda ${2}-${3} Does Not Exist SKIPPING UPDATE"
   else
-    echo "Lambda ${2}-${REPO_NAME} Exists"
-    update_lambda $1 $2 2>/dev/null
+    echo "Lambda ${2}-${3} Exists"
+    update_lambda $1 $2 $3 2>/dev/null
   fi
 }
 
 function update_lambda() {
   # $1 ACCOUNT_NUMBER
   # $2 PREFIX
-  echo "Updating Lambda ${2}-${REPO_NAME}"
+  # $3 LAMBDA_NAME
+  echo "Updating Lambda ${2}-${3}"
   docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
   cmd="lambda update-function-code \
-	    --function-name $2-$REPO_NAME \
+	    --function-name $2-$3 \
 	    --image-uri ${docker_image_name}:latest \
 	    --region ${AWS_REGION} \
 	    $ADD_PROFILE"
@@ -39,7 +41,7 @@ function update_lambda() {
 	-e AWS_REGION=$AWS_REGION \
 	amazon/aws-cli:2.9.20 \
 	$cmd
-  echo "Lambda ${2}-${REPO_NAME} Updated"
+  echo "Lambda ${2}-${3} Updated"
 }
 
 function push_to_ecr() {
@@ -77,4 +79,13 @@ function create_ecr_repo_or_skip() {
 function get_account_id() {
   # $1 AWS_PROFILE
   echo $(aws sts get-caller-identity --query Account --profile $1 | tr -d '"')
+}
+
+function stop_mdx_task() {
+  # $1 PREFIX
+  task_arns=$(aws ecs list-tasks --cluster $1-CumulusECSCluster --family $1-MDX --query "taskArns[*]" --region $AWS_REGION --output text)
+  for task in $task_arns
+  do
+          aws ecs stop-task --cluster $1-CumulusECSCluster --task $task --region $AWS_REGION
+  done
 }

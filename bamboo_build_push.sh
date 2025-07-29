@@ -49,7 +49,11 @@ for ((i = 0; i < $access_keys_len; i++)); do
     create_ecr_repo_or_skip
     push_to_ecr ${account_numbers[0]} ${prefixes[0]}
   fi
-  update_lambda_or_skip ${account_numbers[0]} ${prefixes[i]}
+  # TODO - Remove the following line once the MDX choice lambda step is in PROD
+  update_lambda_or_skip ${account_numbers[0]} ${prefixes[i]} "mdx_docker_lambda"
+  update_lambda_or_skip ${account_numbers[0]} ${prefixes[i]} "mdx_docker_lambda_1g"
+  update_lambda_or_skip ${account_numbers[0]} ${prefixes[i]} "mdx_docker_lambda_3g"
+  stop_mdx_task ${prefixes[i]}
 done
 
 docker rmi mdx
