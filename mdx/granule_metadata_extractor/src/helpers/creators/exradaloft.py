@@ -11,7 +11,7 @@ from netCDF4 import Dataset
 import numpy as np
 
 short_name = "exradaloft"
-provider_path = "aloftexrad/"
+provider_path = "exradaloft/"
 file_type = "HDF-5"
 
 
@@ -40,8 +40,8 @@ class MDXProcessing(MDX):
         lon = h5.groups['Navigation'].groups['Data'].variables['Longitude'][:]
         tm = h5.groups['Time'].groups['Data'].variables['TimeUTC'][:]
 
-        north, south, east, west = [np.max(lat), np.min(lat),
-                                    np.max(lon), np.min(lon)]
+        north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
+                                    np.nanmax(lon), np.nanmin(lon)]
 
         start_time = datetime(1970,1,1) + timedelta(seconds=float(np.min(tm)))
         end_time = datetime(1970,1,1) + timedelta(seconds=float(np.max(tm)))
