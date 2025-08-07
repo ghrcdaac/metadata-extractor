@@ -51,15 +51,20 @@ class MDXProcessing(MDX):
         #GPM: Apr 2014-March 2023
         #Combo: Jan 1998 – March 2023
 
+        #Updated in Jul. 2025:
+        #TRMM: Jan 1998 – Sept 2014
+        #GPM: Apr 2014-March 2025
+        #Combo: Jan 1998 – March 2025
+
         if sat_obs == 'TRMM':
            start_time = datetime(1998,1,1)
            end_time = datetime.strptime('09/30/2014 23:59:59', '%m/%d/%Y %H:%M:%S')
         elif sat_obs == 'GPM':
            start_time = datetime(2014,4,1)
-           end_time = datetime.strptime('03/31/2023 23:59:59', '%m/%d/%Y %H:%M:%S')
+           end_time = datetime.strptime('03/31/2025 23:59:59', '%m/%d/%Y %H:%M:%S')
         elif sat_obs == 'COMBO':
            start_time = datetime(1998,1,1)
-           end_time = datetime.strptime('03/31/2023 23:59:59', '%m/%d/%Y %H:%M:%S')
+           end_time = datetime.strptime('03/31/2025 23:59:59', '%m/%d/%Y %H:%M:%S')
 
         nc.close()
         return {
