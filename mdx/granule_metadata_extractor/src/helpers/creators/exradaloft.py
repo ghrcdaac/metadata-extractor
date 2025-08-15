@@ -40,11 +40,25 @@ class MDXProcessing(MDX):
         lon = h5.groups['Navigation'].groups['Data'].variables['Longitude'][:]
         tm = h5.groups['Time'].groups['Data'].variables['TimeUTC'][:]
 
-        north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
-                                    np.nanmax(lon), np.nanmin(lon)]
+        #If zero lat/lon values, set them to nan
+        lat=lat.astype(float)
+        lon=lon.astype(float)
+        lat[lat==0]=np.nan
+        lon[lon==0]=np.nan
 
-        start_time = datetime(1970,1,1) + timedelta(seconds=float(np.min(tm)))
-        end_time = datetime(1970,1,1) + timedelta(seconds=float(np.max(tm)))
+        #Find indices of non nan values
+        idx_lat = list(np.where(~np.isnan(lat))[0])
+        #idx_lon = list(np.where(~np.isnan(lon))[0])
+                               
+        #if not all(x==y for x,y in zip(idx_lat,idx_lon)):
+        #    print(filename,'lat,lon idx doesnot match!')
+        #    exit()
+
+        north, south, east, west = [np.max(lat[idx_lat]),np.min(lat[idx_lat]),
+                                    np.max(lon[idx_lat]),np.min(lon[idx_lat])]
+
+        start_time = datetime(1970,1,1) + timedelta(seconds=float(np.min(tm[idx_lat])))
+        end_time = datetime(1970,1,1) + timedelta(seconds=float(np.max(tm[idx_lat])))
 
 
         h5.close()
