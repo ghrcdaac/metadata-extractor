@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_fltrepepoch import ExtractFltrepepochMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_fltrepepoch import ExtractFltrepepochMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=EPOCH,ds=fltrepepoch,inv=inventory,file=FlightReports_EPOCH_20170830_1458_20170831_1703.pdf,path=FlightReports_EPOCH_20170830_1458_20170831_1703.pdf,size=8931,start=2017-08-30T14:58:00Z,end=2017-08-31T17:03:00Z,browse=N,checksum=828098878bd604e1f534da369ebd72f043781284,NLat=40.0,SLat=10.0,WLon=-130.0,ELon=-80.0,format=PDF

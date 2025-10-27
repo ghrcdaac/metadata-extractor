@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_goesrpltmisrep import ExtractGoesrpltmisrepMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_goesrpltmisrep import ExtractGoesrpltmisrepMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=GOES-R PLT,ds=goesrpltmisrep,inv=inventory,file=GOES-R_flight-report_20170321.pdf,path=flight_reports/GOES-R_flight-report_20170321.pdf,size=25472,start=2017-03-13T00:00:00Z,end=2017-05-17T23:59:59Z,browse=N,checksum=1eb61e2d3432037a72ddc6f13547d61a31192d05,NLat=43.573,SLat=26.449,WLon=-124.625,ELon=-72.202,format=PDF
 class TestProcessGoesrpltmisrep(TestCase):

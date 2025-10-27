@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_exradepoch import ExtractExradepochMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_exradepoch import ExtractExradepochMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=EPOCH,ds=exradepoch,inv=inventory,file=EPOCH_2017_EXRAD_NADIR_Level1B_V03__20170809T041528_to_20170809T194010_001.h5,path=EPOCH_2017_EXRAD_NADIR_Level1B_V03__20170809T041528_to_20170809T194010_001.h5,size=559608177,start=2017-08-09T04:15:28Z,end=2017-08-09T19:40:10Z,browse=N,checksum=78b06eecbe577d620ce5bd22d9ee277e74344150,NLat=32.20483263917093,SLat=18.514284259086928,WLon=-110.35154531957646,ELon=-90.56559982523692,format=HDF-5

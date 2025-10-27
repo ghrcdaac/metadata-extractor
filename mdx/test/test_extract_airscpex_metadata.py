@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_airscpex import ExtractAirscpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_airscpex import ExtractAirscpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=airscpex,inv=inventory,file=CPEX_AIRS_2017_07_16_055_L2_RetStd_IR_v6_0_31_0_R17197034621.hdf,path=20170716/CPEX_AIRS_2017_07_16_055_L2_RetStd_IR_v6_0_31_0_R17197034621.hdf,size=3467381,start=2017-07-16T05:29:34Z,end=2017-07-16T05:35:27Z,browse=N,checksum=cc981f8f7639a6f8f468590b2d005b32e8c19e5a,NLat=43.19639686183115,SLat=19.814245780416755,WLon=-64.89524965981407,ELon=-41.19752175544214,format=HDF-4

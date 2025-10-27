@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_navghepoch import ExtractNavghepochMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_navghepoch import ExtractNavghepochMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=EPOCH,ds=navghepoch,inv=inventory,file=GH_Nav_EPOCH_N872NA_IWG1_2017:08:18.csv,path=GH_Nav_EPOCH_N872NA_IWG1_2017:08:18.csv,size=738341,start=2017-08-18T15:20:00Z,end=2017-08-18T20:02:18Z,browse=Y,checksum=e79fde84be8335f2efaa030437ccdde09082ee0b,NLat=37.1057369281,SLat=34.8407185357,WLon=-118.437131764,ELon=-116.862172745,format=CSV

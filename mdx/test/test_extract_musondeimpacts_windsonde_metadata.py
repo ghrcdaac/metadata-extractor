@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_musondeimpacts import ExtractMusondeimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_musondeimpacts import ExtractMusondeimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=musondeimpacts,inv=inventory,file=IMPACTS_upperair_UMILL_windsonde1_202201170300_QCTeare.txt,path=20220117/Windsonde/IMPACTS_upperair_UMILL_windsonde1_202201170300_QCTeare.txt,size=4857,start=2022-01-17T02:09:00Z,end=2022-01-17T02:19:00Z,browse=N,checksum=6435d94a436b3edd9c8e326f3ce23e08d945f589,NLat=40.01,SLat=39.99,WLon=-76.36,ELon=-76.33999999999999,format=ASCII

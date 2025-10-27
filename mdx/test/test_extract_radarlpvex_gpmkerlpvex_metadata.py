@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_radarlpvex_gpmkerlpvex import ExtractGpmkerlpvexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_radarlpvex_gpmkerlpvex import ExtractGpmkerlpvexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #"lpvex_RADAR_KERAVA_UF_20100921.tar.gz": {"temporal": ["2010-09-21T00:00:04Z", "2010-09-22T00:00:00Z"], "wnes_geometry": ["22.999", "61.055", "27.341", "59.264"], "SizeMBDataGranule": "3260.2", "checksum": "c850bca1f6104b55c752f4abe594881b", "format": "Universal Format (UF)"
 

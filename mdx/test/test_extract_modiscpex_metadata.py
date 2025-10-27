@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_modiscpex import ExtractModiscpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_modiscpex import ExtractModiscpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=modiscpex,inv=inventory,file=CPEX_MYD06_L2_A2017196_0445_006_2017196161536.nc,path=20170715/CPEX_MYD06_L2_A2017196_0445_006_2017196161536.nc,size=22924652,start=2017-07-15T04:45:00Z,end=2017-07-15T16:15:36Z,browse=N,checksum=bd2b63284f48ec673c6f45b4c5f54d140b6d9dc7,NLat=47.527828216552734,SLat=26.27557373046875,WLon=-56.017974853515625,ELon=-24.961956024169922,format=netCDF-3

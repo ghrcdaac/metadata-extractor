@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_glmgoesL3 import ExtractGlmgoesL3Metadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from mdx.granule_metadata_extractor.processing.process_glmgoesL3 import ExtractGlmgoesL3Metadata
+from mdx.granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 #host=thor,env=ops,project=NOT APPLICABLE,ds=glmgoesL3,inv=inventory,file=OR_GLM-L4-GLMF-M6_G16_s202210100580000_e202210100590000_c20221010059530.nc,path=OR_GLM-L4-GLMF-M6_G16_s202210100580000_e202210100590000_c20221010059530.nc,size=1012648,start=2022-04-11T00:58:00Z,end=2022-04-11T00:59:00Z,browse=N,checksum=41fe569833d1667409ac9f8f58fa3883e82a826a,NLat=81.14754059094562,SLat=-81.14754059094562,WLon=-156.18945874874964,ELon=6.189458748749635,format=netCDF-4
 class TestProcessGlmgoesL3(TestCase):

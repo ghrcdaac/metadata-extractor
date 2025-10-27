@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmsatpaifld_kml import ExtractGpmsatpaifldMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmsatpaifld_kml import ExtractGpmsatpaifldMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 
 

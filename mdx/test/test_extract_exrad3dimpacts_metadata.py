@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_exrad3dimpacts import ExtractExrad3dimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_exrad3dimpacts import ExtractExrad3dimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=exrad3dimpacts,inv=inventory,file=IMPACTS_20200125_223724_224246_EXRAD_3dwinds.nc,path=IMPACTS_20200125_223724_224246_EXRAD_3dwinds.nc,size=17400804,start=2020-01-25T22:37:24Z,end=2020-01-25T22:42:46Z,browse=N,checksum=39455edce4631484b32187bb12a9dabbd58fc866,NLat=44.54782926751138,SLat=43.909688466521786,WLon=-72.1088536429288,ELon=-71.51989535453413,format=netCDF-3
 class TestProcess(TestCase):

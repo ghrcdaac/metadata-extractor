@@ -1,8 +1,8 @@
 from hashlib import md5
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_nalmaraw import ExtractNalmarawMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_nalmaraw import ExtractNalmarawMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 
 class TestProcessNalmaraw(TestCase):

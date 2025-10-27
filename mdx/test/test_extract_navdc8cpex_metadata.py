@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_navdc8cpex import ExtractNavdc8cpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_navdc8cpex import ExtractNavdc8cpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=navdc8cpex,inv=inventory,file=CPEX_Hskping_DC8_20170525_R0.ict,path=20170525/CPEX_Hskping_DC8_20170525_R0.ict,size=3648971,start=2017-05-25T16:22:36Z,end=2017-05-25T21:06:38Z,browse=N,checksum=85b81b5eaf65c3f2138356921ddea64917a21de1,NLat=34.9342918,SLat=25.9311676,WLon=-118.1459427,ELon=-79.9773788,format=ASCII

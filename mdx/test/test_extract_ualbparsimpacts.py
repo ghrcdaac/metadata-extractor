@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_ualbparsimpacts import ExtractUalbparsimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_ualbparsimpacts import ExtractUalbparsimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=ualbparsimpacts,inv=inventory,file=IMPACTS_UALB_parsivel_20220228.nc,path=IMPACTS_UALB_parsivel_20220228.nc,size=38838883,start=2022-02-28T00:00:00Z,end=2022-02-28T23:59:50Z,browse=N,checksum=099efcef96d9c24f68dedabd6a953304e52e2116,NLat=42.69091583251953,SLat=42.67091583251953,WLon=-73.82444549560547,ELon=-73.80444549560546,format=netCDF-4

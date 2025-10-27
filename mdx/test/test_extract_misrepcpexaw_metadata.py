@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_misrepcpexaw import ExtractMisrepcpexawMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_misrepcpexaw import ExtractMisrepcpexawMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX-AW,ds=misrepcpexaw,inv=inventory,file=CPEXAW_RF04_Mission_Summary_08262021.docx,path=CPEXAW_RF04_Mission_Summary_08262021.docx,size=1177473,start=2021-08-26T17:33:00Z,end=2021-08-27T01:17:00Z,browse=N,checksum=6b25da1b6d112025998205ea001dc6c73b7122de,NLat=19.9949813,SLat=14.9994728,WLon=-80.7802849,ELon=-64.6788375,format=Word

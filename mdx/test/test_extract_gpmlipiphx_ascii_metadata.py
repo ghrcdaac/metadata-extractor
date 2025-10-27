@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmlipiphx_ascii import ExtractGpmlipiphxASCIIMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmlipiphx_ascii import ExtractGpmlipiphxASCIIMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #"14121": {"start": "2014-05-01T18:00:29Z", "end": "2014-05-01T21:49:46Z", "NLat": 36.4756, "SLat": 34.1076, "ELon": -117.9568, "WLon": -121.853}
 #host=thor,env=ops,project=IPHEx,ds=gpmlipiphx,inv=inventory,file=iphex_lip_14121.txt,path=iphex_lip_14121.txt,size=9442575,start=2014-05-01T18:00:29Z,end=2014-05-01T21:49:46Z,browse=Y,checksum=f9184b16d127af44759f12ec4fb108fceb77351a,NLat=36.4756,SLat=34.1076,WLon=-121.853,ELon=-117.9568,format=ASCII

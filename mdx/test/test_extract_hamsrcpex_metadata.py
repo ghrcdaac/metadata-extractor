@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_hamsrcpex import ExtractHamsrcpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_hamsrcpex import ExtractHamsrcpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=hamsrcpex,inv=inventory,file=CPEX_HAMSR_L2_realtime_20170602T1500_20170602T1600.nc,path=20170602/CPEX_HAMSR_L2_realtime_20170602T1500_20170602T1600.nc,size=369412,start=2017-06-02T15:00:02Z,end=2017-06-02T15:00:39Z,browse=Y,checksum=5443f496b7ff9f8ea2a1e313fbf1da67a05262c0,NLat=26.079,SLat=26.079,WLon=-80.154,ELon=-80.154,format=netCDF-3

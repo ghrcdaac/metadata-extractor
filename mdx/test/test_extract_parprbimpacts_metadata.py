@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_parprbimpacts import ExtractParprbimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_parprbimpacts import ExtractParprbimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 ##prem metadata for sample file:
 ##host=thor,env=ops,project=IMPACTS,ds=parprbimpacts,inv=inventory,file=IMPACTS_2DSV-P3_20200218_sizedistributions_v01.nc,path=IMPACTS_2DSV-P3_20200218_sizedistributions_v01.nc,size=7159723,start=2020-02-18T17:22:00Z,end=2020-02-18T22:13:00Z,browse=Y,checksum=4f1b7600fca30009f2d8c78884d2fddbfe6f5b66,NLat=45.249881744384766,SLat=37.910213470458984,WLon=-75.5810317993164,ELon=-70.19293975830078,format=netCDF-4

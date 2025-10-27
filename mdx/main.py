@@ -2,13 +2,13 @@ import json
 import re
 
 from run_cumulus_task import run_cumulus_task
-import granule_metadata_extractor.processing as mdx
-import granule_metadata_extractor.src as src
+from mdx.granule_metadata_extractor import processing as mdx
+from mdx.granule_metadata_extractor import src
 from cumulus_process import Process, s3
 from re import match
 import os
 import boto3
-from helpers import get_logger
+from mdx.helpers import get_logger
 import copy
 import shutil
 
@@ -18,10 +18,11 @@ class MDX(Process):
     """
     Class to extract spatial and temporal metadata
     """
-    def __init__(self, input, config, path='/tmp/mdx'):
-        super().__init__(input, config=config, path=path)
-        shutil.rmtree(path, ignore_errors=True)
-        os.makedirs(path)
+    def __init__(self, input, config, path='/tmp/mdx', **kwargs):
+        super().__init__(input, config=config, path=path, **kwargs)
+        if self.path is not None:
+            shutil.rmtree(self.path, ignore_errors=True)
+            os.makedirs(self.path)
 
     def generate_json_data(self, data, access_url, output_folder):
         """

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
-from utils.mdx import MDX
+from .utils.mdx import MDX
 import numpy as np
 import cProfile
 import time

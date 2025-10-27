@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_glmcierra import ExtractGlmcierraMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_glmcierra import ExtractGlmcierraMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #OR_GLM-L2-CIERRA-DB_GOES-EAST_s20230901400000.nc, north,south,east,west = 44.454403, -42.27351, -26.374033, -124.40529, start,end = '2023-03-31 14:00:00Z', '2023-03-31 14:14:59Z'

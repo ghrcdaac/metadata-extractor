@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_ascatcpex import ExtractAscatcpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_ascatcpex import ExtractAscatcpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=ascatcpex,inv=inventory,file=CPEX_ascat_20170715_203900_metopa_55722_eps_o_coa_2401_ovw_l2.nc,path=20170715/CPEX_ascat_20170715_203900_metopa_55722_eps_o_coa_2401_ovw_l2.nc,size=775432,start=2017-07-15T20:39:00Z,end=2017-07-15T22:17:58Z,browse=Y,checksum=256ae759bb26e91821c0fac3c0d398f79a2b6e70,NLat=39.42233,SLat=4.00846,WLon=173.93976,ELon=-160.80927999999994,format=netCDF-3

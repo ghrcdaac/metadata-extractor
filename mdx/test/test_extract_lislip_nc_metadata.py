@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_lislip import ExtractLislipMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_lislip import ExtractLislipMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=LIS,ds=lislip,inv=inventory,file=TRMM_LIS_SC.04.1_2002.277.27868.nc,path=nc/2002/1004/TRMM_LIS_SC.04.1_2002.277.27868.nc,size=78167,start=2002-10-05T00:00:03Z,end=2002-10-05T00:02:51Z,browse=Y,checksum=2c78e01822257cad101a77ae93329bb62feca96d,NLat=-34.828678131103516,SLat=-35.05946731567383,WLon=-146.67478942871094,ELon=-141.45120239257812,format=netCDF-4
 

@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_cosmirimpacts import ExtractCosmirimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_cosmirimpacts import ExtractCosmirimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=cosmirimpacts,inv=inventory,file=impacts_cosmir_20200223_nadir_v1.nc,path=impacts_cosmir_20200223_nadir_v1.nc,size=1013838,start=2020-02-23T17:01:32Z,end=2020-02-23T18:04:36Z,browse=N,checksum=eed3f042c85eb8ecb8f23d19136806aa98e70c47,NLat=34.63791275024414,SLat=32.788394927978516,WLon=-78.93231964111328,ELon=-76.05653381347656,format=netCDF-4
 

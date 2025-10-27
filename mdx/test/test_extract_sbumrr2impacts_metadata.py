@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_sbumrr2impacts import ExtractSbumrr2impactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_sbumrr2impacts import ExtractSbumrr2impactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=sbumrr2impacts,inv=inventory,file=IMPACTS_SBU_mrr2_20200106_BNL.nc,path=MRR2_BNL/IMPACTS_SBU_mrr2_20200106_BNL.nc,size=95724732,start=2020-01-06T00:01:00Z,end=2020-01-07T00:00:00Z,browse=N,checksum=1bc64c52844639f44a31206238c057d1ed90b2df,NLat=40.888999999999996,SLat=40.869,WLon=-72.884,ELon=-72.86399999999999,format=netCDF-3
 # this file IMPACTS_SBU_mrr2_20200106_BNL.nc size is too large to check in

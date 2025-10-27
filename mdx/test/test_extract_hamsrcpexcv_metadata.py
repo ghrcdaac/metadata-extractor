@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_hamsrcpexcv import ExtractHamsrcpexcvMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_hamsrcpexcv import ExtractHamsrcpexcvMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX-CV,ds=hamsrcpexcv,inv=inventory,file=CPEXCV_HAMSR_data_DC8_2022092204_R0.nc,path=CPEXCV_HAMSR_data_DC8_2022092204_R0.nc,size=7168903,start=2022-09-22T04:51:14Z,end=2022-09-22T04:59:55Z,browse=N,checksum=b032b350aed6425c2b01e6dab0b0bee801998939,NLat=16.904001235961914,SLat=16.724000930786133,WLon=-22.94900131225586,ELon=-22.83700180053711,format=netCDF-4

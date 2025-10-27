@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmpal import ExtractGpmpalMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmpal import ExtractGpmpalMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=NOT APPLICABLE,ds=gpmpal,inv=inventory,file=PAL_precip_wind_TPOS_Argo_float_19644_v1.nc,path=PAL_precip_wind_TPOS_Argo_float_19644_v1.nc,size=19707348,start=2020-09-15T12:00:00Z,end=2021-05-01T12:00:00Z,browse=N,checksum=4f0bd0b03702873ff3baf61843d51042ffc253d7,NLat=2.469,SLat=1.377,WLon=-179.901,ELon=-157.821,format=netCDF-4

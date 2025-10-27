@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_crsimpacts import ExtractCrsimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_crsimpacts import ExtractCrsimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=crsimpacts,inv=inventory,file=IMPACTS_CRS_L1B_RevB_20200201.h5,path=IMPACTS_CRS_L1B_RevB_20200201.h5,size=1850101276,start=2020-02-01T11:33:22Z,end=2020-02-01T15:55:05Z,browse=N,checksum=6a1392ab18bbd1ff1fc40cfb8ca50fa5f80ade4e,NLat=37.68699645996094,SLat=33.523826599121094,WLon=-79.0716323852539,ELon=-71.74879455566406,format=HDF-5

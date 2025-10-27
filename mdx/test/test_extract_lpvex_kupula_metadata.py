@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-from granule_metadata_extractor.src.extract_csv_metadata import ExtractCSVMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.src.extract_csv_metadata import ExtractCSVMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 
 

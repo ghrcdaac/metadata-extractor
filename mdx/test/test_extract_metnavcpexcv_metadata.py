@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_metnavcpexcv import ExtractMetnavcpexcvMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_metnavcpexcv import ExtractMetnavcpexcvMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX-CV,ds=metnavcpexcv,inv=inventory,file=CPEXCV_MetNav_DC8_20220902_R0.ict,path=CPEXCV_MetNav_DC8_20220902_R0.ict,size=3615235,start=2022-09-02T16:02:27Z,end=2022-09-02T20:33:26Z,browse=N,checksum=9e8333e88988988a024ec22f3b85ff5a66590186,NLat=39.0017307,SLat=34.6305342,WLon=-118.1571766,ELon=-77.44561,format=ASCII

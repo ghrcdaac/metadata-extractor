@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_goesrglmgrid import ExtractGoesrglmgridMetadata
-from granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
+from mdx.granule_metadata_extractor.processing.process_goesrglmgrid import ExtractGoesrglmgridMetadata
+from mdx.granule_metadata_extractor.src.generate_echo10_xml import GenerateEcho10XML
 
 #host=thor,env=ops,project=NOT APPLICABLE,ds=goesrglmgrid,inv=inventory,file=OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc,path=OR_GLM-L3-GLMF-M6_G16_T05_e20210807162700.nc,size=59428,start=2021-08-07T16:22:00Z,end=2021-08-07T16:27:00Z,browse=N,checksum=1eb38796a43ffa5a6d10ee25e6591cfd1afcda4b,NLat=57.31810872493771,SLat=36.68194510016496,WLon=-150.50109043769376,ELon=-96.8534546275037,format=netCDF-4
 

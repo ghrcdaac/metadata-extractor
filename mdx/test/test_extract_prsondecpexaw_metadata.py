@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_prsondecpexaw import ExtractPrsondecpexawMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_prsondecpexaw import ExtractPrsondecpexawMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX-AW,ds=prsondecpexaw,inv=inventory,file=PR_Radiosonde_CPEXAW_qc_uprm034_20210928.csv,path=PR_Radiosonde_CPEXAW_qc_uprm034_20210928.csv,size=375216,start=2021-09-28T22:30:14Z,end=2021-09-28T23:46:22Z,browse=Y,checksum=8e050a6587338d56703b58fdcb2d0fb253a6a490,NLat=18.26456,SLat=18.20571,WLon=-67.23106,ELon=-67.07084,format=CSV

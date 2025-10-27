@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_goescpexcv import ExtractGoescpexcvMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_goescpexcv import ExtractGoescpexcvMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX-CV,ds=goescpexcv,inv=inventory,file=cpexcv_CLAVRX_GOES16_Satellite_202209230010_R0.nc,path=20220923/cpexcv_CLAVRX_GOES16_Satellite_202209230010_R0.nc,size=99446145,start=2022-09-23T00:10:40Z,end=2022-09-23T00:14:47Z,browse=Y,checksum=19be54b184130c9666f3b4ff5190b0e2cb645773,NLat=67.0445327758789,SLat=3.21962308883667,WLon=-84.0932388305664,ELon=5.653615474700928,format=netCDF-4

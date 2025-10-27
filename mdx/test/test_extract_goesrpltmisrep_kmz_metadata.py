@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-import granule_metadata_extractor.processing as mdx
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+import mdx.granule_metadata_extractor.processing as mdx
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=GOES-R PLT,ds=goesrpltmisrep,inv=inventory,file=GOES-R_POD_20170323_1.kmz,path=plan_of_day/GOES-R_POD_20170323_1.kmz,size=851,start=2017-03-13T00:00:00Z,end=2017-05-17T23:59:59Z,browse=N,checksum=7266b00fd7c716102cb591f97c706d9003f5aaa5,NLat=43.573,SLat=26.449,WLon=-124.625,ELon=-72.202,format=KMZ
 

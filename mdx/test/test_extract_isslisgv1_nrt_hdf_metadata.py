@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_isslisgv1 import ExtractIsslisgv1Metadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_isslisgv1 import ExtractIsslisgv1Metadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=NOT APPLICABLE,ds=isslisg_v1_nrt,inv=inventory,file=ISS_LIS_BG_V1.0_20201026_210255_NRT_21679.hdf,path=ISS_LIS_BG_V1.0_20201026_210255_NRT_21679.hdf,size=87128,start=2020-10-26T21:03:22Z,end=2020-10-26T21:04:59Z,browse=N,checksum=91bb52d7c8e9c46a96ca25913d40edf71e2e4a5f,NLat=29.853199005126953,SLat=28.25045394897461,WLon=90.20879364013672,ELon=91.89403533935547,format=HDF-4

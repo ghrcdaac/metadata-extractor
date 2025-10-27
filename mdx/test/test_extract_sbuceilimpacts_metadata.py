@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_sbuceilimpacts import ExtractSbuceilimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_sbuceilimpacts import ExtractSbuceilimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for this file: IMPACTS_SBU_ceilo_20200104_ct25k_BNL.nc
 #host=thor,env=ops,project=IMPACTS,ds=sbuceilimpacts,inv=inventory,file=IMPACTS_SBU_ceilo_20200104_ct25k_BNL.nc,path=CT25k_BNL/IMPACTS_SBU_ceilo_20200104_ct25k_BNL.nc,size=6153828,start=2020-01-04T00:00:01Z,end=2020-01-04T23:58:17Z,browse=N,checksum=6249c2edf856425434ad822aded00c92b5929209,NLat=40.89749009282086,SLat=40.89695113032367,WLon=-73.12762696415875,ELon=-73.12708800166156,format=netCDF-3

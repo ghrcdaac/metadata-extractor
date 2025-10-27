@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_goesimpacts import ExtractGoesimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_goesimpacts import ExtractGoesimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for this file:
 #host=thor,env=ops,project=IMPACTS,ds=goesimpacts,inv=inventory,file=IMPACTS_goes16_conus_20200102_002856_ch08.nc,path=CONUS/ch08/20200102/IMPACTS_goes16_conus_20200102_002856_ch08.nc,size=1702659,start=2020-01-02T00:26:18Z,end=2020-01-02T00:28:56Z,browse=N,checksum=4f7a32c31c618da8ba1ce7e7c233092acb7a7aa5,NLat=49.97999954223633,SLat=25.0,WLon=-105.0,ELon=-65.02000427246094,format=netCDF-4

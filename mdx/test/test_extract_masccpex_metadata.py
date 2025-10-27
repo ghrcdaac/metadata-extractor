@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_masccpex import ExtractMasccpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_masccpex import ExtractMasccpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=masccpex,inv=inventory,file=CPEX_MASC_Fri_Jun__2_16-17-34_2017.he5,path=20170602/CPEX_MASC_Fri_Jun__2_16-17-34_2017.he5,size=610512,start=2017-06-02T16:57:44Z,end=2017-06-02T17:05:08Z,browse=Y,checksum=2a0a7e88a9fc946409c764e91c6d3d    52c4056d7c,NLat=26.322189331054688,SLat=26.210573196411133,WLon=-80.55681610107422,ELon=-79.9765396118164,format=HDF-5

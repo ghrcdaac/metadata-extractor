@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_sbumwrimpacts import ExtractSbumwrimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_sbumwrimpacts import ExtractSbumwrimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for this file:
 #host=thor,env=ops,project=IMPACTS,ds=sbumwrimpacts,inv=inventory,file=IMPACTS_SBU_MWR_20230306_000411.nc,path=IMPACTS_SBU_MWR_20230306_000411.nc,size=1260320,start=2023-03-06T00:05:00Z,end=2023-03-06T21:15:00Z,browse=N,checksum=b22895582bf8efd5a6751b81e16bd469feee3477,NLat=40.8656,SLat=40.8656,WLon=-72.8814,ELon=-72.8814,format=netCDF-3

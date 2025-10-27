@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_sondecpexcv import ExtractSondecpexcvMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_sondecpexcv import ExtractSondecpexcvMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX-CV,ds=sondecpexcv,inv=inventory,file=cpexcv_radiosonde_netcdf_SONDE_20220901_R0_1512.nc,path=cpexcv_radiosonde_netcdf_SONDE_20220901_R0_1512.nc,size=577625,start=2022-09-01T15:12:00Z,end=2022-09-01T15:51:23Z,browse=Y,checksum=ad85f2128549db23eb6df03e2a160157650b94e9,NLat=16.704877,SLat=16.593186,WLon=-22.919726,ELon=-22.896962,format=netCDF-4

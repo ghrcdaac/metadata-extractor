@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_asosimpacts import ExtractAsosimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_asosimpacts import ExtractAsosimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=asosimpacts,inv=inventory,file=IMPACTS_ASOS_20200111_kadg.nc,path=20200111/IMPACTS_ASOS_20200111_kadg.nc,size=45317,start=2020-01-11T00:00:00Z,end=2020-01-11T23:55:00Z,browse=N,checksum=61f6fe4b62687766518171e0850cd445ca80624d,NLat=41.868,SLat=41.866,WLon=-84.08,ELon=-84.078,format=netCDF-4
 

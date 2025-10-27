@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_hiwrapimpacts import ExtractHiwrapimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_hiwrapimpacts import ExtractHiwrapimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=hiwrapimpacts,inv=inventory,file=IMPACTS_HIWRAP_L1B_RevC_20200201.h5,path=IMPACTS_HIWRAP_L1B_RevC_20200201.h5,size=3115696524,start=2020-02-01T11:33:16Z,end=2020-02-01T15:52:57Z,browse=N,checksum=6a99d1e957610c13dab45fbd42afc9521f915af1,NLat=37.68699645996094,SLat=33.51578140258789,WLon=-79.08301544189453,ELon=-71.74879455566406,format=HDF-5

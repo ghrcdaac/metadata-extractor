@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_goescpex import ExtractGoescpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_goescpex import ExtractGoescpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=goescpex,inv=inventory,file=CPEX_GOES_20170611_0945_g13_subset.nc,path=CPEX_GOES_20170611_0945_g13_subset.nc,size=54224,start=2017-06-11T09:39:03Z,end=2017-06-11T10:17:15Z,browse=Y,checksum=75bd5291137590285d4349949932d95f7f27fe39,NLat=49.9000244140625,SLat=14.190857887268066,WLon=-130.92384338378906,ELon=-105.3642349243164,format=netCDF-3

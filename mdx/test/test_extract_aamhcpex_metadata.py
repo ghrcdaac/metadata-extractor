@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_aamhcpex import ExtractAamhcpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_aamhcpex import ExtractAamhcpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=aamhcpex,inv=inventory,file=CPEX_NOAA18_NPR_MIRS_V7_SND_AAMH_NN_D17162_S2135_E2257_B6215152_NS.nc,path=noaa_18/20170611/CPEX_NOAA18_NPR_MIRS_V7_SND_AAMH_NN_D17162_S2135_E2257_B6215152_NS.nc,size=1559496,start=2017-06-11T21:35:00Z,end=2017-06-11T22:57:00Z,browse=N,checksum=cfe941e4b8f97c90b4e69f2448ba3f0611fe2231,NLat=13.031499862670898,SLat=1.775399923324585,WLon=-70.96258544921875,ELon=-50.19189453125,format=netCDF-4

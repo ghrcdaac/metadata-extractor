@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpm2dc3vp import ExtractGpm2dc3vpMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpm2dc3vp import ExtractGpm2dc3vpMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=C3VP,ds=gpm2dc3vp,inv=inventory,file=c3vp_2dvd_sn16_V06336_flakes_noRA.txt,path=c3vp_2dvd_sn16_V06336_flakes_noRA.txt,size=5470,start=2006-12-02T08:23:53Z,end=2006-12-02T12:55:19Z,browse=N,checksum=7b5cd3fdf68709e23b93a8bd57e9af88fccc5d56,NLat=44.243180555555554,SLat=44.22318055555556,WLon=-79.79058611111111,ELon=-79.7705861111111,format=ASCII
 

@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_hs3shis import ExtractHs3shisMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_hs3shis import ExtractHs3shisMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=HS3,ds=hs3shis,inv=inventory,file=SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc,path=2011/SHIS_rdr20110910T012413end20110910T021638sdr20160427T062645_rad.nc,size=583380,start=2011-09-10T01:24:13Z,end=2011-09-10T02:16:38Z,browse=N,checksum=0c7fe7efd5bb85443d091b65874c20e9520e8429,NLat=34.775203704833984,SLat=34.53623962402344,WLon=-118.97808074951172,ELon=-118.94039154052734,format=netCDF-3

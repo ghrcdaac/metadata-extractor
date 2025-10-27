@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_lookup import ExtractLookupMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_lookup import ExtractLookupMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 ###prem metadata for sample file:
 #IMPACTS_TAMMS_P3_20200201_R3.ict": {"start": "2020-02-01T11:31:30Z", "end": "2020-02-01T15:39:07Z", "north": "38.126", "south": "34.987", "east": "-72.475", "west": "-76.187", "format": "ASCII", "sizeMB": 31.22}

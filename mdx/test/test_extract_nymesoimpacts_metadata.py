@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_nymesoimpacts import ExtractNymesoimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_nymesoimpacts import ExtractNymesoimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=nymesoimpacts,inv=inventory,file=IMPACTS_NYS_ground_timeseries_202001130000_malo.png,path=20200113/IMPACTS_NYS_ground_timeseries_202001130000_malo.png,size=165874,start=2020-01-13T00:00:00Z,end=2020-01-14T00:00:00Z,browse=N,checksum=132c93f0c998fc007ba3baa237f29c77974a6d22,NLat=44.862899999999996,SLat=44.8429,WLon=-74.33890000000001,ELon=-74.3189,format=PNG

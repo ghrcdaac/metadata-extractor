@@ -1,7 +1,7 @@
 # create lookup zip for hpxedop 
 # for all future collections
 from datetime import datetime, timedelta
-from utils.mdx import MDX
+from .utils.mdx import MDX
 import cProfile
 import time
 import math

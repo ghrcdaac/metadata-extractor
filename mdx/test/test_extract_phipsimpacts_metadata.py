@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_phipsimpacts import ExtractPhipsimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_phipsimpacts import ExtractPhipsimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=phipsimpacts,inv=BROWSE,file=IMPACTS_PHIPS_20200201_1109_20200201113854_000006_C2.png,path=Flight_200201/Flight_200201_processed_full_images_C2/IMPACTS_PHIPS_20200201_1109_20200201113854_000006_C2.png,size=557450,start=2020-02-01T11:09:00Z,end=2020-02-01T11:38:54Z,browse=N,checksum=81e7765f26158bd0bc41f171e12c2c36b13b7f53,NLat=37.9854064,SLat=37.6191477,WLon=-75.6949096,ELon=-75.4473907,format=PNG

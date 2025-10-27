@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmkdmx2ifld import ExtractGpmkdmx2ifldMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmkdmx2ifld import ExtractGpmkdmx2ifldMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #"Level2_KDMX_20130618_0148.ar2v": {"temporal": ["2013-06-18T01:48:00Z", "2013-06-18T01:57:59Z"], "wnes_geometry": ["-99.26", "45.87", "-88.18", "37.59"], "SizeMBDataGranule": "24.05", "checksum": "a4d9faf34539841078a3a66e4f9832ea", "format": "Binary"}
 

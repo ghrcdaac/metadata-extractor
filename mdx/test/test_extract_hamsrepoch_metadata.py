@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_hamsrepoch import ExtractHamsrepochMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_hamsrepoch import ExtractHamsrepochMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=EPOCH,ds=hamsrepoch,inv=inventory,file=EPOCH_HAMSR_L2_realtime_20170824T1400_20170824T1500.nc,path=L2/EPOCH_HAMSR_L2_realtime_20170824T1400_20170824T1500.nc,size=1667712,start=2017-08-24T14:30:16Z,end=2017-08-24T14:31:35Z,browse=N,checksum=128f4c45df51301ac5c3220e15505791af6d12c5,NLat=35.618,SLat=35.078,WLon=-117.72500000000001,ELon=-117.528,format=netCDF-3

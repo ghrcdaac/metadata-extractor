@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmxetc3vp import ExtractGpmxetc3vpMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmxetc3vp import ExtractGpmxetc3vpMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 
 # prem metadata for sample file: host=thor,env=ops,project=C3VP,ds=gpmxetc3vp,inv=inventory,

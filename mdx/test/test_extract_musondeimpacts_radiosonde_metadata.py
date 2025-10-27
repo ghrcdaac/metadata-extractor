@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_musondeimpacts import ExtractMusondeimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_musondeimpacts import ExtractMusondeimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=musondeimpacts,inv=inventory,file=IMPACTS_upperair_UMILL_radiosonde_202201292200_QCMiller.txt,path=20220129/Radiosonde/IMPACTS_upperair_UMILL_radiosonde_202201292200_QCMiller.txt,size=208472,start=2022-01-29T21:07:18Z,end=2022-01-29T21:35:37Z,browse=N,checksum=8766ac7eafcd01031473304dccb4babdbb26b584,NLat=40.055818,SLat=39.937289,WLon=-74.164343,ELon=-74.081653,format=ASCII

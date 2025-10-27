@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_sbuskylerimpacts import ExtractSbuskylerimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_sbuskylerimpacts import ExtractSbuskylerimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=sbuskylerimpacts,inv=inventory,file=IMPACTS_SBU_skyler1_20220218_055831_rhi_mid.nc,path=ground/rhi/20220218/IMPACTS_SBU_skyler1_20220218_055831_rhi_mid.nc,size=649199,start=2022-02-18T05:58:31Z,end=2022-02-18T05:59:04Z,browse=N,checksum=517cc70b7b5e97a24276a09a87969d98cc6a092c,NLat=40.89656448364258,SLat=40.8224983215332,WLon=-73.12458038330078,ELon=-72.78557586669922,format=netCDF-4

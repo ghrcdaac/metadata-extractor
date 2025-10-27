@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_lookup import ExtractLookupMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_lookup import ExtractLookupMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 ##host=thor,env=ops,project=IMPACTS,ds=p3metnavimpacts,inv=inventory,file=IMPACTS_MetNav_P3B_20220128_R0.ict,path=IMPACTS_MetNav_P3B_20220128_R0.ict,size=1605713,start=2022-01-28T16:12:24Z,end=2022-01-28T18:09:11Z,browse=N,checksum=5a4de8f9b2fc61e86bff25e70b9bf9c9f8573218,NLat=39.8275736,SLat=37.4497608,WLon=-84.2645088,ELon=-75.443603,format=ASCII
 class TestProcessLookup(TestCase):

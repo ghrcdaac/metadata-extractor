@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmd3ruconn import ExtractGpmd3ruconnMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmd3ruconn import ExtractGpmd3ruconnMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #KaD3R_20230118_163423_01.nc {'start': '2023-01-18T16:34:23Z', 'end': '2023-01-18T16:34:30Z', 'north': '42.177', 'south': '41.459', 'east': '-71.776', 'west': '-72.739', 'format': 'netCDF-4', 'sizeMB': 1.34}

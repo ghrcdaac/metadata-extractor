@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-import granule_metadata_extractor.processing as mdx
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+import mdx.granule_metadata_extractor.processing as mdx
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=GOES-R PLT,ds=goesrpltmisrep,inv=inventory,file=GOES-R_mission-scientist-report_20170429_0.docx,path=mission_scientist/GOES-R_mission-scientist-report_20170429_0.docx,size=16749,start=2017-03-13T00:00:00Z,end=2017-05-17T23:59:59Z,browse=N,checksum=5fc0453b80e76b2728642420e190af6a3d9abfc7,NLat=43.573,SLat=26.449,WLon=-124.625,ELon=-72.202,format=MS Word
 

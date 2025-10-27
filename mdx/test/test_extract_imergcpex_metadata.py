@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_imergcpex import ExtractImergcpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_imergcpex import ExtractImergcpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=imergcpex,inv=inventory,file=CPEX_3B_HHR_E_MS_MRG_3IMERG_20170715_S150000_E152959_0900_V04B.nc,path=20170715/CPEX_3B_HHR_E_MS_MRG_3IMERG_20170715_S150000_E152959_0900_V04B.nc,size=773884,start=2017-07-15T15:00:00Z,end=2017-07-15T15:29:59Z,browse=N,checksum=15e825fba120d3b47df89bcee952f16671eee93e,NLat=39.95000076293945,SLat=5.050000190734863,WLon=-99.94999694824219,ELon=-45.04999923706055,format=netCDF-3

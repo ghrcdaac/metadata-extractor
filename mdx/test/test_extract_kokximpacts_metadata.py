@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_nexradimpacts import ExtractNexradimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_nexradimpacts import ExtractNexradimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=kokximpacts,inv=inventory,file=IMPACTS_nexrad_20200115_073722_kokx.nc,path=20200115/IMPACTS_nexrad_20200115_073722_kokx.nc,size=140440,start=2020-01-15T07:37:22Z,end=2020-01-15T07:37:34Z,browse=N,checksum=b6af1b283abace9beb73d95eb56d469d10fcb94e,NLat=44.9495964050293,SLat=40.87275695800781,WLon=-78.03523254394531,ELon=-72.8675308227539,format=netCDF-4

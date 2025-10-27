@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_mrmsimpacts import ExtractMrmsimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_mrmsimpacts import ExtractMrmsimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=mrmsimpacts,inv=inventory,file=IMPACTS_mrms_20220113_194432_DBZ.nc,path=DBZ/IMPACTS_mrms_20220113_194432_DBZ.nc,size=544815,start=2022-01-13T19:44:32Z,end=2022-01-13T19:44:32Z,browse=N,checksum=c44c79888bfdb9df27d5a4f7bf7755c50961922c,NLat=48.02499771118164,SLat=31.98499870300293,WLon=-100.0150146484375,ELon=-65.97501373291016,format=netCDF-4
 class TestProcess(TestCase):

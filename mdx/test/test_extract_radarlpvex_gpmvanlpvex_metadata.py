@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_radarlpvex_gpmvanlpvex import ExtractGpmvanlpvexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_radarlpvex_gpmvanlpvex import ExtractGpmvanlpvexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 ##host=thor,env=ops,project=LPVEx,ds=gpmvanlpvex,inv=inventory,file=lpvex_RADAR_VANTAA_RAW_20100916.tar.gz,path=raw/201009/lpvex_RADAR_VANTAA_RAW_20100916.tar.gz,size=1272948637,start=2010-09-16T00:00:00Z,end=2010-09-16T23:59:59Z,browse=Y,checksum=dda24ea1a0acc80ff01004745c16711cd2c48f83,NLat=60.34222222,SLat=60.32222222,WLon=24.89611111,ELon=24.916111110000003,format=Binary
 

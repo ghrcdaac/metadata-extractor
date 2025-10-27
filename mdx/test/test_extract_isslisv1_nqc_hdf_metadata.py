@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_isslisv1 import ExtractIsslisv1Metadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_isslisv1 import ExtractIsslisv1Metadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=ISSLIS,ds=isslisv1,inv=inventory,file=ISS_LIS_SC_V1.0_20201015_NQC_21495.hdf,path=ISS_LIS_SC_V1.0_20201015_NQC_21495.hdf,size=1173673,start=2020-10-15T01:13:12Z,end=2020-10-15T02:46:04Z,browse=N,checksum=60425c1cb44c7a57c8f27def243fc513b8ea965f,NLat=51.87992858886719,SLat=-51.69941329956055,WLon=-15.21644401550293,ELon=-44.393836975097656,format=HDF-4
 

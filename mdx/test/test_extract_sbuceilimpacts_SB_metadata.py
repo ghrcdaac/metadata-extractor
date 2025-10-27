@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_sbuceilimpacts import ExtractSbuceilimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_sbuceilimpacts import ExtractSbuceilimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=sbuceilimpacts,inv=inventory,file=IMPACTS_SBU_ceilo_20220101_0000_cl51k.nc,path=CL51k_SB/IMPACTS_SBU_ceilo_20220101_0000_cl51k.nc,size=40527457,start=2022-01-01T00:00:00Z,end=2022-01-01T23:59:44Z,browse=N,checksum=d15c087a4d0f92bb5b7f2aaaf1289b5845214788,NLat=40.89726884037945,SLat=40.896729877882265,WLon=-73.12726838261578,ELon=-73.1267294201186,format=netCDF-4
 class TestProcessSbuceilimpacts(TestCase):

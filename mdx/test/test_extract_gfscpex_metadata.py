@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gfscpex import ExtractGfscpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gfscpex import ExtractGfscpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=gfscpex,inv=inventory,file=cpex_gfs_2017071600_000.nc,path=20170716/cpex_gfs_2017071600_000.nc,size=27193560,start=2017-07-16T00:00:00Z,end=2017-07-16T00:00:00Z,browse=N,checksum=10cf688211dd91f34d2fc70620a05c9fb3a95ec9,NLat=40.0,SLat=5.0,WLon=-100.0,ELon=-45.0,format=netCDF-3

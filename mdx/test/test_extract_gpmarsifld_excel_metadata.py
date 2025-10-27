@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmarsifld import ExtractGpmarsifldMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmarsifld import ExtractGpmarsifldMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IFLOODS,ds=gpmarsifld,inv=inventory,file=ifloods_ars_SF14_Hourly.xlsx,path=xls/ifloods_ars_SF14_Hourly.xlsx,size=146472,start=2013-04-16T12:00:00Z,end=2013-06-04T12:00:00Z,browse=N,checksum=5fc535c751d61776b8526ee6d0e1049259e02fce,NLat=42.33831,SLat=42.318310000000004,WLon=-93.26486,ELon=-93.24485999999999,format=MS Excel

@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_wisperimpacts import ExtractWisperimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_wisperimpacts import ExtractWisperimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IMPACTS,ds=wisperimpacts,inv=inventory,file=IMPACTS_WISPER_CWC_P3_20200201_R0_SF03.ict,path=IMPACTS_WISPER_CWC_P3_20200201_R0_SF03.ict,size=733886,start=2020-02-01T11:31:10Z,end=2020-02-01T15:38:42Z,browse=N,checksum=8fc65ebbc2e548006e6dbe99fcc79c3201e496c8,NLat=38.1257805,SLat=34.9872833,WLon=-76.1870219,ELon=-72.4745895,format=ASCII

@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_gpmarsifld import ExtractGpmarsifldMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_gpmarsifld import ExtractGpmarsifldMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=IFLOODS,ds=gpmarsifld,inv=inventory,file=ifloods_ars_SF09_Hourly.csv,path=txt/ifloods_ars_SF09_Hourly.csv,size=97816,start=2013-04-18T15:00:00Z,end=2013-06-04T12:00:00Z,browse=N,checksum=fbb5fc47778a261342108687c1ef043e1f97e212,NLat=42.45556,SLat=42.43556,WLon=-93.45405000000001,ELon=-93.43405,format=ASCII-csv

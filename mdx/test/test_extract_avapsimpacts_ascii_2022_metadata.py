@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_avapsimpacts import ExtractAvapsimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_avapsimpacts import ExtractAvapsimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=avapsimpacts,inv=inventory,file=IMPACTS_AVAPS_P3B_202202081429_R0.ict,path=ASCII/IMPACTS_AVAPS_P3B_202202081429_R0.ict,size=112001,start=2022-02-08T14:29:42Z,end=2022-02-08T14:34:22Z,browse=N,checksum=e17a28fccfa4f7c4c5d8c77b6f0192b2cb12f95b,NLat=42.8,SLat=42.78,WLon=-65.9,ELon=-65.88,format=ASCII
 class TestProcessAvapsimpacts(TestCase):

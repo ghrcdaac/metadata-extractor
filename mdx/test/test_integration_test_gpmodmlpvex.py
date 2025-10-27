@@ -2,14 +2,14 @@ from unittest.mock import patch
 import json
 import sys
 from os import path
-from main import MDX
+from mdx.main import MDX
 
 sys.path.insert(0, path.join(path.dirname(__file__), '..'))
 
 granule_name = "lpvex_SHP_Aranda_ODM_u100915_00.txt"
 @patch('cumulus_process.Process.fetch_all',
        return_value={'input_key': [path.join(path.dirname(__file__), f"fixtures/{granule_name}")]})
-@patch('main.MDX.upload_output_files',
+@patch('mdx.main.MDX.upload_output_files',
        return_value=['s3://foo/lpvex_SHP_Aranda_ODM_u100915_00.txt',
                      's3://foo/lpvex_SHP_Aranda_ODM_u100915_00.txt.cmr.json'])
 @patch('os.remove', return_value=granule_name)

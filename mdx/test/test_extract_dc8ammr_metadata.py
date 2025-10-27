@@ -1,8 +1,8 @@
 from os import path
 from unittest import TestCase
-import granule_metadata_extractor.processing as mdx
+import mdx.granule_metadata_extractor.processing as mdx
 
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 
 class TestProcessdc8ammr(TestCase):

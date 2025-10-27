@@ -1,7 +1,7 @@
 # create lookup zip for gpmmrr2uconn 
 # for all future collections
 from datetime import datetime, timedelta
-from utils.mdx import MDX
+from .utils.mdx import MDX
 import cProfile
 import time
 import re

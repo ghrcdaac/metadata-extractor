@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_apr3cpex import ExtractApr3cpexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_apr3cpex import ExtractApr3cpexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=CPEX,ds=apr3cpex,inv=inventory,file=CPEX_APR3_L2ZV_DC8_20170617171609_R2_KUsKAs.h5,path=20170617_flt-12/CPEX_APR3_L2ZV_DC8_20170617171609_R2_KUsKAs.h5,size=4829764,start=2017-06-17T17:16:10Z,end=2017-06-17T17:16:32Z,browse=Y,checksum=2087c75dda665a5b228e93bc07b64bb0fe2952fc,NLat=25.996292114257812,SLat=25.96150779724121,WLon=-81.03764343261719,ELon=-81.01245880126953,format=HDF-5

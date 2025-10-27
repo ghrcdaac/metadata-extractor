@@ -3,7 +3,7 @@ import json
 import signal
 import sys
 import time
-from main import main
+from mdx.main import main
 
 class GracefulKiller:
     kill_now = False

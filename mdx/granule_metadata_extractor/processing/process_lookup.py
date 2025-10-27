@@ -1,5 +1,5 @@
-from granule_metadata_extractor.src.metadata_extractor import MetadataExtractor
-from helpers import get_logger
+from ..src.metadata_extractor import MetadataExtractor
+from ...helpers import get_logger
 from zipfile import ZipFile
 import pathlib
 import json

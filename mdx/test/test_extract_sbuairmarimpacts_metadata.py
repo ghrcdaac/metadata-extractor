@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_sbuairmarimpacts import ExtractSbuairmarimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_sbuairmarimpacts import ExtractSbuairmarimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #ost=thor,env=ops,project=IMPACTS,ds=sbuairmarimpacts,inv=inventory,file=IMPACTS_SBU_airmarweather_20220128_RT.nc,path=IMPACTS_SBU_airmarweather_20220128_RT.nc,size=99499,start=2022-01-28T17:55:39Z,end=2022-01-28T18:11:22Z,browse=N,checksum=3f6095bdc0c3df82a36f28280fc9eff57c99a108,NLat=40.907,SLat=40.887,WLon=-73.137,ELon=-73.11699999999999,format=netCDF-4

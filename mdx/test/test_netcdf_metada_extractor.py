@@ -1,11 +1,11 @@
 from os import path
 import json
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_goesrpltcrs import ExtractGeosrpltcrsMetadata
+from mdx.granule_metadata_extractor.processing.process_goesrpltcrs import ExtractGeosrpltcrsMetadata
 import sys
 
 sys.path.insert(0, path.join(path.dirname(__file__), '..'))
-from main import MDX
+from mdx.main import MDX
 
 
 class TestProcessGeoER(TestCase):

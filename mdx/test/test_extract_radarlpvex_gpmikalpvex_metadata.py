@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_radarlpvex_gpmikalpvex import ExtractGpmikalpvexMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_radarlpvex_gpmikalpvex import ExtractGpmikalpvexMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #"lpvex_RADAR_IKAALINEN_UF_20101019.tar.gz": {"temporal": ["2010-10-19T07:00:00Z", "2010-10-19T11:06:14Z"], "wnes_geometry": ["18.33", "64.012", "27.83", "59.522"], "SizeMBDataGranule": "534.97", "checksum": "e59bd8003c30167af47b0d5712fffbe2", "format": "Universal Format (UF)"},
 

@@ -1,19 +1,39 @@
-FROM ghcr.io/ghrcdaac/mdx:base
+FROM continuumio/miniconda3:25.3.1-1
 
 ARG stage
 
-COPY requirements*.txt /tmp/
+SHELL ["/bin/bash","-lc"]
 
-RUN pip install --upgrade --force-reinstall -r /tmp/requirements.txt --target "${LAMBDA_TASK_ROOT}"
+RUN apt --allow-releaseinfo-change update && \
+    apt -y upgrade
 
-ADD mdx ${LAMBDA_TASK_ROOT}
+RUN apt-get install -y \
+    libxml2-utils \
+    gcc \
+    git \
+    nano
 
-# Only if stage is other than dev
+RUN conda create -n mdx python=3.10 -y
+ENV PATH="/opt/conda/envs/mdx/bin:$PATH"
+RUN echo "source activate mdx" > ~/.bashrc
+
+ARG HOME=/home/metadata-extractor
+ARG MDX=${HOME}/mdx
+WORKDIR ${HOME}
+COPY ./mdx ${MDX}
+COPY pyproject.toml requirements*.txt ${HOME}
+
+ENV PIP_ROOT_USER_ACTION=ignore
+
+
 RUN if [ "$stage" != "prod" ] ; then  \
-     pip install -r /tmp/requirements-dev.txt && \
-     python -m pytest --junitxml=./test_results/test_metadata_extractor.xml test; \
-   fi
+        conda run -n mdx pip install -e '.[test]'; \
+        conda run -n mdx python -m pytest -vv; \
+    else \
+        conda run -n mdx pip install .; \
+    fi
 
-RUN rm -rf test
+# Smoke test to catch bad imports
+# RUN conda run -n mdx process-mdx --help
 
-CMD [ "main.handler" ]
+WORKDIR ${MDX}

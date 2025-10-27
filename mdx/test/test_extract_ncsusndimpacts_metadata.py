@@ -1,8 +1,8 @@
 from os import path
 import json
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_ncsusndimpacts import ExtractNcsusndimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_ncsusndimpacts import ExtractNcsusndimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=ncsusndimpacts,inv=inventory,file=IMPACTS_sounding_20200220_1649_NCSU.nc,path=IMPACTS_sounding_20200220_1649_NCSU.nc,size=31224,start=2020-02-20T16:49:00Z,end=2020-02-20T17:49:00Z,browse=N,checksum=32022ed72047a2017aca51ca9c3d3e3ccf4f8d23,NLat=35.777,SLat=35.757000000000005,WLon=-78.643,ELon=-78.62299999999999,format=netCDF-4
 

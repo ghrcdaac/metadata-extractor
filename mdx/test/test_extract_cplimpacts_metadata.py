@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_cplimpacts import ExtractCplimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_cplimpacts import ExtractCplimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #host=thor,env=ops,project=IMPACTS,ds=cplimpacts,inv=inventory,file=IMPACTS_CPL_L2_V1-02_01kmLay_20200115.hdf5,path=IMPACTS_CPL_L2_V1-02_01kmLay_20200115.hdf5,size=7944380,start=2020-01-15T17:55:40Z,end=2020-01-15T21:33:13Z,browse=N,checksum=e2b20659fd6334551e3b60d61473dee2d9cdba69,NLat=35.06972885131836,SLat=33.060611724853516,WLon=-117.23030853271484,ELon=-85.32685852050781,format=HDF-5
 

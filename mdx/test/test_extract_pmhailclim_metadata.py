@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_pmhailclim import ExtractPmhailclimMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_pmhailclim import ExtractPmhailclimMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #prem metadata for sample file:
 #host=thor,env=ops,project=NOT APPLICABLE,ds=pmhailclim,inv=inventory,file=COMBO_HailClimatology_BC2019_2deg.nc,path=COMBO_HailClimatology_BC2019_2deg.nc,size=66500,start=1998-01-01T00:00:00Z,end=2022-03-31T23:59:59Z,browse=N,checksum=ba67ada43a037411a6a838af813ff2ecb93eee18,NLat=89.0,SLat=-89.0,WLon=-179.0,ELon=179.0,format=netCDF-3

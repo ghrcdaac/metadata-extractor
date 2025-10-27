@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_kbgmimpacts import ExtractKbgmimpactsMetadata
-from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
+from mdx.granule_metadata_extractor.processing.process_kbgmimpacts import ExtractKbgmimpactsMetadata
+from mdx.granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 #metadata['IMPACTS_nexrad_20200111_003544_kbgm.nc']
 #{'temporal': ['2020-01-11T00:35:44Z', '2020-01-11T00:39:28Z'], 'wnes_geometry': ['-81.563', '46.329', '-70.406', '38.07'], 'SizeMBDataGranule': '4.48', 'checksum': '2a3bf9866903fcb193c375e7ff0e4c88', 'format': 'netCDF-4'}
