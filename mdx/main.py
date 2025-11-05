@@ -141,6 +141,7 @@ class MDX(Process):
             "isslisg_v2_nqc": mdx.ExtractIsslisgv1Metadata,
             "isslisg_v2_fin": mdx.ExtractIsslisgv1Metadata,
             "isslis_v3_fin": mdx.ExtractIsslisv1Metadata,
+            "isslisg_v3_fin": mdx.ExtractIsslisgv1Metadata,
             "ualbparsimpacts": mdx.ExtractUalbparsimpactsMetadata,
             "ualbmrr2impacts": mdx.ExtractUalbmrr2impactsMetadata,
             "goesrglmgrid": mdx.ExtractGoesrglmgridMetadata,
