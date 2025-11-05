@@ -21,7 +21,7 @@ ARG HOME=/home/metadata-extractor
 ARG MDX=${HOME}/mdx
 WORKDIR ${HOME}
 COPY ./mdx ${MDX}
-COPY pyproject.toml requirements*.txt ${HOME}
+COPY pyproject.toml ${HOME}
 
 ENV PIP_ROOT_USER_ACTION=ignore
 
