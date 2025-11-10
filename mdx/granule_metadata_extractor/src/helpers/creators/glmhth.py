@@ -27,6 +27,7 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
+        print('1',filename)
         return self.get_nc_metadata(filename, file_obj_stream)
 
 
@@ -34,7 +35,9 @@ class MDXProcessing(MDX):
         """
         Extract temporal and spatial metadata from netCDF-4 files
         """
+        print('2',filename)
         nc = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
+        print(nc)
         lat = np.array(nc['lat'][:])
         lon = np.array(nc['lon'][:])
         north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
@@ -44,6 +47,9 @@ class MDXProcessing(MDX):
         utc_str = filename.split('.nc')[0].split('_')[-1]
         start_time = datetime.strptime(utc_str,'%Y%m%d')
         end_time = start_time + timedelta(seconds=86399) 
+        print(north,south,east,west)
+        print(start_time, end_time)
+        print(' ')
 
         nc.close()
         return {
