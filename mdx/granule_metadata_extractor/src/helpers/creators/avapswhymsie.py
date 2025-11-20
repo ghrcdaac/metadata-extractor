@@ -48,10 +48,6 @@ class MDXProcessing(MDX):
             if err_flag == 0:
                 file_lines.append(decoded_line)
 
-        launch_time_string =list(filter(lambda x: 'Launch Time:' in x, file_lines))[0]
-        utc_date_str = launch_time_string.split()[2]  #i.e., '2024-10-30'
-        utc_date = datetime.strptime(utc_date_str,'%Y-%m-%d')
-
         num_of_header_lines = int(file_lines[0].split(',')[0])
         sec0 = []
         lat0 = []
