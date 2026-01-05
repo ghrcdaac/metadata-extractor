@@ -1,7 +1,8 @@
-name: Build & Test
+name: Build Base Image & Push to GHCR
 on:
-  pull_request:
   push:
+    branches:
+      - master
 
 jobs:
   build_mdx:
