@@ -1,44 +1,22 @@
-name: Build & Test
+name: Build Base Image & Push to GHCR
 on:
   pull_request:
-  push:
 
 jobs:
-  build_mdx:
+  test_mdx:
     runs-on: ubuntu-latest
-    name: Build & Test
+    name: Run Unit Tests
     steps:
-      - uses: actions/checkout@v2
-      - uses: dorny/paths-filter@v2
-        id: filter
+      - uses: actions/checkout@v5
+      - name: Set up python
+        uses: actions/setup-python@v5
         with:
-          filters: |
-            mdx_base:
-              - 'mdx_base/**'
-
-      - name: check logic
-        if: steps.filter.outputs.mdx_base == 'true'
+          python-version: '3.12'
+      - name: Install dependencies
         run: |
-          echo "I am check logic"
-          echo ${{steps.filter.outputs.mdx_base}}
-          ls -al
-
-      - uses: docker/login-action@v2
-        name: docker login
-        with:
-          registry: ghcr.io
-          username: USERNAME
-          password: ${{secrets.GITHUB_TOKEN}}
-      - uses: docker/build-push-action@v3
-        if: steps.filter.outputs.mdx_base == 'true'
-        name: Build MDX base docker
-        with:
-          context: ./mdx_base
-          tags: ghcr.io/ghrcdaac/mdx:base
-          push: true
-      - uses: docker/build-push-action@v3
-        name: Build docker
-        with:
-          context: .
-          tags: ghcr.io/ghrcdaac/mdx:latest
-
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+      - name: Test with pytest
+        run: |
+          pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
