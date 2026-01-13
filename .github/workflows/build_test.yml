@@ -19,4 +19,5 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Test with pytest
         run: |
-          pytest mdx/test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          cd mdx
+          pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
