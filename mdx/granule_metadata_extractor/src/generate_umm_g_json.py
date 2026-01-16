@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 import json
 import re
 import os
@@ -30,7 +30,7 @@ class GenerateUmmGJson:
         """
         umm_json = dict()
         umm_json['GranuleUR'] = self.data['GranuleUR']
-        now = datetime.utcnow().strftime(
+        now = datetime.now(UTC).strftime(
             '%Y-%m-%dT%H:%M:%SZ')  # Using UTC Time and time format required by CMR
         umm_json['ProviderDates'] = [
             {
