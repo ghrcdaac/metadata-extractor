@@ -40,10 +40,10 @@ class ExtractWfflmaMetadata(ExtractASCIIMetadata):
         tmp_str = [x for x in lines if '*** data ***' in x]
         index = lines.index(tmp_str[0])
         if index == len(lines)-1: #'*** data ***' is the last line; no data lines
-           tkn = filename.split('_')
+           tkn = self.file_name.split('_')
            utc_str = ''.join([tkn[1],tkn[2]]) #i.e., 251218235000
            self.start_time = datetime.strptime(utc_str,'%y%m%d%H%M%S')
-           self.end_time = start_time + timedelta(seconds = 600)
+           self.end_time = self.start_time + timedelta(seconds = 600)
            self.north, self.south, self.east, self.west = [north0, south0, east0, west0]
         else:
            utc = []
