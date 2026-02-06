@@ -20,7 +20,7 @@ ADD mdx ${LAMBDA_TASK_ROOT}
 # Only if stage is other than dev
 RUN if [ "$stage" != "prod" ] ; then  \
      pip install -r /tmp/requirements-dev.txt && \
-     python -m pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html; \
+     python -m pytest test --doctest-modules --junitxml=./test_results/test_metadata_extractor.xml --cov=com --cov-report=xml --cov-report=html; \
    fi
 
 RUN rm -rf test
