@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 import subprocess
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 import re
 
 
@@ -40,7 +40,7 @@ class GenerateEcho10XML:
         Granule = ET.Element("Granule")
         data = self.data
         data['ProductionDateTime'] = data['LastUpdate'] = data[
-            'InsertTime'] = datetime.utcnow().strftime(
+            'InsertTime'] = datetime.now(UTC).strftime(
             '%Y-%m-%dT%H:%M:%SZ')  # Using UTC Time and time format required by CMR
         topList = ['GranuleUR', 'InsertTime', 'LastUpdate']
         if data.get('AgeOffFlag', False) and self.age_off:
