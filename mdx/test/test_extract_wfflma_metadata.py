@@ -11,6 +11,7 @@ class TestProcess(TestCase):
     This will test if dclma metadata will be extracted correctly
     """
     granule_name = "WFF_250514_063000_0600.dat.gz"
+    #granule_name = "WFF_260201_174000_0600.dat.gz"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -31,7 +32,7 @@ class TestProcess(TestCase):
         start_date = self.process.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2025-05-14T06:30:12Z")
+        self.assertEqual(start_date, "2026-02-01T17:40:00Z")
 
     def test_2_get_stop_date(self):
         """
@@ -41,7 +42,7 @@ class TestProcess(TestCase):
         stop_date = self.process.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2025-05-14T06:39:58Z")
+        self.assertEqual(stop_date, "2026-02-01T17:50:00Z")
 
     def test_3_get_file_size(self):
         """
@@ -50,7 +51,7 @@ class TestProcess(TestCase):
         """
         file_size = round(self.process.get_file_size_megabytes(), 2)
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 0.63)
+        self.assertEqual(file_size, 0.0)
 
     def get_wnes(self, index):
         """
@@ -58,6 +59,7 @@ class TestProcess(TestCase):
         :return: wnes[index] where index: west = 0 - north = 1 - east = 2 - south = 3
         """
         wnes = self.process.get_wnes_geometry()
+        print('Lihua: ',wnes)
         return str(round(wnes[index], 3))
 
     #'north': '39.891', 'south': '36.294', 'east': '-73.304', 'west': '-77.875'
@@ -105,7 +107,7 @@ class TestProcess(TestCase):
 
         checksum = self.process.get_checksum()
         self.expected_metadata['checksum'] = checksum
-        self.assertEqual(checksum, '5a86c11e51fb20dc435d7cadc84d9e9c')
+        self.assertEqual(checksum, '9f0f310d5ef5b8da455738256d82f2fb')
 
     def test_9_generate_metadata(self):
         """
