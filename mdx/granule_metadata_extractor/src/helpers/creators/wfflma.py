@@ -71,7 +71,6 @@ class MDXProcessing(MDX):
         end_time = start_time + timedelta(seconds = 600)
         north, south, east, west = [north0, south0, east0, west0]
 
-        print('Lihua 1:',north, south, east, west)
         tmp_str = [x for x in lines if '*** data ***' in x]
         index = lines.index(tmp_str[0]) 
 
@@ -83,17 +82,16 @@ class MDXProcessing(MDX):
                tkn = line.split()
                lat = float(tkn[1])
                lon = float(tkn[2])
+               #Exclude all data located more than 200 km from WFFLMA center point
                if lat >= south0 and lat <= north0 and lon >= west0 and lon <= east0:
                   utc.append(float(tkn[0]))
                   lats.append(lat)
                   lons.append(lon)
 
-           start_time = utc_date + timedelta(seconds = int(min(utc))) 
-           end_time = utc_date + timedelta(seconds = int(max(utc)))
-
            if len(utc) > 0:
+              start_time = utc_date + timedelta(seconds = int(min(utc))) 
+              end_time = utc_date + timedelta(seconds = int(max(utc)))
               north, south, east, west = [max(lats),min(lats),max(lons),min(lons)]
-              print('Lihua 2:',north, south, east, west)
 
         return {
             "start": start_time,
