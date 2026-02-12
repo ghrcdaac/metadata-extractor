@@ -24,7 +24,6 @@ class ExtractWfflmaMetadata(ExtractASCIIMetadata):
         Extracts temporal and spatial metadata from wfflma granules
         """
         #Process *.dat.gz files
-        #with gzip.GzipFile(self.file_path, mode='rb') as gzipfile:
         with gzip.open(self.file_path, 'r') as f:
              encoded_lines = f.readlines()
 
@@ -46,7 +45,6 @@ class ExtractWfflmaMetadata(ExtractASCIIMetadata):
         self.end_time = self.start_time + timedelta(seconds = 600)
         self.north, self.south, self.east, self.west = [north0, south0, east0, west0]
 
-
         if index < len(lines)-1: #'*** data ***' is not the last line
            utc = []
            lats = []
@@ -64,10 +62,8 @@ class ExtractWfflmaMetadata(ExtractASCIIMetadata):
            if len(utc) > 0:
               self.start_time = utc_date + timedelta(seconds = int(min(utc)))
               self.end_time = utc_date + timedelta(seconds = int(max(utc)))
-
               self.north, self.south, self.east, self.west = [max(lats),min(lats),max(lons),min(lons)]
 
-           print(self.north, self.south, self.east, self.west)
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """

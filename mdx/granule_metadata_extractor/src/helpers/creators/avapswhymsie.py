@@ -27,7 +27,7 @@ class MDXProcessing(MDX):
         :type file_obj_stream: botocore.response.StreamingBody
         """
         if filename.endswith('.nc'):
-           self.file_type = 'netCDF4'
+           self.file_type = 'netCDF-4'
            return self.read_metadata_nc(filename, file_obj_stream)
         else: #.ict
            self.file_type = 'ASCII'

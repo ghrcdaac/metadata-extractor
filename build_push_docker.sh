@@ -21,7 +21,7 @@ function update_lambda_or_skip_local() {
     echo "Lambda ${2}-${3} Exists"
     echo "Updating Lambda ${2}-${3}"
     docker_image_name=$1.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME
-    aws lambda update-function-code \
+    AWS_PAGER="" aws lambda update-function-code \
         --function-name $2-$3 \
         --image-uri ${docker_image_name}:latest \
         --region ${AWS_REGION} \
@@ -42,7 +42,6 @@ fi
 AWS_ACCOUNT_ID=$(get_account_id $AWS_PROFILE)
 
 
-docker build -t ghcr.io/ghrcdaac/mdx:base ./mdx_base
 docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME .
 check_exit
 
