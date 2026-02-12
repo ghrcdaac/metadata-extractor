@@ -39,33 +39,35 @@ class ExtractWfflmaMetadata(ExtractASCIIMetadata):
 
         tmp_str = [x for x in lines if '*** data ***' in x]
         index = lines.index(tmp_str[0])
-        if index == len(lines)-1: #'*** data ***' is the last line; no data lines
-           tkn = filename.split('_')
-           utc_str = ''.join([tkn[1],tkn[2]]) #i.e., 251218235000
-           self.start_time = datetime.strptime(utc_str,'%y%m%d%H%M%S')
-           self.end_time = start_time + timedelta(seconds = 600)
-           self.north, self.south, self.east, self.west = [north0, south0, east0, west0]
-        else:
+
+        tkn = self.file_name.split('_')
+        utc_str = ''.join([tkn[1],tkn[2]]) #i.e., 251218235000
+        self.start_time = datetime.strptime(utc_str,'%y%m%d%H%M%S')
+        self.end_time = self.start_time + timedelta(seconds = 600)
+        self.north, self.south, self.east, self.west = [north0, south0, east0, west0]
+
+
+        if index < len(lines)-1: #'*** data ***' is not the last line
            utc = []
            lats = []
            lons = []
            for line in lines[index+1:]:
                tkn = line.split()
-               utc.append(float(tkn[0]))
-               lats.append(float(tkn[1]))
-               lons.append(float(tkn[2]))
+               lat = float(tkn[1])
+               lon = float(tkn[2])
+               #Exclude all data located more than 200 km from DCLMA center point
+               if lat >= south0 and lat <= north0 and lon >= west0 and lon <= east0: 
+                  utc.append(float(tkn[0]))
+                  lats.append(lat)
+                  lons.append(lon)
 
-           self.start_time = utc_date + timedelta(seconds = int(min(utc)))
-           self.end_time = utc_date + timedelta(seconds = int(max(utc)))
+           if len(utc) > 0:
+              self.start_time = utc_date + timedelta(seconds = int(min(utc)))
+              self.end_time = utc_date + timedelta(seconds = int(max(utc)))
 
-           north, south, east, west = [max(lats),min(lats),max(lons),min(lons)]
+              self.north, self.south, self.east, self.west = [max(lats),min(lats),max(lons),min(lons)]
 
-           #Exclude all data located more than 200 km from DCLMA center point
-           self.north = min(north0,north)
-           self.south = max(south0,south)
-           self.east = min(east0,east)
-           self.west = max(west0,west)
-
+           print(self.north, self.south, self.east, self.west)
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
