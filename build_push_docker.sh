@@ -41,8 +41,13 @@ fi
 
 AWS_ACCOUNT_ID=$(get_account_id $AWS_PROFILE)
 
+if [[ $(uname -m) == arm64* ]]; then
+  docker_build="docker buildx build --load --platform linux/amd64 -t"
+else
+  docker_build="docker build -t"
+fi
 
-docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME .
+${docker_build} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME .
 check_exit
 
 create_ecr_repo_or_skip $AWS_ACCOUNT_ID $STACK_PREFIX
