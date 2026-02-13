@@ -40,10 +40,10 @@ class MDXProcessing(MDX):
         lat = np.array(nc['Lat'][:])
         lon = np.array(nc['Lon'][:])
 
-        #2023/6/15 file contains incorrect lat/lon (89.996/-179.996)
+        #2023/6/15, 2024/10/31 files contain incorrect lat/lon (89.996/-179.996)
         #Set lon values < -175. to nan, and lat values > 85. to nan to avoild this error
-        #lon = np.where(lon<-175.,np.nan,lon)
-        #lat = np.where(lat>85.,np.nan,lat)
+        lon = np.where(lon<-175.,np.nan,lon)
+        lat = np.where(lat>85.,np.nan,lat)
 
         tm = np.array(nc['Time'][:])
         tm_units = nc.variables['Time'].units
