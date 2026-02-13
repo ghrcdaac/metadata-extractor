@@ -11,6 +11,7 @@ class TestProcess(TestCase):
     This will test if dclma metadata will be extracted correctly
     """
     granule_name = "WFF_250514_063000_0600.dat.gz"
+    #granule_name = "WFF_260201_174000_0600.dat.gz"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
@@ -60,7 +61,7 @@ class TestProcess(TestCase):
         wnes = self.process.get_wnes_geometry()
         return str(round(wnes[index], 3))
 
-    #'north': '39.891', 'south': '36.294', 'east': '-73.304', 'west': '-77.875'
+    #Lihua:  [-77.833, 39.883, -73.308, 36.308]
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -68,7 +69,7 @@ class TestProcess(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '39.891')
+        self.assertEqual(north, '39.883')
 
     def test_5_get_west(self):
         """29.864
@@ -77,7 +78,7 @@ class TestProcess(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-77.875')
+        self.assertEqual(west, '-77.833')
 
     def test_6_get_south(self):
         """
@@ -86,7 +87,7 @@ class TestProcess(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '36.294')
+        self.assertEqual(south, '36.308')
 
     def test_7_get_east(self):
         """
@@ -95,7 +96,7 @@ class TestProcess(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-73.304')
+        self.assertEqual(east, '-73.308')
 
     def test_8_get_checksum(self):
         """
