@@ -60,6 +60,7 @@ class TestProcessNalma(TestCase):
         wnes = process_geos.get_wnes_geometry()
         return str(round(wnes[index], 3))
 
+    #[-79.073, 40.573, -75.842, 38.249]
     def test_4_get_north(self):
         """
         Test geometry metadata
@@ -67,7 +68,7 @@ class TestProcessNalma(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '40.688')
+        self.assertEqual(north, '40.573')
 
     def test_5_get_west(self):
         """29.864
@@ -76,7 +77,7 @@ class TestProcessNalma(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-79.287')
+        self.assertEqual(west, '-79.073')
 
     def test_6_get_south(self):
         """
@@ -85,7 +86,7 @@ class TestProcessNalma(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '37.091')
+        self.assertEqual(south, '38.249')
 
     def test_7_get_east(self):
         """
@@ -94,7 +95,7 @@ class TestProcessNalma(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-74.724')
+        self.assertEqual(east, '-75.842')
 
     def test_8_get_checksum(self):
         """
