@@ -130,6 +130,8 @@ class MDX(Process):
             "kgrrimpacts": mdx.ExtractNexradimpactsMetadata,
             "lislip": mdx.ExtractLislipMetadata,
             "lislipG": mdx.ExtractLislipGMetadata,
+            "lislip_v5_fin": mdx.ExtractLislipMetadata,
+            "lislipG_v5_fin": mdx.ExtractLislipGMetadata,
             "msutls": mdx.ExtractMsuMetadata,
             "msutlt": mdx.ExtractMsuMetadata,
             "msutmt": mdx.ExtractMsuMetadata,
