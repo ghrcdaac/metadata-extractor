@@ -39,7 +39,7 @@ if [[ -z "${STACK_PREFIX}" ]]; then
   read -rp 'STACK_PREFIX: ' STACK_PREFIX
 fi
 
-AWS_ACCOUNT_ID=$(get_account_id $AWS_PROFILE)
+AWS_ACCOUNT_ID=$(get_account_id)
 
 if [[ $(uname -m) == arm64* ]]; then
   docker_build="docker buildx build --load --platform linux/amd64 -t"
