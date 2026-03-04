@@ -77,8 +77,7 @@ function create_ecr_repo_or_skip() {
 }
 
 function get_account_id() {
-  # $1 AWS_PROFILE
-  echo $(aws sts get-caller-identity --query Account --profile $1 | tr -d '"')
+  echo $(aws sts get-caller-identity --query Account $ADD_PROFILE | tr -d '"')
 }
 
 function stop_mdx_task() {
