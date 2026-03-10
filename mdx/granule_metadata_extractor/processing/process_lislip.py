@@ -39,7 +39,16 @@ class ExtractLislipMetadata(ExtractNetCDFMetadata):
     def get_nc_metadata(self, filename):
         nc = Dataset(filename, 'r')
         # get time variable
-        timevar = nc.variables['one_second_TAI93_time'][:]
+        try:
+            timevar = nc.variables['one_second_TAI93_time'][:]
+            minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
+                                datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
+        except: #if one_second_TAI93_time unavailable, use orbit_summary_TAI93_xxxxx
+            timevar0 = nc.variables['orbit_summary_TAI93_start'][:]
+            timevar1 = nc.variables['orbit_summary_TAI93_end'][:]
+            minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=timevar0.item()),
+                                datetime(1993, 1, 1) + timedelta(seconds=timevar1.item())]
+
         # get bounding box from bg_summary as this field is also
         # for background isslis data
         try:
@@ -51,8 +60,7 @@ class ExtractLislipMetadata(ExtractNetCDFMetadata):
                 # for ISSLIS orbital data, set wlon as starting point
                 # and elon as ending point of the orbit
                 wlon, elon = [lon[0], lon[lon.size-1]]
-            else:
-                # set default bbox for files without valid lat, lon data
+            else:#set default bbox
                 slat, nlat, wlon, elon = [-35.0,35.0,-180.0,180.0]
         except:
             # if bg_summary field is not available, try viewtime field
@@ -63,72 +71,82 @@ class ExtractLislipMetadata(ExtractNetCDFMetadata):
                 if len(lat) > 0:
                     slat, nlat = [min(lat), max(lat)]
                     wlon, elon = [lon[0], lon[lon.size-1]]
-                else:
-                    # set default bbox for files without valid viewtime
+                    bounding_flag = 1
+                else: #set default bbox
                     slat, nlat, wlon, elon = [-35.0,35.0,-180.0,180.0]
-            except:
-                # if viewtime field is not available, set default bbox
+            except: #if viewtime unavailable, set default bbox directly
                 slat, nlat, wlon, elon = [-35.0,35.0,-180.0,180.0]
 
         nc.close()
-
-        minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
-                            datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
 
         return minTime, maxTime, slat, nlat, wlon, elon
 
     def get_hdf_metadata(self, filename):
         f = HDF(filename)
         vs = f.vstart()
+
         # from one_second vdata to extract TAI93_time data field
         vd = vs.attach('one_second')
-        # get all records
-        recs = vd[:]
-        # extract TAI93_time which is the first field
-        timevar = [recs[i][0] for i in range(len(recs))]
-        minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
-                            datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
-        vd.detach()
+        if vd._nrecs > 0:
+           #get all records from 'one_second' vdata
+           recs = vd[:]
+           #extract TAI93_time which is the first field
+           timevar = [recs[i][0] for i in range(len(recs))]
+           minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=min(timevar)),
+                               datetime(1993, 1, 1) + timedelta(seconds=max(timevar))]
+           vd.detach() #detach 'one_second'
+        else: #if 'one_second' vdata has no records
+           vd.detach() #detach 'one_second'
+           vd = vs.attach('orbit_summary') 
+           #extract time info from 'orbit_summary'
+           #'orbit_summary' has one record
+           #data fields: ['id_number', 'TAI93_start', 'UTC_start', 'GPS_start', 'TAI93_end',...]
+           recs = vd[0]
+           minTime, maxTime = [datetime(1993, 1, 1) + timedelta(seconds=recs[1]),
+                               datetime(1993, 1, 1) + timedelta(seconds=recs[4])]
+           vd.detach() #detach 'orbit_summary'
+ 
         # extract lat and lon from bg_summary field as it is available to
         # both science and background files
-        try:
-            vd = vs.attach('bg_summary')
+        bounding_flag = 0
+        vd = vs.attach('bg_summary')
+        #bg_summary contains data fields 'TAI93_time', 'address', 'boresight', 'corners'
+        if vd._nrecs > 0:
             recs = vd[:]
-            boresight = [recs[i][2] for i in range(len(recs))]
+            #extract 'boresight' which is the third field
             # boresight contains lat/lon pair of a point
+            boresight = [recs[i][2] for i in range(len(recs))]
             lat = [boresight[i][0] for i in range(len(boresight))]
             lon = [boresight[i][1] for i in range(len(boresight))]
             # need to filter out lat = -90.0
             lat = [val for val in lat if val != -90.0]
             # some files may just have only missing value (not good file)
-            # still assign default bbox for these files
             if len(lat) > 0:
                 slat, nlat = [min(lat), max(lat)]
                 wlon, elon = [lon[0], lon[len(lon)-1]]
-            else:
-                slat, nlat, wlon, elon = [-35.0, 35.0, -180.0, 180.0]
-            vd.detach()
-        except:
-            vd.detach()  #detach 'bg_summary' in try block
-            # extract location info from viewtime vgroup first field (location)
-            try:
-                vd = vs.attach('viewtime')
-                recs = vd[:]
-                lat = [recs[i][0][0] for i in range(len(recs))]
-                lon = [recs[i][0][1] for i in range(len(recs))]
-                lat = [val for val in lat if val != -90.0]
-                if len(lat) > 0:
-                    slat, nlat = [min(lat), max(lat)]
-                    wlon, elon = [lon[0], lon[len(lon)-1]]
-                else:
-                    slat, nlat, wlon, elon = [-35.0, 35.0, -180.0, 180.0]
-                vd.detach()
-            except:
-                vd.detach() #detach 'viewtime' in try block
-                slat, nlat, wlon, elon = [-35.0, 35.0, -180.0, 180.0]
+                bounding_flag = 1
+        vd.detach() #detach 'bg_summary'
 
+        if bounding_flag == 0:
+           #if 'bg_summary' vdata cannot provide lat/lon info 
+           # extract location info from viewtime vgroup first field (location)
+           vd = vs.attach('viewtime')
+           if vd._nrecs > 0:
+              recs = vd[:]
+              lat = [recs[i][0][0] for i in range(len(recs))]
+              lon = [recs[i][0][1] for i in range(len(recs))]
+              lat = [val for val in lat if val != -90.0]
+              if len(lat) > 0:
+                 slat, nlat = [min(lat), max(lat)]
+                 wlon, elon = [lon[0], lon[len(lon)-1]]
+                 bounding_flag = 1
+           vd.detach() #detach 'viewtime'
 
-        # extract location info from viewtime vgroup first field (location)
+        if bounding_flag == 0:                
+           #if 'viewtime' cannot provide lat/lon info either 
+           #set default bbox
+           slat, nlat, wlon, elon = [-35.0, 35.0, -180.0, 180.0]
+
         vs.end()
         f.close()
 
