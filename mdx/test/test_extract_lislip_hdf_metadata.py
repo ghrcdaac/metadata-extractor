@@ -12,6 +12,9 @@ class TestProcessLislip(TestCase):
     This will test if isslisv1 metadata will be extracted correctly
     """
     granule_name = "TRMM_LIS_SC.04.1_2002.277.27868"
+    #granule_name = "TRMM_LIS_SC.05.0_1998.194.03582.hdf"  #vdata issue testing
+    #granule_name = 'TRMM_LIS_SC.05.0_2008.060.58621'
+    #granule_name = 'TRMM_LIS_SC.05.0_2015.098.99100'
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     time_var_key = 'time'
     lon_var_key = 'lon'
