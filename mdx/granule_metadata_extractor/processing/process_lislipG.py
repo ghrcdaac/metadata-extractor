@@ -36,9 +36,15 @@ class ExtractLislipGMetadata(ExtractNetCDFMetadata):
     def get_nc_metadata(self):
         datafile = Dataset(self.file_path)
         ref_time = datetime(1993,1,1) #TAI93 time
-        utc = datafile['bg_info_TAI93_time'][:]
-        minTime, maxTime = [ref_time+timedelta(seconds=utc.min()),
-                            ref_time+timedelta(seconds=utc.max())]
+        try:
+            utc = datafile['bg_info_TAI93_time'][:]
+            minTime, maxTime = [ref_time+timedelta(seconds=utc.min()),
+                                ref_time+timedelta(seconds=utc.max())]
+        except: #if bg_info_TAI93_time unavailable, use bg_orbit_summary_TAI93_xxxxx
+            timevar0 = datafile.variables['bg_orbit_summary_TAI93_start'][:]
+            timevar1 = datafile.variables['bg_orbit_summary_TAI93_end'][:]
+            minTime, maxTime = [ref_time + timedelta(seconds=timevar0.item()),
+                                ref_time + timedelta(seconds=timevar1.item())]
 
         #pre-define bounding box same as on-prem bounding box hard-coded by Nathan
         maxlat, minlat, maxlon, minlon = [35., -35., 180., -180.]
@@ -61,16 +67,27 @@ class ExtractLislipGMetadata(ExtractNetCDFMetadata):
     def get_hdf_metadata(self):
         f = HDF(self.file_path)
         vs = f.vstart()
-        data = vs.attach('bg_info')
-        bg_info = data[:]#['TAI93_time', 'alert_summary',......,'bg_value', 'noise_index', 'event_count']
-
-        bg_info_TAI93_time = [bg_info[i][0] for i in range(len(bg_info))]
-        utc = np.array(bg_info_TAI93_time)
 
         ref_time = datetime(1993,1,1) #TAI93 time
-        minTime, maxTime = [ref_time+timedelta(seconds=utc.min()),
-                            ref_time+timedelta(seconds=utc.max())]
-        data.detach()
+        data = vs.attach('bg_info')
+        if data._nrecs > 0:
+           bg_info = data[:]#['TAI93_time', 'alert_summary',......,'bg_value', 'noise_index', 'event_count']
+           bg_info_TAI93_time = [bg_info[i][0] for i in range(len(bg_info))]
+           utc = np.array(bg_info_TAI93_time)
+           minTime, maxTime = [ref_time+timedelta(seconds=utc.min()),
+                               ref_time+timedelta(seconds=utc.max())]
+           data.detach() #detach 'bg_info'
+        else: #if 'bg_info' vdata has no records
+           data.detach() #detach 'bg_info'
+           vd = vs.attach('bg_orbit_summary')
+           #extract time info from 'bg_orbit_summary'
+           #'bg_orbit_summary' has one record
+           #data fields: ['id_number', 'TAI93_start', 'UTC_start', 'GPS_start', 'TAI93_end',...]
+           recs = vd[0]
+           minTime, maxTime = [ref_time + timedelta(seconds=recs[1]),
+                               ref_time + timedelta(seconds=recs[4])]
+           vd.detach() #detach 'bg_orbit_summary'
+
 
         #pre-define bounding box same as on-prem bounding box hard-coded by Nathan
         maxlat, minlat, maxlon, minlon = [35., -35., 180., -180.]
