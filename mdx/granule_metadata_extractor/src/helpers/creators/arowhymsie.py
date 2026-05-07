@@ -39,13 +39,12 @@ class MDXProcessing(MDX):
 
         datafile = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
         utc_sec = datafile.end_time - datafile.start_time #seconds
-        end_time = start_time+timedelta(seconds=utc_sec)
+        end_time = start_time+timedelta(seconds=utc_sec.item())
 
         lat = np.array(datafile['Lat'][:])
         lon = np.array(datafile['Lon'][:])
-        north, south, east, west = [np.max(lat), np.min(lat),
-                                    np.max(lon), np.min(lon)]
-
+        north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
+                                    np.nanmax(lon), np.nanmin(lon)]
         datafile.close()
         return {
             "start": start_time,
