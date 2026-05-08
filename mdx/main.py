@@ -313,7 +313,8 @@ class MDX(Process):
             "metnavcpexcv": mdx.ExtractMetnavcpexcvMetadata,
             "gpmkcxxgcpex": mdx.ExtractGpmkcxxgcpexMetadata,
             "dclma": mdx.ExtractDclmaMetadata,
-            "wfflma": mdx.ExtractWfflmaMetadata
+            "wfflma": mdx.ExtractWfflmaMetadata,
+            "malma": mdx.ExtractMalmaMetadata
         }
 
         regex = ascii_vars.get('regex', '.*')

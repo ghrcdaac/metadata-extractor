@@ -20,7 +20,7 @@ class ExtractMalmaMetadata(ExtractASCIIMetadata):
 
     def get_variables_min_max(self, **kwargs):
         """
-        Extracts temporal and spatial metadata from dclma granules
+        Extracts temporal and spatial metadata from malma granules
         """
         #Process *.dat.gz files
         #with gzip.GzipFile(self.file_path, mode='rb') as gzipfile:
