@@ -52,7 +52,7 @@ class MDXProcessing(MDX):
         end_time = datetime(1970,1,1) + timedelta(seconds=np.nanmax(tm))
 
         h5.close()
-        print(nanmin(tm))
+        print(np.nanmin(tm))
         return {
             "start": start_time,
             "end": end_time,
@@ -66,7 +66,7 @@ class MDXProcessing(MDX):
 
     def main(self):
         # start_time = time.time()
-        self.process_collection(short_name, provider_path)
+        self.process_collection(short_name, provider_path, max_concurrent=1)
         # elapsed_time = time.time() - start_time
         # print(f"Elapsed time in seconds: {elapsed_time}")
         self.shutdown_ec2()
