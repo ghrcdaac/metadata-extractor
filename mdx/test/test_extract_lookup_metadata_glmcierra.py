@@ -59,7 +59,7 @@ class TestProcessLookup(TestCase):
         """
         file_size = self.str_to_num(self.md['SizeMBDataGranule'])
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 0)
+        self.assertEqual(file_size, 4.26)
 
     #north,south,east,west = 44.454403, -42.27351, -26.374033, -124.40529
     def test_4_get_north(self):
