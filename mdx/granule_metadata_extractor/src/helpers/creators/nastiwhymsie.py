@@ -12,7 +12,6 @@ import numpy as np
 
 short_name = "nastiwhymsie"
 provider_path = "nastiwhymsie/"
-file_type = "netCDF-3"
 
 rad_utc = {'20241023': {'start': '2024-10-23T18:12:16Z', 'end': '2024-10-23T22:08:23Z'}, '20241113': {'start': '2024-11-13T18:54:45Z', 'end': '2024-11-13T23:02:11Z'}, '20241030': {'start': '2024-10-30T19:15:28Z', 'end': '2024-10-30T23:38:04Z'}, '20241107': {'start': '2024-11-07T18:30:15Z', 'end': '2024-11-07T23:12:34Z'}, '20241104': {'start': '2024-11-04T17:28:53Z', 'end': '2024-11-04T21:41:11Z'}, '20241022': {'start': '2024-10-22T17:26:47Z', 'end': '2024-10-22T22:31:23Z'}, '20241025': {'start': '2024-10-25T17:06:26Z', 'end': '2024-10-25T23:45:41Z'}, '20241112': {'start': '2024-11-12T18:16:19Z', 'end': '2024-11-12T21:49:27Z'}, '20241031': {'start': '2024-10-31T17:11:34Z', 'end': '2024-10-31T22:37:38Z'}}
 
@@ -32,13 +31,13 @@ class MDXProcessing(MDX):
         """
         if '_RAD_' in filename:
            file_type = "netCDF-4"
-           return self.get_rad_metadata(filename, file_obj_stream)
+           return self.get_rad_metadata(file_obj_stream, file_type)
         else: #L2
            file_type = "netCDF-3"
-           return self.get_L2_metadata(filename, file_obj_stream)
+           return self.get_L2_metadata(filename, file_obj_stream, file_type)
 
 
-    def get_rad_metadata(self, filename, file_obj_stream):
+    def get_rad_metadata(self, file_obj_stream, file_type):
         """
         Extract temporal and spatial metadata from netCDF-4 files
         """
@@ -79,7 +78,7 @@ class MDXProcessing(MDX):
             "format": file_type
         }
 
-    def get_L2_metadata(self, filename, file_obj_stream):
+    def get_L2_metadata(self, filename, file_obj_stream, file_type):
         """
         Extract temporal and spatial metadata from netCDF-4 files
         """
