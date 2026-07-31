@@ -86,6 +86,8 @@ class MDXProcessing(MDX):
                 date_key = self.get_date_key(filename)
                 nav_lookup[date_key] = nav_dict
 
+        print("Found navigation data for these dates: ", nav_lookup.keys())
+
         return nav_lookup
 
     @staticmethod
