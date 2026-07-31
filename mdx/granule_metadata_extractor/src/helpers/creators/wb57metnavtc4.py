@@ -16,7 +16,7 @@ class MDXProcessing(MDX):
         self.nav_lookup = {}
 
     def main(self):
-        self.build_navigation_lookup(provider_path)
+        self.nav_lookup = self.build_navigation_lookup(provider_path)
         self.process_collection(short_name, provider_path)
         self.shutdown_ec2()
 
@@ -104,7 +104,11 @@ class MDXProcessing(MDX):
                 next(f)
 
             columns = next(f).split()
-            print("Got columns: ", columns)
+            # NP files containing spatial data all appear currently to be well-formed,
+            # so I won't worry about any special handling here.
+            if not {"UT", "gLat", "gLon"}.issubset(columns):
+                raise ValueError("Did not find expected column headers 'UT', 'gLat', 'gLon'."
+                                 "Instead parsed columns " + columns + ". File may be malformed.")
 
             lat_idx = columns.index("gLat")
             lon_idx = columns.index("gLon")
@@ -130,7 +134,6 @@ class MDXProcessing(MDX):
                 max_lat = max(max_lat, lat)
                 min_lon = min(min_lon, lon)
                 max_lon = max(max_lon, lon)
-
 
             if min_lat == float("inf"):
                 raise ValueError("No valid latitude/longitude values found")
@@ -169,11 +172,21 @@ class MDXProcessing(MDX):
             base_time = datetime(year, month, day, tzinfo=timezone.utc)
             date_key = f"{year:04d}{month:02d}{day:02d}"
 
+            columns = []
             for _ in range(header_lines - current_line - 1):
-                next(f)
+                next_line = next(f)
+                try_columns = next_line.strip().split()
+                if "UT" in try_columns:
+                    # File is malformed and prematurely found column headers
+                    columns = next_line.split()
+                    break
 
-            columns = next(f).split()
-            print("Got columns: ", columns)
+            # In well formed file, should arrive here and parse column headers normally
+            if not columns:
+                columns = next(f).strip().split()
+            if not "UT" in columns:
+                raise ValueError("Did not find expected column header 'UT'."
+                                 "Instead parsed columns " + columns + ". File may be malformed.")
 
             ut_idx = columns.index("UT")
             min_ut = float("inf")
