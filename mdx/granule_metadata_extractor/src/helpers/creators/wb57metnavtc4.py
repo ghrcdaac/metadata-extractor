@@ -178,3 +178,9 @@ class MDXProcessing(MDX):
             "date_key": date_key,
         }
         return temp_dict
+
+if __name__ == '__main__':
+    MDXProcessing().main()
+    # The below can be use to run a profiler and see which functions are
+    # taking the most time to process
+    # cProfile.run('MDXProcessing().main()', sort='tottime')
