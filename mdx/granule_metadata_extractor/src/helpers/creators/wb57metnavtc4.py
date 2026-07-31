@@ -86,7 +86,7 @@ class MDXProcessing(MDX):
                 date_key = self.get_date_key(filename)
                 nav_lookup[date_key] = nav_dict
 
-        print("Found navigation data for these dates: ", nav_lookup.keys())
+        print("Found navigation data for these dates: ", list(nav_lookup.keys()))
 
         return nav_lookup
 
@@ -178,7 +178,7 @@ class MDXProcessing(MDX):
                 try_columns = next_line.strip().split()
                 if "UT" in try_columns:
                     # File is malformed and prematurely found column headers
-                    columns = next_line.split()
+                    columns = try_columns
                     break
 
             # In well formed file, should arrive here and parse column headers normally
@@ -193,7 +193,7 @@ class MDXProcessing(MDX):
             max_ut = float("-inf")
 
             for line in f:
-                values = line.split()
+                values = line.strip().split()
 
                 if not values:
                     continue
