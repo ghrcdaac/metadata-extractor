@@ -108,7 +108,7 @@ class MDXProcessing(MDX):
             # so I won't worry about any special handling here.
             if not {"UT", "gLat", "gLon"}.issubset(columns):
                 raise ValueError("Did not find expected column headers 'UT', 'gLat', 'gLon'."
-                                 "Instead parsed columns " + columns + ". File may be malformed.")
+                                 f"Instead parsed columns {columns!r}. File may be malformed.")
 
             lat_idx = columns.index("gLat")
             lon_idx = columns.index("gLon")
@@ -173,29 +173,35 @@ class MDXProcessing(MDX):
             date_key = f"{year:04d}{month:02d}{day:02d}"
 
             columns = []
-            for _ in range(header_lines - current_line - 1):
-                next_line = next(f)
-                try_columns = next_line.strip().split()
-                if "UT" in try_columns:
-                    # File is malformed and prematurely found column headers
-                    columns = try_columns
+            while current_line < header_lines:
+                line = next(f)
+                current_line += 1
+
+                fields = line.split()
+
+                if fields and fields[0] == "UT":
+                    columns = fields
                     break
 
-            # In well formed file, should arrive here and parse column headers normally
+            # In well-formed file, should arrive here and parse column headers normally
             if not columns:
                 columns = next(f).strip().split()
             if not "UT" in columns:
                 raise ValueError("Did not find expected column header 'UT'."
-                                 "Instead parsed columns " + columns + ". File may be malformed.")
+                                 f"Instead parsed columns {columns!r}. File may be malformed.")
 
             ut_idx = columns.index("UT")
             min_ut = float("inf")
             max_ut = float("-inf")
 
-            for line in f:
+            for lineno, line in enumerate(f, start=header_lines + 1):
                 values = line.strip().split()
 
                 if not values:
+                    continue
+
+                if len(values) <= ut_idx:
+                    print(f"Short line {lineno}: {values!r}")
                     continue
 
                 ut = float(values[ut_idx])
