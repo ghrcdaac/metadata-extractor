@@ -3,6 +3,7 @@ import io
 import re
 from typing import Any
 from pathlib import PurePosixPath
+import boto3
 from utils.mdx import MDX
 
 short_name = "wb57metnavtc4"
@@ -22,8 +23,19 @@ class MDXProcessing(MDX):
     def process(self, filename: str, stream) -> dict[str, Any]:
         date_key = self.get_date_key(filename)
 
+        if date_key not in self.nav_lookup:
+            raise ValueError(
+                f"No navigation data found for {filename}"
+                f"(date {date_key})"
+            )
         spatial = self.nav_lookup[date_key]
         temporal = self.read_temporal_bounds(stream)
+
+        if date_key != temporal["date_key"]:
+            raise ValueError(
+                f"Filename date {date_key} does not match"
+                f"NASA Ames DATE {temporal['date_key']} for {filename}"
+            )
 
         return {
             "start": temporal["start_time"],
@@ -47,7 +59,9 @@ class MDXProcessing(MDX):
 
     def build_navigation_lookup(self, provider_path: str, bucket: str = 'ghrcw-private'):
         """Pre-read spatial-aware NP files in dataset and store GPS bounds by date."""
-        paginator = self.s3.get_paginator("list_objects_v2")
+        s3_client = boto3.client("s3")
+        paginator = s3_client.get_paginator("list_objects_v2")
+        nav_lookup = {}
 
         for page in paginator.paginate(
             Bucket=bucket,
@@ -59,7 +73,7 @@ class MDXProcessing(MDX):
                 if "_NP_" not in key or not key.endswith(".txt"):
                     continue
 
-                response = self.s3.get_object(
+                response = s3_client.get_object(
                     Bucket=bucket,
                     Key=key
                 )
@@ -70,9 +84,9 @@ class MDXProcessing(MDX):
                 nav_dict = self.read_spatial_bounds(stream)
 
                 date_key = self.get_date_key(filename)
-                self.nav_lookup[date_key] = nav_dict
+                nav_lookup[date_key] = nav_dict
 
-        return self.nav_lookup
+        return nav_lookup
 
     @staticmethod
     def read_spatial_bounds(stream) -> dict[str, float]:
@@ -88,10 +102,11 @@ class MDXProcessing(MDX):
                 next(f)
 
             columns = next(f).split()
+            print("Got columns: ", columns)
 
             lat_idx = columns.index("gLat")
             lon_idx = columns.index("gLon")
-            ut_idx = columns.index("UT")
+            # ut_idx = columns.index("UT")
             min_lat = float("inf")
             max_lat = float("-inf")
             min_lon = float("inf")
@@ -100,13 +115,20 @@ class MDXProcessing(MDX):
             for line in f:
                 values = line.split()
 
+                if not values:
+                    continue
+
                 lat = float(values[lat_idx])
                 lon = float(values[lon_idx])
+
+                if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+                    continue
 
                 min_lat = min(min_lat, lat)
                 max_lat = max(max_lat, lat)
                 min_lon = min(min_lon, lon)
                 max_lon = max(max_lon, lon)
+
 
             if min_lat == float("inf"):
                 raise ValueError("No valid latitude/longitude values found")
@@ -120,7 +142,7 @@ class MDXProcessing(MDX):
         return nav_dict
 
     @staticmethod
-    def read_temporal_bounds(stream) -> dict[str, float]:
+    def read_temporal_bounds(stream) -> dict[str, Any]:
         """Read data file and compute temporal bounds (start and end date)."""
         with io.TextIOWrapper(stream, encoding="utf-8") as f:
             # First line of Ames format is, e.g. "32 1001", number of [header lines] [file format]
@@ -149,6 +171,7 @@ class MDXProcessing(MDX):
                 next(f)
 
             columns = next(f).split()
+            print("Got columns: ", columns)
 
             ut_idx = columns.index("UT")
             min_ut = float("inf")
