@@ -179,6 +179,9 @@ class MDXProcessing(MDX):
 
                 fields = line.split()
 
+                # Some legacy TC4 NASA Ames files have inconsistent header line counts.
+                # Search for the actual column header ("UT") rather than assuming it
+                # appears exactly where the header metadata indicates.
                 if fields and fields[0] == "UT":
                     columns = fields
                     break
