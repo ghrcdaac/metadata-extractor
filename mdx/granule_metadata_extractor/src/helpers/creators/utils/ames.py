@@ -310,27 +310,63 @@ def _iter_ames_1001_records(
         )
 
 
+from collections.abc import Iterator
+from contextlib import contextmanager, nullcontext
+from io import TextIOBase, TextIOWrapper
+from os import PathLike
+from typing import BinaryIO, TextIO, TypeAlias
+
+AmesSource: TypeAlias = str | PathLike[str] | BinaryIO | TextIO
+
+
 @contextmanager
 def open_ames_1001(
-    filename: str | Path,
+    source: AmesSource,
 ) -> Iterator[
     tuple[Ames1001Header, Iterator[Ames1001Record]]
 ]:
     """
-    Open an FFI 1001 file and return its header and lazy record iterator.
+    Read an FFI 1001 file from a filesystem path or open stream.
 
-    The records must be consumed inside the with block because the file
-    closes when the context manager exits.
+    Binary streams, including boto3 StreamingBody objects, are decoded as
+    ASCII. Records must be consumed inside the with block.
+
+    Streams supplied by the caller remain open when the context exits.
     """
 
-    with open(
-        filename,
-        "rt",
+    if isinstance(source, (str, PathLike)):
+        with open(
+            source,
+            "rt",
+            encoding="ascii",
+            newline=None,
+        ) as stream:
+            yield _read_ames_1001(stream)
+        return
+
+    if isinstance(source, TextIOBase):
+        yield _read_ames_1001(source)
+        return
+
+    # TextIOWrapper would normally close the caller's binary stream when the
+    # wrapper is closed or garbage-collected. Detach it before returning.
+    wrapper = TextIOWrapper(
+        source,
         encoding="ascii",
         newline=None,
-    ) as stream:
-        reader = _LineReader(stream)
-        header = _read_ames_1001_header(reader)
-        records = _iter_ames_1001_records(reader, header)
+    )
 
-        yield header, records
+    try:
+        yield _read_ames_1001(wrapper)
+    finally:
+        wrapper.detach()
+
+
+def _read_ames_1001(
+    stream: TextIO,
+) -> tuple[Ames1001Header, Iterator[Ames1001Record]]:
+    reader = _LineReader(stream)
+    header = _read_ames_1001_header(reader)
+    records = _iter_ames_1001_records(reader, header)
+
+    return header, records
