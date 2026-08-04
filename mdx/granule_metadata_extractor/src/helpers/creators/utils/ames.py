@@ -1,0 +1,336 @@
+from __future__ import annotations
+
+from contextlib import contextmanager
+from dataclasses import dataclass
+from datetime import date
+from pathlib import Path
+from typing import Iterator, TextIO
+
+
+@dataclass(frozen=True)
+class Ames1001Header:
+    header_lines: int
+    ffi: int
+    originator: str
+    organization: str
+    source: str
+    mission: str
+    volume: int
+    total_volumes: int
+    data_date: date
+    revision_date: date
+    independent_interval: float
+    independent_name: str
+    scales: tuple[float, ...]
+    missing_values: tuple[float, ...]
+    variable_names: tuple[str, ...]
+    special_comments: tuple[str, ...]
+    normal_comments: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class Ames1001Record:
+    # The independent variable, UT seconds in this file.
+    independent: float
+
+    # Primary values exactly as stored in the file.
+    raw_values: tuple[float, ...]
+
+    # Primary values after VSCAL is applied.
+    # Missing values are represented by None.
+    values: tuple[float | None, ...]
+
+    annotation: str | None = None
+
+
+class _LineReader:
+    """Track the physical line number while reading."""
+
+    def __init__(self, stream: TextIO) -> None:
+        self.stream = stream
+        self.line_number = 0
+
+    def read_line(self, description: str) -> str:
+        line = self.stream.readline()
+
+        if line == "":
+            raise ValueError(
+                f"Unexpected EOF while reading {description} "
+                f"after physical line {self.line_number}"
+            )
+
+        self.line_number += 1
+        return line.rstrip("\r\n")
+
+    def remaining_lines(self) -> Iterator[str]:
+        for line in self.stream:
+            self.line_number += 1
+            yield line.rstrip("\r\n")
+
+
+def _parse_line(
+    line: str,
+    expected_count: int,
+    converter,
+    description: str,
+):
+    fields = line.split()
+
+    if len(fields) != expected_count:
+        raise ValueError(
+            f"Expected {expected_count} value(s) for {description}, "
+            f"got {len(fields)}: {line!r}"
+        )
+
+    try:
+        return tuple(converter(field) for field in fields)
+    except ValueError as exc:
+        raise ValueError(
+            f"Invalid value for {description}: {line!r}"
+        ) from exc
+
+
+def _read_numeric_block(
+    reader: _LineReader,
+    expected_count: int,
+    description: str,
+) -> tuple[float, ...]:
+    """
+    Read a header array such as VSCAL or VMISS.
+
+    These arrays may also wrap across multiple physical lines.
+    """
+
+    values: list[float] = []
+
+    while len(values) < expected_count:
+        line = reader.read_line(description)
+
+        try:
+            values.extend(float(field) for field in line.split())
+        except ValueError as exc:
+            raise ValueError(
+                f"Invalid number in {description} at physical line "
+                f"{reader.line_number}: {line!r}"
+            ) from exc
+
+    if len(values) != expected_count:
+        raise ValueError(
+            f"Expected {expected_count} values for {description}, "
+            f"got {len(values)}"
+        )
+
+    return tuple(values)
+
+
+def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
+    header_lines, ffi = _parse_line(
+        reader.read_line("NLHEAD and FFI"),
+        2,
+        int,
+        "NLHEAD and FFI",
+    )
+
+    if ffi != 1001:
+        raise ValueError(f"Expected NASA Ames FFI 1001, found FFI {ffi}")
+
+    originator = reader.read_line("originator")
+    organization = reader.read_line("organization")
+    source = reader.read_line("source description")
+    mission = reader.read_line("mission description")
+
+    volume, total_volumes = _parse_line(
+        reader.read_line("volume numbers"),
+        2,
+        int,
+        "IVOL and NVOL",
+    )
+
+    date_parts = _parse_line(
+        reader.read_line("data and revision dates"),
+        6,
+        int,
+        "DATE and RDATE",
+    )
+
+    data_date = date(*date_parts[:3])
+    revision_date = date(*date_parts[3:])
+
+    (independent_interval,) = _parse_line(
+        reader.read_line("independent-variable interval"),
+        1,
+        float,
+        "DX",
+    )
+
+    independent_name = reader.read_line(
+        "independent-variable name"
+    )
+
+    (variable_count,) = _parse_line(
+        reader.read_line("primary-variable count"),
+        1,
+        int,
+        "NV",
+    )
+
+    # VSCAL and VMISS each contain NV values.
+    scales = _read_numeric_block(
+        reader,
+        variable_count,
+        "VSCAL",
+    )
+
+    missing_values = _read_numeric_block(
+        reader,
+        variable_count,
+        "VMISS",
+    )
+
+    # The next NV physical lines describe the primary variables.
+    variable_names = tuple(
+        reader.read_line(f"primary-variable name {index + 1}")
+        for index in range(variable_count)
+    )
+
+    (special_comment_count,) = _parse_line(
+        reader.read_line("special-comment count"),
+        1,
+        int,
+        "NSCOML",
+    )
+
+    special_comments = tuple(
+        reader.read_line(f"special comment {index + 1}")
+        for index in range(special_comment_count)
+    )
+
+    (normal_comment_count,) = _parse_line(
+        reader.read_line("normal-comment count"),
+        1,
+        int,
+        "NNCOML",
+    )
+
+    normal_comments = tuple(
+        reader.read_line(f"normal comment {index + 1}")
+        for index in range(normal_comment_count)
+    )
+
+    # NLHEAD includes the first line and says how many physical
+    # header lines appear before the first data value.
+    if reader.line_number != header_lines:
+        raise ValueError(
+            f"NLHEAD says the header contains {header_lines} lines, "
+            f"but parsing consumed {reader.line_number}"
+        )
+
+    return Ames1001Header(
+        header_lines=header_lines,
+        ffi=ffi,
+        originator=originator,
+        organization=organization,
+        source=source,
+        mission=mission,
+        volume=volume,
+        total_volumes=total_volumes,
+        data_date=data_date,
+        revision_date=revision_date,
+        independent_interval=independent_interval,
+        independent_name=independent_name,
+        scales=scales,
+        missing_values=missing_values,
+        variable_names=variable_names,
+        special_comments=special_comments,
+        normal_comments=normal_comments,
+    )
+
+
+def _iter_ames_1001_records(
+    reader: _LineReader,
+    header: Ames1001Header,
+) -> Iterator[Ames1001Record]:
+    # One independent value plus NV primary values.
+    expected_count = 1 + len(header.variable_names)
+
+    current: list[float] = []
+    record_start_line: int | None = None
+
+    for line in reader.remaining_lines():
+        if not line.strip():
+            continue
+
+        if not current:
+            record_start_line = reader.line_number
+
+        fields = line.split()
+        needed = expected_count - len(current)
+
+        # Anything after the required numeric values on the final
+        # physical line is treated as a record annotation.
+        numeric_fields = fields[:needed]
+        trailing_fields = fields[needed:]
+
+        try:
+            current.extend(float(field) for field in numeric_fields)
+        except ValueError as exc:
+            raise ValueError(
+                f"Non-numeric value in record beginning at physical "
+                f"line {record_start_line}: {line!r}"
+            ) from exc
+
+        if len(current) == expected_count:
+            independent = current[0]
+            raw_values = tuple(current[1:])
+
+            scaled_values = tuple(
+                None if raw == missing else raw * scale
+                for raw, scale, missing in zip(
+                    raw_values,
+                    header.scales,
+                    header.missing_values,
+                )
+            )
+
+            yield Ames1001Record(
+                independent=independent,
+                raw_values=raw_values,
+                values=scaled_values,
+                annotation=" ".join(trailing_fields) or None,
+            )
+
+            current = []
+            record_start_line = None
+
+    if current:
+        raise ValueError(
+            f"Incomplete final record beginning at physical line "
+            f"{record_start_line}: expected {expected_count} numeric "
+            f"values, found {len(current)}"
+        )
+
+
+@contextmanager
+def open_ames_1001(
+    filename: str | Path,
+) -> Iterator[
+    tuple[Ames1001Header, Iterator[Ames1001Record]]
+]:
+    """
+    Open an FFI 1001 file and return its header and lazy record iterator.
+
+    The records must be consumed inside the with block because the file
+    closes when the context manager exits.
+    """
+
+    with open(
+        filename,
+        "rt",
+        encoding="ascii",
+        newline=None,
+    ) as stream:
+        reader = _LineReader(stream)
+        header = _read_ames_1001_header(reader)
+        records = _iter_ames_1001_records(reader, header)
+
+        yield header, records
