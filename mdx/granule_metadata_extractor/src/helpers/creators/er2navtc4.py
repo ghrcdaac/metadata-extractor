@@ -4,7 +4,7 @@ from utils.ames import open_ames_1001
 from typing import Any
 
 short_name = "er2navtc4"
-provider_path = "ec2navtc4/"
+provider_path = "er2navtc4/"
 
 
 class MDXProcessing(MDX):
@@ -70,7 +70,7 @@ class MDXProcessing(MDX):
             "format": "ASCII"
         }
 
-    
+
 if __name__ == '__main__':
     MDXProcessing().main()
     # The below can be use to run a profiler and see which functions are
