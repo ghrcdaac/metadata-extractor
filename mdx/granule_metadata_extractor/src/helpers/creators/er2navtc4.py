@@ -2,7 +2,6 @@ from datetime import datetime, time, timedelta, timezone
 from utils.mdx import MDX
 from utils.ames import open_ames_1001
 from typing import Any
-import math
 
 short_name = "er2navtc4"
 provider_path = "er2navtc4/"
@@ -20,14 +19,6 @@ class MDXProcessing(MDX):
 
     def process(self, filename: str, stream = None) -> dict[str, Any]:
 
-        def valid_coordinates(lat: float, lon: float) -> bool:
-            return (
-                    math.isfinite(lat)
-                    and math.isfinite(lon)
-                    and -90 <= lat <= 90
-                    and -180 <= lon <= 180
-            )
-
         # PDF files in this dataset contain no extractable data
         if not filename.endswith('.txt'):
             return {}
@@ -40,17 +31,11 @@ class MDXProcessing(MDX):
         min_lat = float("inf")
 
         with open_ames_1001(stream) as (header, records):
-
-            inu_latitude_index = header.variable_names.index(
-                "INU latitude (deg)"
-            )
-            inu_longitude_index = header.variable_names.index(
-                "INU longitude (deg)"
-            )
-            gps_latitude_index = header.variable_names.index(
+            
+            latitude_index = header.variable_names.index(
                 "GPS latitude (deg)"
             )
-            gps_longitude_index = header.variable_names.index(
+            longitude_index = header.variable_names.index(
                 "GPS longitude (deg)"
             )
             beginning_of_day = datetime.combine(
@@ -62,13 +47,6 @@ class MDXProcessing(MDX):
             for record in records:
                 timestamp = beginning_of_day + timedelta(
                     seconds=record.independent
-                )
-
-                latitude_index = header.variable_names.index(
-                    "GPS latitude (deg)"
-                )
-                longitude_index = header.variable_names.index(
-                    "GPS longitude (deg)"
                 )
 
                 latitude = record.values[latitude_index]
