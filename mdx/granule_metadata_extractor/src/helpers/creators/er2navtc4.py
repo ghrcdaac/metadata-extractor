@@ -30,9 +30,6 @@ class MDXProcessing(MDX):
         max_lat = 90
         min_lat = -90
 
-        if not stream:
-            stream = filename
-
         with open_ames_1001(stream) as (header, records):
 
             latitude_index = header.variable_names.index(
