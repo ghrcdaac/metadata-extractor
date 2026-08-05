@@ -19,6 +19,14 @@ class MDXProcessing(MDX):
 
     def process(self, filename: str, stream = None) -> dict[str, Any]:
 
+        def valid_coordinates(lat: float, lon: float) -> bool:
+            return (
+                    math.isfinite(lat)
+                    and math.isfinite(lon)
+                    and -90 <= lat <= 90
+                    and -180 <= lon <= 180
+            )
+
         # PDF files in this dataset contain no extractable data
         if not filename.endswith('.txt'):
             return {}
@@ -32,11 +40,17 @@ class MDXProcessing(MDX):
 
         with open_ames_1001(stream) as (header, records):
 
-            latitude_index = header.variable_names.index(
-                'INU latitude (deg)'
+            inu_latitude_index = header.variable_names.index(
+                "INU latitude (deg)"
             )
-            longitude_index = header.variable_names.index(
-                'INU longitude (deg)'
+            inu_longitude_index = header.variable_names.index(
+                "INU longitude (deg)"
+            )
+            gps_latitude_index = header.variable_names.index(
+                "GPS latitude (deg)"
+            )
+            gps_longitude_index = header.variable_names.index(
+                "GPS longitude (deg)"
             )
             beginning_of_day = datetime.combine(
                 header.data_date,
@@ -48,8 +62,44 @@ class MDXProcessing(MDX):
                 timestamp = beginning_of_day + timedelta(
                     seconds=record.independent
                 )
-                latitude = record.values[latitude_index]
-                longitude = record.values[longitude_index]
+
+                inu_lat = record.values[inu_latitude_index]
+                inu_lon = record.values[inu_longitude_index]
+                gps_lat = record.values[gps_latitude_index]
+                gps_lon = record.values[gps_longitude_index]
+
+                gps_valid = valid_coordinates(gps_lat, gps_lon)
+                inu_valid = valid_coordinates(inu_lat, inu_lon)
+
+                if gps_valid:
+                    latitude = gps_lat
+                    longitude = gps_lon
+
+                    if inu_valid and (
+                        abs(gps_lat - inu_lat) > 0.1
+                        or abs(gps_lon - inu_lon) > 0.1
+                    ):
+                        print(
+                            f"INU/GPS mismatch at {timestamp}: "
+                            f"INU=({inu_lat}, {inu_lon}), "
+                            f"GPS=({gps_lat}, {gps_lon})"
+                        )
+
+                elif inu_valid:
+                    latitude = inu_lat
+                    longitude = inu_lon
+
+                else:
+                    continue
+
+                if gps_valid and inu_valid and (
+                    abs(inu_lat - gps_lat) > 0.1 or abs(inu_lon - gps_lon) > 0.1:
+                ):
+                    print(
+                        f"Coordinate mismatch at {timestamp}: "
+                        f"INU=({inu_lat}, {inu_lon}), "
+                        f"GPS=({gps_lat}, {gps_lon})"
+                    )
 
                 min_lat = min(min_lat, latitude)
                 max_lat = max(max_lat, latitude)
