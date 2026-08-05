@@ -93,7 +93,7 @@ class MDXProcessing(MDX):
                     continue
 
                 if gps_valid and inu_valid and (
-                    abs(inu_lat - gps_lat) > 0.1 or abs(inu_lon - gps_lon) > 0.1:
+                    abs(inu_lat - gps_lat) > 0.1 or abs(inu_lon - gps_lon) > 0.1
                 ):
                     print(
                         f"Coordinate mismatch at {timestamp}: "
