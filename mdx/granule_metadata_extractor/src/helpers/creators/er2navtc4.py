@@ -25,10 +25,10 @@ class MDXProcessing(MDX):
 
         start_time = datetime.max.replace(tzinfo=timezone.utc)
         end_time = datetime.min.replace(tzinfo=timezone.utc)
-        max_lon = 180
-        min_lon = -180
-        max_lat = 90
-        min_lat = -90
+        max_lon = float("-inf")
+        min_lon = float("inf")
+        max_lat = float("-inf")
+        min_lat = float("inf")
 
         with open_ames_1001(stream) as (header, records):
 
