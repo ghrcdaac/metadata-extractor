@@ -58,8 +58,6 @@ class MDXProcessing(MDX):
                 start_time = min(start_time, timestamp)
                 end_time = max(end_time, timestamp)
 
-                print(timestamp, latitude, longitude)
-
         return {
             "start": start_time,
             "end": end_time,
