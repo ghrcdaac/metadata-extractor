@@ -15,25 +15,28 @@ class MDXProcessing(MDX):
 
     def main(self):
         self.process_collection(short_name, provider_path)
-        # self.shutdown_ec2()
+        self.shutdown_ec2()
 
-    def process(self, filename: str, stream) -> dict[str, Any]:
+    def process(self, filename: str, stream = None) -> dict[str, Any]:
 
         # PDF files in this dataset contain no extractable data
         if not filename.endswith('.txt'):
             return {}
 
-        start_time = datetime.now()
-        end_time = 0
+        start_time = datetime.max.replace(tzinfo=timezone.utc)
+        end_time = datetime.min.replace(tzinfo=timezone.utc)
         max_lon = 180
         min_lon = -180
         max_lat = 90
         min_lat = -90
 
-        with open_ames_1001(filename) as (header, records):
+        if not stream:
+            stream = filename
+
+        with open_ames_1001(stream) as (header, records):
 
             latitude_index = header.variable_names.index(
-                'INU latitude (deg'
+                'INU latitude (deg)'
             )
             longitude_index = header.variable_names.index(
                 'INU longitude (deg)'
