@@ -1,19 +1,41 @@
 # create lookup zip for crsimpacts
 # for all future collections
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from utils.mdx import MDX
-import cProfile
-import time
-import math
-import re
-
-from netCDF4 import Dataset
+import io
+from os import PathLike 
+import h5py
 import numpy as np
 
 short_name = "crsimpacts"
-provider_path = "crsimpacts/fieldCampaigns/impacts/CRS/data/"
+provider_path = "crsimpacts/"
 file_type = "HDF-5"
 
+
+def _as_seekable_hdf5_stream(source):
+    """
+    Return a seekable binary stream suitable for h5py.
+
+    Accepted inputs:
+      - S3/botocore StreamingBody
+      - local binary file object
+      - bytes / bytearray
+      - local filename or pathlib.Path
+    """
+    if isinstance(source, (str, PathLike)):
+        with open(source, "rb") as local_file:
+            return io.BytesIO(local_file.read())
+
+    if isinstance(source, (bytes, bytearray)):
+        return io.BytesIO(source)
+
+    if hasattr(source, "read"):
+        return io.BytesIO(source.read())
+
+    raise TypeError(
+        "Expected a path, bytes, or binary file-like object; "
+        f"got {type(source).__name__}"
+    )
 
 class MDXProcessing(MDX):
 
@@ -31,27 +53,33 @@ class MDXProcessing(MDX):
         """
         return self.get_hdf5_metadata(filename, file_obj_stream)
 
-
     def get_hdf5_metadata(self, filename, file_obj_stream):
         """
-        Extract temporal and spatial metadata from HDF-5 files
+        Extract temporal and spatial metadata from CRS IMPACTS HDF5 files.
+        Supports both the older and newer file revisions.
         """
-        h5 = Dataset("in-mem-file", mode='r', memory=file_obj_stream.read())
-        navgrp = h5.groups['Navigation']
-        navdatagroup = navgrp.groups['Data']
-        lat = navdatagroup.variables['Latitude'][:]
-        lon = navdatagroup.variables['Longitude'][:]
-        tgrp = h5.groups['Time']
-        tdatagrp = tgrp.groups['Data']
-        tm = tdatagrp.variables['TimeUTC'][:]
+        # StreamingBody is not reliably seekable, while h5py needs a seekable
+        # file-like object; make an in-memory buffer from its bytes.
+        print(f"Processing {filename}")
+        file_buffer = _as_seekable_hdf5_stream(file_obj_stream)
 
-        north, south, east, west = [np.nanmax(lat), np.nanmin(lat),
-                                    np.nanmax(lon), np.nanmin(lon)]
+        with h5py.File(file_buffer, mode="r") as h5:
+            lat = h5["/Navigation/Data/Latitude"][:]
+            lon = h5["/Navigation/Data/Longitude"][:]
+            tm = h5["/Time/Data/TimeUTC"][:]
 
-        start_time = datetime(1970,1,1) + timedelta(seconds=np.nanmin(tm))
-        end_time = datetime(1970,1,1) + timedelta(seconds=np.nanmax(tm))
+            north = float(np.nanmax(lat))
+            south = float(np.nanmin(lat))
+            east = float(np.nanmax(lon))
+            west = float(np.nanmin(lon))
 
-        h5.close()
+            start_time = datetime(1970, 1, 1) + timedelta(
+                seconds=float(np.nanmin(tm))
+            )
+            end_time = datetime(1970, 1, 1) + timedelta(
+                seconds=float(np.nanmax(tm))
+            )
+
         return {
             "start": start_time,
             "end": end_time,
@@ -59,15 +87,14 @@ class MDXProcessing(MDX):
             "south": south,
             "east": east,
             "west": west,
-            "format": file_type
+            "format": file_type,
         }
 
-
     def main(self):
-        # start_time = time.time()
-        self.process_collection(short_name, provider_path)
-        # elapsed_time = time.time() - start_time
-        # print(f"Elapsed time in seconds: {elapsed_time}")
+        start_time = time.time()
+        self.process_collection(short_name, provider_path, max_concurrent=1)
+        elapsed_time = time.time() - start_time
+        print(f"Elapsed time in seconds: {elapsed_time}")
         self.shutdown_ec2()
 
 
