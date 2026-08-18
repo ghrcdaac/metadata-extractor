@@ -244,6 +244,9 @@ class MDX:
         count = 0
         st = time.time()
         for page in self.get_page_iterator(provider_path):
+            if "Contents" not in page:
+                # Avoid a KeyError if no contents are returned
+                continue
             with concurrent.futures.ProcessPoolExecutor(max_workers=max_concurrent) as executor:
                 futures = []                
                 for obj in page["Contents"]:
