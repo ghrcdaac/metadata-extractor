@@ -241,7 +241,7 @@ class MDX:
 
         # Get s3uri of all objects at s3 prefix
         collection_lookup = {}
-        count = 0   
+        count = 0
         st = time.time()
         for page in self.get_page_iterator(provider_path):
             if "Contents" not in page:
