@@ -32,7 +32,7 @@ import io
 from os import PathLike
 
 
-def as_text_stream(source, gzipped=False, encoding="utf-8"):
+def as_text_stream(source, *, gzipped: bool=False, encoding: str="utf-8"):
     """
     Return a text stream suitable for parsing LMA files.
 
