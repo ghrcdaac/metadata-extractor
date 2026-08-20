@@ -2,6 +2,7 @@
 # for all future collections
 from datetime import datetime, timedelta, time
 from utils.mdx import MDX
+from utils.streams import as_seekable_hdf5_stream
 import io
 from os import PathLike 
 import h5py
@@ -11,31 +12,6 @@ short_name = "crsimpacts"
 provider_path = "crsimpacts/"
 file_type = "HDF-5"
 
-
-def _as_seekable_hdf5_stream(source):
-    """
-    Return a seekable binary stream suitable for h5py.
-
-    Accepted inputs:
-      - S3/botocore StreamingBody
-      - local binary file object
-      - bytes / bytearray
-      - local filename or pathlib.Path
-    """
-    if isinstance(source, (str, PathLike)):
-        with open(source, "rb") as local_file:
-            return io.BytesIO(local_file.read())
-
-    if isinstance(source, (bytes, bytearray)):
-        return io.BytesIO(source)
-
-    if hasattr(source, "read"):
-        return io.BytesIO(source.read())
-
-    raise TypeError(
-        "Expected a path, bytes, or binary file-like object; "
-        f"got {type(source).__name__}"
-    )
 
 class MDXProcessing(MDX):
 
@@ -61,7 +37,7 @@ class MDXProcessing(MDX):
         # StreamingBody is not reliably seekable, while h5py needs a seekable
         # file-like object; make an in-memory buffer from its bytes.
         print(f"Processing {filename}")
-        file_buffer = _as_seekable_hdf5_stream(file_obj_stream)
+        file_buffer = as_seekable_hdf5_stream(file_obj_stream)
 
         with h5py.File(file_buffer, mode="r") as h5:
             lat = h5["/Navigation/Data/Latitude"][:]
