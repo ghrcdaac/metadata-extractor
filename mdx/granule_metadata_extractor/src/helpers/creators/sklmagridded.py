@@ -27,7 +27,7 @@ class MDXProcessing(MDX):
         :type file_obj_stream: botocore.response.StreamingBody
         """
 
-        # Level 2 has same bounds as Level 1
+        # Level 3 has same bounds as Level 1
         # Just read from the existing lookup file
 
         if m := re.match(r'^\w+_(\d{8})_(\d{6})_(\d{3})_.*\.nc$', filename):
