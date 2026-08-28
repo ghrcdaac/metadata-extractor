@@ -42,9 +42,9 @@ fi
 AWS_ACCOUNT_ID=$(get_account_id)
 
 if [[ $(uname -m) == arm64* ]]; then
-  docker_build="docker buildx build --load --platform linux/amd64 -t"
+  docker_build="docker buildx build --load --platform linux/amd64 ${DOCKER_BUILD_FLAGS} -t"
 else
-  docker_build="docker build -t"
+  docker_build="docker build ${DOCKER_BUILD_FLAGS} -t"
 fi
 
 ${docker_build} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME .
