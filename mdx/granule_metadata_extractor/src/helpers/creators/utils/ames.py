@@ -1,11 +1,16 @@
 from __future__ import annotations
 
-from contextlib import contextmanager
+from io import TextIOBase, TextIOWrapper
+from os import PathLike
+import re
+from contextlib import contextmanager, nullcontext
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-from typing import Iterator, TextIO
+from collections.abc import Iterator
+from typing import Iterator, BinaryIO, TextIO, TypeAlias
 
+AmesSource: TypeAlias = str | PathLike[str] | BinaryIO | TextIO
 
 @dataclass(frozen=True)
 class Ames1001Header:
@@ -52,6 +57,8 @@ class _LineReader:
 
     def read_line(self, description: str) -> str:
         line = self.stream.readline()
+        # Strip comments
+        line = re.sub(r";.*", "", line)
 
         if line == "":
             raise ValueError(
@@ -308,16 +315,6 @@ def _iter_ames_1001_records(
             f"{record_start_line}: expected {expected_count} numeric "
             f"values, found {len(current)}"
         )
-
-
-from collections.abc import Iterator
-from contextlib import contextmanager, nullcontext
-from io import TextIOBase, TextIOWrapper
-from os import PathLike
-from typing import BinaryIO, TextIO, TypeAlias
-
-AmesSource: TypeAlias = str | PathLike[str] | BinaryIO | TextIO
-
 
 @contextmanager
 def open_ames_1001(
