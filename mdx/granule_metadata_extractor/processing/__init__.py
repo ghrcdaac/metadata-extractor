@@ -153,3 +153,4 @@ from .process_sportlis import ExtractSportlisMetadata
 from .process_dclma import ExtractDclmaMetadata
 from .process_wfflma import ExtractWfflmaMetadata
 from .process_malma import ExtractMalmaMetadata
+from .process_malmaraw import ExtractMalmaRawMetadata
