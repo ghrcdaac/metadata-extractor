@@ -107,7 +107,7 @@ class MDXProcessing(MDX):
             "south": min_lat,
             "east": max_lon,
             "west": min_lon,
-            "format": "UTF-8"
+            "format": "ASCII"
         }
 
     def process_netcdf(self, filename: str, stream=None) -> dict[str, Any]:
