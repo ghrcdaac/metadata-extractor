@@ -3,12 +3,10 @@ from __future__ import annotations
 from io import TextIOBase, TextIOWrapper
 from os import PathLike
 import re
-from contextlib import contextmanager, nullcontext
+from contextlib import AbstractContextManager, contextmanager
 from dataclasses import dataclass
 from datetime import date
-from pathlib import Path
-from collections.abc import Iterator
-from typing import Iterator, BinaryIO, TextIO, TypeAlias
+from typing import Iterator, BinaryIO, TextIO, TypeAlias, Literal
 
 AmesSource: TypeAlias = str | PathLike[str] | BinaryIO | TextIO
 
@@ -74,14 +72,24 @@ class _LineReader:
             self.line_number += 1
             yield line.rstrip("\r\n")
 
+def _split_fields(line: str, file_format: str) -> list[str]:
+    if file_format == "Ames":
+        return line.split()
+
+    if file_format == "ICARTT":
+        return [field.strip() for field in line.split(",")]
+
+    raise ValueError(f"Unsupported FFI 1001 format: {file_format!r}")
 
 def _parse_line(
     line: str,
     expected_count: int,
     converter,
     description: str,
+    *,
+    file_format='Ames'
 ):
-    fields = line.split()
+    fields = _split_fields(line, file_format)
 
     if len(fields) != expected_count:
         raise ValueError(
@@ -101,6 +109,8 @@ def _read_numeric_block(
     reader: _LineReader,
     expected_count: int,
     description: str,
+    *,
+    file_format: str = 'Ames'
 ) -> tuple[float, ...]:
     """
     Read a header array such as VSCAL or VMISS.
@@ -112,9 +122,9 @@ def _read_numeric_block(
 
     while len(values) < expected_count:
         line = reader.read_line(description)
-
+        fields = _split_fields(line, file_format)
         try:
-            values.extend(float(field) for field in line.split())
+            values.extend(float(field) for field in fields)
         except ValueError as exc:
             raise ValueError(
                 f"Invalid number in {description} at physical line "
@@ -129,13 +139,21 @@ def _read_numeric_block(
 
     return tuple(values)
 
+def _read_variable_name(reader, index, file_format):
+    line = reader.read_line(f"primary-variable name {index + 1}")
 
-def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
+    if file_format == "ICARTT":
+        return line.split(",", maxsplit=1)[0].strip()
+
+    return line
+
+def _read_ames_1001_header(reader: _LineReader, file_format='Ames') -> Ames1001Header:
     header_lines, ffi = _parse_line(
         reader.read_line("NLHEAD and FFI"),
         2,
         int,
         "NLHEAD and FFI",
+        file_format=file_format,
     )
 
     if ffi != 1001:
@@ -151,6 +169,7 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         2,
         int,
         "IVOL and NVOL",
+        file_format=file_format
     )
 
     date_parts = _parse_line(
@@ -158,6 +177,7 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         6,
         int,
         "DATE and RDATE",
+        file_format=file_format
     )
 
     data_date = date(*date_parts[:3])
@@ -168,6 +188,7 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         1,
         float,
         "DX",
+        file_format=file_format
     )
 
     independent_name = reader.read_line(
@@ -179,6 +200,7 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         1,
         int,
         "NV",
+        file_format=file_format
     )
 
     # VSCAL and VMISS each contain NV values.
@@ -186,17 +208,19 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         reader,
         variable_count,
         "VSCAL",
+        file_format=file_format
     )
 
     missing_values = _read_numeric_block(
         reader,
         variable_count,
         "VMISS",
+        file_format=file_format
     )
 
     # The next NV physical lines describe the primary variables.
     variable_names = tuple(
-        reader.read_line(f"primary-variable name {index + 1}")
+        _read_variable_name(reader, index, file_format)
         for index in range(variable_count)
     )
 
@@ -205,6 +229,7 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         1,
         int,
         "NSCOML",
+        file_format=file_format
     )
 
     special_comments = tuple(
@@ -217,6 +242,7 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         1,
         int,
         "NNCOML",
+        file_format=file_format
     )
 
     normal_comments = tuple(
@@ -252,10 +278,11 @@ def _read_ames_1001_header(reader: _LineReader) -> Ames1001Header:
         normal_comments=normal_comments,
     )
 
-
 def _iter_ames_1001_records(
     reader: _LineReader,
     header: Ames1001Header,
+    *,
+    file_format: str = 'Ames'
 ) -> Iterator[Ames1001Record]:
     # One independent value plus NV primary values.
     expected_count = 1 + len(header.variable_names)
@@ -270,7 +297,7 @@ def _iter_ames_1001_records(
         if not current:
             record_start_line = reader.line_number
 
-        fields = line.split()
+        fields = _split_fields(line, file_format)
         needed = expected_count - len(current)
 
         # Anything after the required numeric values on the final
@@ -316,54 +343,92 @@ def _iter_ames_1001_records(
             f"values, found {len(current)}"
         )
 
+FFI1001Format: TypeAlias = Literal["Ames", "ICARTT"]
+FFI1001Result: TypeAlias = tuple[
+    Ames1001Header,
+    Iterator[Ames1001Record],
+]
+
+def _read_ames_1001(
+    stream: TextIO,
+    file_format: str = 'Ames'
+) -> tuple[Ames1001Header, Iterator[Ames1001Record]]:
+    reader = _LineReader(stream)
+    header = _read_ames_1001_header(reader, file_format=file_format)
+    records = _iter_ames_1001_records(reader, header, file_format=file_format)
+
+    return header, records
+
 @contextmanager
-def open_ames_1001(
+def _open_1001(
     source: AmesSource,
-) -> Iterator[
-    tuple[Ames1001Header, Iterator[Ames1001Record]]
-]:
+    *,
+    encoding: str,
+    file_format: FFI1001Format,
+) -> Iterator[FFI1001Result]:
     """
-    Read an FFI 1001 file from a filesystem path or open stream.
+    Open and parse an FFI 1001 file.
 
-    Binary streams, including boto3 StreamingBody objects, are decoded as
-    ASCII. Records must be consumed inside the with block.
-
-    Streams supplied by the caller remain open when the context exits.
+    Caller-owned streams remain open when this context exits. Records must
+    be consumed inside the context block.
     """
-
     if isinstance(source, (str, PathLike)):
         with open(
             source,
             "rt",
-            encoding="ascii",
+            encoding=encoding,
             newline=None,
         ) as stream:
-            yield _read_ames_1001(stream)
+            yield _read_ames_1001(
+                stream,
+                file_format=file_format,
+            )
         return
 
     if isinstance(source, TextIOBase):
-        yield _read_ames_1001(source)
+        # The stream has already been decoded, so encoding is inapplicable.
+        yield _read_ames_1001(
+            source,
+            file_format=file_format,
+        )
         return
 
-    # TextIOWrapper would normally close the caller's binary stream when the
-    # wrapper is closed or garbage-collected. Detach it before returning.
+    # Adapt a caller-owned binary stream, including an S3 StreamingBody,
+    # without closing it when parsing finishes.
     wrapper = TextIOWrapper(
         source,
-        encoding="ascii",
+        encoding=encoding,
         newline=None,
     )
 
     try:
-        yield _read_ames_1001(wrapper)
+        yield _read_ames_1001(
+            wrapper,
+            file_format=file_format,
+        )
     finally:
         wrapper.detach()
 
+def open_ames_1001(
+    source: AmesSource,
+    *,
+    encoding: str = "ascii",
+) -> AbstractContextManager[FFI1001Result]:
+    """Open a whitespace-delimited NASA Ames FFI 1001 file."""
+    return _open_1001(
+        source,
+        encoding=encoding,
+        file_format="Ames",
+    )
 
-def _read_ames_1001(
-    stream: TextIO,
-) -> tuple[Ames1001Header, Iterator[Ames1001Record]]:
-    reader = _LineReader(stream)
-    header = _read_ames_1001_header(reader)
-    records = _iter_ames_1001_records(reader, header)
-
-    return header, records
+def open_icartt_1001(
+    source: AmesSource,
+    *,
+    encoding: str = "ascii",
+) -> AbstractContextManager[FFI1001Result]:
+    """Open a comma-delimited ICARTT FFI 1001 file."""
+    return _open_1001(
+        source,
+        encoding=encoding,
+        file_format="ICARTT",
+    )
