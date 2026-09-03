@@ -1,8 +1,9 @@
 """Helper utils for wrapping file inputs in useful streams."""
 import io
+import gzip
 from os import PathLike
 
-def as_seekable_hdf5_stream(source):
+def as_seekable_binary_stream(source):
     """
     Return a seekable binary stream suitable for h5py.
 
@@ -26,11 +27,6 @@ def as_seekable_hdf5_stream(source):
         "Expected a path, bytes, or binary file-like object; "
         f"got {type(source).__name__}"
     )
-
-import gzip
-import io
-from os import PathLike
-
 
 def as_text_stream(source, *, gzipped: bool=False, encoding: str="utf-8"):
     """
@@ -71,3 +67,5 @@ def as_text_stream(source, *, gzipped: bool=False, encoding: str="utf-8"):
         binary_stream,
         encoding=encoding,
     )
+
+as_seekable_hdf5_stream = as_seekable_binary_stream
