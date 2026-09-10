@@ -29,6 +29,7 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
+        print(f"[{datetime.now().isoformat()}] Processing {filename}")
         file_buffer = as_seekable_binary_stream(file_obj_stream)
 
         with (h5netcdf.File(file_buffer, "r") as nc):
