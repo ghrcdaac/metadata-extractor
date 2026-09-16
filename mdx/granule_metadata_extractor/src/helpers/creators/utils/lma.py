@@ -88,6 +88,8 @@ def _parse_lma_header(headers: list[tuple[str, str]]) -> LMAHeader:
             sta_id = station_info['id']
             station_info[sta_id] = sta_info
     header_values['station_info'] = station_info
+    if 'coordinate_frame' not in header_values:
+        header_values['coordinate_frame'] = 'cartesian'
 
     return LMAHeader(**header_values)
 
@@ -112,6 +114,8 @@ def _parse_lma_record(
         field_names: list[str],
         field_info: dict[str, list[Any]],
 ):
+    if any("\x00" in field for field in fields):
+        raise ValueError(f"Data fields contain NULL data.")
     if len(fields) != len(field_names):
         raise ValueError(f"Mismatched data and data labels: {fields} does not match {field_names}")
 
