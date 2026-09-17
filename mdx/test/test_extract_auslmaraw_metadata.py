@@ -1,16 +1,16 @@
 from hashlib import md5
 from os import path
 from unittest import TestCase
-from granule_metadata_extractor.processing.process_nalmaraw import ExtractNalmarawMetadata
+from granule_metadata_extractor.processing.process_auslmaraw import ExtractAuslmarawMetadata
 from granule_metadata_extractor.src.generate_umm_g_json import GenerateUmmGJson
 
 
-class TestProcessNalmaraw(TestCase):
+class TestProcessAuslmaraw(TestCase):
     """
-    Test processing Nalmaraw.
-    This will test if nalmaraw metadata will be extracted correctly
+    Test processing ausmaraw.
+    This will test if auslmaraw metadata will be extracted correctly
     """
-    granule_name = "LM_NALMA_fayetteville_201016_142000.dat"
+    granule_name = "LE_IGNIS_East_Pingelly_250923_201000.dat.gz"
     input_file = path.join(path.dirname(__file__), f"fixtures/{granule_name}")
     compressed_granule_name = granule_name if granule_name.endswith('gz') else f'{granule_name}.gz'
     compressed_file_path = path.join(path.dirname(__file__), f"fixtures/{compressed_granule_name}")
@@ -19,9 +19,9 @@ class TestProcessNalmaraw(TestCase):
     lat_var_key = 'lat'
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
-    process_nalmaraw = ExtractNalmarawMetadata(input_file)
+    process_auslmaraw = ExtractAuslmarawMetadata(input_file)
     expected_metadata = {
-        'ShortName': 'nalmaraw',
+        'ShortName': 'auslmaraw',
         'GranuleUR': compressed_granule_name,
         'VersionId': '1', 'DataFormat': 'Binary',
     }
@@ -31,37 +31,37 @@ class TestProcessNalmaraw(TestCase):
         Testing get correct start date
         :return:
         """
-        start_date = self.process_nalmaraw.get_temporal(units_variable=self.time_units)[0]
+        start_date = self.process_auslmaraw.get_temporal(units_variable=self.time_units)[0]
         self.expected_metadata['BeginningDateTime'] = start_date
 
-        self.assertEqual(start_date, "2020-10-16T14:20:00Z")
+        self.assertEqual(start_date, "2025-09-23T20:10:00Z")
 
     def test_2_get_stop_date(self):
         """
         Testing get correct start date
         :return:
         """
-        stop_date = self.process_nalmaraw.get_temporal(units_variable=self.time_units)[1]
+        stop_date = self.process_auslmaraw.get_temporal(units_variable=self.time_units)[1]
         self.expected_metadata['EndingDateTime'] = stop_date
 
-        self.assertEqual(stop_date, "2020-10-16T14:29:59Z")
+        self.assertEqual(stop_date, "2025-09-23T20:19:59Z")
 
     def test_3_get_file_size(self):
         """
         Test getting the correct file size
         :return:
         """
-        # file_size = round(self.process_nalmaraw.get_file_size_megabytes(), 2)
+        # file_size = round(self.process_auslmaraw.get_file_size_megabytes(), 2)
         file_size = round(1E-6 * path.getsize(self.compressed_file_path), 2)
         self.expected_metadata['SizeMBDataGranule'] = str(file_size)
-        self.assertEqual(file_size, 0.0)
+        self.assertEqual(file_size, 7.2)
 
     def get_wnes(self, index):
         """
         A function helper to ger North, West, Souh, East
         :return: wnes[index] where index: west = 0 - north = 1 - east = 2 - south = 3
         """
-        process_geos = self.process_nalmaraw
+        process_geos = self.process_auslmaraw
         wnes = process_geos.get_wnes_geometry()
         return str(round(wnes[index], 3))
 
@@ -72,7 +72,7 @@ class TestProcessNalmaraw(TestCase):
         """
         north = self.get_wnes(1)
         self.expected_metadata['NorthBoundingCoordinate'] = north
-        self.assertEqual(north, '35.069')
+        self.assertEqual(north, '-32.596')
 
     def test_5_get_west(self):
         """
@@ -81,7 +81,7 @@ class TestProcessNalmaraw(TestCase):
         """
         west = self.get_wnes(0)
         self.expected_metadata['WestBoundingCoordinate'] = west
-        self.assertEqual(west, '-86.563')
+        self.assertEqual(west, '117.378')
 
     def test_6_get_south(self):
         """
@@ -90,7 +90,7 @@ class TestProcessNalmaraw(TestCase):
         """
         south = self.get_wnes(3)
         self.expected_metadata['SouthBoundingCoordinate'] = south
-        self.assertEqual(south, '35.067')
+        self.assertEqual(south, '-32.598')
 
     def test_7_get_east(self):
         """
@@ -99,7 +99,7 @@ class TestProcessNalmaraw(TestCase):
         """
         east = self.get_wnes(2)
         self.expected_metadata['EastBoundingCoordinate'] = east
-        self.assertEqual(east, '-86.561')
+        self.assertEqual(east, '117.38')
 
     def test_8_get_checksum(self):
         """
@@ -107,7 +107,7 @@ class TestProcessNalmaraw(TestCase):
         :return: the MD5 string
         """
 
-        checksum = self.process_nalmaraw.get_checksum()
+        checksum = self.process_auslmaraw.get_checksum()
         self.expected_metadata['checksum'] = checksum
         compressed_checksum = None
         with open(self.compressed_file_path, 'rb') as file:
@@ -116,11 +116,11 @@ class TestProcessNalmaraw(TestCase):
 
     def test_9_generate_metadata(self):
         """
-        Test generating metadata of nalmaraw
+        Test generating metadata of auslmaraw
         :return: metadata object
         """
 
-        metadata = self.process_nalmaraw.get_metadata(ds_short_name='nalmaraw',
+        metadata = self.process_auslmaraw.get_metadata(ds_short_name='auslmaraw',
                                                       format='Binary', version='1')
         # print(self.expected_metadata.keys())
         for key in self.expected_metadata.keys():
