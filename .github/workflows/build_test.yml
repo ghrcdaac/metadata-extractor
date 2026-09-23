@@ -19,6 +19,7 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Install xmllint
         run: |
+          sudo apt-get update
           sudo apt install -y libxml2-utils
       - name: Test with pytest
         run: |
