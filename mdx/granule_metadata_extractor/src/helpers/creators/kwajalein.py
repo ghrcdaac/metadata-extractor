@@ -4,6 +4,7 @@ from utils.streams import as_seekable_binary_stream
 import numpy as np
 from datetime import datetime, timezone, timedelta
 import h5netcdf
+import re
 from pyproj import Geod
 
 short_name = "kwajalein"
@@ -23,7 +24,15 @@ class MDXProcessing(MDX):
         :param file_obj_stream: file object stream to be processed
         :type file_obj_stream: botocore.response.StreamingBody
         """
-        file_buffer = as_seekable_binary_stream(file_obj_stream)
+        if filename.endswith(".gz"):
+            # Handle gzipped case
+            gzipped = True
+        else:
+            gzipped = False
+        if not re.search(r'\.cf(?:\.gz)?$', filename):
+            return {}
+
+        file_buffer = as_seekable_binary_stream(file_obj_stream, gzipped=gzipped)
 
         with h5netcdf.File(file_buffer, "r") as nc:
             attrs = nc.attrs
@@ -55,8 +64,10 @@ class MDXProcessing(MDX):
             east = lons.max()
             west = lons.min()
 
-            start = b"".join(nc.variables["time_coverage_start"][:]).decode("ascii")
-            end = b"".join(nc.variables["time_coverage_end"][:]).decode("ascii")
+            start = datetime.fromisoformat(
+                b"".join(nc.variables["time_coverage_start"][:]).decode("ascii"))
+            end = datetime.fromisoformat(
+                b"".join(nc.variables["time_coverage_end"][:]).decode("ascii"))
 
 
         return {
