@@ -3,7 +3,7 @@ import io
 import gzip
 from os import PathLike
 
-def as_seekable_binary_stream(source):
+def as_seekable_binary_stream(source, gzipped: bool=False):
     """
     Return a seekable binary stream suitable for h5py.
 
@@ -14,19 +14,28 @@ def as_seekable_binary_stream(source):
       - local filename or pathlib.Path
     """
     if isinstance(source, (str, PathLike)):
+        if gzipped:
+            return gzip.open(source, mode="rb")
         with open(source, "rb") as local_file:
             return io.BytesIO(local_file.read())
 
     if isinstance(source, (bytes, bytearray)):
-        return io.BytesIO(source)
+        binary_stream = io.BytesIO(source)
+    elif hasattr(source, "read"):
+        binary_stream = io.BytesIO(source.read())
+    else:
+        raise TypeError(
+            "Expected a path, bytes, or file-like object; "
+            f"got {type(source).__name__}"
+        )
 
-    if hasattr(source, "read"):
-        return io.BytesIO(source.read())
+    if gzipped:
+        binary_stream = gzip.GzipFile(
+            fileobj=binary_stream,
+            mode="rb",
+        )
 
-    raise TypeError(
-        "Expected a path, bytes, or binary file-like object; "
-        f"got {type(source).__name__}"
-    )
+    return binary_stream
 
 def as_text_stream(source, *, gzipped: bool=False, encoding: str="utf-8"):
     """
