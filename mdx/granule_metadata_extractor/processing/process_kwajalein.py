@@ -3,6 +3,7 @@ from ..src.helpers.creators.utils.streams import as_seekable_binary_stream
 import os
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
+from pathlib import Path
 import h5netcdf
 import numpy as np
 from pyproj import Geod
@@ -23,7 +24,12 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
                         self.get_variables_min_max()
 
     def get_variables_min_max(self):
-        gzipped = True if self.file_path.suffix == ".gz" else False
+        gzipped = True
+        if isinstance(self.file_path, Path):
+            if self.file_path.suffix == ".gz":
+                gzipped = False
+        elif self.file_path.endswith(".gz"):
+            gzipped = False
         file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
 
         with h5netcdf.File(file_buffer, "r") as nc:
@@ -83,7 +89,11 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
         :param date_format IF specified the return type will be a string type
         :return:
         """
-        gzipped = True if self.file_path.suffix == ".gz" else False
+        if isinstance(self.file_path, Path):
+            if self.file_path.suffix == ".gz":
+                gzipped = False
+        elif self.file_path.endswith(".gz"):
+            gzipped = False
         file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
 
         with h5netcdf.File(file_buffer, "r") as nc:
