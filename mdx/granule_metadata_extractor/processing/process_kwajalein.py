@@ -26,9 +26,9 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
     def get_variables_min_max(self):
         gzipped = True
         if isinstance(self.file_path, Path):
-            if self.file_path.suffix == ".gz":
+            if self.file_path.suffix == ".cf":
                 gzipped = False
-        elif self.file_path.endswith(".gz"):
+        elif self.file_path.endswith(".cf"):
             gzipped = False
         file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
 
@@ -90,9 +90,9 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
         :return:
         """
         if isinstance(self.file_path, Path):
-            if self.file_path.suffix == ".gz":
+            if self.file_path.suffix == ".cf":
                 gzipped = False
-        elif self.file_path.endswith(".gz"):
+        elif self.file_path.endswith(".cf"):
             gzipped = False
         file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
 
