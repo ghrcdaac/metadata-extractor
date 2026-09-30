@@ -8,7 +8,7 @@ from pyproj import Geod
 
 class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
     """
-    A class to extract imergcpex
+    A class to extract metadata from kwajalein.
     """
 
     def __init__(self, file_path):
