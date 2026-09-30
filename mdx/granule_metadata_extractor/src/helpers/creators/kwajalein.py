@@ -1,4 +1,4 @@
-"""Creator for Kwajalein Polarimetric Radar (kwajalein)."""
+"""Creator for Kwajalein Polarimetric Radar (kpol)."""
 from utils.mdx import MDX
 from utils.streams import as_seekable_binary_stream
 import numpy as np
@@ -7,7 +7,7 @@ import h5netcdf
 import re
 from pyproj import Geod
 
-short_name = "kwajalein"
+short_name = "kpol"
 provider_path = "kwajalein__1/"
 
 class MDXProcessing(MDX):

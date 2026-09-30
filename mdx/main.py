@@ -183,7 +183,7 @@ class MDX(Process):
             "gpmd3ruconn": mdx.ExtractGpmd3ruconnMetadata,
             "gpmpipuconn": mdx.ExtractGpmpipuconnMetadata,
             "sportlis": mdx.ExtractSportlisMetadata,
-            "kwajalein": mdx.ExtractKwajaleinMetadata,
+            "kpol": mdx.ExtractKwajaleinMetadata,
         }
 
         time_variable_key = netcdf_vars.get('time_var_key')

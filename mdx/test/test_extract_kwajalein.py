@@ -21,7 +21,7 @@ class TestProcessKwajalein(TestCase):
     lat_var_key = 'lat'
     time_units = 'units'
     date_format = '%Y-%m-%dT%H:%M:%SZ'
-    expected_metadata = {'ShortName': 'kwajalein',
+    expected_metadata = {'ShortName': 'kpol',
                          'GranuleUR': GRANULE_NAME,
                          'VersionId': '1', 'DataFormat': 'netCDF-4',
                          }
@@ -38,7 +38,7 @@ class TestProcessKwajalein(TestCase):
                 shutil.copyfileobj(f_in, f_out)
 
         cls.process_dataset = ExtractKwajaleinMetadata(cls.decompressed_path)
-        cls.md = cls.process_dataset.get_metadata(ds_short_name= 'kwajalein')
+        cls.md = cls.process_dataset.get_metadata(ds_short_name= 'kpol')
 
     @classmethod
     def tearDownClass(cls):
