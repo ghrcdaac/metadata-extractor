@@ -23,7 +23,8 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
                         self.get_variables_min_max()
 
     def get_variables_min_max(self):
-        file_buffer = as_seekable_binary_stream(self.file_path, gzipped=True)
+        gzipped = True if self.file_path.endswith(".gz") else False
+        file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
 
         with h5netcdf.File(file_buffer, "r") as nc:
             attrs = nc.attrs
@@ -82,7 +83,8 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
         :param date_format IF specified the return type will be a string type
         :return:
         """
-        file_buffer = as_seekable_binary_stream(self.file_path, gzipped=True)
+        gzipped = True if self.file_path.endswith(".gz") else False
+        file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
 
         with h5netcdf.File(file_buffer, "r") as nc:
             start = datetime.fromisoformat(
