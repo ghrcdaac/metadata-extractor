@@ -155,3 +155,5 @@ from .process_wfflma import ExtractWfflmaMetadata
 from .process_malma import ExtractMalmaMetadata
 from .process_malmaraw import ExtractMalmaRawMetadata
 from .process_kwajalein import ExtractKwajaleinMetadata
+from .process_auslma import ExtractAuslmaMetadata
+from .process_auslmaraw import ExtractAuslmarawMetadata
