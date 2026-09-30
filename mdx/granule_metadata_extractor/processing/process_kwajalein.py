@@ -89,6 +89,7 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
         :param date_format IF specified the return type will be a string type
         :return:
         """
+        gzipped = True
         if isinstance(self.file_path, Path):
             if self.file_path.suffix == ".cf":
                 gzipped = False
