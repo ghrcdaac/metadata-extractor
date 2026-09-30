@@ -1,4 +1,5 @@
 from ..src.extract_netcdf_metadata import ExtractNetCDFMetadata
+from ..src.helpers.creators.utils.streams import as_seekable_binary_stream
 import os
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
@@ -22,8 +23,9 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
                         self.get_variables_min_max()
 
     def get_variables_min_max(self):
+        file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
 
-        with h5netcdf.File(self.file_path, "r") as nc:
+        with h5netcdf.File(file_buffer, "r") as nc:
             attrs = nc.attrs
 
             # Get the radar position
@@ -80,7 +82,9 @@ class ExtractKwajaleinMetadata(ExtractNetCDFMetadata):
         :param date_format IF specified the return type will be a string type
         :return:
         """
-        with h5netcdf.File(self.file_path, "r") as nc:
+        file_buffer = as_seekable_binary_stream(self.file_path, gzipped=gzipped)
+
+        with h5netcdf.File(file_buffer, "r") as nc:
             start = datetime.fromisoformat(
                 b"".join(nc.variables["time_coverage_start"][:]).decode("ascii")).strftime(date_format)
             end = datetime.fromisoformat(
