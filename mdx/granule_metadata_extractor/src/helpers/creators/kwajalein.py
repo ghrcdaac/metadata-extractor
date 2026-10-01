@@ -8,7 +8,7 @@ import re
 from pyproj import Geod
 
 short_name = "kpol"
-provider_path = "kwajalein__1/"
+provider_path = "kpol__1/"
 
 class MDXProcessing(MDX):
 

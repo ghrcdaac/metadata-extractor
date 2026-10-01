@@ -137,7 +137,7 @@ class TestProcessKwajalein(TestCase):
         :return: metadata object
         """
 
-        metadata = self.process_dataset.get_metadata(ds_short_name='kwajalein',
+        metadata = self.process_dataset.get_metadata(ds_short_name='kpol',
                                                      format='netCDF-4', version='1')
         for key in self.expected_metadata.keys():
             self.assertEqual(metadata[key], self.expected_metadata[key])
