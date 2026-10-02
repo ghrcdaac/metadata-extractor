@@ -90,6 +90,7 @@ class MDXProcessing(MDX):
                 metadata = date_lookup[filename]
                 for field in ['start', 'end']:
                     metadata[field] = datetime.fromisoformat(metadata[field])
+                return metadata
             else: return {}
 
         file_date = self.parse_date_from_filename(filename)
