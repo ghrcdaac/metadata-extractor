@@ -40,7 +40,7 @@ function validate_keys {
 }
 
 # Check legacy PROD keys
-validate_keys legacy_prod_access_key legacy_prod_secret_key
+validate_keys $legacy_prod_access_key $legacy_prod_secret_key
 
 # Check consolidated keys
 for ((i = 0; i < $consolidated_access_keys_len; i++)); do
@@ -56,7 +56,7 @@ function export_keys_push_to_ecr {
   export AWS_ACCESS_KEY_ID=$1
   export AWS_SECRET_ACCESS_KEY=$2
   create_ecr_repo_or_skip
-  push_to_ecr legacy_prod_account_number legacy_prod_prefix
+  push_to_ecr $legacy_prod_account_number $legacy_prod_prefix
 }
 
 # Push MDX to PROD ECR
@@ -73,7 +73,7 @@ for ((i = 0; i < $consolidated_access_keys_len; i++)); do
   export AWS_SECRET_ACCESS_KEY=${consolidated_secret_keys[$i]}
   export prefix=${consolidated_prefixes[$i]}
 
-  update_mdx_lambdas legacy_prod_account_number prefix
+  update_mdx_lambdas $legacy_prod_account_number $prefix
 done
 
 docker rmi mdx
