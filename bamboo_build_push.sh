@@ -60,7 +60,7 @@ function export_keys_push_to_ecr {
 }
 
 # Push MDX to PROD ECR
-export_keys_push_to_ecr
+export_keys_push_to_ecr $legacy_prod_access_key $legacy_prod_secret_key
 
 function update_mdx_lambdas {
   update_lambda_or_skip $1 $2 "mdx_docker_lambda_1g"
