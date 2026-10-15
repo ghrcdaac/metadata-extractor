@@ -1,7 +1,10 @@
 """Helper utils for wrapping file inputs in useful streams."""
 import io
 import gzip
-from os import PathLike
+from os import PathLike, fsdecode
+import shutil
+import tempfile
+from contextlib import contextmanager
 
 def as_seekable_binary_stream(source, gzipped: bool=False):
     """
@@ -36,6 +39,8 @@ def as_seekable_binary_stream(source, gzipped: bool=False):
         )
 
     return binary_stream
+
+as_seekable_hdf5_stream = as_seekable_binary_stream
 
 def as_text_stream(source, *, gzipped: bool=False, encoding: str="utf-8"):
     """
@@ -77,4 +82,17 @@ def as_text_stream(source, *, gzipped: bool=False, encoding: str="utf-8"):
         encoding=encoding,
     )
 
-as_seekable_hdf5_stream = as_seekable_binary_stream
+@contextmanager
+def as_local_file(source, suffix):
+    if isinstance(source, (str, bytes, PathLike)):
+        yield fsdecode(source)
+        return
+
+    with tempfile.NamedTemporaryFile(suffix=suffix) as tmp:
+        if hasattr(source, "seekable") and source.seekable():
+            source.seek(0)
+
+        shutil.copyfileobj(source, tmp)
+        tmp.flush()
+
+        yield tmp.name
