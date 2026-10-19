@@ -24,7 +24,7 @@ def _load_registry():
     return _MAP_CACHE
 
 def lazy_load_lookup_module(filename):
-    module_base_path = Path(f"mdx/granule_metadata_extractor/src/helpers/creators")
+    module_base_path = Path(f"granule_metadata_extractor/src/helpers/creators")
     resolved_path = module_base_path.resolve()
 
     # Ensure creators directory is on sys.path so 'from utils.mdx import MDX' resolves
