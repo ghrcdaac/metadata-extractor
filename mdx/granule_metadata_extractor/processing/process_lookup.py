@@ -44,6 +44,11 @@ class ExtractLookupMetadata(MetadataExtractor):
                         patch_class = PatchExtractor
                         patch_class.process = creator_class.process
                         extractor = patch_class()
+                        if not isinstance(self.file_path, (str, pathlib.Path)):
+                            # No reason why self.file_path shouldn't be a path
+                            # but if workflow changes in the future to where it's a stream,
+                            # we need to use a wrapper like streams.as_local_file
+                            logger.warn("Expected file_path to be a str or pathlib.Path")
                         metadata = extractor.process(self.file_name, self.file_path)
                         if 'sizeMB' not in metadata:
                             metadata['sizeMB'] = str(round(1E-6 * extractor.get_file_size(self.file_path), 2))
