@@ -2,6 +2,9 @@ import importlib
 import sys
 import json
 from pathlib import Path
+from helpers import get_logger
+
+logger = get_logger()
 
 _MAP_CACHE = None
 _LOADED_CACHE = {}
@@ -20,6 +23,17 @@ def _load_registry():
         # Can merge with other registries if need be, or keep them separate
     return _MAP_CACHE
 
+def lazy_load_lookup_module(filename):
+    module_base_path = Path(f"mdx/granule_metadata_extractor/src/helpers/creators")
+    module_name = (module_base_path / filename).stem
+    import_path = str(module_base_path).replace("/", ".") + '.' + module_name
+    try:
+        module = importlib.import_module(import_path)
+    except ImportError:
+        logger.warning(f"Failed to lazy-load module at {import_path}")
+        return None
+    return module
+
 def get_lookup_creator_class(ds_short_name: str):
     """
     Lazily import and return the extractor class using the JSON map.
@@ -30,15 +44,21 @@ def get_lookup_creator_class(ds_short_name: str):
     registry = _load_registry()
     module_type, filename = registry.get(ds_short_name, [None, None])
 
-    if not module_type:
-        raise ValueError(f"No extractor mapping found for collection: {ds_short_name}")
+    if module_type is None:
+        # Module not found in registry
+        # Attempt to find a matching one anyway
+        # Assume lookup module named {collection_name}.py
+        filename = f"{ds_short_name}.py"
+        module = lazy_load_lookup_module(filename)
 
     # Import the specific module dynamically
     elif module_type == "lookup":
-        module_base_path = Path(f"mdx/granule_metadata_extractor/src/helpers/creators")
-        module_name = (module_base_path / filename).stem
-        import_path = str(module_base_path).replace("/", ".") + '.' + module_name
-    module = importlib.import_module(import_path)
+        module = lazy_load_lookup_module(filename)
+    else:
+        raise ValueError(f"Unknown module type: {module_type}")
+
+    if module is None:
+        raise ValueError(f"Failed to load lookup module for {ds_short_name}")
 
     lookup_class = module.MDXProcessing
     if not hasattr(lookup_class, 'process'):
