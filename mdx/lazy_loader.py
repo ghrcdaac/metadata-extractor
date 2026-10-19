@@ -30,10 +30,6 @@ def lazy_load_lookup_module(filename):
     # Ensure creators directory is on sys.path so 'from utils.mdx import MDX' resolves
     if str(resolved_path) not in sys.path:
         sys.path.insert(0, str(resolved_path))
-    print(f"DEBUG: Trying to import file: {filename}")
-    print(f"DEBUG: Added to sys.path: {module_base_path}")
-    print(f"DEBUG: Current sys.path: {sys.path}")
-    print(f"DEBUG: Does utils/__init__.py exist? {(module_base_path / 'utils' / '__init__.py').exists()}")
 
     module_name = (module_base_path / filename).stem
     import_path = str(module_base_path).replace("/", ".") + '.' + module_name
@@ -42,7 +38,7 @@ def lazy_load_lookup_module(filename):
     except ImportError as e:
         logger.warning(f"Failed to lazy-load module at {import_path}")
         logger.warning(e)
-        raise e
+        return None
     return module
 
 def get_lookup_creator_class(ds_short_name: str):
