@@ -1,5 +1,5 @@
 """Empty class for patching in other classes."""
-from src.base_extractor import BaseExtractor
+from base_extractor import BaseExtractor
 from datetime import datetime
 from typing import Any
 
