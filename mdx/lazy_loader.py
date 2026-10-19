@@ -25,6 +25,12 @@ def _load_registry():
 
 def lazy_load_lookup_module(filename):
     module_base_path = Path(f"mdx/granule_metadata_extractor/src/helpers/creators")
+    resolved_path = module_base_path.resolve()
+
+    # Ensure creators directory is on sys.path so 'from utils.mdx import MDX' resolves
+    if str(resolved_path) not in sys.path:
+        sys.path.insert(0, str(resolved_path))
+
     module_name = (module_base_path / filename).stem
     import_path = str(module_base_path).replace("/", ".") + '.' + module_name
     try:
