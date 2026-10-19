@@ -12,6 +12,7 @@ class TestLookupFallback(unittest.TestCase):
         """Lookup a file that is in the lookup dict."""
         lookup = ExtractLookupMetadata(FIXTURES_PATH / IN_LOOKUP_GRANULE)
         metadata = lookup.get_metadata(LOOKUP_COLLECTION, format='Not Provided')
+        self.assertIsNotNone(metadata)
         self.assertEqual(metadata['ShortName'], 'auslma')
         self.assertEqual(metadata['GranuleUR'], 'IGNIS_250923_081000_0600.dat.gz')
         self.assertEqual(metadata['BeginningDateTime'], '2025-09-23T16:21:48Z')
@@ -27,6 +28,7 @@ class TestLookupFallback(unittest.TestCase):
         """Lookup a file that's not in the lookup dict."""
         lookup = ExtractLookupMetadata(FIXTURES_PATH / OUT_OF_LOOKUP_GRANULE)
         metadata = lookup.get_metadata(LOOKUP_COLLECTION, format='Not Provided')
+        self.assertIsNotNone(metadata)
         self.assertEqual(metadata['ShortName'], 'auslma')
         self.assertEqual(metadata['GranuleUR'], 'IGNIS_261016_150000_0600.dat.gz')
         self.assertEqual(metadata['BeginningDateTime'], '2026-10-16T15:00:00Z')

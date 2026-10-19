@@ -29,9 +29,10 @@ def lazy_load_lookup_module(filename):
     import_path = str(module_base_path).replace("/", ".") + '.' + module_name
     try:
         module = importlib.import_module(import_path)
-    except ImportError:
+    except ImportError as e:
         logger.warning(f"Failed to lazy-load module at {import_path}")
-        return None
+        logger.warning(e)
+        raise e
     return module
 
 def get_lookup_creator_class(ds_short_name: str):
