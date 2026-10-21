@@ -1,6 +1,8 @@
 from granule_metadata_extractor.src.metadata_extractor import MetadataExtractor
+from granule_metadata_extractor.src.patch_extractor import PatchExtractor
 from helpers import get_logger
 from zipfile import ZipFile
+from lazy_loader import get_lookup_creator_class
 import pathlib
 import json
 import os
@@ -29,7 +31,32 @@ class ExtractLookupMetadata(MetadataExtractor):
         with ZipFile(lookup_zip_path) as lookup_zip:
             with lookup_zip.open("lookup.json") as collection_lookup:
                 lookup_json = json.load(collection_lookup)
-                return lookup_json.get(self.file_name, {})
+                if self.file_name in lookup_json:
+                    return lookup_json.get(self.file_name, {})
+                else:
+                    # Fallback: If filename is not found in lookup, attempt
+                    # to instantiate a modified lookup creator to get the metadata.
+                    # This will be useful in applying lookup creators to
+                    # ongoing datasets, so new files can still be processed without
+                    # adding to the lookup dict or resorting to a processing module.
+                    try:
+                        creator_class = get_lookup_creator_class(collection_name)
+                        patch_class = PatchExtractor
+                        patch_class.process = creator_class.process
+                        extractor = patch_class()
+                        if not isinstance(self.file_path, (str, pathlib.Path)):
+                            # No reason why self.file_path shouldn't be a path
+                            # but if workflow changes in the future to where it's a stream,
+                            # we need to use a wrapper like streams.as_local_file
+                            logger.warn("Expected file_path to be a str or pathlib.Path")
+                        metadata = extractor.process(self.file_name, self.file_path)
+                        if 'sizeMB' not in metadata:
+                            metadata['sizeMB'] = str(round(1E-6 * extractor.get_file_size(self.file_path), 2))
+                        metadata = extractor.pack_for_cumulus(metadata)
+                        return metadata
+                    except ValueError:
+                        # Return empty and continue gracefully
+                        return {}
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
