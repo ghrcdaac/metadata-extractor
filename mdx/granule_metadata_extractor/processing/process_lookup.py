@@ -28,6 +28,13 @@ class ExtractLookupMetadata(MetadataExtractor):
         lookup_zip_path = os.path.join(pathlib.Path(__file__).parent.absolute(),
                                f"../src/helpers/{collection_name}.zip")
         granule_info = None
+        if not os.path.exists(lookup_zip_path):
+            # Attempt fallback
+            metadata = self.lookup_fallback(collection_name)
+            if metadata:
+                return metadata
+            # Else fail as expected
+
         with ZipFile(lookup_zip_path) as lookup_zip:
             with lookup_zip.open("lookup.json") as collection_lookup:
                 lookup_json = json.load(collection_lookup)
@@ -40,23 +47,27 @@ class ExtractLookupMetadata(MetadataExtractor):
                     # ongoing datasets, so new files can still be processed without
                     # adding to the lookup dict or resorting to a processing module.
                     try:
-                        creator_class = get_lookup_creator_class(collection_name)
-                        patch_class = PatchExtractor
-                        patch_class.process = creator_class.process
-                        extractor = patch_class()
-                        if not isinstance(self.file_path, (str, pathlib.Path)):
-                            # No reason why self.file_path shouldn't be a path
-                            # but if workflow changes in the future to where it's a stream,
-                            # we need to use a wrapper like streams.as_local_file
-                            logger.warn("Expected file_path to be a str or pathlib.Path")
-                        metadata = extractor.process(self.file_name, self.file_path)
-                        if 'sizeMB' not in metadata:
-                            metadata['sizeMB'] = str(round(1E-6 * extractor.get_file_size(self.file_path), 2))
-                        metadata = extractor.pack_for_cumulus(metadata)
+                        metadata = self.lookup_fallback(collection_name)
                         return metadata
                     except ValueError:
                         # Return empty and continue gracefully
                         return {}
+
+    def lookup_fallback(self, collection_name):
+        creator_class = get_lookup_creator_class(collection_name)
+        patch_class = PatchExtractor
+        patch_class.process = creator_class.process
+        extractor = patch_class()
+        if not isinstance(self.file_path, (str, pathlib.Path)):
+            # No reason why self.file_path shouldn't be a path
+            # but if workflow changes in the future to where it's a stream,
+            # we need to use a wrapper like streams.as_local_file
+            logger.warn("Expected file_path to be a str or pathlib.Path")
+        metadata = extractor.process(self.file_name, self.file_path)
+        if 'sizeMB' not in metadata:
+            metadata['sizeMB'] = str(round(1E-6 * extractor.get_file_size(self.file_path), 2))
+        metadata = extractor.pack_for_cumulus(metadata)
+        return metadata
 
     def get_wnes_geometry(self, scale_factor=1.0, offset=0, **kwargs):
         """
