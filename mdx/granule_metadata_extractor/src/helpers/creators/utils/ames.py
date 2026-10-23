@@ -65,7 +65,7 @@ class _LineReader:
             )
 
         self.line_number += 1
-        return line.rstrip("\r\n")
+        return line.rstrip("\r\n\t ")
 
     def remaining_lines(self) -> Iterator[str]:
         for line in self.stream:
