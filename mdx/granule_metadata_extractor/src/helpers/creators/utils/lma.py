@@ -90,6 +90,18 @@ def _parse_lma_header(headers: list[tuple[str, str]]) -> LMAHeader:
     header_values['station_info'] = station_info
     if 'coordinate_frame' not in header_values:
         header_values['coordinate_frame'] = 'cartesian'
+    if 'coordinate_center' not in header_values:
+        # In MALMA data, "Coordinate center" is malformedly joined to previous line
+        m = re.search(
+            r'Coordinate center \(lat,lon,alt\): ((?:-)?\d+\.\d+) ((?:-)?\d+\.\d+) ((?:-)?\d+\.\d+)',
+            header_values['location'])
+        if m:
+            lat = float(m.group(1))
+            lon = float(m.group(2))
+            alt = float(m.group(3))
+            header_values['coordinate_center'] = (lat, lon, alt,)
+    if 'coordinate_center' not in header_values:
+        raise KeyError(f"'coordinate_center' not found in headers. {header_values!r}")
 
     return LMAHeader(**header_values)
 
