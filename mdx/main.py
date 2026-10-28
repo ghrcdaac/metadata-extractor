@@ -533,7 +533,8 @@ class MDX(Process):
             "kml": self.extract_kml_metadata,
             "avi": self.extract_avi_metadata,
             "legacy": self.extract_legacy_metadata,
-            "lookup": self.extract_lookup_metadata
+            "lookup": self.extract_lookup_metadata,
+            "lookup_fallback": self.extract_lookup_metadata,
         }
 
         return_data_dict = {}
