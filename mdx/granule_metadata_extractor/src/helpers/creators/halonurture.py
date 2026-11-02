@@ -19,7 +19,7 @@ class MDXProcessing(MDX):
 
     @staticmethod
     def parse_geospatial_deg(value):
-        match = re.match(r"^(-?\d+\.\d+)", value)
+        match = re.match(r"^(-?\d+(?:\.\d+)?)", value)
         if match:
             return float(match.group(1))
         raise ValueError(f"Not a valid latitude or longitude: {value!r}")
