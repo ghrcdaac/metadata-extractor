@@ -1,4 +1,4 @@
-"""Lookup creator for ER-2 NAST-I FDR (er2nastifdr)."""
+"""Lookup creator for DC-8 CSTAR CAMEX-4 FDR (c4cstarfdr)."""
 from utils.mdx import MDX
 from utils.streams import as_text_stream
 import re
