@@ -101,7 +101,7 @@ nav_lookup = {'TC4_DC8_SSFR_20070628.txt': {'start': '2007-06-28T22:00:00+00:00'
   'north': 38.683205,
   'south': 10.602837,
   'east': -84.790764,
-  'west': -119.488678}gi
+  'west': -119.488678}
 }
 
 class MDXProcessing(MDX):
